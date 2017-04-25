@@ -10,10 +10,13 @@
 #include <SDL2/SDL_render.h>
 
 #include "sago/SagoMisc.hpp"
+#include "sago/platform_folders.h"
 
 #ifndef VERSIONNUMBER
 #define VERSIONNUMBER "0.1.0"
 #endif
+
+#define GAMENAME "saland_game"
 
 void runGame() {
 	SDL_Window* win = NULL;
@@ -49,10 +52,34 @@ void runGame() {
 
 }
 
+static sago::PlatformFolders pf;
+
+std::string getPathToSaveFiles() {
+	return pf.getSaveGamesFolder1()+"/"+GAMENAME;
+}
+
+void OsCreateSaveFolder() {
+#if defined(__unix__)
+        std::string cmd = "mkdir -p '"+getPathToSaveFiles()+"/'";
+        int retcode = system(cmd.c_str());
+        if (retcode != 0) {
+                std::cerr << "Failed to create: " << getPathToSaveFiles()+"/" << "\n";
+        }
+#elif defined(_WIN32)
+        //Now for Windows NT/2k/xp/2k3 etc.
+        std::string tempA = getPathToSaveFiles();
+        CreateDirectory(tempA.c_str(),nullptr);
+#endif
+}
+
+
 int main(int argc, const char* argv[]) {
 	PHYSFS_init(argv[0]);
 	PHYSFS_addToSearchPath((std::string(PHYSFS_getBaseDir())+"/data").c_str(), 1);
-	PHYSFS_setWriteDir( (std::string(PHYSFS_getBaseDir())+"/writedir").c_str());
+	std::string savepath = getPathToSaveFiles();
+	OsCreateSaveFolder();
+	PHYSFS_addToSearchPath(savepath.c_str(), 1);
+	PHYSFS_setWriteDir(savepath.c_str());
 	boost::program_options::options_description desc("Options");
 	desc.add_options()
 	("version", "Print version information and quit")
