@@ -17,13 +17,17 @@ pkg_search_module(SDL2MIXER REQUIRED SDL2_mixer)
 pkg_search_module(SDL2IMAGE REQUIRED SDL2_image)
 pkg_search_module(SDL2TTF REQUIRED SDL2_ttf)
 
+
 pkg_search_module(XML2 REQUIRED libxml-2.0)
 include_directories(${XML2_INCLUDE_DIRS})
 
-file(GLOB SOURCES "src/*.cpp" "src/*/*.cpp" "src/Libs/*/*.c" "src/Libs/*/*.cpp")
+include_directories("src/Libs/include")
+include_directories("src/Libs/include/cereal/external")  #Contains rapidjson
+
+file(GLOB SOURCES "src/*.cpp" "src/*/*.cpp" "src/Libs/*.c")
 
 
-add_executable(saland src/saland.cpp)
+add_executable(saland ${SOURCES})
 TARGET_LINK_LIBRARIES( saland ${Boost_LIBRARIES} )
 target_link_libraries( saland ${SDL2_LIBRARY})
 target_link_libraries( saland physfs z b64)
