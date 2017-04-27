@@ -3,11 +3,15 @@
 #include <SDL_mixer.h>
 #include "sago/SagoDataHolder.hpp"
 #include "sago/SagoSpriteHolder.hpp"
+#include "sago/GameStateInterface.hpp"
 #include <sstream>
 #include <SDL_events.h>
 #include <SDL_render.h>
 #include <SDL_rect.h>
 #include <SDL2/SDL_render.h>
+#include <SDL2/SDL_pixels.h>
+#include <SDL2/SDL2_gfxPrimitives.h>
+#include "Libs/NFont.h"
 
 #include "sago/SagoMisc.hpp"
 #include "sago/platform_folders.h"
@@ -17,6 +21,31 @@
 #endif
 
 #define GAMENAME "saland_game"
+
+static NFont nf_standard_font;
+
+static void NFont_Write(SDL_Renderer* target, int x, int y, const char* text) {
+	nf_standard_font.draw(target, x, y, "%s", text);
+}
+
+class TheGame : sago::GameStateInterface {
+	virtual bool IsActive() override {
+		return true;
+	}
+	
+	virtual void Draw(SDL_Renderer* target) override {
+		SDL_RenderClear(target);
+		SDL_RenderPresent(target);
+	}
+	
+	virtual void ProcessInput(const SDL_Event& event, bool &processed) override {
+		
+	}
+	
+	virtual void Update() override {
+		
+	}
+};
 
 void runGame() {
 	SDL_Window* win = NULL;
@@ -31,6 +60,7 @@ void runGame() {
 	renderer = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
 	sago::SagoDataHolder holder(renderer);
 	sago::SagoSpriteHolder spriteHolder(holder);
+	nf_standard_font.load(renderer, holder.getFontPtr("freeserif", 30),NFont::Color(255,255,255));
 	while (1) {
 		SDL_Event e;
 		if (SDL_PollEvent(&e)) {
@@ -39,10 +69,14 @@ void runGame() {
 			}
 		}
 
+		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
 		SDL_RenderClear(renderer);
-		
-		usleep(10);
+		NFont_Write(renderer, 10, 10, "Hello World");
+		circleRGBA(renderer,
+              150, 150, 75,
+              0, 0, 255, 255);
 		SDL_RenderPresent(renderer);
+		usleep(10);
 	}
 
 	SDL_DestroyRenderer(renderer);

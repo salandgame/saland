@@ -16,6 +16,7 @@ find_package(PkgConfig REQUIRED)
 pkg_search_module(SDL2MIXER REQUIRED SDL2_mixer)
 pkg_search_module(SDL2IMAGE REQUIRED SDL2_image)
 pkg_search_module(SDL2TTF REQUIRED SDL2_ttf)
+pkg_search_module(SDL2GFX REQUIRED SDL2_gfx)
 
 
 pkg_search_module(XML2 REQUIRED libxml-2.0)
@@ -32,4 +33,4 @@ TARGET_LINK_LIBRARIES( saland ${Boost_LIBRARIES} )
 target_link_libraries( saland ${SDL2_LIBRARY})
 target_link_libraries( saland physfs z b64)
 target_link_libraries( saland ${XML2_LIBRARIES})
-target_link_libraries( saland ${SDL2MIXER_LIBRARIES} ${SDL2IMAGE_LIBRARIES} ${SDL2TTF_LIBRARIES})
+target_link_libraries( saland ${SDL2MIXER_LIBRARIES} ${SDL2IMAGE_LIBRARIES} ${SDL2TTF_LIBRARIES} ${SDL2GFX_LIBRARIES})
