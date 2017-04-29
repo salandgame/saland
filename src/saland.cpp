@@ -12,6 +12,7 @@
 #include <SDL2/SDL_pixels.h>
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include "Libs/NFont.h"
+#include "saland/globals.hpp"
 
 #include "sago/SagoMisc.hpp"
 #include "sago/platform_folders.h"
@@ -22,19 +23,24 @@
 
 #define GAMENAME "saland_game"
 
-static NFont nf_standard_font;
+GlobalData globalData;
 
 static void NFont_Write(SDL_Renderer* target, int x, int y, const char* text) {
-	nf_standard_font.draw(target, x, y, "%s", text);
+	globalData.nf_standard_font.draw(target, x, y, "%s", text);
 }
 
-class TheGame : sago::GameStateInterface {
+class TheGame : public sago::GameStateInterface {
 	virtual bool IsActive() override {
 		return true;
 	}
 	
 	virtual void Draw(SDL_Renderer* target) override {
+		SDL_SetRenderDrawColor(target, 0, 0, 0, 0);
 		SDL_RenderClear(target);
+		NFont_Write(target, 10, 10, "Hello World");
+		circleRGBA(target, 
+				150, 150, 75, 
+				0, 0, 255, 255);
 		SDL_RenderPresent(target);
 	}
 	
@@ -47,9 +53,38 @@ class TheGame : sago::GameStateInterface {
 	}
 };
 
+void RunGameState(sago::GameStateInterface& state ) {
+	bool done = false;     //We are done!
+	while (!done && !globalData.isShuttingDown) {
+		state.Draw(globalData.screen);
+
+		SDL_Delay(1);
+		SDL_Event event;
+
+		while ( SDL_PollEvent(&event) ) {
+			if ( event.type == SDL_QUIT ) {
+				globalData.isShuttingDown = true;
+				done = true;
+			}
+
+			bool processed = false;
+			state.ProcessInput(event, processed);
+
+		}
+
+		state.Update();
+
+		SDL_RenderPresent(globalData.screen);
+		
+
+		if (!state.IsActive()) {
+			done = true;
+		}
+	}
+}
+
 void runGame() {
 	SDL_Window* win = NULL;
-	SDL_Renderer* renderer = NULL;
 	int posX = 100, posY = 100, width = 1024, height = 768;
 	SDL_Init(SDL_INIT_VIDEO);
 	IMG_Init(IMG_INIT_PNG);
@@ -57,29 +92,15 @@ void runGame() {
 	Mix_Init(MIX_INIT_OGG);
 	
 	win = SDL_CreateWindow("Hello World", posX, posY, width, height, 0);
-	renderer = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
-	sago::SagoDataHolder holder(renderer);
+	globalData.screen = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
+	sago::SagoDataHolder holder(globalData.screen);
 	sago::SagoSpriteHolder spriteHolder(holder);
-	nf_standard_font.load(renderer, holder.getFontPtr("freeserif", 30),NFont::Color(255,255,255));
-	while (1) {
-		SDL_Event e;
-		if (SDL_PollEvent(&e)) {
-			if (e.type == SDL_QUIT) {
-				break;
-			}
-		}
-
-		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
-		SDL_RenderClear(renderer);
-		NFont_Write(renderer, 10, 10, "Hello World");
-		circleRGBA(renderer,
-              150, 150, 75,
-              0, 0, 255, 255);
-		SDL_RenderPresent(renderer);
-		usleep(10);
-	}
-
-	SDL_DestroyRenderer(renderer);
+	globalData.nf_standard_font.load(globalData.screen, holder.getFontPtr("freeserif", 30),NFont::Color(255,255,255));
+	
+	TheGame g;
+	RunGameState(g);
+	
+	SDL_DestroyRenderer(globalData.screen);
 	SDL_DestroyWindow(win);
 
 	SDL_Quit();
