@@ -11,6 +11,7 @@
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_pixels.h>
 #include <SDL2/SDL2_gfxPrimitives.h>
+#include <SDL/SDL_timer.h>
 #include "Libs/NFont.h"
 #include "saland/globals.hpp"
 
@@ -41,6 +42,8 @@ class TheGame : public sago::GameStateInterface {
 		circleRGBA(target, 
 				150, 150, 75, 
 				0, 0, 255, 255);
+		const sago::SagoSprite& s = globalData.spriteHolder->GetSprite("male_walkcycle_E");
+		s.Draw(globalData.screen, SDL_GetTicks(), 100, 100);
 		SDL_RenderPresent(target);
 	}
 	
@@ -94,7 +97,7 @@ void runGame() {
 	win = SDL_CreateWindow("Hello World", posX, posY, width, height, 0);
 	globalData.screen = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
 	sago::SagoDataHolder holder(globalData.screen);
-	sago::SagoSpriteHolder spriteHolder(holder);
+	globalData.spriteHolder.reset(new sago::SagoSpriteHolder(holder));
 	globalData.nf_standard_font.load(globalData.screen, holder.getFontPtr("freeserif", 30),NFont::Color(255,255,255));
 	
 	TheGame g;
