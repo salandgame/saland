@@ -1,0 +1,45 @@
+
+
+{
+
+"terrain_grass_center" :  {
+	"texture" : "terrain",
+	"topx" : 0,
+	"topy" : 352,
+	"height" : 32,
+	"width" : 32,
+	"number_of_frames" : 1,
+	"frame_time" : 100
+},
+
+"terrain_clay_center" : {
+    "texture" : "terrain",
+	"topx" : 32,
+	"topy" : 96,
+	"height" : 32,
+	"width" : 32,
+	"number_of_frames" : 1,
+	"frame_time" : 100
+},
+
+"terrain_brik_floor_center" : {
+    "texture" : "terrain",
+	"topx" : 416,
+	"topy" : 576,
+	"height" : 32,
+	"width" : 32,
+	"number_of_frames" : 1,
+	"frame_time" : 100
+},
+
+"terrain_water_center" : {
+    "texture" : "terrain",
+	"topx" : 864,
+	"topy" : 160,
+	"height" : 32,
+	"width" : 32,
+	"number_of_frames" : 1,
+	"frame_time" : 1000
+}
+
+}

@@ -1,0 +1,110 @@
+{
+
+"fallback" : {
+	"_comment" : "This is the fallback sprite that are used if the game request a sprite not in any file",
+	"texture" : "fallback",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 1,
+	"frame_time" : 1
+},
+
+"male_walkcycle_N" :  {
+	"texture" : "male_walkcycle",
+	"topx" : 64,
+	"topy" : 0,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 8,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"male_walkcycle_W" :  {
+	"texture" : "male_walkcycle",
+	"topx" : 64,
+	"topy" : 64,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 8,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"male_walkcycle_S" :  {
+	"texture" : "male_walkcycle",
+	"topx" : 64,
+	"topy" : 128,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 8,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"male_walkcycle_E" :  {
+	"texture" : "male_walkcycle",
+	"topx" : 64,
+	"topy" : 192,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 8,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"male_standing_N" :  {
+	"texture" : "male_walkcycle",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"male_standing_W" :  {
+	"texture" : "male_walkcycle",
+	"topx" : 0,
+	"topy" : 64,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"male_standing_S" :  {
+	"texture" : "male_walkcycle",
+	"topx" : 0,
+	"topy" : 128,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"male_standing_E" :  {
+	"texture" : "male_walkcycle",
+	"topx" : 0,
+	"topy" : 192,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+}
+
+}

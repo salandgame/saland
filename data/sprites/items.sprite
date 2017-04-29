@@ -1,0 +1,15 @@
+{
+
+"item_barrel" :  {
+	"texture" : "barrel",
+	"topx" : 32,
+	"topy" : 0,
+	"height" : 64,
+	"width" : 32,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+    "originx" : 16,
+    "originy" : 50
+}
+
+}
