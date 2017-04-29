@@ -23,7 +23,6 @@ pkg_search_module(XML2 REQUIRED libxml-2.0)
 include_directories(${XML2_INCLUDE_DIRS})
 
 include_directories("src/Libs/include")
-include_directories("src/Libs/include/cereal/external")  #Contains rapidjson
 
 file(GLOB SOURCES "src/*.cpp" "src/*/*.cpp" "src/Libs/*.c")
 

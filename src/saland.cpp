@@ -12,8 +12,10 @@
 #include <SDL2/SDL_pixels.h>
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include <SDL/SDL_timer.h>
+#include <SDL2/SDL_events.h>
 #include "Libs/NFont.h"
 #include "saland/globals.hpp"
+#include "saland/Game.hpp"
 
 #include "sago/SagoMisc.hpp"
 #include "sago/platform_folders.h"
@@ -30,35 +32,41 @@ static void NFont_Write(SDL_Renderer* target, int x, int y, const char* text) {
 	globalData.nf_standard_font.draw(target, x, y, "%s", text);
 }
 
-class TheGame : public sago::GameStateInterface {
+class TitleScreen : public sago::GameStateInterface {
 	virtual bool IsActive() override {
-		return true;
+		return isActive;
 	}
 	
 	virtual void Draw(SDL_Renderer* target) override {
-		SDL_SetRenderDrawColor(target, 0, 0, 0, 0);
-		SDL_RenderClear(target);
-		NFont_Write(target, 10, 10, "Hello World");
+		NFont_Write(target, 10, 10, "Saland Adventures");
 		circleRGBA(target, 
 				150, 150, 75, 
 				0, 0, 255, 255);
 		const sago::SagoSprite& s = globalData.spriteHolder->GetSprite("male_walkcycle_E");
 		s.Draw(globalData.screen, SDL_GetTicks(), 100, 100);
-		SDL_RenderPresent(target);
 	}
 	
 	virtual void ProcessInput(const SDL_Event& event, bool &processed) override {
-		
+		if ( event.type == SDL_KEYDOWN ) {
+			if (event.key.keysym.sym == SDLK_RETURN) {
+				isActive = false;
+				processed = true;
+			}
+		}
 	}
 	
 	virtual void Update() override {
 		
 	}
+private:
+	bool isActive = true;
 };
 
 void RunGameState(sago::GameStateInterface& state ) {
 	bool done = false;     //We are done!
 	while (!done && !globalData.isShuttingDown) {
+		SDL_SetRenderDrawColor(globalData.screen, 0, 0, 0, 0);
+		SDL_RenderClear(globalData.screen);
 		state.Draw(globalData.screen);
 
 		SDL_Delay(1);
@@ -100,7 +108,10 @@ void runGame() {
 	globalData.spriteHolder.reset(new sago::SagoSpriteHolder(holder));
 	globalData.nf_standard_font.load(globalData.screen, holder.getFontPtr("freeserif", 30),NFont::Color(255,255,255));
 	
-	TheGame g;
+	TitleScreen ts;
+	RunGameState(ts);
+	
+	Game g;
 	RunGameState(g);
 	
 	SDL_DestroyRenderer(globalData.screen);

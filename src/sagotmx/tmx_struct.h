@@ -45,7 +45,9 @@ SOFTWARE.
 #include "rapidxml/rapidxml.hpp"
 
 #include <string>
+#include <sstream>
 #include <vector>
+#include <map>
 #include <zlib.h>
 #include <iostream>
 #include "b64/decode.h"
