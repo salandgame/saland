@@ -104,7 +104,6 @@ inline std::string zlib_decompress(const char *source, unsigned int slength) {
 	
 	while (ret == Z_OK) {
 		ret = inflate(&strm, Z_NO_FLUSH);
-		std::cout << "Read some\n";
 		if (ret == Z_OK || ret == Z_STREAM_END) {
 			res.append(buffer, sizeof(buffer));
 			strm.next_out = (Bytef*)buffer;
