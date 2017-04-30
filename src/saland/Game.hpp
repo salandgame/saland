@@ -1,6 +1,8 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
+#include <memory>
+
 #include "../sago/GameStateInterface.hpp"
 #include "../sagotmx/tmx_struct.h"
 
@@ -13,8 +15,8 @@ public:
 	virtual void Update() override;
 	virtual ~Game();
 private:
-	sago::tiled::TileSet ts;
-	sago::tiled::TileMap tm;
+	struct GameImpl;
+	std::unique_ptr<GameImpl> data;
 };
 
 #endif /* GAME_HPP */

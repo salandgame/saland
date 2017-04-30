@@ -2,6 +2,7 @@
 #include "../sagotmx/tmx_struct.h"
 #include "../sago/SagoMisc.hpp"
 #include "globals.hpp"
+#include "model/placeables.hpp"
 
 static void Draw(SDL_Renderer* target, SDL_Texture* t, int x, int y, const SDL_Rect& part) {
 	SDL_Rect pos = {};
@@ -12,7 +13,7 @@ static void Draw(SDL_Renderer* target, SDL_Texture* t, int x, int y, const SDL_R
 	SDL_RenderCopy(target, t, &part, &pos);
 }
 
-static void DrawLayer(SDL_Renderer* renderer, SDL_Texture* texture, const sago::tiled::TileMap& tm, size_t layer) {
+static void DrawLayer(SDL_Renderer* renderer, SDL_Texture* texture, const sago::tiled::TileMap& tm, size_t layer, int topx, int topy) {
 	for (int i = 0; i < tm.height; ++i) {
 		for (int j = 0; j < tm.width; ++j) {
 			uint32_t gid = sago::tiled::getTileFromLayer(tm, tm.layers.at(layer), i, j);
@@ -21,17 +22,34 @@ static void DrawLayer(SDL_Renderer* renderer, SDL_Texture* texture, const sago::
 			}
 			SDL_Rect part{};
 			getTextureLocationFromGid(tm, gid, nullptr, &part.x, &part.y, &part.w, &part.h);
-			Draw(renderer, texture, 32*i, 32*j, part);
+			Draw(renderer, texture, 32*i-topx, 32*j-topy, part);
 		}
 	}
 }
 
+struct Game::GameImpl {
+	std::vector<std::shared_ptr<Placeable> > placeables;
+	float time = 0.0;
+	std::shared_ptr<Human> human;
+	int center_x = 0;
+	int center_y = 0;
+	bool drawCollision = true;
+	sago::tiled::TileSet ts;
+	sago::tiled::TileMap tm;
+	float topx = 0.0;
+	float topy = 0.0;
+	char direction = 0;
+	Uint32 lastUpdate = 0;
+};
+
 Game::Game() {
+	data.reset(new Game::GameImpl());
 	std::string tsx_file = sago::GetFileContent("maps/terrain.tsx");
 	std::string tmx_file = sago::GetFileContent("maps/sample1.tmx");
-	ts = sago::tiled::string2tileset(tsx_file);
-	tm = sago::tiled::string2tilemap(tmx_file);
-	tm.tileset.alternativeSource = &ts;
+	data->ts = sago::tiled::string2tileset(tsx_file);
+	data->tm = sago::tiled::string2tilemap(tmx_file);
+	data->tm.tileset.alternativeSource = &data->ts;
+	data->lastUpdate = SDL_GetTicks();
 }
 
 Game::~Game() {
@@ -43,15 +61,48 @@ bool Game::IsActive() {
 
 void Game::Draw(SDL_Renderer* target) {
 	SDL_Texture* texture = globalData.spriteHolder->GetDataHolder().getTexturePtr("terrain");
-	for (size_t i = 0; i < tm.layers.size(); ++i ) {
-		DrawLayer(target, texture, tm, i);
+	for (size_t i = 0; i < data->tm.layers.size(); ++i ) {
+		DrawLayer(target, texture, data->tm, i, data->topx, data->topy);
 	}
 }
 
 void Game::ProcessInput(const SDL_Event& event, bool& processed) {
-	
+	data->direction = 0;
+	if ( event.type == SDL_KEYDOWN ) {
+		if (event.key.keysym.sym == SDLK_DOWN) {
+			data->direction = 'S';
+			processed = true;
+		}
+		if (event.key.keysym.sym == SDLK_UP) {
+			data->direction = 'N';
+			processed = true;
+		}
+		if (event.key.keysym.sym == SDLK_LEFT) {
+			data->direction = 'W';
+			processed = true;
+		}
+		if (event.key.keysym.sym == SDLK_RIGHT) {
+			data->direction = 'E';
+			processed = true;
+		}
+	}
 }
 
 void Game::Update() {
+	Uint32 nowTime = SDL_GetTicks();
+	Uint32 deltaTime = nowTime - data->lastUpdate;
+	if (data->direction == 'S') {
+		data->topy += deltaTime/10.0f;
+	}
+	if (data->direction == 'N') {
+		data->topy -= deltaTime/10.0f;
+	}
+	if (data->direction == 'E') {
+		data->topx += deltaTime/10.0f;
+	}
+	if (data->direction == 'W') {
+		data->topx -= deltaTime/10.0f;
+	}
 	
+	data->lastUpdate = nowTime;
 }
