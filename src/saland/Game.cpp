@@ -65,8 +65,15 @@ bool Game::IsActive() {
 
 static void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Human *entity, float time, int offsetX, int offsetY, bool drawCollision) {
 	std::string animation = "standing";
+	bool relativeAnimation = false;
+	float relativeAnimationState = 0.0f;
 	if (entity->moving) {
 		animation = "walkcycle";
+	}
+	if (entity->castTimeRemaining) {
+		animation = "spellcast";
+		relativeAnimation = true;
+		relativeAnimationState = 1.0f-(entity->castTimeRemaining/entity->castTime);
 	}
 	/*if (drawCollision) {
 		sf::CircleShape circle(entity->Radius);
@@ -74,7 +81,12 @@ static void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolde
 		target.draw(circle);
 	}*/
 	const sago::SagoSprite &mySprite = sHolder->GetSprite(entity->race + "_"+animation+"_"+std::string(1,entity->direction));
-	mySprite.Draw(target, time, std::round(entity->X)-offsetX, std::round(entity->Y)-offsetY);
+	if (relativeAnimation) {
+		mySprite.DrawProgressive(target, relativeAnimationState, std::round(entity->X)-offsetX, std::round(entity->Y)-offsetY);
+	}
+	else {
+		mySprite.Draw(target, time, std::round(entity->X)-offsetX, std::round(entity->Y)-offsetY);
+	}
 	/*const sago::SagoSprite &myHair = sHolder->GetSprite(entity->race + "_"+animation+"_hair_1_"+string(1,entity->direction));
 	myHair.Draw(target, time, entity->X-offsetX, entity->Y-offsetY);*/
 }
@@ -97,6 +109,14 @@ void Game::Draw(SDL_Renderer* target) {
 }
 
 void Game::ProcessInput(const SDL_Event& event, bool& processed) {
+	if ( event.type == SDL_KEYDOWN ) {
+		if (event.key.keysym.sym == SDLK_SPACE) {
+			if (data->human->castTimeRemaining == 0) {
+				data->human->castTimeRemaining = data->human->castTime;
+			}
+			processed = true;
+		}
+	}
 }
 
 static bool MoveEntity( Placeable* entity, float destX, float destY ) {
@@ -140,6 +160,18 @@ static void MoveHumanEntity (Creature *entity, float directionX, float direction
 	MoveEntity (entity, entity->X + deltaX*(fDeltaTime/speed), entity->Y + deltaY*(fDeltaTime/speed));
 }
 
+static void UpdateHuman(Human *entity, float fDeltaTime) {
+	if (entity->castTimeRemaining > 0) {
+		entity->castTimeRemaining -= fDeltaTime;
+	}
+	if (entity->castTimeRemaining < 0) {
+		entity->castTimeRemaining = 0;
+	}
+	if (entity->castTimeRemaining == 0) {
+		MoveHumanEntity(entity, entity->moveX, entity->moveY, fDeltaTime);
+	}
+} 
+
 void Game::Update() {
 	Uint32 nowTime = SDL_GetTicks();
 	Uint32 deltaTime = nowTime - data->lastUpdate;
@@ -158,7 +190,9 @@ void Game::Update() {
 	if (state[SDL_SCANCODE_LEFT]) {
 		deltaX -= 1.0f;
 	}
-	MoveHumanEntity(data->human.get(), deltaX, deltaY, deltaTime);
+	data->human->moveX = deltaX;
+	data->human->moveY = deltaY;
+	UpdateHuman(data->human.get(), deltaTime);
 	data->center_x = round(data->human->X);
 	data->center_y = round(data->human->Y);
 	data->lastUpdate = nowTime;

@@ -44,6 +44,8 @@ class TitleScreen : public sago::GameStateInterface {
 				0, 0, 255, 255);
 		const sago::SagoSprite& s = globalData.spriteHolder->GetSprite("male_walkcycle_E");
 		s.Draw(globalData.screen, SDL_GetTicks(), 100, 100);
+		const sago::SagoSprite& sc = globalData.spriteHolder->GetSprite("male_spellcast_E");
+		sc.Draw(globalData.screen, SDL_GetTicks(), 200, 100);
 	}
 	
 	virtual void ProcessInput(const SDL_Event& event, bool &processed) override {

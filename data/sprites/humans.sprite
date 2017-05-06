@@ -105,6 +105,54 @@
 	"frame_time" : 100,
     "originx" : 32,
     "originy" : 50
+},
+
+"male_spellcast_N" :  {
+	"texture" : "male_spellcast",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 7,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"male_spellcast_W" :  {
+	"texture" : "male_spellcast",
+	"topx" : 0,
+	"topy" : 64,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 7,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"male_spellcast_S" :  {
+	"texture" : "male_spellcast",
+	"topx" : 0,
+	"topy" : 128,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 7,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"male_spellcast_E" :  {
+	"texture" : "male_spellcast",
+	"topx" : 0,
+	"topy" : 192,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 7,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
 }
 
 }
