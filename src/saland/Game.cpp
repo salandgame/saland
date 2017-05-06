@@ -1,3 +1,5 @@
+#include <SDL2/SDL_timer.h>
+
 #include "Game.hpp"
 #include "../sagotmx/tmx_struct.h"
 #include "../sago/SagoMisc.hpp"
@@ -51,6 +53,7 @@ Game::Game() {
 	data->tm = sago::tiled::string2tilemap(tmx_file);
 	data->tm.tileset.alternativeSource = &data->ts;
 	data->lastUpdate = SDL_GetTicks();
+	data->human.reset(new Human());
 }
 
 Game::~Game() {
@@ -60,11 +63,29 @@ bool Game::IsActive() {
 	return true;
 }
 
+static void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Human *entity, float time, int offsetX, int offsetY, bool drawCollision) {
+	std::string animation = "standing";
+	if (entity->moving) {
+		animation = "walkcycle";
+	}
+	/*if (drawCollision) {
+		sf::CircleShape circle(entity->Radius);
+		circle.setPosition(entity->X-offsetX-16, entity->Y-offsetY-16);
+		target.draw(circle);
+	}*/
+	const sago::SagoSprite &mySprite = sHolder->GetSprite(entity->race + "_"+animation+"_"+std::string(1,entity->direction));
+	mySprite.Draw(target, time, entity->X-offsetX, entity->Y-offsetY);
+	/*const sago::SagoSprite &myHair = sHolder->GetSprite(entity->race + "_"+animation+"_hair_1_"+string(1,entity->direction));
+	myHair.Draw(target, time, entity->X-offsetX, entity->Y-offsetY);*/
+}
+
 void Game::Draw(SDL_Renderer* target) {
 	SDL_Texture* texture = globalData.spriteHolder->GetDataHolder().getTexturePtr("terrain");
 	for (size_t i = 0; i < data->tm.layers.size(); ++i ) {
 		DrawLayer(target, texture, data->tm, i, data->topx, data->topy);
 	}
+	//Draw human
+	DrawHumanEntity(target, globalData.spriteHolder.get(), data->human.get(), SDL_GetTicks(), -100, -100, false);
 }
 
 void Game::ProcessInput(const SDL_Event& event, bool& processed) {
