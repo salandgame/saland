@@ -34,13 +34,13 @@ struct Game::GameImpl {
 	std::vector<std::shared_ptr<Placeable> > placeables;
 	float time = 0.0;
 	std::shared_ptr<Human> human;
-	int center_x = 0;
-	int center_y = 0;
+	float center_x = 0;
+	float center_y = 0;
 	bool drawCollision = true;
 	sago::tiled::TileSet ts;
 	sago::tiled::TileMap tm;
-	float topx = 0.0;
-	float topy = 0.0;
+	int topx = 0.0;
+	int topy = 0.0;
 	char direction = 0;
 	Uint32 lastUpdate = 0;
 };
@@ -74,39 +74,92 @@ static void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolde
 		target.draw(circle);
 	}*/
 	const sago::SagoSprite &mySprite = sHolder->GetSprite(entity->race + "_"+animation+"_"+std::string(1,entity->direction));
-	mySprite.Draw(target, time, entity->X-offsetX, entity->Y-offsetY);
+	mySprite.Draw(target, time, std::round(entity->X)-offsetX, std::round(entity->Y)-offsetY);
 	/*const sago::SagoSprite &myHair = sHolder->GetSprite(entity->race + "_"+animation+"_hair_1_"+string(1,entity->direction));
 	myHair.Draw(target, time, entity->X-offsetX, entity->Y-offsetY);*/
 }
 
 void Game::Draw(SDL_Renderer* target) {
+	data->topx = std::round(data->center_x - 1024.0/2.0);
+	data->topy = std::round(data->center_y - 768.0/2.0);
+	if (data->topx < -10) {
+		data->topx = -10;
+	}
+	if (data->topy < -10) {
+		data->topy = -10;
+	}
 	SDL_Texture* texture = globalData.spriteHolder->GetDataHolder().getTexturePtr("terrain");
 	for (size_t i = 0; i < data->tm.layers.size(); ++i ) {
 		DrawLayer(target, texture, data->tm, i, data->topx, data->topy);
 	}
 	//Draw human
-	DrawHumanEntity(target, globalData.spriteHolder.get(), data->human.get(), SDL_GetTicks(), -100, -100, false);
+	DrawHumanEntity(target, globalData.spriteHolder.get(), data->human.get(), SDL_GetTicks(), data->topx, data->topy, false);
 }
 
 void Game::ProcessInput(const SDL_Event& event, bool& processed) {
+}
+
+static bool MoveEntity( Placeable* entity, float destX, float destY ) {
+	bool canMove = true;
+	float sourceX = entity->X;
+	float sourceY = entity->Y;
+	entity->X = destX;
+	entity->Y = destY;
+	if ( !canMove ) {
+		entity->X = sourceX;
+		entity->Y = sourceY;
+	}
+	return canMove;
+}
+
+static void MoveHumanEntity (Creature *entity, float directionX, float directionY, float fDeltaTime) {
+	float deltaX = directionX;
+	float deltaY = directionY;
+	if (deltaX == 0.0f && deltaY == 0.0f) {
+		entity->moving = false;
+		return;
+	}
+	entity->moving = true;
+	if (deltaX*deltaX+deltaY*deltaY > 1.5f) {
+		deltaX *= 0.7071067811865476f; //sqrt(0.5)
+		deltaY *= 0.7071067811865476f; //sqrt(0.5)
+	}
+	if (deltaY > 0.0f) {
+		entity->direction = 'S';
+	}
+	if (deltaY < 0.0f) {
+		entity->direction = 'N';
+	}
+	if (deltaX < 0.0f) {
+		entity->direction = 'W';
+	}
+	if (deltaX > 0.0f) {
+		entity->direction = 'E';
+	}
+	float speed = 4.0f;
+	MoveEntity (entity, entity->X + deltaX*(fDeltaTime/speed), entity->Y + deltaY*(fDeltaTime/speed));
 }
 
 void Game::Update() {
 	Uint32 nowTime = SDL_GetTicks();
 	Uint32 deltaTime = nowTime - data->lastUpdate;
 	const Uint8 *state = SDL_GetKeyboardState(NULL);
+	float deltaX = 0.0f;
+	float deltaY = 0.0f;
 	if (state[SDL_SCANCODE_DOWN]) {
-		data->topy += deltaTime/10.0f;
+		deltaY += 1.0f;
 	}
 	if (state[SDL_SCANCODE_UP]) {
-		data->topy -= deltaTime/10.0f;
+		deltaY -= 1.0f;
 	}
 	if (state[SDL_SCANCODE_RIGHT]) {
-		data->topx += deltaTime/10.0f;
+		deltaX += 1.0f;
 	}
 	if (state[SDL_SCANCODE_LEFT]) {
-		data->topx -= deltaTime/10.0f;
+		deltaX -= 1.0f;
 	}
-	
+	MoveHumanEntity(data->human.get(), deltaX, deltaY, deltaTime);
+	data->center_x = round(data->human->X);
+	data->center_y = round(data->human->Y);
 	data->lastUpdate = nowTime;
 }
