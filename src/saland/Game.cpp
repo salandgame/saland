@@ -3,6 +3,7 @@
 #include "../sago/SagoMisc.hpp"
 #include "globals.hpp"
 #include "model/placeables.hpp"
+#include "SDL.h"
 
 static void Draw(SDL_Renderer* target, SDL_Texture* t, int x, int y, const SDL_Rect& part) {
 	SDL_Rect pos = {};
@@ -67,40 +68,22 @@ void Game::Draw(SDL_Renderer* target) {
 }
 
 void Game::ProcessInput(const SDL_Event& event, bool& processed) {
-	data->direction = 0;
-	if ( event.type == SDL_KEYDOWN ) {
-		if (event.key.keysym.sym == SDLK_DOWN) {
-			data->direction = 'S';
-			processed = true;
-		}
-		if (event.key.keysym.sym == SDLK_UP) {
-			data->direction = 'N';
-			processed = true;
-		}
-		if (event.key.keysym.sym == SDLK_LEFT) {
-			data->direction = 'W';
-			processed = true;
-		}
-		if (event.key.keysym.sym == SDLK_RIGHT) {
-			data->direction = 'E';
-			processed = true;
-		}
-	}
 }
 
 void Game::Update() {
 	Uint32 nowTime = SDL_GetTicks();
 	Uint32 deltaTime = nowTime - data->lastUpdate;
-	if (data->direction == 'S') {
+	const Uint8 *state = SDL_GetKeyboardState(NULL);
+	if (state[SDL_SCANCODE_DOWN]) {
 		data->topy += deltaTime/10.0f;
 	}
-	if (data->direction == 'N') {
+	if (state[SDL_SCANCODE_UP]) {
 		data->topy -= deltaTime/10.0f;
 	}
-	if (data->direction == 'E') {
+	if (state[SDL_SCANCODE_RIGHT]) {
 		data->topx += deltaTime/10.0f;
 	}
-	if (data->direction == 'W') {
+	if (state[SDL_SCANCODE_LEFT]) {
 		data->topx -= deltaTime/10.0f;
 	}
 	
