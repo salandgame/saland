@@ -13,6 +13,7 @@
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include <SDL/SDL_timer.h>
 #include <SDL2/SDL_events.h>
+#include <SDL2/SDL_timer.h>
 #include "Libs/NFont.h"
 #include "saland/globals.hpp"
 #include "saland/Game.hpp"
@@ -46,6 +47,8 @@ class TitleScreen : public sago::GameStateInterface {
 		s.Draw(globalData.screen, SDL_GetTicks(), 100, 100);
 		const sago::SagoSprite& sc = globalData.spriteHolder->GetSprite("male_spellcast_E");
 		sc.Draw(globalData.screen, SDL_GetTicks(), 200, 100);
+		const sago::SagoSprite& bee = globalData.spriteHolder->GetSprite("bee_E");
+		bee.Draw(globalData.screen, SDL_GetTicks(), 100, 200);
 	}
 	
 	virtual void ProcessInput(const SDL_Event& event, bool &processed) override {

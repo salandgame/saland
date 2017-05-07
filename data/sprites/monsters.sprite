@@ -1,0 +1,51 @@
+{
+
+"bee_N" :  {
+	"texture" : "bee",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 32,
+	"width" : 32,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 16,
+    "originy" : 40
+},
+
+"bee_W" :  {
+	"texture" : "bee",
+	"topx" : 0,
+	"topy" : 32,
+	"height" : 32,
+	"width" : 32,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 16,
+    "originy" : 40
+},
+
+"bee_S" :  {
+	"texture" : "bee",
+	"topx" : 0,
+	"topy" : 64,
+	"height" : 32,
+	"width" : 32,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 16,
+    "originy" : 40
+},
+
+"bee_E" :  {
+	"texture" : "bee",
+	"topx" : 0,
+	"topy" : 96,
+	"height" : 32,
+	"width" : 32,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 16,
+    "originy" : 40
+}
+
+}
