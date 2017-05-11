@@ -11,7 +11,6 @@
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_pixels.h>
 #include <SDL2/SDL2_gfxPrimitives.h>
-#include <SDL/SDL_timer.h>
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_timer.h>
 #include "Libs/NFont.h"
@@ -37,11 +36,11 @@ class TitleScreen : public sago::GameStateInterface {
 	virtual bool IsActive() override {
 		return isActive;
 	}
-	
+
 	virtual void Draw(SDL_Renderer* target) override {
 		NFont_Write(target, 10, 10, "Saland Adventures");
-		circleRGBA(target, 
-				150, 150, 75, 
+		circleRGBA(target,
+				150, 150, 75,
 				0, 0, 255, 255);
 		const sago::SagoSprite& s = globalData.spriteHolder->GetSprite("male_walkcycle_E");
 		s.Draw(globalData.screen, SDL_GetTicks(), 100, 100);
@@ -50,7 +49,7 @@ class TitleScreen : public sago::GameStateInterface {
 		const sago::SagoSprite& bee = globalData.spriteHolder->GetSprite("bee_E");
 		bee.Draw(globalData.screen, SDL_GetTicks(), 100, 200);
 	}
-	
+
 	virtual void ProcessInput(const SDL_Event& event, bool &processed) override {
 		if ( event.type == SDL_KEYDOWN ) {
 			if (event.key.keysym.sym == SDLK_RETURN) {
@@ -59,9 +58,9 @@ class TitleScreen : public sago::GameStateInterface {
 			}
 		}
 	}
-	
+
 	virtual void Update() override {
-		
+
 	}
 private:
 	bool isActive = true;
@@ -91,7 +90,7 @@ void RunGameState(sago::GameStateInterface& state ) {
 		state.Update();
 
 		SDL_RenderPresent(globalData.screen);
-		
+
 
 		if (!state.IsActive()) {
 			done = true;
@@ -106,19 +105,19 @@ void runGame() {
 	IMG_Init(IMG_INIT_PNG);
 	TTF_Init();
 	Mix_Init(MIX_INIT_OGG);
-	
+
 	win = SDL_CreateWindow("Hello World", posX, posY, width, height, 0);
 	globalData.screen = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
 	sago::SagoDataHolder holder(globalData.screen);
 	globalData.spriteHolder.reset(new sago::SagoSpriteHolder(holder));
 	globalData.nf_standard_font.load(globalData.screen, holder.getFontPtr("freeserif", 30),NFont::Color(255,255,255));
-	
+
 	TitleScreen ts;
 	RunGameState(ts);
-	
+
 	Game g;
 	RunGameState(g);
-	
+
 	SDL_DestroyRenderer(globalData.screen);
 	SDL_DestroyWindow(win);
 

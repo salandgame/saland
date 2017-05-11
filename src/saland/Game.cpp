@@ -6,6 +6,7 @@
 #include "globals.hpp"
 #include "model/placeables.hpp"
 #include "SDL.h"
+#include <cmath>
 
 static void Draw(SDL_Renderer* target, SDL_Texture* t, int x, int y, const SDL_Rect& part) {
 	SDL_Rect pos = {};
@@ -170,7 +171,7 @@ static void UpdateHuman(Human *entity, float fDeltaTime) {
 	if (entity->castTimeRemaining == 0) {
 		MoveHumanEntity(entity, entity->moveX, entity->moveY, fDeltaTime);
 	}
-} 
+}
 
 void Game::Update() {
 	Uint32 nowTime = SDL_GetTicks();
