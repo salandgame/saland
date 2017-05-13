@@ -83,10 +83,6 @@ static void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolde
 		circleRGBA(target,
 				entity->X-offsetX, entity->Y-offsetY, entity->Radius,
 				255, 255, 0, 255);
-		/*sf::CircleShape circle(entity->Radius);
-		circle.setPosition(entity->X-offsetX-16, entity->Y-offsetY-16);
-		target.draw(circle);
-	 * */
 	}
 	const sago::SagoSprite &mySprite = sHolder->GetSprite(entity->race + "_"+animation+"_"+std::string(1,entity->direction));
 	if (relativeAnimation) {
@@ -205,8 +201,8 @@ void Game::Update() {
 	data->human->moveX = deltaX;
 	data->human->moveY = deltaY;
 	UpdateHuman(data->human.get(), deltaTime);
-	data->center_x = round(data->human->X);
-	data->center_y = round(data->human->Y);
+	data->center_x = std::round(data->human->X);
+	data->center_y = std::round(data->human->Y);
 	int mousex;
 	int mousey;
 	SDL_GetMouseState(&mousex, &mousey);
