@@ -71,8 +71,8 @@ void SagoSprite::DrawScaled(SDL_Renderer* target, Sint32 frameTime, int x, int y
 	SDL_Rect rect = data->imgCord;
 	rect.x+=rect.w*((frameTime/data->aniFrameTime)%data->aniFrames);
 	SDL_Rect pos = rect;
-	pos.x = x;
-	pos.y = y;
+	pos.x = x - this->data->origin.x;
+	pos.y = y - this->data->origin.y;
 	if (w > 0) {
 		pos.w = w;
 	}
@@ -90,8 +90,8 @@ void SagoSprite::Draw(SDL_Renderer* target, Sint32 frameTime, int x, int y, cons
 	rect.w = part.w;
 	rect.h = part.h;
 	SDL_Rect pos = rect;
-	pos.x = x;
-	pos.y = y;
+	pos.x = x - this->data->origin.x;
+	pos.y = y - this->data->origin.y;
 	SDL_RenderCopy(target, data->tex.get(), &rect, &pos);
 }
 

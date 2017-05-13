@@ -106,7 +106,7 @@ void runGame() {
 	TTF_Init();
 	Mix_Init(MIX_INIT_OGG);
 
-	win = SDL_CreateWindow("Hello World", posX, posY, width, height, 0);
+	win = SDL_CreateWindow("Saland Adventures", posX, posY, width, height, 0);
 	globalData.screen = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
 	sago::SagoDataHolder holder(globalData.screen);
 	globalData.spriteHolder.reset(new sago::SagoSpriteHolder(holder));

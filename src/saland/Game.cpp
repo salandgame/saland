@@ -79,11 +79,15 @@ static void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolde
 		relativeAnimation = true;
 		relativeAnimationState = 1.0f-(entity->castTimeRemaining/entity->castTime);
 	}
-	/*if (drawCollision) {
-		sf::CircleShape circle(entity->Radius);
+	if (drawCollision || true) {
+		circleRGBA(target,
+				entity->X-offsetX, entity->Y-offsetY, entity->Radius,
+				255, 255, 0, 255);
+		/*sf::CircleShape circle(entity->Radius);
 		circle.setPosition(entity->X-offsetX-16, entity->Y-offsetY-16);
 		target.draw(circle);
-	}*/
+	 * */
+	}
 	const sago::SagoSprite &mySprite = sHolder->GetSprite(entity->race + "_"+animation+"_"+std::string(1,entity->direction));
 	if (relativeAnimation) {
 		mySprite.DrawProgressive(target, relativeAnimationState, std::round(entity->X)-offsetX, std::round(entity->Y)-offsetY);

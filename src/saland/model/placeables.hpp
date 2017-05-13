@@ -7,7 +7,7 @@ class Placeable {
 public:
 	float X = 20.0;
 	float Y = 20.0;
-	float Radius = 0.0;
+	float Radius = 16.0;
 	virtual bool isStatic() {return true; }
 };
 
