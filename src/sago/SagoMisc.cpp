@@ -71,7 +71,7 @@ std::string GetFileContent(const char* filename) {
 	return ret;
 }
 
-void CreatePathToFile(const std::string& path) {
+static void CreatePathToFile(const std::string& path) {
 	size_t end_of_path = path.find_last_of("/");
 	if (end_of_path == std::string::npos) {
 		//No path
