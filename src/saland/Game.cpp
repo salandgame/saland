@@ -6,6 +6,7 @@
 #include "globals.hpp"
 #include "model/placeables.hpp"
 #include "SDL.h"
+#include <SDL2/SDL2_gfxPrimitives.h>
 #include <cmath>
 
 static void Draw(SDL_Renderer* target, SDL_Texture* t, int x, int y, const SDL_Rect& part) {
@@ -42,6 +43,8 @@ struct Game::GameImpl {
 	sago::tiled::TileMap tm;
 	int topx = 0.0;
 	int topy = 0.0;
+	int world_mouse_x = 0;  //Mouse cooridinates relative to the world
+	int world_mouse_y = 0;
 	char direction = 0;
 	Uint32 lastUpdate = 0;
 };
@@ -105,6 +108,10 @@ void Game::Draw(SDL_Renderer* target) {
 	for (size_t i = 0; i < data->tm.layers.size(); ++i ) {
 		DrawLayer(target, texture, data->tm, i, data->topx, data->topy);
 	}
+	int mousebox_x = data->world_mouse_x - data->world_mouse_x%32 - data->topx;
+	int mousebox_y = data->world_mouse_y - data->world_mouse_y%32 - data->topy;
+	rectangleRGBA(globalData.screen, mousebox_x, mousebox_y,
+		mousebox_x+32, mousebox_y+32, 255, 255, 0, 255);
 	//Draw human
 	DrawHumanEntity(target, globalData.spriteHolder.get(), data->human.get(), SDL_GetTicks(), data->topx, data->topy, false);
 }
@@ -196,5 +203,11 @@ void Game::Update() {
 	UpdateHuman(data->human.get(), deltaTime);
 	data->center_x = round(data->human->X);
 	data->center_y = round(data->human->Y);
+	int mousex;
+	int mousey;
+	SDL_GetMouseState(&mousex, &mousey);
+	data->world_mouse_x = data->topx + mousex;
+	data->world_mouse_y = data->topy + mousey;
+	std::cout << "world x: " << data->world_mouse_x << ", y: " << data->world_mouse_y << "             \r";
 	data->lastUpdate = nowTime;
 }
