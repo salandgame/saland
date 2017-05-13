@@ -61,6 +61,8 @@ Game::Game() {
 }
 
 Game::~Game() {
+	std::string data2save = sago::tiled::tilemap2string(data->tm);
+	sago::WriteFileContent("maps/sample1.tmx", data2save);
 }
 
 bool Game::IsActive() {
