@@ -1,0 +1,12 @@
+CMakeCache.txt  
+CMakeFiles
+cmake_install.cmake
+*~
+*.bak
+*.exe
+*.so
+*.dll
+Makefile
+saland
+!src/saland
+nbproject

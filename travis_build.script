@@ -1,0 +1,5 @@
+#! /bin/bash
+set -e
+
+
+docker build . -f extra/docker/Dockerfile -t saland_test
