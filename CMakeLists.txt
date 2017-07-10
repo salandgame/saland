@@ -18,10 +18,6 @@ pkg_search_module(SDL2IMAGE REQUIRED SDL2_image)
 pkg_search_module(SDL2TTF REQUIRED SDL2_ttf)
 pkg_search_module(SDL2GFX REQUIRED SDL2_gfx)
 
-
-pkg_search_module(XML2 REQUIRED libxml-2.0)
-include_directories(${XML2_INCLUDE_DIRS})
-
 include_directories("src/Libs/include")
 
 file(GLOB SOURCES "src/*.cpp" "src/*/*.cpp" "src/Libs/*.c")
@@ -31,5 +27,4 @@ add_executable(saland ${SOURCES})
 TARGET_LINK_LIBRARIES( saland ${Boost_LIBRARIES} )
 target_link_libraries( saland ${SDL2_LIBRARY})
 target_link_libraries( saland physfs z b64)
-target_link_libraries( saland ${XML2_LIBRARIES})
 target_link_libraries( saland ${SDL2MIXER_LIBRARIES} ${SDL2IMAGE_LIBRARIES} ${SDL2TTF_LIBRARIES} ${SDL2GFX_LIBRARIES})
