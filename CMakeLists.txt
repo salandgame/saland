@@ -5,9 +5,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${saland_SOURCE_DIR}/src/cmake")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -std=c++11 -g")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -g")
 
-#The following is used by libb64.
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DBUFFERSIZE=16777216")
-
 find_package(Boost COMPONENTS program_options REQUIRED)
 
 #Setup SDL2

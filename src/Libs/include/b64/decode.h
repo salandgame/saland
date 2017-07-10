@@ -8,6 +8,7 @@ For details, see http://sourceforge.net/projects/libb64
 #ifndef BASE64_DECODE_H
 #define BASE64_DECODE_H
 
+#include <cstdio>
 #include <iostream>
 
 namespace base64
@@ -22,7 +23,7 @@ namespace base64
 		base64_decodestate _state;
 		int _buffersize;
 
-		decoder(int buffersize_in = BUFFERSIZE)
+		decoder(int buffersize_in = BUFSIZ)
 		: _buffersize(buffersize_in)
 		{}
 
