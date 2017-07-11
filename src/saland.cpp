@@ -48,6 +48,8 @@ class TitleScreen : public sago::GameStateInterface {
 		sc.Draw(globalData.screen, SDL_GetTicks(), 200, 100);
 		const sago::SagoSprite& bee = globalData.spriteHolder->GetSprite("bee_E");
 		bee.Draw(globalData.screen, SDL_GetTicks(), 100, 200);
+		const sago::SagoSprite& bat = globalData.spriteHolder->GetSprite("bat_W");
+		bat.Draw(globalData.screen, SDL_GetTicks(), 200, 200);
 	}
 
 	virtual void ProcessInput(const SDL_Event& event, bool &processed) override {
