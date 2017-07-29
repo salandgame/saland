@@ -388,6 +388,7 @@ inline TileMap string2tilemap(const std::string& tmx_content) {
 			getElement(object_node, "eclipse", to.isEcplise);
 			group.objects.push_back(to);
 		}
+		m.object_groups.push_back(group);
 	} 
 	return m;
 }

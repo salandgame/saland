@@ -33,6 +33,14 @@ static void DrawLayer(SDL_Renderer* renderer, SDL_Texture* texture, const sago::
 	}
 }
 
+static void DrawOjbectGroup (SDL_Renderer* renderer, const sago::tiled::TileMap& tm, size_t object_group, int topx, int topy) {
+	const sago::tiled::TileObjectGroup& group = tm.object_groups.at(object_group);
+	for (const sago::tiled::TileObject& o : group.objects) {
+		rectangleRGBA(renderer, o.x - topx, o.y - topy,
+		o.x+o.width-topx, o.y + o.height - topy, 255, 255, 0, 255);
+	}
+}
+
 struct Game::GameImpl {
 	std::vector<std::shared_ptr<Placeable> > placeables;
 	float time = 0.0;
@@ -105,6 +113,9 @@ void Game::Draw(SDL_Renderer* target) {
 	SDL_Texture* texture = globalData.spriteHolder->GetDataHolder().getTexturePtr("terrain");
 	for (size_t i = 0; i < data->world.tm.layers.size(); ++i ) {
 		DrawLayer(target, texture, data->world.tm, i, data->topx, data->topy);
+	}
+	for (size_t i = 0; i <data->world.tm.object_groups.size(); ++i) {
+		DrawOjbectGroup(target, data->world.tm, i, data->topx, data->topy);
 	}
 	int mousebox_x = data->world_mouse_x - data->world_mouse_x%32 - data->topx;
 	int mousebox_y = data->world_mouse_y - data->world_mouse_y%32 - data->topy;
