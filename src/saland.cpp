@@ -19,6 +19,7 @@
 
 #include "sago/SagoMisc.hpp"
 #include "sago/platform_folders.h"
+#include "sagotmx/tmx_struct.h"
 
 #if defined(_WIN32)
 #include <windows.h>

@@ -241,6 +241,23 @@ struct TileLayer {
 	TileLayerData data;
 };
 
+
+struct TileObject {
+	int id = 0;
+	std::string name;
+	std::string type;
+	int x = 0;
+	int y = 0;
+	int width = 0;
+	int height = 0;
+	bool isEcplise = false;
+};
+
+struct TileObjectGroup {
+	std::string name;
+	std::vector<TileObject> objects;
+};
+
 struct TileMap {
 	std::string version;
 	std::string orientation;
@@ -252,6 +269,7 @@ struct TileMap {
 	int nextobjectid = 0;
 	TileSet tileset;
 	std::vector<TileLayer> layers;
+	std::vector<TileObjectGroup> object_groups;
 };
 
 inline void setValueFromAttribute(rapidxml::xml_node<> * node, const char* name, std::string& result) {
@@ -271,7 +289,7 @@ inline void setValueFromAttribute(rapidxml::xml_node<> * node, const char* name,
 inline rapidxml::xml_node<> * getElement(rapidxml::xml_node<> * node, const char* name) {
 	auto val = node->first_node(name);
 	if (!val) {
-		throw new SagoTiledException("Failed to find mandatory valye: %s on %s", name, node->name());
+		throw SagoTiledException("Failed to find mandatory value: %s on %s", name, node->name());
 	}
 	return val;
 }
@@ -290,7 +308,7 @@ inline TileSet node2tileset(rapidxml::xml_node<> * tileset_node) {
 	setValueFromAttribute( tileset_node, "tileheight", ts.tileheight);
 	setValueFromAttribute( tileset_node, "tilecount", ts.tilecount);
 	setValueFromAttribute( tileset_node, "firstgid", ts.firstgid);
-	bool found;
+	bool found = false;
 	rapidxml::xml_node<> * image_node = getElement(tileset_node, "image", found);
 	if (found) {
 		setValueFromAttribute(image_node, "source", ts.image.source);
@@ -341,20 +359,36 @@ inline TileMap string2tilemap(const std::string& tmx_content) {
 	setValueFromAttribute( root_node, "tilewidth", m.tilewidth);
 	setValueFromAttribute( root_node, "tileheight", m.tileheight);
 	setValueFromAttribute( root_node, "nextobjectid", m.nextobjectid);
-	auto tileset_node = getElement(root_node, "tileset");
+	const auto& tileset_node = getElement(root_node, "tileset");
 	m.tileset = node2tileset(tileset_node);
-	for (rapidxml::xml_node<> * layer_node = root_node->first_node("layer"); layer_node; layer_node = layer_node->next_sibling()) {
+	for (rapidxml::xml_node<> * layer_node = root_node->first_node("layer"); layer_node; layer_node = layer_node->next_sibling("layer")) {
 		TileLayer tl;
 		setValueFromAttribute(layer_node, "name", tl.name);
 		setValueFromAttribute(layer_node, "height", tl.height);
 		setValueFromAttribute(layer_node, "width", tl.width);
-		auto data_node = getElement(layer_node, "data");
+		const auto& data_node = getElement(layer_node, "data");
 		setValueFromAttribute(data_node, "encoding", tl.data.encoding);
 		setValueFromAttribute(data_node, "compression", tl.data.compression);
 		std::string compressed_payload = data_node->value();
 		tl.data.payload = sago::tiled::string_decompress_decode(compressed_payload);
 		m.layers.push_back(tl);
 	}
+	for (rapidxml::xml_node<> * object_group_node = root_node->first_node("objectgroup"); object_group_node; object_group_node = object_group_node->next_sibling("objectgroup") ) {
+		TileObjectGroup group;
+		setValueFromAttribute(object_group_node, "name", group.name);
+		for (rapidxml::xml_node<> * object_node = object_group_node->first_node("object"); object_node; object_node = object_node->next_sibling("object") ) {
+			TileObject to;
+			setValueFromAttribute(object_node, "id", to.id);
+			setValueFromAttribute(object_node, "name", to.name);
+			setValueFromAttribute(object_node, "type", to.type);
+			setValueFromAttribute(object_node, "x", to.x);
+			setValueFromAttribute(object_node, "y", to.y);
+			setValueFromAttribute(object_node, "width", to.width);
+			setValueFromAttribute(object_node, "height", to.height);
+			getElement(object_node, "eclipse", to.isEcplise);
+			group.objects.push_back(to);
+		}
+	} 
 	return m;
 }
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" nextobjectid="1">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" nextobjectid="9">
  <tileset firstgid="1" source="terrain.tsx"/>
  <layer name="ground_1" width="100" height="100">
   <data encoding="base64" compression="zlib">
@@ -16,4 +16,13 @@
    eJzt0bEJAEAIBEHtv87vQ8w/V2EGLj/YCAAAAAAAAAAA4LKX0w9o3eE3Zuixix4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAXFPX2xET
   </data>
  </layer>
+ <objectgroup name="object1">
+  <object id="5" name="theName" type="myType" x="737" y="667" width="320" height="257"/>
+  <object id="6" name="theEclipse" type="theType" x="712" y="281" width="298" height="140">
+   <ellipse/>
+  </object>
+  <object id="8" name="thePolygon" type="myType" x="265" y="691">
+   <polygon points="0,0 139,173 -74,307 -255,65 -206,-106"/>
+  </object>
+ </objectgroup>
 </map>
