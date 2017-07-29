@@ -20,6 +20,11 @@
 #include "sago/SagoMisc.hpp"
 #include "sago/platform_folders.h"
 
+#if defined(_WIN32)
+#include <windows.h>
+#include <shlobj.h>
+#endif
+
 #ifndef VERSIONNUMBER
 #define VERSIONNUMBER "0.1.0"
 #endif
