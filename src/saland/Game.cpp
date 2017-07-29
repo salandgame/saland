@@ -1,6 +1,7 @@
 #include <SDL2/SDL_timer.h>
 
 #include "Game.hpp"
+#include "model/World.hpp"
 #include "../sagotmx/tmx_struct.h"
 #include "../sago/SagoMisc.hpp"
 #include "globals.hpp"
@@ -39,8 +40,7 @@ struct Game::GameImpl {
 	float center_x = 0;
 	float center_y = 0;
 	bool drawCollision = true;
-	sago::tiled::TileSet ts;
-	sago::tiled::TileMap tm;
+	World world;
 	int topx = 0.0;
 	int topy = 0.0;
 	int world_mouse_x = 0;  //Mouse cooridinates relative to the world
@@ -51,17 +51,13 @@ struct Game::GameImpl {
 
 Game::Game() {
 	data.reset(new Game::GameImpl());
-	std::string tsx_file = sago::GetFileContent("maps/terrain.tsx");
-	std::string tmx_file = sago::GetFileContent("maps/sample1.tmx");
-	data->ts = sago::tiled::string2tileset(tsx_file);
-	data->tm = sago::tiled::string2tilemap(tmx_file);
-	data->tm.tileset.alternativeSource = &data->ts;
+	data->world.init();
 	data->lastUpdate = SDL_GetTicks();
 	data->human.reset(new Human());
 }
 
 Game::~Game() {
-	std::string data2save = sago::tiled::tilemap2string(data->tm);
+	std::string data2save = sago::tiled::tilemap2string(data->world.tm);
 	sago::WriteFileContent("maps/sample1.tmx", data2save);
 }
 
@@ -107,8 +103,8 @@ void Game::Draw(SDL_Renderer* target) {
 		data->topy = -10;
 	}
 	SDL_Texture* texture = globalData.spriteHolder->GetDataHolder().getTexturePtr("terrain");
-	for (size_t i = 0; i < data->tm.layers.size(); ++i ) {
-		DrawLayer(target, texture, data->tm, i, data->topx, data->topy);
+	for (size_t i = 0; i < data->world.tm.layers.size(); ++i ) {
+		DrawLayer(target, texture, data->world.tm, i, data->topx, data->topy);
 	}
 	int mousebox_x = data->world_mouse_x - data->world_mouse_x%32 - data->topx;
 	int mousebox_y = data->world_mouse_y - data->world_mouse_y%32 - data->topy;
@@ -129,10 +125,27 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 	}
 }
 
+static std::vector<std::pair<int, int> > getTouchingTiles(float x, float y, float radius) {
+	const int tileSize = 32;
+	std::vector<std::pair<int, int> > res;
+	std::vector<std::pair<int, int> > candidates;
+	for (int i = floor((x-radius) / tileSize); i < (x+radius)/ tileSize ; i++ ) {
+		for (int j = floor((y-radius) / tileSize); j < (y+radius)/ tileSize ; j++ ) {
+			candidates.push_back(std::make_pair(i,j));
+		}
+	}
+	res = candidates;
+	return res;
+}
+
 static bool MoveEntity( Placeable* entity, float destX, float destY ) {
 	bool canMove = true;
 	float sourceX = entity->X;
 	float sourceY = entity->Y;
+	const auto& touchingTilesNew = getTouchingTiles(destX, destY, entity->Radius);
+	for (const auto& tile : touchingTilesNew) {
+		
+	}
 	entity->X = destX;
 	entity->Y = destY;
 	if ( !canMove ) {

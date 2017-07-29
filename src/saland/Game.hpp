@@ -4,7 +4,6 @@
 #include <memory>
 
 #include "../sago/GameStateInterface.hpp"
-#include "../sagotmx/tmx_struct.h"
 
 class Game : public sago::GameStateInterface {
 public:

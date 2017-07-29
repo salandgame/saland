@@ -20,7 +20,7 @@ pkg_search_module(SDL2GFX REQUIRED SDL2_gfx)
 
 include_directories("src/Libs/include")
 
-file(GLOB SOURCES "src/*.cpp" "src/*/*.cpp" "src/Libs/*.c")
+file(GLOB SOURCES "src/*.cpp" "src/*/*.cpp" "src/*/*/*.cpp" "src/Libs/*.c")
 
 
 add_executable(saland ${SOURCES})
