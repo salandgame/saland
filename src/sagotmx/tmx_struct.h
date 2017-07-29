@@ -251,6 +251,7 @@ struct TileObject {
 	int width = 0;
 	int height = 0;
 	bool isEcplise = false;
+	std::vector<std::pair<int,int> > polygon_points;
 };
 
 struct TileObjectGroup {
@@ -386,6 +387,26 @@ inline TileMap string2tilemap(const std::string& tmx_content) {
 			setValueFromAttribute(object_node, "width", to.width);
 			setValueFromAttribute(object_node, "height", to.height);
 			getElement(object_node, "eclipse", to.isEcplise);
+			bool isPolygon = false;
+			const auto& polygon = getElement(object_node, "polygon", isPolygon);
+			if (isPolygon) {
+				std::string points;
+				setValueFromAttribute(polygon, "points", points);
+				size_t points_pos = 0;
+				size_t end_pos = 0;
+				while( points_pos < points.size() )  {
+					end_pos = points.find(",", points_pos);
+					int x = std::stoi(points.substr(points_pos, end_pos));
+					points_pos = end_pos+1;
+					end_pos = points.find(" ", points_pos);
+					if (end_pos == std::string::npos) {
+						end_pos = points.size();
+					}
+					int y = std::stoi(points.substr(points_pos, end_pos));
+					points_pos = end_pos+1;
+					to.polygon_points.push_back(std::make_pair(x, y));
+				}
+			}
 			group.objects.push_back(to);
 		}
 		m.object_groups.push_back(group);
