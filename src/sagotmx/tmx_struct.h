@@ -15,7 +15,7 @@ Compiles with g++ and requires C++11 support.
 Requirements:
 * zlib (http://www.zlib.net/)
 * rapidxml (http://rapidxml.sourceforge.net/)
-* b64 (http://libb64.sourceforge.net/)
+* b64 (http://libb64.sourceforge.net/), Although for modern compilers several patches are needed. I have used the ones from Debian
 
 #License
 Provided under the MIT license. The license is as follows:
