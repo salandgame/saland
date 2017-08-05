@@ -2,12 +2,16 @@
 #define PLACEABLES_HPP
 
 #include <string>
+#include <Box2D/Box2D.h>
+
+const float pixel2unit = 16.0f;
 
 class Placeable {
 public:
 	float X = 20.0;
 	float Y = 20.0;
 	float Radius = 16.0;
+	b2Body* body = nullptr;
 	virtual bool isStatic() {return true; }
 };
 

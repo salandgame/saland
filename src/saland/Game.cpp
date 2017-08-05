@@ -10,6 +10,9 @@
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include <cmath>
 
+int32 velocityIterations = 6;
+int32 positionIterations = 2;
+
 static void Draw(SDL_Renderer* target, SDL_Texture* t, int x, int y, const SDL_Rect& part) {
 	SDL_Rect pos = {};
 	pos.x = x;
@@ -52,6 +55,8 @@ struct Game::GameImpl {
 	std::vector<std::shared_ptr<Placeable> > placeables;
 	float time = 0.0;
 	std::shared_ptr<Human> human;
+	//b2Body* humanBody = nullptr;
+	std::shared_ptr<b2World> physicsBox;
 	float center_x = 0;
 	float center_y = 0;
 	bool drawCollision = true;
@@ -69,6 +74,22 @@ Game::Game() {
 	data->world.init();
 	data->lastUpdate = SDL_GetTicks();
 	data->human.reset(new Human());
+	b2Vec2 gravity(0.0f, 0.0f);
+	data->physicsBox.reset(new b2World(gravity));
+	
+	b2BodyDef myBodyDef;
+    myBodyDef.type = b2_dynamicBody; //this will be a dynamic body
+    myBodyDef.position.Set(0, 0);
+	myBodyDef.linearDamping = 1.0f;
+	data->human->body = data->physicsBox->CreateBody(&myBodyDef);
+	
+	b2CircleShape circleShape;
+	circleShape.m_p.Set(0, 0); //position, relative to body position
+	circleShape.m_radius = 0.5f; //radius 16 pixel (32 pixel = 1)
+	b2FixtureDef myFixtureDef;
+	myFixtureDef.shape = &circleShape; //this is a pointer to the shape above
+	myFixtureDef.density = 10.0f;
+	data->human->body->CreateFixture(&myFixtureDef); //add a fixture to the body
 }
 
 Game::~Game() {
@@ -143,41 +164,24 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 	}
 }
 
-static std::vector<std::pair<int, int> > getTouchingTiles(float x, float y, float radius) {
-	const int tileSize = 32;
-	std::vector<std::pair<int, int> > res;
-	std::vector<std::pair<int, int> > candidates;
-	for (int i = floor((x-radius) / tileSize); i < (x+radius)/ tileSize ; i++ ) {
-		for (int j = floor((y-radius) / tileSize); j < (y+radius)/ tileSize ; j++ ) {
-			candidates.push_back(std::make_pair(i,j));
-		}
-	}
-	res = candidates;
-	return res;
+
+static void SetDesiredVelocity(b2Body* body, float x, float y) {
+	b2Vec2 vel = body->GetLinearVelocity();
+	float velChangeX = x - vel.x;
+	float velChangeY = y - vel.y;
+    float impulseX = body->GetMass() * velChangeX; //disregard time factor
+    float impulseY = body->GetMass() * velChangeY; //disregard time factor
+	//std::cout << body->GetMass() << " " << impulseX  << "\n";
+	body->ApplyLinearImpulse( b2Vec2(impulseX, impulseY), body->GetWorldCenter(), true );
 }
 
-static bool MoveEntity( Placeable* entity, float destX, float destY ) {
-	bool canMove = true;
-	float sourceX = entity->X;
-	float sourceY = entity->Y;
-	const auto& touchingTilesNew = getTouchingTiles(destX, destY, entity->Radius);
-	for (const auto& tile : touchingTilesNew) {
-		
-	}
-	entity->X = destX;
-	entity->Y = destY;
-	if ( !canMove ) {
-		entity->X = sourceX;
-		entity->Y = sourceY;
-	}
-	return canMove;
-}
-
-static void MoveHumanEntity (Creature *entity, float directionX, float directionY, float fDeltaTime) {
+static void MoveHumanEntity (Creature *entity, float directionX, float directionY) {
 	float deltaX = directionX;
 	float deltaY = directionY;
+	
 	if (deltaX == 0.0f && deltaY == 0.0f) {
 		entity->moving = false;
+		SetDesiredVelocity(entity->body, 0, 0);
 		return;
 	}
 	entity->moving = true;
@@ -197,8 +201,8 @@ static void MoveHumanEntity (Creature *entity, float directionX, float direction
 	if (deltaX > 0.0f) {
 		entity->direction = 'E';
 	}
-	float speed = 4.0f;
-	MoveEntity (entity, entity->X + deltaX*(fDeltaTime/speed), entity->Y + deltaY*(fDeltaTime/speed));
+	float speed = 500.0f;
+	SetDesiredVelocity(entity->body, deltaX*speed, deltaY*speed);
 }
 
 static void UpdateHuman(Human *entity, float fDeltaTime) {
@@ -209,8 +213,11 @@ static void UpdateHuman(Human *entity, float fDeltaTime) {
 		entity->castTimeRemaining = 0;
 	}
 	if (entity->castTimeRemaining == 0) {
-		MoveHumanEntity(entity, entity->moveX, entity->moveY, fDeltaTime);
+		MoveHumanEntity(entity, entity->moveX, entity->moveY);
 	}
+	b2Vec2 place = entity->body->GetPosition();
+	entity->X = place.x*pixel2unit;
+	entity->Y = place.y*pixel2unit;
 }
 
 void Game::Update() {
@@ -241,6 +248,7 @@ void Game::Update() {
 	SDL_GetMouseState(&mousex, &mousey);
 	data->world_mouse_x = data->topx + mousex;
 	data->world_mouse_y = data->topy + mousey;
-	std::cout << "world x: " << data->world_mouse_x << ", y: " << data->world_mouse_y << "             \r";
+	//std::cout << "world x: " << data->world_mouse_x << ", y: " << data->world_mouse_y << "             \r";
 	data->lastUpdate = nowTime;
+	data->physicsBox->Step(deltaTime/1000.0f/60.0f, velocityIterations, positionIterations);
 }
