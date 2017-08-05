@@ -4,7 +4,7 @@
 #include <string>
 #include <Box2D/Box2D.h>
 
-const float pixel2unit = 16.0f;
+const float pixel2unit = 32.0f;
 
 class Placeable {
 public:

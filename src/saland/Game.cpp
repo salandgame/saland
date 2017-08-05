@@ -55,7 +55,6 @@ struct Game::GameImpl {
 	std::vector<std::shared_ptr<Placeable> > placeables;
 	float time = 0.0;
 	std::shared_ptr<Human> human;
-	//b2Body* humanBody = nullptr;
 	std::shared_ptr<b2World> physicsBox;
 	float center_x = 0;
 	float center_y = 0;
@@ -71,11 +70,12 @@ struct Game::GameImpl {
 
 Game::Game() {
 	data.reset(new Game::GameImpl());
-	data->world.init();
-	data->lastUpdate = SDL_GetTicks();
-	data->human.reset(new Human());
 	b2Vec2 gravity(0.0f, 0.0f);
 	data->physicsBox.reset(new b2World(gravity));
+	data->world.init(data->physicsBox);
+	data->lastUpdate = SDL_GetTicks();
+	data->human.reset(new Human());
+	
 	
 	b2BodyDef myBodyDef;
     myBodyDef.type = b2_dynamicBody; //this will be a dynamic body
