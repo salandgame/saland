@@ -4,6 +4,27 @@
 World::World() {
 }
 
+static void AddStaticTilesToWorld(b2World* world, const sago::tiled::TileMap& tm, const sago::tiled::TileLayer& layer) {
+	for (int i = 0; i < tm.height; ++i) {
+		for (int j = 0; j < tm.width; ++j) {
+			uint32_t gid = sago::tiled::getTileFromLayer(tm, layer, i, j);
+			if (gid == 0) {
+				continue;
+			}
+			b2BodyDef myBodyDef;
+				myBodyDef.type = b2_staticBody;
+				myBodyDef.position.Set(i*32.0f/pixel2unit+32.0f/pixel2unit/2.0, j*32.0f/pixel2unit + 32.0f/pixel2unit/2.0 );
+				myBodyDef.linearDamping = 1.0f;
+				b2Body* body = world->CreateBody(&myBodyDef);
+				b2PolygonShape polygonShape;
+				polygonShape.SetAsBox(32.0f/pixel2unit/2.0, 32.0f/pixel2unit/2.0);
+				b2FixtureDef myFixtureDef;
+				myFixtureDef.shape = &polygonShape; 
+				body->CreateFixture(&myFixtureDef);
+		}
+	}
+}
+
 void World::init(std::shared_ptr<b2World>& world) {
 	this->physicsWorld = world;
 	std::string tsx_file = sago::GetFileContent("maps/terrain.tsx");
@@ -30,6 +51,13 @@ void World::init(std::shared_ptr<b2World>& world) {
 				body->CreateFixture(&myFixtureDef);
 			}
 		}
+	}
+	const std::vector<sago::tiled::TileLayer>& layers = tm.layers;
+	for (const auto& layer : layers) {
+		if (layer.name != "blocking") {
+			continue;
+		}
+		AddStaticTilesToWorld(physicsWorld.get(), tm, layer);
 	}
 }
 
