@@ -198,7 +198,7 @@ static void SetDesiredVelocity(b2Body* body, float x, float y) {
 	body->ApplyLinearImpulse( b2Vec2(impulseX, impulseY), body->GetWorldCenter(), true );
 }
 
-static void MoveHumanEntity (Creature *entity, float directionX, float directionY) {
+static void SetCreatureMovementEntity (Creature *entity, float directionX, float directionY) {
 	float deltaX = directionX;
 	float deltaY = directionY;
 	
@@ -235,9 +235,11 @@ static void UpdateHuman(Human *entity, float fDeltaTime) {
 	if (entity->castTimeRemaining < 0) {
 		entity->castTimeRemaining = 0;
 	}
-	if (entity->castTimeRemaining == 0) {
-		MoveHumanEntity(entity, entity->moveX, entity->moveY);
+	if (entity->castTimeRemaining != 0) {
+		entity->moveX = 0.0f;
+		entity->moveY = 0.0f;
 	}
+	SetCreatureMovementEntity(entity, entity->moveX, entity->moveY);
 	b2Vec2 place = entity->body->GetPosition();
 	entity->X = place.x*pixel2unit;
 	entity->Y = place.y*pixel2unit;
