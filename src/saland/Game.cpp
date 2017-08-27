@@ -105,6 +105,7 @@ Game::Game() {
 	barrel.get()->X = 100.0f;
 	barrel.get()->Y = 100.0f;
 	data->placeables.push_back(barrel);
+	data->placeables.push_back(data->human);
 	
 	
 	b2BodyDef myBodyDef;
@@ -199,11 +200,14 @@ void Game::Draw(SDL_Renderer* target) {
 		mousebox_x+32, mousebox_y+32, 255, 255, 0, 255);
 	
 	//Draw human
-	DrawHumanEntity(target, globalData.spriteHolder.get(), data->human.get(), SDL_GetTicks(), data->topx, data->topy, false);
 	for (const auto& p : data->placeables) {
 		MiscItem* m = dynamic_cast<MiscItem*>(p.get());
 		if (m) {
 			DrawMiscEntity(target, globalData.spriteHolder.get(), m, SDL_GetTicks(), data->topx, data->topy, false);
+		}
+		Human* h = dynamic_cast<Human*>(p.get());
+		if (h) {
+			DrawHumanEntity(target, globalData.spriteHolder.get(), h, SDL_GetTicks(), data->topx, data->topy, false);
 		}
 	}
 }
