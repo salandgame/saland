@@ -32,6 +32,7 @@ https://github.com/sago007/saland
 #include "SDL.h"
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include <cmath>
+#include <condition_variable>
 
 int32 velocityIterations = 6;
 int32 positionIterations = 2;
@@ -98,6 +99,12 @@ Game::Game() {
 	data->world.init(data->physicsBox);
 	data->lastUpdate = SDL_GetTicks();
 	data->human.reset(new Human());
+	std::shared_ptr<MiscItem> barrel = std::make_shared<MiscItem>();
+	barrel.get()->Radius = 16.0f;
+	barrel.get()->sprite = "item_barrel";
+	barrel.get()->X = 100.0f;
+	barrel.get()->Y = 100.0f;
+	data->placeables.push_back(barrel);
 	
 	
 	b2BodyDef myBodyDef;
@@ -113,6 +120,13 @@ Game::Game() {
 	myFixtureDef.shape = &circleShape; //this is a pointer to the shape above
 	myFixtureDef.density = 10.0f;
 	data->human->body->CreateFixture(&myFixtureDef); //add a fixture to the body
+	
+	b2BodyDef barrelBodyDef;
+	barrelBodyDef.type = b2_staticBody;
+	barrelBodyDef.position.Set(barrel.get()->X/32.0f, barrel.get()->Y/32.0f);
+	barrelBodyDef.linearDamping = 1.0f;
+	barrel->body = data->physicsBox->CreateBody(&barrelBodyDef);
+	barrel->body->CreateFixture(&myFixtureDef);
 }
 
 Game::~Game() {
@@ -122,6 +136,17 @@ Game::~Game() {
 
 bool Game::IsActive() {
 	return true;
+}
+
+static void DrawMiscEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const MiscItem *entity, float time, 
+	int offsetX, int offsetY, bool drawCollision) {
+	if (drawCollision || true) {
+		circleRGBA(target,
+				entity->X-offsetX, entity->Y-offsetY, entity->Radius,
+				255, 255, 0, 255);
+	}
+	const sago::SagoSprite &mySprite = sHolder->GetSprite(entity->sprite);
+	mySprite.Draw(target, time, std::round(entity->X)-offsetX, std::round(entity->Y)-offsetY);
 }
 
 static void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Human *entity, float time, int offsetX, int offsetY, bool drawCollision) {
@@ -172,8 +197,15 @@ void Game::Draw(SDL_Renderer* target) {
 	int mousebox_y = data->world_mouse_y - data->world_mouse_y%32 - data->topy;
 	rectangleRGBA(globalData.screen, mousebox_x, mousebox_y,
 		mousebox_x+32, mousebox_y+32, 255, 255, 0, 255);
+	
 	//Draw human
 	DrawHumanEntity(target, globalData.spriteHolder.get(), data->human.get(), SDL_GetTicks(), data->topx, data->topy, false);
+	for (const auto& p : data->placeables) {
+		MiscItem* m = dynamic_cast<MiscItem*>(p.get());
+		if (m) {
+			DrawMiscEntity(target, globalData.spriteHolder.get(), m, SDL_GetTicks(), data->topx, data->topy, false);
+		}
+	}
 }
 
 void Game::ProcessInput(const SDL_Event& event, bool& processed) {

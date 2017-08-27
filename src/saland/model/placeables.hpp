@@ -38,7 +38,7 @@ public:
 	virtual bool isStatic() {return true; }
 };
 
-class MistItem : public Placeable {
+class MiscItem : public Placeable {
 public:
 	std::string sprite;
 };
