@@ -37,6 +37,17 @@ https://github.com/sago007/saland
 int32 velocityIterations = 6;
 int32 positionIterations = 2;
 
+/**
+ * This sort method sorts the elements from furthest to screen to closest to screen, so that elemnets closer to the screen will be drawn last
+ * @param lhs Left hand side
+ * @param rhs Right hand side
+ * @return true if lhs < rhs
+ */
+static bool sort_placeable(const std::shared_ptr<Placeable> &lhs, const std::shared_ptr<Placeable> &rhs)
+{
+	return lhs->Y < rhs->Y;
+}
+
 static void Draw(SDL_Renderer* target, SDL_Texture* t, int x, int y, const SDL_Rect& part) {
 	SDL_Rect pos = {};
 	pos.x = x;
@@ -199,7 +210,7 @@ void Game::Draw(SDL_Renderer* target) {
 	rectangleRGBA(globalData.screen, mousebox_x, mousebox_y,
 		mousebox_x+32, mousebox_y+32, 255, 255, 0, 255);
 	
-	//Draw human
+	//Draw
 	for (const auto& p : data->placeables) {
 		MiscItem* m = dynamic_cast<MiscItem*>(p.get());
 		if (m) {
@@ -312,4 +323,5 @@ void Game::Update() {
 	//std::cout << "world x: " << data->world_mouse_x << ", y: " << data->world_mouse_y << "             \r";
 	data->lastUpdate = nowTime;
 	data->physicsBox->Step(deltaTime/1000.0f/60.0f, velocityIterations, positionIterations);
+	std::sort(data->placeables.begin(), data->placeables.end(), sort_placeable);
 }
