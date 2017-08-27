@@ -27,6 +27,15 @@ https://github.com/sago007/saland
 World::World() {
 }
 
+
+static void AddRectToBody(b2Body* body, float x, float y, float width, float hight) {
+	b2PolygonShape polygonShape;
+	polygonShape.SetAsBox(width/pixel2unit/2.0, hight/pixel2unit/2.0);
+	b2FixtureDef myFixtureDef;
+	myFixtureDef.shape = &polygonShape;
+	body->CreateFixture(&myFixtureDef);
+}
+
 /**
  * Adds a static body to the world. Returns a pointer to the body
  * @param world The world to use for the body 
@@ -42,11 +51,7 @@ static b2Body* AddStaticRect(b2World* world, float x, float y, float width, floa
 	myBodyDef.position.Set(x/pixel2unit+width/pixel2unit/2.0, y/pixel2unit + hight/pixel2unit/2.0 );
 	myBodyDef.linearDamping = 1.0f;
 	b2Body* body = world->CreateBody(&myBodyDef);
-	b2PolygonShape polygonShape;
-	polygonShape.SetAsBox(width/pixel2unit/2.0, hight/pixel2unit/2.0);
-	b2FixtureDef myFixtureDef;
-	myFixtureDef.shape = &polygonShape; 
-	body->CreateFixture(&myFixtureDef);
+	AddRectToBody(body, x, y, width, hight);
 	return body;
 }
 
