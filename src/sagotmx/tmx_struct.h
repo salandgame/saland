@@ -250,7 +250,7 @@ struct TileObject {
 	int y = 0;
 	int width = 0;
 	int height = 0;
-	bool isEcplise = false;
+	bool isEllipse = false;
 	std::vector<std::pair<int,int> > polygon_points;
 };
 
@@ -386,7 +386,7 @@ inline TileMap string2tilemap(const std::string& tmx_content) {
 			setValueFromAttribute(object_node, "y", to.y);
 			setValueFromAttribute(object_node, "width", to.width);
 			setValueFromAttribute(object_node, "height", to.height);
-			getElement(object_node, "eclipse", to.isEcplise);
+			getElement(object_node, "ellipse", to.isEllipse);
 			bool isPolygon = false;
 			const auto& polygon = getElement(object_node, "polygon", isPolygon);
 			if (isPolygon) {

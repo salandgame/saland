@@ -74,14 +74,19 @@ static void DrawLayer(SDL_Renderer* renderer, SDL_Texture* texture, const sago::
 static void DrawOjbectGroup (SDL_Renderer* renderer, const sago::tiled::TileMap& tm, size_t object_group, int topx, int topy) {
 	const sago::tiled::TileObjectGroup& group = tm.object_groups.at(object_group);
 	for (const sago::tiled::TileObject& o : group.objects) {
-		rectangleRGBA(renderer, o.x - topx, o.y - topy,
-		o.x+o.width-topx, o.y + o.height - topy, 255, 255, 0, 255);
-		if (o.polygon_points.size() > 0) {
+		if (o.isEllipse) {
+			ellipseRGBA(renderer, (o.x+o.width/2) - topx, (o.y+o.height/2) - topy, o.width/2, o.height/2,255,255,0,255);
+		}
+		else if (o.polygon_points.size() > 0) {
 			for (size_t i = 0; i < o.polygon_points.size(); ++i) {
 				std::pair<int, int> first = o.polygon_points.at(i);
 				std::pair<int, int> second = (i+1 < o.polygon_points.size()) ? o.polygon_points.at(i+1) : o.polygon_points.at(0);
 				lineRGBA(renderer, first.first +o.x - topx, first.second + o.y - topy, second.first + o.x - topx, second.second + o.y - topy, 255, 255, 0, 255);
 			}
+		}
+		else {
+			rectangleRGBA(renderer, o.x - topx, o.y - topy,
+			o.x+o.width-topx, o.y + o.height - topy, 255, 255, 0, 255);
 		}
 	}
 }

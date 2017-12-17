@@ -96,7 +96,7 @@ void World::init(std::shared_ptr<b2World>& world) {
 	const std::vector<sago::tiled::TileObjectGroup>& object_groups = tm.object_groups;
 	for (const auto& group : object_groups) {
 		for (const auto& item : group.objects) {
-			if (item.isEcplise) {
+			if (item.isEllipse) {
 				continue;
 			}
 			if (item.x > 0 && item.y > 0 && item.width > 0 && item.height > 0) {
