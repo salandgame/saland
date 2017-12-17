@@ -121,6 +121,14 @@ Game::Game() {
 	barrel.get()->X = 100.0f;
 	barrel.get()->Y = 100.0f;
 	data->placeables.push_back(barrel);
+	
+	
+	std::shared_ptr<Monster> bat = std::make_shared<Monster>();
+	bat.get()->Radius = 16.0f;
+	bat.get()->race = "bat";
+	bat.get()->X = 200.0f;
+	bat.get()->Y = 200.0f;
+	data->placeables.push_back(bat);
 	data->placeables.push_back(data->human);
 	
 	
@@ -137,6 +145,16 @@ Game::Game() {
 	myFixtureDef.shape = &circleShape; //this is a pointer to the shape above
 	myFixtureDef.density = 10.0f;
 	data->human->body->CreateFixture(&myFixtureDef); //add a fixture to the body
+	
+	b2BodyDef batBodyDef;
+	batBodyDef.type = b2_dynamicBody;
+	batBodyDef.position.Set(0,0);
+	batBodyDef.linearDamping = 1.0f;
+	bat->body = data->physicsBox->CreateBody(&batBodyDef);
+	b2FixtureDef batDef;
+	batDef.shape = &circleShape;
+	batDef.density = 10.0f;
+	bat->body->CreateFixture(&batDef);
 	
 	b2BodyDef barrelBodyDef;
 	barrelBodyDef.type = b2_staticBody;
@@ -194,6 +212,18 @@ static void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolde
 	myHair.Draw(target, time, entity->X-offsetX, entity->Y-offsetY);*/
 }
 
+static void DrawMonster(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Monster *entity, float time, int offsetX, int offsetY, bool drawCollision) {
+	if (drawCollision || true) {
+		circleRGBA(target,
+				entity->X-offsetX, entity->Y-offsetY, entity->Radius,
+				255, 255, 0, 255);
+	}
+	const sago::SagoSprite &mySprite = sHolder->GetSprite(entity->race + "_"+std::string(1,entity->direction));
+	mySprite.Draw(target, time, std::round(entity->X)-offsetX, std::round(entity->Y)-offsetY);
+}
+
+
+
 void Game::Draw(SDL_Renderer* target) {
 	data->topx = std::round(data->center_x - 1024.0/2.0);
 	data->topy = std::round(data->center_y - 768.0/2.0);
@@ -224,6 +254,10 @@ void Game::Draw(SDL_Renderer* target) {
 		Human* h = dynamic_cast<Human*>(p.get());
 		if (h) {
 			DrawHumanEntity(target, globalData.spriteHolder.get(), h, SDL_GetTicks(), data->topx, data->topy, false);
+		}
+		Monster* monster = dynamic_cast<Monster*>(p.get());
+		if (monster) {
+			DrawMonster(target, globalData.spriteHolder.get(), monster, SDL_GetTicks(), data->topx, data->topy, false);
 		}
 	}
 }
@@ -297,6 +331,13 @@ static void UpdateHuman(Human *entity, float fDeltaTime) {
 	entity->Y = place.y*pixel2unit;
 }
 
+static void UpdateMonster(Monster *entity, float fDeltaTime) {
+	SetCreatureMovementEntity(entity, entity->moveX, entity->moveY);
+	b2Vec2 place = entity->body->GetPosition();
+	entity->X = place.x*pixel2unit;
+	entity->Y = place.y*pixel2unit;
+}
+
 void Game::Update() {
 	Uint32 nowTime = SDL_GetTicks();
 	Uint32 deltaTime = nowTime - data->lastUpdate;
@@ -318,6 +359,12 @@ void Game::Update() {
 	data->human->moveX = deltaX;
 	data->human->moveY = deltaY;
 	UpdateHuman(data->human.get(), deltaTime);
+	for(auto& entity : data->placeables) {
+		Monster* monster = dynamic_cast<Monster*>(entity.get());
+		if (monster) {
+			UpdateMonster(monster, deltaTime);
+		}
+	}
 	data->center_x = std::round(data->human->X);
 	data->center_y = std::round(data->human->Y);
 	int mousex;

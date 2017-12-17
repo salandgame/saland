@@ -50,6 +50,8 @@ public:
 	float mana = 10.0;
 	char direction = 'S';
 	bool moving = false;
+	float moveX = 0.0;
+	float moveY = 0.0;
 	virtual bool isStatic() override { return false; }
 };
 
@@ -58,8 +60,11 @@ public:
 	std::string race = "male";
 	float castTimeRemaining = 0;  //If non-zero then we are casting a spell
 	float castTime = 400;    //Number of milliseconds it will take to complete the cast
-	float moveX = 0.0;
-	float moveY = 0.0;
+};
+
+class Monster : public Creature {
+public:
+	std::string race = "bat";
 };
 
 #endif /* PLACEABLES_HPP */

@@ -57,7 +57,7 @@
 	"number_of_frames" : 3,
 	"frame_time" : 150,
     "originx" : 16,
-    "originy" : 40
+    "originy" : 16
 },
 
 "bat_W" :  {
@@ -69,7 +69,7 @@
 	"number_of_frames" : 3,
 	"frame_time" : 150,
     "originx" : 16,
-    "originy" : 40
+    "originy" : 16
 },
 
 "bat_S" :  {
@@ -81,7 +81,7 @@
 	"number_of_frames" : 3,
 	"frame_time" : 150,
     "originx" : 16,
-    "originy" : 40
+    "originy" : 16
 },
 
 "bat_E" :  {
@@ -93,7 +93,7 @@
 	"number_of_frames" : 3,
 	"frame_time" : 150,
     "originx" : 16,
-    "originy" : 40
+    "originy" : 16
 }
 
 }
