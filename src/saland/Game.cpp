@@ -19,7 +19,7 @@ along with this program.  If not, see http://www.gnu.org/licenses/
 Source information and contacts persons can be found at
 https://github.com/sago007/saland
 ===========================================================================
-*/
+ */
 
 #include <SDL2/SDL_timer.h>
 
@@ -37,14 +37,22 @@ https://github.com/sago007/saland
 int32 velocityIterations = 6;
 int32 positionIterations = 2;
 
+class Projectile : public Placeable {
+public:
+	bool active = true;
+	float directionX = 1;
+	float directionY = 1;
+	float velocity = 1.0f;
+	std::shared_ptr<Placeable> fired_by;
+};
+
 /**
  * This sort method sorts the elements from furthest to screen to closest to screen, so that elemnets closer to the screen will be drawn last
  * @param lhs Left hand side
  * @param rhs Right hand side
  * @return true if lhs < rhs
  */
-static bool sort_placeable(const std::shared_ptr<Placeable> &lhs, const std::shared_ptr<Placeable> &rhs)
-{
+static bool sort_placeable(const std::shared_ptr<Placeable> &lhs, const std::shared_ptr<Placeable> &rhs) {
 	return lhs->Y < rhs->Y;
 }
 
@@ -66,27 +74,25 @@ static void DrawLayer(SDL_Renderer* renderer, SDL_Texture* texture, const sago::
 			}
 			SDL_Rect part{};
 			getTextureLocationFromGid(tm, gid, nullptr, &part.x, &part.y, &part.w, &part.h);
-			Draw(renderer, texture, 32*i-topx, 32*j-topy, part);
+			Draw(renderer, texture, 32 * i - topx, 32 * j - topy, part);
 		}
 	}
 }
 
-static void DrawOjbectGroup (SDL_Renderer* renderer, const sago::tiled::TileMap& tm, size_t object_group, int topx, int topy) {
+static void DrawOjbectGroup(SDL_Renderer* renderer, const sago::tiled::TileMap& tm, size_t object_group, int topx, int topy) {
 	const sago::tiled::TileObjectGroup& group = tm.object_groups.at(object_group);
 	for (const sago::tiled::TileObject& o : group.objects) {
 		if (o.isEllipse) {
-			ellipseRGBA(renderer, (o.x+o.width/2) - topx, (o.y+o.height/2) - topy, o.width/2, o.height/2,255,255,0,255);
-		}
-		else if (o.polygon_points.size() > 0) {
+			ellipseRGBA(renderer, (o.x + o.width / 2) - topx, (o.y + o.height / 2) - topy, o.width / 2, o.height / 2, 255, 255, 0, 255);
+		} else if (o.polygon_points.size() > 0) {
 			for (size_t i = 0; i < o.polygon_points.size(); ++i) {
 				std::pair<int, int> first = o.polygon_points.at(i);
-				std::pair<int, int> second = (i+1 < o.polygon_points.size()) ? o.polygon_points.at(i+1) : o.polygon_points.at(0);
-				lineRGBA(renderer, first.first +o.x - topx, first.second + o.y - topy, second.first + o.x - topx, second.second + o.y - topy, 255, 255, 0, 255);
+				std::pair<int, int> second = (i + 1 < o.polygon_points.size()) ? o.polygon_points.at(i + 1) : o.polygon_points.at(0);
+				lineRGBA(renderer, first.first + o.x - topx, first.second + o.y - topy, second.first + o.x - topx, second.second + o.y - topy, 255, 255, 0, 255);
 			}
-		}
-		else {
+		} else {
 			rectangleRGBA(renderer, o.x - topx, o.y - topy,
-			o.x+o.width-topx, o.y + o.height - topy, 255, 255, 0, 255);
+				o.x + o.width - topx, o.y + o.height - topy, 255, 255, 0, 255);
 		}
 	}
 }
@@ -102,7 +108,7 @@ struct Game::GameImpl {
 	World world;
 	int topx = 0.0;
 	int topy = 0.0;
-	int world_mouse_x = 0;  //Mouse cooridinates relative to the world
+	int world_mouse_x = 0; //Mouse cooridinates relative to the world
 	int world_mouse_y = 0;
 	char direction = 0;
 	Uint32 lastUpdate = 0;
@@ -121,8 +127,8 @@ Game::Game() {
 	barrel.get()->X = 100.0f;
 	barrel.get()->Y = 100.0f;
 	data->placeables.push_back(barrel);
-	
-	
+
+
 	std::shared_ptr<Monster> bat = std::make_shared<Monster>();
 	bat.get()->Radius = 16.0f;
 	bat.get()->race = "bat";
@@ -130,14 +136,14 @@ Game::Game() {
 	bat.get()->Y = 200.0f;
 	data->placeables.push_back(bat);
 	data->placeables.push_back(data->human);
-	
-	
+
+
 	b2BodyDef myBodyDef;
-    myBodyDef.type = b2_dynamicBody; //this will be a dynamic body
-    myBodyDef.position.Set(0, 0);
+	myBodyDef.type = b2_dynamicBody; //this will be a dynamic body
+	myBodyDef.position.Set(0, 0);
 	myBodyDef.linearDamping = 1.0f;
 	data->human->body = data->physicsBox->CreateBody(&myBodyDef);
-	
+
 	b2CircleShape circleShape;
 	circleShape.m_p.Set(0, 0); //position, relative to body position
 	circleShape.m_radius = 0.5f; //radius 16 pixel (32 pixel = 1)
@@ -145,20 +151,20 @@ Game::Game() {
 	myFixtureDef.shape = &circleShape; //this is a pointer to the shape above
 	myFixtureDef.density = 10.0f;
 	data->human->body->CreateFixture(&myFixtureDef); //add a fixture to the body
-	
+
 	b2BodyDef batBodyDef;
 	batBodyDef.type = b2_dynamicBody;
-	batBodyDef.position.Set(0,0);
+	batBodyDef.position.Set(0, 0);
 	batBodyDef.linearDamping = 1.0f;
 	bat->body = data->physicsBox->CreateBody(&batBodyDef);
 	b2FixtureDef batDef;
 	batDef.shape = &circleShape;
 	batDef.density = 10.0f;
 	bat->body->CreateFixture(&batDef);
-	
+
 	b2BodyDef barrelBodyDef;
 	barrelBodyDef.type = b2_staticBody;
-	barrelBodyDef.position.Set(barrel.get()->X/32.0f, barrel.get()->Y/32.0f);
+	barrelBodyDef.position.Set(barrel.get()->X / 32.0f, barrel.get()->Y / 32.0f);
 	barrelBodyDef.linearDamping = 1.0f;
 	barrel->body = data->physicsBox->CreateBody(&barrelBodyDef);
 	barrel->body->CreateFixture(&myFixtureDef);
@@ -173,15 +179,15 @@ bool Game::IsActive() {
 	return true;
 }
 
-static void DrawMiscEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const MiscItem *entity, float time, 
+static void DrawMiscEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const MiscItem *entity, float time,
 	int offsetX, int offsetY, bool drawCollision) {
 	if (drawCollision || true) {
 		circleRGBA(target,
-				entity->X-offsetX, entity->Y-offsetY, entity->Radius,
-				255, 255, 0, 255);
+			entity->X - offsetX, entity->Y - offsetY, entity->Radius,
+			255, 255, 0, 255);
 	}
 	const sago::SagoSprite &mySprite = sHolder->GetSprite(entity->sprite);
-	mySprite.Draw(target, time, std::round(entity->X)-offsetX, std::round(entity->Y)-offsetY);
+	mySprite.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
 }
 
 static void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Human *entity, float time, int offsetX, int offsetY, bool drawCollision) {
@@ -194,19 +200,18 @@ static void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolde
 	if (entity->castTimeRemaining) {
 		animation = "spellcast";
 		relativeAnimation = true;
-		relativeAnimationState = 1.0f-(entity->castTimeRemaining/entity->castTime);
+		relativeAnimationState = 1.0f - (entity->castTimeRemaining / entity->castTime);
 	}
 	if (drawCollision || true) {
 		circleRGBA(target,
-				entity->X-offsetX, entity->Y-offsetY, entity->Radius,
-				255, 255, 0, 255);
+			entity->X - offsetX, entity->Y - offsetY, entity->Radius,
+			255, 255, 0, 255);
 	}
-	const sago::SagoSprite &mySprite = sHolder->GetSprite(entity->race + "_"+animation+"_"+std::string(1,entity->direction));
+	const sago::SagoSprite &mySprite = sHolder->GetSprite(entity->race + "_" + animation + "_" + std::string(1, entity->direction));
 	if (relativeAnimation) {
-		mySprite.DrawProgressive(target, relativeAnimationState, std::round(entity->X)-offsetX, std::round(entity->Y)-offsetY);
-	}
-	else {
-		mySprite.Draw(target, time, std::round(entity->X)-offsetX, std::round(entity->Y)-offsetY);
+		mySprite.DrawProgressive(target, relativeAnimationState, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
+	} else {
+		mySprite.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
 	}
 	/*const sago::SagoSprite &myHair = sHolder->GetSprite(entity->race + "_"+animation+"_hair_1_"+string(1,entity->direction));
 	myHair.Draw(target, time, entity->X-offsetX, entity->Y-offsetY);*/
@@ -215,18 +220,25 @@ static void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolde
 static void DrawMonster(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Monster *entity, float time, int offsetX, int offsetY, bool drawCollision) {
 	if (drawCollision || true) {
 		circleRGBA(target,
-				entity->X-offsetX, entity->Y-offsetY, entity->Radius,
-				255, 255, 0, 255);
+			entity->X - offsetX, entity->Y - offsetY, entity->Radius,
+			255, 255, 0, 255);
 	}
-	const sago::SagoSprite &mySprite = sHolder->GetSprite(entity->race + "_"+std::string(1,entity->direction));
-	mySprite.Draw(target, time, std::round(entity->X)-offsetX, std::round(entity->Y)-offsetY);
+	const sago::SagoSprite &mySprite = sHolder->GetSprite(entity->race + "_" + std::string(1, entity->direction));
+	mySprite.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
 }
 
 
+static void DrawProjectile(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Projectile *entity, float time, int offsetX, int offsetY, bool drawCollision) {
+	if (drawCollision || true) {
+		circleRGBA(target,
+			entity->X - offsetX, entity->Y - offsetY, entity->Radius,
+			255, 255, 0, 255);
+	}
+}
 
 void Game::Draw(SDL_Renderer* target) {
-	data->topx = std::round(data->center_x - 1024.0/2.0);
-	data->topy = std::round(data->center_y - 768.0/2.0);
+	data->topx = std::round(data->center_x - 1024.0 / 2.0);
+	data->topy = std::round(data->center_y - 768.0 / 2.0);
 	if (data->topx < -10) {
 		data->topx = -10;
 	}
@@ -234,67 +246,77 @@ void Game::Draw(SDL_Renderer* target) {
 		data->topy = -10;
 	}
 	SDL_Texture* texture = globalData.spriteHolder->GetDataHolder().getTexturePtr("terrain");
-	for (size_t i = 0; i < data->world.tm.layers.size(); ++i ) {
+	for (size_t i = 0; i < data->world.tm.layers.size(); ++i) {
 		DrawLayer(target, texture, data->world.tm, i, data->topx, data->topy);
 	}
-	for (size_t i = 0; i <data->world.tm.object_groups.size(); ++i) {
+	for (size_t i = 0; i < data->world.tm.object_groups.size(); ++i) {
 		DrawOjbectGroup(target, data->world.tm, i, data->topx, data->topy);
 	}
-	int mousebox_x = data->world_mouse_x - data->world_mouse_x%32 - data->topx;
-	int mousebox_y = data->world_mouse_y - data->world_mouse_y%32 - data->topy;
+	int mousebox_x = data->world_mouse_x - data->world_mouse_x % 32 - data->topx;
+	int mousebox_y = data->world_mouse_y - data->world_mouse_y % 32 - data->topy;
 	rectangleRGBA(globalData.screen, mousebox_x, mousebox_y,
-		mousebox_x+32, mousebox_y+32, 255, 255, 0, 255);
-	
+		mousebox_x + 32, mousebox_y + 32, 255, 255, 0, 255);
+
 	//Draw
 	for (const auto& p : data->placeables) {
-		MiscItem* m = dynamic_cast<MiscItem*>(p.get());
+		MiscItem* m = dynamic_cast<MiscItem*> (p.get());
 		if (m) {
 			DrawMiscEntity(target, globalData.spriteHolder.get(), m, SDL_GetTicks(), data->topx, data->topy, false);
 		}
-		Human* h = dynamic_cast<Human*>(p.get());
+		Human* h = dynamic_cast<Human*> (p.get());
 		if (h) {
 			DrawHumanEntity(target, globalData.spriteHolder.get(), h, SDL_GetTicks(), data->topx, data->topy, false);
 		}
-		Monster* monster = dynamic_cast<Monster*>(p.get());
+		Monster* monster = dynamic_cast<Monster*> (p.get());
 		if (monster) {
 			DrawMonster(target, globalData.spriteHolder.get(), monster, SDL_GetTicks(), data->topx, data->topy, false);
+		}
+		Projectile* projectile = dynamic_cast<Projectile*> (p.get());
+		if (projectile) {
+			DrawProjectile(target, globalData.spriteHolder.get(), projectile, SDL_GetTicks(), data->topx, data->topy, true);
 		}
 	}
 }
 
 void Game::ProcessInput(const SDL_Event& event, bool& processed) {
-	if ( event.type == SDL_KEYDOWN ) {
+	if (event.type == SDL_KEYDOWN) {
 		if (event.key.keysym.sym == SDLK_SPACE) {
 			if (data->human->castTimeRemaining == 0) {
 				data->human->castTimeRemaining = data->human->castTime;
+				std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>();
+				projectile->X = data->human->X;
+				projectile->Y = data->human->Y;
+				projectile->Radius = 8.0f;
+				projectile->directionX = projectile->X - data->world_mouse_x;
+				projectile->directionY = projectile->Y - data->world_mouse_y;
+				data->placeables.push_back(projectile);
 			}
 			processed = true;
 		}
 	}
 }
 
-
 static void SetDesiredVelocity(b2Body* body, float x, float y) {
 	b2Vec2 vel = body->GetLinearVelocity();
 	float velChangeX = x - vel.x;
 	float velChangeY = y - vel.y;
-    float impulseX = body->GetMass() * velChangeX; //disregard time factor
-    float impulseY = body->GetMass() * velChangeY; //disregard time factor
+	float impulseX = body->GetMass() * velChangeX; //disregard time factor
+	float impulseY = body->GetMass() * velChangeY; //disregard time factor
 	//std::cout << body->GetMass() << " " << impulseX  << "\n";
-	body->ApplyLinearImpulse( b2Vec2(impulseX, impulseY), body->GetWorldCenter(), true );
+	body->ApplyLinearImpulse(b2Vec2(impulseX, impulseY), body->GetWorldCenter(), true);
 }
 
-static void SetCreatureMovementEntity (Creature *entity, float directionX, float directionY) {
+static void SetCreatureMovementEntity(Creature *entity, float directionX, float directionY) {
 	float deltaX = directionX;
 	float deltaY = directionY;
-	
+
 	if (deltaX == 0.0f && deltaY == 0.0f) {
 		entity->moving = false;
 		SetDesiredVelocity(entity->body, 0, 0);
 		return;
 	}
 	entity->moving = true;
-	if (deltaX*deltaX+deltaY*deltaY > 1.5f) {
+	if (deltaX * deltaX + deltaY * deltaY > 1.5f) {
 		deltaX *= 0.7071067811865476f; //sqrt(0.5)
 		deltaY *= 0.7071067811865476f; //sqrt(0.5)
 	}
@@ -311,7 +333,7 @@ static void SetCreatureMovementEntity (Creature *entity, float directionX, float
 		entity->direction = 'E';
 	}
 	float speed = 500.0f;
-	SetDesiredVelocity(entity->body, deltaX*speed, deltaY*speed);
+	SetDesiredVelocity(entity->body, deltaX*speed, deltaY * speed);
 }
 
 static void UpdateHuman(Human *entity, float fDeltaTime) {
@@ -359,8 +381,8 @@ void Game::Update() {
 	data->human->moveX = deltaX;
 	data->human->moveY = deltaY;
 	UpdateHuman(data->human.get(), deltaTime);
-	for(auto& entity : data->placeables) {
-		Monster* monster = dynamic_cast<Monster*>(entity.get());
+	for (auto& entity : data->placeables) {
+		Monster* monster = dynamic_cast<Monster*> (entity.get());
 		if (monster) {
 			UpdateMonster(monster, deltaTime);
 		}
@@ -374,6 +396,6 @@ void Game::Update() {
 	data->world_mouse_y = data->topy + mousey;
 	//std::cout << "world x: " << data->world_mouse_x << ", y: " << data->world_mouse_y << "             \r";
 	data->lastUpdate = nowTime;
-	data->physicsBox->Step(deltaTime/1000.0f/60.0f, velocityIterations, positionIterations);
+	data->physicsBox->Step(deltaTime / 1000.0f / 60.0f, velocityIterations, positionIterations);
 	std::sort(data->placeables.begin(), data->placeables.end(), sort_placeable);
 }
