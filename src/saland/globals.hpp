@@ -33,6 +33,7 @@ struct GlobalData {
 	bool isShuttingDown = false;
 	SDL_Renderer* screen = nullptr;
 	std::unique_ptr<sago::SagoSpriteHolder> spriteHolder;
+	sago::SagoDataHolder* dataHolder;
 };
 
 extern GlobalData globalData;

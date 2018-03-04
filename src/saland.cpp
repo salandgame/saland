@@ -27,6 +27,7 @@ https://github.com/sago007/saland
 #include "sago/SagoDataHolder.hpp"
 #include "sago/SagoSpriteHolder.hpp"
 #include "sago/GameStateInterface.hpp"
+#include "sago/SagoTextField.hpp"
 #include <sstream>
 #include <SDL_events.h>
 #include <SDL_render.h>
@@ -67,6 +68,10 @@ class TitleScreen : public sago::GameStateInterface {
 	}
 
 	virtual void Draw(SDL_Renderer* target) override {
+		sago::SagoTextField textField;
+		textField.SetHolder(globalData.dataHolder);
+		textField.SetText("Saland Adventures");
+		textField.Draw(target, 10, 100);
 		NFont_Write(target, 10, 10, "Saland Adventures");
 		circleRGBA(target,
 				150, 150, 75,
@@ -142,6 +147,7 @@ void runGame() {
 	sago::SagoDataHolder holder(globalData.screen);
 	globalData.spriteHolder.reset(new sago::SagoSpriteHolder(holder));
 	globalData.nf_standard_font.load(globalData.screen, holder.getFontPtr("freeserif", 30),NFont::Color(255,255,255));
+	globalData.dataHolder = &holder;
 
 	TitleScreen ts;
 	RunGameState(ts);

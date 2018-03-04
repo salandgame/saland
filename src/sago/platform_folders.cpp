@@ -260,7 +260,7 @@ static void PlatformFoldersFillData(std::map<std::string, std::string>& folders)
 	folders["XDG_TEMPLATES_DIR"] = "$HOME/.Templates";
 	folders["XDG_VIDEOS_DIR"] = "$HOME/Videos";
 	PlatformFoldersAddFromFile( getConfigHome()+"/user-dirs.dirs", folders);
-	for (std::map<std::string, std::string>::iterator itr = folders.begin() ; itr != folders.end() ; itr ++ ) {
+	for (std::map<std::string, std::string>::iterator itr = folders.begin() ; itr != folders.end() ; ++itr ) {
 		std::string& value = itr->second;
 		if (value.compare(0, 5, "$HOME") == 0) {
 			value = getHome() + value.substr(5, std::string::npos);
