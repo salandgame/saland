@@ -37,7 +37,6 @@ https://github.com/sago007/saland
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_timer.h>
-#include "Libs/NFont.h"
 #include "saland/globals.hpp"
 #include "saland/Game.hpp"
 
