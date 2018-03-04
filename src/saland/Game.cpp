@@ -230,6 +230,8 @@ static void DrawMonster(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, c
 
 
 static void DrawProjectile(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Projectile *entity, float time, int offsetX, int offsetY, bool drawCollision) {
+	(void)sHolder;
+	(void)time;
 	if (drawCollision || true) {
 		circleRGBA(target,
 			entity->X - offsetX, entity->Y - offsetY, entity->Radius,
@@ -354,7 +356,7 @@ static void UpdateHuman(Human *entity, float fDeltaTime) {
 	entity->Y = place.y*pixel2unit;
 }
 
-static void UpdateMonster(Monster *entity, float fDeltaTime) {
+static void UpdateMonster(Monster *entity) {
 	SetCreatureMovementEntity(entity, entity->moveX, entity->moveY);
 	b2Vec2 place = entity->body->GetPosition();
 	entity->X = place.x*pixel2unit;
@@ -399,7 +401,7 @@ void Game::Update() {
 		}
 		Monster* monster = dynamic_cast<Monster*> (entity.get());
 		if (monster) {
-			UpdateMonster(monster, deltaTime);
+			UpdateMonster(monster);
 		}
 	}
 	auto& vp = data->placeables;
