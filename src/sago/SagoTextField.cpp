@@ -34,6 +34,8 @@ struct SagoTextField::SagoTextFieldData {
 	std::string fontName = "freeserif";
 	SDL_Color color = { 255, 255, 255, 0 };
 	int fontSize = 16;
+	std::string text = "";
+	std::string renderedText = "";
 };
 	
 SagoTextField::SagoTextField() {
@@ -50,7 +52,7 @@ void SagoTextField::SetHolder(SagoDataHolder* holder) {
 }
 
 void SagoTextField::SetText(std::string text) {
-	this->text = text;
+	data->text = text;
 }
 
 void SagoTextField::SetColor(const SDL_Color& color) {
@@ -66,7 +68,7 @@ void SagoTextField::SetFontSize(int fontSize) {
 }
 
 std::string SagoTextField::GetText() const {
-	return text;
+	return data->text;
 }
 
 void SagoTextField::ClearCache() {
@@ -87,16 +89,16 @@ void SagoTextField::ClearCache() {
 void SagoTextField::UpdateCache(SDL_Renderer* target) {
 	ClearCache();
 	TTF_Font *font = data->tex->getFontPtr(data->fontName, data->fontSize);
-	data->textSurface = TTF_RenderText_Blended (font, text.c_str(), data->color);
+	data->textSurface = TTF_RenderText_Blended (font, data->text.c_str(), data->color);
 	data->texture = SDL_CreateTextureFromSurface(target, data->textSurface);
-	renderedText = text;
+	data->renderedText = data->text;
 }
 
 void SagoTextField::Draw(SDL_Renderer* target, int x, int y) {
-	if (text.empty()) {
+	if (data->text.empty()) {
 		return;
 	}
-	if (text != renderedText) {
+	if (data->text != data->renderedText) {
 		UpdateCache(target);
 	}
 	if (!data->texture) {

@@ -43,9 +43,8 @@ public:
 	void UpdateCache(SDL_Renderer* target);
 	void ClearCache();
 private:
-	std::string text = "";
-	std::string renderedText = "";
 	SagoTextField(const SagoTextField& orig) = delete;
+	SagoTextField& operator=(const SagoTextField& base) = delete;
 	struct SagoTextFieldData;
 	SagoTextFieldData *data;
 };
