@@ -35,8 +35,13 @@ public:
 	virtual ~SagoTextField();
     void SetHolder(SagoDataHolder* holder);
     void SetText(std::string text);
+	void SetColor(const SDL_Color& color);
+	void SetFont(const std::string& fontName);
+	void SetFontSize(int fontSize);
     std::string GetText() const;
-	void Draw(SDL_Renderer* target, int x, int y) const;
+	void Draw(SDL_Renderer* target, int x, int y);
+	void UpdateCache(SDL_Renderer* target);
+	void ClearCache();
 private:
 	std::string text = "";
 	std::string renderedText = "";

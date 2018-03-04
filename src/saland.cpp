@@ -58,21 +58,22 @@ https://github.com/sago007/saland
 
 GlobalData globalData;
 
-static void NFont_Write(SDL_Renderer* target, int x, int y, const char* text) {
-	globalData.nf_standard_font.draw(target, x, y, "%s", text);
-}
-
 class TitleScreen : public sago::GameStateInterface {
+public:
+	TitleScreen() {
+		textField.SetHolder(globalData.dataHolder);
+		textField.SetFontSize(30);
+	}
+	
 	virtual bool IsActive() override {
 		return isActive;
 	}
 
 	virtual void Draw(SDL_Renderer* target) override {
-		sago::SagoTextField textField;
-		textField.SetHolder(globalData.dataHolder);
+		
+		
 		textField.SetText("Saland Adventures");
-		textField.Draw(target, 10, 100);
-		NFont_Write(target, 10, 10, "Saland Adventures");
+		textField.Draw(target, 10, 10);
 		circleRGBA(target,
 				150, 150, 75,
 				0, 0, 255, 255);
@@ -100,6 +101,7 @@ class TitleScreen : public sago::GameStateInterface {
 	}
 private:
 	bool isActive = true;
+	sago::SagoTextField textField;
 };
 
 void RunGameState(sago::GameStateInterface& state ) {
@@ -146,7 +148,6 @@ void runGame() {
 	globalData.screen = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
 	sago::SagoDataHolder holder(globalData.screen);
 	globalData.spriteHolder.reset(new sago::SagoSpriteHolder(holder));
-	globalData.nf_standard_font.load(globalData.screen, holder.getFontPtr("freeserif", 30),NFont::Color(255,255,255));
 	globalData.dataHolder = &holder;
 
 	TitleScreen ts;
