@@ -43,6 +43,7 @@ public:
 	float directionX = 1;
 	float directionY = 1;
 	float velocity = 1.0f;
+	float timeToLive = 2000.0;
 	std::shared_ptr<Placeable> fired_by;
 };
 
@@ -360,6 +361,13 @@ static void UpdateMonster(Monster *entity, float fDeltaTime) {
 	entity->Y = place.y*pixel2unit;
 }
 
+static void UpdateProjectile(Projectile *entity, float fDeltaTime) {
+	entity->timeToLive -= fDeltaTime;
+	if (entity->timeToLive < 0.0f) {
+		entity->removeMe = true;
+	}
+}
+
 void Game::Update() {
 	Uint32 nowTime = SDL_GetTicks();
 	Uint32 deltaTime = nowTime - data->lastUpdate;
@@ -381,12 +389,21 @@ void Game::Update() {
 	data->human->moveX = deltaX;
 	data->human->moveY = deltaY;
 	UpdateHuman(data->human.get(), deltaTime);
-	for (auto& entity : data->placeables) {
+	for (std::shared_ptr<Placeable>& entity : data->placeables) {
+		if (entity->removeMe) {
+			continue;
+		}
+		Projectile* projectile = dynamic_cast<Projectile*> (entity.get());
+		if (projectile) {
+			UpdateProjectile(projectile, deltaTime);
+		}
 		Monster* monster = dynamic_cast<Monster*> (entity.get());
 		if (monster) {
 			UpdateMonster(monster, deltaTime);
 		}
 	}
+	auto& vp = data->placeables;
+	vp.erase(std::remove_if(std::begin(vp), std::end(vp), [](std::shared_ptr<Placeable> p) { return p->removeMe; }), std::end(vp));
 	data->center_x = std::round(data->human->X);
 	data->center_y = std::round(data->human->Y);
 	int mousex;

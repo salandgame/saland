@@ -34,6 +34,7 @@ public:
 	float X = 20.0;
 	float Y = 20.0;
 	float Radius = 16.0;
+	bool removeMe = false;
 	b2Body* body = nullptr;
 	virtual bool isStatic() {return true; }
 };
