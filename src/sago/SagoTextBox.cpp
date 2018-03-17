@@ -25,6 +25,7 @@ SOFTWARE.
 #include "SagoTextBox.hpp"
 #include "SagoTextField.hpp"
 #include <vector>
+#include <iostream>
 
 namespace sago {
 
@@ -74,6 +75,10 @@ void SagoTextBox::SetOutline(int outlineSize, const SDL_Color& color) {
 	data->outlineColor = color;
 }
 
+void SagoTextBox::SetMaxWidth(int width) {
+	data->maxWidth = width;
+}
+
 const std::string& SagoTextBox::GetText() const {
 	return data->text;
 }
@@ -89,18 +94,61 @@ void SagoTextBox::AppendLineToCache(const std::string& text) {
 	tf.SetText(text.c_str());
 }
 
+void SagoTextBox::SplitAndAppendLineToCache(TTF_Font* font, const std::string& text) {
+	int width = data->maxWidth;
+	TTF_SizeUTF8(font, text.c_str(),&width, nullptr);
+	std::cerr << "Width: " << width << "\n";
+	if (data->maxWidth <= 0 || width <= data->maxWidth) {
+		AppendLineToCache(text);
+		return;
+	}
+	int splitLocation = 1;
+	bool splitDone = false;
+	while (!splitDone) {
+		size_t nextSpace = text.find(' ', splitLocation+1);
+		std::string attemptSubString = text.substr(0, nextSpace);
+		TTF_SizeUTF8(font, attemptSubString.c_str(),&width, nullptr);
+		if (width <= data->maxWidth && nextSpace != std::string::npos) {
+			splitLocation = nextSpace;
+		}
+		else {
+			splitDone = true;
+		}
+	}
+	if (splitLocation == 1) {
+		splitDone = false;
+		while (!splitDone) {
+			size_t nextSplit = splitLocation+1;
+			std::string attemptSubString = text.substr(0, nextSplit);
+			TTF_SizeUTF8(font, attemptSubString.c_str(),&width, nullptr);
+			if (width <= data->maxWidth && nextSplit != text.length()) {
+				splitLocation = nextSplit;
+			}
+			else {
+				splitDone = true;
+			}
+		}
+	}
+	std::string firstPart = text.substr(0, splitLocation);
+	AppendLineToCache(firstPart);
+	std::string secondPart = text.substr(splitLocation+1);
+	SplitAndAppendLineToCache(font, secondPart);
+}
+
 void SagoTextBox::UpdateCache() {
+	TTF_Font *font = data->tex->getFontPtr(data->fontName, data->fontSize);
 	const char delim = '\n';
 	const std::string& s = data->text;
 	auto start = 0U;
 	auto end = s.find(delim);
 	while (end != std::string::npos)
 	{
-		AppendLineToCache(s.substr(start, end - start));
+		const std::string& theSubString = s.substr(start, end - start);
+		SplitAndAppendLineToCache(font, theSubString);
 		start = end + 1;
 		end = s.find(delim, start);
 	}
-	AppendLineToCache(s.substr(start, end));
+	SplitAndAppendLineToCache(font, s.substr(start, end));
 	data->renderedText = data->text;
 }
 

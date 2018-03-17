@@ -77,8 +77,10 @@ public:
 		textField.SetText("Saland Adventures - The game that has a very long subtitle to test the outline");
 		textField.SetOutline(3, SDL_Color{255,165,0,255});
 		textField.Draw(target, 10, 10);
-		textBox.SetText("This is some text. It is also quite long. \nIt must take several lines!\nEven 3 lines!\nand 4!\nAlso5\n\nAnd a blank one above!gg\ngg");
+		textBox.SetText("This is some text. It is also quite long. \nIt must take several lines!\nEven 3 lines!\nand 4!\nAlso5\n\nAnd a blank one above!gg\ngg" 
+		"\nabcdefghijklmnopqrstuvwxyz");
 		textBox.SetOutline(1, SDL_Color{255,0,0,255});
+		textBox.SetMaxWidth(300);
 		textBox.Draw(target, 300,300);
 		circleRGBA(target,
 				150, 150, 75,

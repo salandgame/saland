@@ -40,11 +40,13 @@ public:
 	void SetFont(const char* fontName);
 	void SetFontSize(int fontSize);
 	void SetOutline(int outlineSize, const SDL_Color& color);
+	void SetMaxWidth(int width);
     const std::string& GetText() const;
 	void Draw(SDL_Renderer* target, int x, int y);
 	void UpdateCache();
 private:
 	void AppendLineToCache(const std::string& text);
+	void SplitAndAppendLineToCache(TTF_Font* font, const std::string& text);
 	SagoTextBox(const SagoTextBox& orig) = delete;
 	SagoTextBox& operator=(const SagoTextBox& base) = delete;
 	struct SagoTextBoxData;
