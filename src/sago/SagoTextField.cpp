@@ -24,16 +24,51 @@ SOFTWARE.
 
 #include "SagoTextField.hpp"
 #include <iostream>
+#include <SDL/SDL_ttf.h>
 
 namespace sago {
+
+	class OutlineHandler {
+		TTF_Font* font;
+		int originalOutline = 0;
+		int targetOutline;
+		bool doChange = false;
+	public:
+		OutlineHandler(TTF_Font* font, int outline) : font{font}, targetOutline{outline} {
+			originalOutline = TTF_GetFontOutline(font);
+			if (originalOutline == targetOutline) {
+				return;
+			}
+			doChange = true;
+			TTF_SetFontOutline(font, targetOutline);
+		};
+		
+		void reset() {
+			if (doChange) {
+				TTF_SetFontOutline(font,originalOutline);
+				doChange = false;
+			}
+		}
+		
+		~OutlineHandler() {
+			reset();
+		}
+	private:
+		OutlineHandler(const OutlineHandler& orig) = delete;
+		OutlineHandler& operator=(const OutlineHandler& base) = delete;
+	};
 	
 struct SagoTextField::SagoTextFieldData {
 	sago::SagoDataHolder* tex = nullptr;
 	SDL_Surface* textSurface = nullptr;
 	SDL_Texture* texture = nullptr;
+	SDL_Surface* outlineTextSurface = nullptr;
+	SDL_Texture* outlineTexture = nullptr;
 	std::string fontName = "freeserif";
 	SDL_Color color = { 255, 255, 255, 0 };
+	SDL_Color outlineColor = { 255, 255, 0, 0 };
 	int fontSize = 16;
+	int outline = 0;
 	std::string text = "";
 	std::string renderedText = "";
 };
@@ -51,7 +86,7 @@ void SagoTextField::SetHolder(SagoDataHolder* holder) {
 	data->tex = holder;
 }
 
-void SagoTextField::SetText(std::string text) {
+void SagoTextField::SetText(const char* text) {
 	data->text = text;
 }
 
@@ -59,12 +94,17 @@ void SagoTextField::SetColor(const SDL_Color& color) {
 	data->color = color;
 }
 
-void SagoTextField::SetFont(const std::string& fontName) {
+void SagoTextField::SetFont(const char* fontName) {
 	data->fontName = fontName;
 }
 
 void SagoTextField::SetFontSize(int fontSize) {
 	data->fontSize = fontSize;
+}
+
+void SagoTextField::SetOutline(int outlineSize, const SDL_Color& color) {
+	data->outline = outlineSize;
+	data->outlineColor = color;
 }
 
 std::string SagoTextField::GetText() const {
@@ -84,6 +124,14 @@ void SagoTextField::ClearCache() {
 		SDL_FreeSurface(data->textSurface);
 		data->textSurface = nullptr;
 	}
+	if (data->outlineTexture) {
+		SDL_DestroyTexture(data->outlineTexture);
+		data->outlineTexture = nullptr;
+	}
+	if (data->outlineTextSurface) {
+		SDL_FreeSurface(data->outlineTextSurface);
+		data->outlineTextSurface = nullptr;
+	}
 }
 
 void SagoTextField::UpdateCache(SDL_Renderer* target) {
@@ -91,6 +139,12 @@ void SagoTextField::UpdateCache(SDL_Renderer* target) {
 	TTF_Font *font = data->tex->getFontPtr(data->fontName, data->fontSize);
 	data->textSurface = TTF_RenderText_Blended (font, data->text.c_str(), data->color);
 	data->texture = SDL_CreateTextureFromSurface(target, data->textSurface);
+	if (data->outline > 0) {
+		OutlineHandler oh(font, data->outline);
+		data->outlineTextSurface = TTF_RenderText_Blended (font, data->text.c_str(), data->outlineColor);
+		data->outlineTexture = SDL_CreateTextureFromSurface(target, data->outlineTextSurface);
+		oh.reset();
+	}
 	data->renderedText = data->text;
 }
 
@@ -108,6 +162,13 @@ void SagoTextField::Draw(SDL_Renderer* target, int x, int y) {
 	int texH = 0;
 	SDL_QueryTexture(data->texture, NULL, NULL, &texW, &texH);
 	SDL_Rect dstrect = { x, y, texW, texH };
+	if (data->outlineTexture) {
+		int outlineTexW = 0;
+		int outlineTexH = 0;
+		SDL_QueryTexture(data->outlineTexture, NULL, NULL, &outlineTexW, &outlineTexH);
+		SDL_Rect dstrect = { x-(outlineTexW-texW)/2, y-(outlineTexH-texH)/2, outlineTexW, outlineTexH };
+		SDL_RenderCopy(target, data->outlineTexture, NULL, &dstrect);
+	}
 	SDL_RenderCopy(target, data->texture, NULL, &dstrect);
 }
 

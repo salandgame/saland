@@ -71,7 +71,8 @@ public:
 	virtual void Draw(SDL_Renderer* target) override {
 		
 		
-		textField.SetText("Saland Adventures");
+		textField.SetText("Saland Adventures - The game that has a very long subtitle - to test the outline");
+		textField.SetOutline(3, SDL_Color{255,165,0,255});
 		textField.Draw(target, 10, 10);
 		circleRGBA(target,
 				150, 150, 75,

@@ -34,10 +34,11 @@ public:
 	SagoTextField();
 	virtual ~SagoTextField();
     void SetHolder(SagoDataHolder* holder);
-    void SetText(std::string text);
+    void SetText(const char* text);
 	void SetColor(const SDL_Color& color);
-	void SetFont(const std::string& fontName);
+	void SetFont(const char* fontName);
 	void SetFontSize(int fontSize);
+	void SetOutline(int outlineSize, const SDL_Color& color);
     std::string GetText() const;
 	void Draw(SDL_Renderer* target, int x, int y);
 	void UpdateCache(SDL_Renderer* target);
