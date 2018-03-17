@@ -43,6 +43,7 @@ https://github.com/sago007/saland
 #include "sago/SagoMisc.hpp"
 #include "sago/platform_folders.h"
 #include "sagotmx/tmx_struct.h"
+#include "sago/SagoTextBox.hpp"
 
 #if defined(_WIN32)
 #include <windows.h>
@@ -62,6 +63,8 @@ public:
 	TitleScreen() {
 		textField.SetHolder(globalData.dataHolder);
 		textField.SetFontSize(30);
+		textBox.SetHolder(globalData.dataHolder);
+		textBox.SetFontSize(16);
 	}
 	
 	virtual bool IsActive() override {
@@ -71,9 +74,12 @@ public:
 	virtual void Draw(SDL_Renderer* target) override {
 		
 		
-		textField.SetText("Saland Adventures - The game that has a very long subtitle - to test the outline");
+		textField.SetText("Saland Adventures - The game that has a very long subtitle to test the outline");
 		textField.SetOutline(3, SDL_Color{255,165,0,255});
 		textField.Draw(target, 10, 10);
+		textBox.SetText("This is some text. It is also quite long. \nIt must take several lines!\nEven 3 lines!\nand 4!\nAlso5\n\nAnd a blank one above!gg\ngg");
+		textBox.SetOutline(1, SDL_Color{255,0,0,255});
+		textBox.Draw(target, 300,300);
 		circleRGBA(target,
 				150, 150, 75,
 				0, 0, 255, 255);
@@ -102,6 +108,7 @@ public:
 private:
 	bool isActive = true;
 	sago::SagoTextField textField;
+	sago::SagoTextBox textBox;
 };
 
 void RunGameState(sago::GameStateInterface& state ) {

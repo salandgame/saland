@@ -22,20 +22,19 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef SAGOTEXTFIELD_HPP
-#define SAGOTEXTFIELD_HPP
+#ifndef SAGOTEXTBOX_HPP
+#define SAGOTEXTBOX_HPP
 
 #include "SagoDataHolder.hpp"
+#include "SagoTextField.hpp"
 
 namespace sago {
 
-class SagoTextField {
+class SagoTextBox {
 public:
-	SagoTextField();
-	SagoTextField(SagoTextField&& o) noexcept;
-	SagoTextField& operator=(const SagoTextField&& base) = delete;
-	virtual ~SagoTextField();
-    void SetHolder(SagoDataHolder* holder);
+	SagoTextBox();
+	virtual ~SagoTextBox();
+	void SetHolder(SagoDataHolder* holder);
     void SetText(const char* text);
 	void SetColor(const SDL_Color& color);
 	void SetFont(const char* fontName);
@@ -43,16 +42,16 @@ public:
 	void SetOutline(int outlineSize, const SDL_Color& color);
     const std::string& GetText() const;
 	void Draw(SDL_Renderer* target, int x, int y);
-	void UpdateCache(SDL_Renderer* target);
-	void ClearCache();
+	void UpdateCache();
 private:
-	SagoTextField(const SagoTextField& orig) = delete;
-	SagoTextField& operator=(const SagoTextField& base) = delete;
-	struct SagoTextFieldData;
-	SagoTextFieldData *data;
+	void AppendLineToCache(const std::string& text);
+	SagoTextBox(const SagoTextBox& orig) = delete;
+	SagoTextBox& operator=(const SagoTextBox& base) = delete;
+	struct SagoTextBoxData;
+	SagoTextBoxData *data;
 };
 
 }  //namespace sago
 
-#endif /* SAGOTEXTFIELD_HPP */
+#endif /* SAGOTEXTBOX_HPP */
 

@@ -77,7 +77,15 @@ SagoTextField::SagoTextField() {
 	data = new SagoTextFieldData();
 }
 
+SagoTextField::SagoTextField(SagoTextField&& o) noexcept {
+	data = o.data;
+	o.data = nullptr;
+}
+
 SagoTextField::~SagoTextField() {
+	if(!data) {
+		return;
+	}
 	ClearCache();
 	delete data;
 }
@@ -107,7 +115,7 @@ void SagoTextField::SetOutline(int outlineSize, const SDL_Color& color) {
 	data->outlineColor = color;
 }
 
-std::string SagoTextField::GetText() const {
+const std::string& SagoTextField::GetText() const {
 	return data->text;
 }
 
@@ -137,11 +145,13 @@ void SagoTextField::ClearCache() {
 void SagoTextField::UpdateCache(SDL_Renderer* target) {
 	ClearCache();
 	TTF_Font *font = data->tex->getFontPtr(data->fontName, data->fontSize);
-	data->textSurface = TTF_RenderText_Blended (font, data->text.c_str(), data->color);
+	data->textSurface = TTF_RenderUTF8_Blended (font, data->text.c_str(), data->color);
 	data->texture = SDL_CreateTextureFromSurface(target, data->textSurface);
+	int textWidth = 0;
+	SDL_QueryTexture(data->texture, NULL, NULL, &textWidth, NULL);
 	if (data->outline > 0) {
 		OutlineHandler oh(font, data->outline);
-		data->outlineTextSurface = TTF_RenderText_Blended (font, data->text.c_str(), data->outlineColor);
+		data->outlineTextSurface = TTF_RenderUTF8_Blended (font, data->text.c_str(), data->outlineColor);
 		data->outlineTexture = SDL_CreateTextureFromSurface(target, data->outlineTextSurface);
 		oh.reset();
 	}
@@ -166,8 +176,8 @@ void SagoTextField::Draw(SDL_Renderer* target, int x, int y) {
 		int outlineTexW = 0;
 		int outlineTexH = 0;
 		SDL_QueryTexture(data->outlineTexture, NULL, NULL, &outlineTexW, &outlineTexH);
-		SDL_Rect dstrect = { x-(outlineTexW-texW)/2, y-(outlineTexH-texH)/2, outlineTexW, outlineTexH };
-		SDL_RenderCopy(target, data->outlineTexture, NULL, &dstrect);
+		SDL_Rect dstrectOutline = { x-(data->outline), y-(data->outline), outlineTexW, outlineTexH };
+		SDL_RenderCopy(target, data->outlineTexture, NULL, &dstrectOutline);
 	}
 	SDL_RenderCopy(target, data->texture, NULL, &dstrect);
 }

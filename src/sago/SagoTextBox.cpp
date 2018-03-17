@@ -1,0 +1,119 @@
+/*
+Copyright (c) 2018 Poul Sander
+
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation files
+(the "Software"), to deal in the Software without restriction,
+including without limitation the rights to use, copy, modify, merge,
+publish, distribute, sublicense, and/or sell copies of the Software,
+and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
+#include "SagoTextBox.hpp"
+#include "SagoTextField.hpp"
+#include <vector>
+#include <SDL/SDL_ttf.h>
+
+namespace sago {
+
+struct SagoTextBox::SagoTextBoxData {
+	sago::SagoDataHolder* tex = nullptr;
+	std::string fontName = "freeserif";
+	SDL_Color color = { 255, 255, 255, 0 };
+	SDL_Color outlineColor = { 255, 255, 0, 0 };
+	int fontSize = 16;
+	int outline = 0;
+	std::string text = "";
+	std::string renderedText = "";
+	std::vector<SagoTextField> lines;
+	int maxWidth = 0;
+};
+	
+SagoTextBox::SagoTextBox() {
+	data = new SagoTextBoxData();
+}
+
+SagoTextBox::~SagoTextBox() {
+	delete data;
+}
+
+void SagoTextBox::SetHolder(SagoDataHolder* holder) {
+	data->tex = holder;
+}
+
+void SagoTextBox::SetText(const char* text) {
+	data->text = text;
+}
+
+void SagoTextBox::SetColor(const SDL_Color& color) {
+	data->color = color;
+}
+
+void SagoTextBox::SetFont(const char* fontName) {
+	data->fontName = fontName;
+}
+
+void SagoTextBox::SetFontSize(int fontSize) {
+	data->fontSize = fontSize;
+}
+
+void SagoTextBox::SetOutline(int outlineSize, const SDL_Color& color) {
+	data->outline = outlineSize;
+	data->outlineColor = color;
+}
+
+const std::string& SagoTextBox::GetText() const {
+	return data->text;
+}
+
+void SagoTextBox::AppendLineToCache(const std::string& text) {
+	data->lines.resize(data->lines.size()+1);
+	SagoTextField& tf = data->lines.back();
+	tf.SetHolder(data->tex);
+	tf.SetFont(data->fontName.c_str());
+	tf.SetFontSize(data->fontSize);
+	tf.SetColor(data->color);
+	tf.SetOutline(data->outline, data->outlineColor);
+	tf.SetText(text.c_str());
+}
+
+void SagoTextBox::UpdateCache() {
+	const char delim = '\n';
+	const std::string& s = data->text;
+	auto start = 0U;
+	auto end = s.find(delim);
+	while (end != std::string::npos)
+	{
+		AppendLineToCache(s.substr(start, end - start));
+		start = end + 1;
+		end = s.find(delim, start);
+	}
+	AppendLineToCache(s.substr(start, end));
+	data->renderedText = data->text;
+}
+
+void SagoTextBox::Draw(SDL_Renderer* target, int x, int y) {
+	if (data->text != data->renderedText) {
+		UpdateCache();
+	}
+	TTF_Font *font = data->tex->getFontPtr(data->fontName, data->fontSize);
+	int lineSkip = TTF_FontLineSkip(font);
+	for (size_t i = 0; i < data->lines.size(); ++i) {
+		data->lines[i].Draw(target, x, y+i*lineSkip);
+	}
+}
+
+}  //namespace sago
