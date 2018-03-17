@@ -81,7 +81,7 @@ public:
 	 * If the constructor without elements is used then invalidateAll(SDL_Renderer*) must be called before getTexturePtr
 	 */
 	SagoDataHolder();
-	SagoDataHolder(SDL_Renderer* renderer);
+	explicit SagoDataHolder(SDL_Renderer* renderer);
 	/**
 	 * Return a pointer to the given texture. The pointer is valid for the lifetime of SagoDataHolder object it was taken from or invalidateAll is called.
 	 * @param textureName Name of the texture

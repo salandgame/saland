@@ -24,7 +24,7 @@ SOFTWARE.
 
 #include "SagoTextField.hpp"
 #include <iostream>
-#include <SDL/SDL_ttf.h>
+#include <SDL_ttf.h>
 
 namespace sago {
 
