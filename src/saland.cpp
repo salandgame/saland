@@ -136,14 +136,13 @@ void RunGameState(sago::GameStateInterface& state ) {
 }
 
 void runGame() {
-	SDL_Window* win = NULL;
 	int posX = 100, posY = 100, width = 1024, height = 768;
 	SDL_Init(SDL_INIT_VIDEO);
 	IMG_Init(IMG_INIT_PNG);
 	TTF_Init();
 	Mix_Init(MIX_INIT_OGG);
 
-	win = SDL_CreateWindow("Saland Adventures", posX, posY, width, height, 0);
+	SDL_Window* win = SDL_CreateWindow("Saland Adventures", posX, posY, width, height, 0);
 	globalData.screen = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
 	sago::SagoDataHolder holder(globalData.screen);
 	globalData.spriteHolder.reset(new sago::SagoSpriteHolder(holder));
