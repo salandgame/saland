@@ -71,6 +71,7 @@ struct SagoTextField::SagoTextFieldData {
 	int outline = 0;
 	std::string text = "";
 	std::string renderedText = "";
+	Uint64 renderedVersion = 0;
 };
 	
 SagoTextField::SagoTextField() {
@@ -156,13 +157,14 @@ void SagoTextField::UpdateCache(SDL_Renderer* target) {
 		oh.reset();
 	}
 	data->renderedText = data->text;
+	data->renderedVersion = data->tex->getVersion();
 }
 
 void SagoTextField::Draw(SDL_Renderer* target, int x, int y) {
 	if (data->text.empty()) {
 		return;
 	}
-	if (data->text != data->renderedText) {
+	if (data->text != data->renderedText || data->renderedVersion != data->tex->getVersion()) {
 		UpdateCache(target);
 	}
 	if (!data->texture) {

@@ -40,6 +40,13 @@ public:
 	void SetFont(const char* fontName);
 	void SetFontSize(int fontSize);
 	void SetOutline(int outlineSize, const SDL_Color& color);
+	/**
+	 * Sets the max width to generate. SagoTextBox will insert line breaks to keep the width below this number.
+	 * Outline is not included in the width: If you have a 2 pixels outline the rendere may go 2 pixels beyond.
+	 * You will always need to generate at least one char per line. If max width is too low one char will be drawn per line even if it goes above max width.
+	 * Setting this to 0 will disable the feature.
+	 * @param width The maximum width before forcing a line break
+	 */
 	void SetMaxWidth(int width);
     const std::string& GetText() const;
 	void Draw(SDL_Renderer* target, int x, int y);

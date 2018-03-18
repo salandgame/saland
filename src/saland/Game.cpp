@@ -152,6 +152,7 @@ Game::Game() {
 	myFixtureDef.shape = &circleShape; //this is a pointer to the shape above
 	myFixtureDef.density = 10.0f;
 	data->human->body->CreateFixture(&myFixtureDef); //add a fixture to the body
+	data->human->body->SetTransform(b2Vec2(data->human->X / 32.0f, data->human->Y / 32.0f),data->human->body->GetAngle());
 
 	b2BodyDef batBodyDef;
 	batBodyDef.type = b2_dynamicBody;
@@ -162,6 +163,7 @@ Game::Game() {
 	batDef.shape = &circleShape;
 	batDef.density = 10.0f;
 	bat->body->CreateFixture(&batDef);
+	bat->body->SetTransform(b2Vec2(bat.get()->X / 32.0f, bat.get()->Y / 32.0f),bat->body->GetAngle());
 
 	b2BodyDef barrelBodyDef;
 	barrelBodyDef.type = b2_staticBody;

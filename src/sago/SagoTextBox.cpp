@@ -97,7 +97,6 @@ void SagoTextBox::AppendLineToCache(const std::string& text) {
 void SagoTextBox::SplitAndAppendLineToCache(TTF_Font* font, const std::string& text) {
 	int width = data->maxWidth;
 	TTF_SizeUTF8(font, text.c_str(),&width, nullptr);
-	std::cerr << "Width: " << width << "\n";
 	if (data->maxWidth <= 0 || width <= data->maxWidth) {
 		AppendLineToCache(text);
 		return;
