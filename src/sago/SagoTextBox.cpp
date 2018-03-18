@@ -26,6 +26,8 @@ SOFTWARE.
 #include "SagoTextField.hpp"
 #include <vector>
 #include <iostream>
+#include "utf8.h"
+#include <algorithm>
 
 namespace sago {
 
@@ -94,33 +96,45 @@ void SagoTextBox::AppendLineToCache(const std::string& text) {
 	tf.SetText(text.c_str());
 }
 
+
 void SagoTextBox::SplitAndAppendLineToCache(TTF_Font* font, const std::string& text) {
+	if (text.length() == 0) {
+		return;
+	}
 	int width = data->maxWidth;
 	TTF_SizeUTF8(font, text.c_str(),&width, nullptr);
-	if (data->maxWidth <= 0 || width <= data->maxWidth) {
+	if (data->maxWidth <= 0 || width <= data->maxWidth || text.length() == 1) {
 		AppendLineToCache(text);
 		return;
 	}
-	int splitLocation = 1;
+	std::string::const_iterator splitLocation = text.begin()+1;
 	bool splitDone = false;
 	while (!splitDone) {
-		size_t nextSpace = text.find(' ', splitLocation+1);
-		std::string attemptSubString = text.substr(0, nextSpace);
+		std::string::const_iterator nextSearchStart = splitLocation+1;
+		if (nextSearchStart == text.end()) {
+			splitDone = true;
+			continue;
+		}
+		std::string::const_iterator nextSpace = std::find(nextSearchStart, text.end(), ' ');
+		std::string attemptSubString(text.begin(), nextSpace);
 		TTF_SizeUTF8(font, attemptSubString.c_str(),&width, nullptr);
-		if (width <= data->maxWidth && nextSpace != std::string::npos) {
+		if (width <= data->maxWidth && nextSpace != text.end()) {
 			splitLocation = nextSpace;
 		}
 		else {
 			splitDone = true;
 		}
 	}
-	if (splitLocation == 1) {
+	if (splitLocation == text.begin()+1) {
+		splitLocation = text.begin();
+		utf8::advance(splitLocation, 1, text.end());
 		splitDone = false;
-		while (!splitDone) {
-			size_t nextSplit = splitLocation+1;
-			std::string attemptSubString = text.substr(0, nextSplit);
-			TTF_SizeUTF8(font, attemptSubString.c_str(),&width, nullptr);
-			if (width <= data->maxWidth && nextSplit != text.length()) {
+		while (!splitDone && splitLocation != text.end()) {
+			std::string::const_iterator nextSplit = splitLocation;
+			utf8::advance(nextSplit, 1, text.end());
+			std::string attemptSubString(text.begin(), nextSplit);
+			TTF_SizeUTF8(font, attemptSubString.c_str(), &width, nullptr);
+			if (width <= data->maxWidth) {
 				splitLocation = nextSplit;
 			}
 			else {
@@ -128,9 +142,12 @@ void SagoTextBox::SplitAndAppendLineToCache(TTF_Font* font, const std::string& t
 			}
 		}
 	}
-	std::string firstPart = text.substr(0, splitLocation);
+	std::string firstPart(text.begin(), splitLocation);
 	AppendLineToCache(firstPart);
-	std::string secondPart = text.substr(splitLocation+1);
+	if (splitLocation == text.end()) {
+		return;
+	}
+	std::string secondPart(splitLocation, text.end());
 	SplitAndAppendLineToCache(font, secondPart);
 }
 

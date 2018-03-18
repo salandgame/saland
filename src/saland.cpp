@@ -65,6 +65,8 @@ public:
 		textField.SetFontSize(30);
 		textBox.SetHolder(globalData.dataHolder);
 		textBox.SetFontSize(16);
+		testBox.SetHolder(globalData.dataHolder);
+		testBox.SetFontSize(16);
 	}
 	
 	virtual bool IsActive() override {
@@ -81,6 +83,9 @@ public:
 		textBox.SetOutline(1, SDL_Color{255,0,0,255});
 		textBox.SetMaxWidth(800);
 		textBox.Draw(target, 300,300);
+		testBox.SetText("a\xe6\x97\xa5\xd1\x88\xc3\x86");
+		testBox.SetMaxWidth(1);
+		testBox.Draw(target, 300,500);
 		circleRGBA(target,
 				150, 150, 75,
 				0, 0, 255, 255);
@@ -110,6 +115,7 @@ private:
 	bool isActive = true;
 	sago::SagoTextField textField;
 	sago::SagoTextBox textBox;
+	sago::SagoTextBox testBox;
 };
 
 void RunGameState(sago::GameStateInterface& state ) {
