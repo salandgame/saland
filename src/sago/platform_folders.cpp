@@ -112,10 +112,10 @@ static void throwOnRelative(const char* envName, const char* envValue) {
 }
 
 /**
- * Retrives the effective user's home dir. 
- * If the user is running as root we ignore the HOME environment. It works badly with sudo. 
+ * Retrives the effective user's home dir.
+ * If the user is running as root we ignore the HOME environment. It works badly with sudo.
  * Writing to $HOME as root implies security concerns that a multiplatform program cannot be assumed to handle.
- * @return The home directory. HOME environment is respected for non-root users if it exists. 
+ * @return The home directory. HOME environment is respected for non-root users if it exists.
  */
 static std::string getHome() {
 	std::string res;
