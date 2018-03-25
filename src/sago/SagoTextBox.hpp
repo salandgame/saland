@@ -34,8 +34,8 @@ class SagoTextBox {
 public:
 	SagoTextBox();
 	virtual ~SagoTextBox();
-	void SetHolder(SagoDataHolder* holder);
-    void SetText(const char* text);
+	void SetHolder(const SagoDataHolder* holder);
+	void SetText(const char* text);
 	void SetColor(const SDL_Color& color);
 	void SetFont(const char* fontName);
 	void SetFontSize(int fontSize);
@@ -48,7 +48,7 @@ public:
 	 * @param width The maximum width before forcing a line break
 	 */
 	void SetMaxWidth(int width);
-    const std::string& GetText() const;
+	const std::string& GetText() const;
 	void Draw(SDL_Renderer* target, int x, int y);
 	void UpdateCache();
 private:

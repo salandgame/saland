@@ -29,8 +29,8 @@ namespace sago {
 
 struct SagoSprite::SagoSpriteData {
 	TextureHandler tex;
-	SDL_Rect imgCord{};
-	SDL_Rect origin{};
+	SDL_Rect imgCord = {};
+	SDL_Rect origin = {};
 	int aniFrames = 0;
 	int aniFrameTime = 0;
 };

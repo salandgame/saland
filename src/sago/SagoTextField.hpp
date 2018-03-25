@@ -48,12 +48,12 @@ public:
 	 * Sets the data holder. This is MANDATORY
 	 * @param holder The data holder to fetch the fonts from
 	 */
-    void SetHolder(SagoDataHolder* holder);
+	void SetHolder(const SagoDataHolder* holder);
 	/**
 	 * Set the text to display.
 	 * @param text The actual UTF-8 encoded text
 	 */
-    void SetText(const char* text);
+	void SetText(const char* text);
 	void SetColor(const SDL_Color& color);
 	/**
 	 * Set the name of the font. Must be known to the data holder.
@@ -71,7 +71,7 @@ public:
 	 * Get the text we are currently drawing
 	 * @return The text
 	 */
-    const std::string& GetText() const;
+	const std::string& GetText() const;
 	void Draw(SDL_Renderer* target, int x, int y);
 	/**
 	 * Updates the cache.
