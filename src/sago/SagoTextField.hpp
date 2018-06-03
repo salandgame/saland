@@ -38,12 +38,21 @@ namespace sago {
  * Normally all values will be set at the beginning before text is drawn.
  * SetHolder MUST be called before the field is drawn!
  */
-class SagoTextField {
+class SagoTextField final {
 public:
 	SagoTextField();
 	SagoTextField(SagoTextField&& o) noexcept;
 	SagoTextField& operator=(const SagoTextField&& base) = delete;
-	virtual ~SagoTextField();
+	SagoTextField& operator=(const SagoTextField& base) = delete;
+	~SagoTextField();
+	/**
+	 * This method creates a copy of a given font.
+	 * The cache will not be copied.
+	 * This is ALMOST like the "= operator" but given its own name to prevent implicit calling. 
+	 * @param base The object to copy from
+	 * @return A reference to this object.
+	 */
+	SagoTextField& CopyFrom(const SagoTextField& base);
 	/**
 	 * Sets the data holder. This is MANDATORY
 	 * @param holder The data holder to fetch the fonts from
@@ -54,9 +63,15 @@ public:
 	 * @param text The actual UTF-8 encoded text
 	 */
 	void SetText(const char* text);
+	/**
+	 * Set the text to display.
+	 * @param text The actual UTF-8 encoded text
+	 */
+	void SetText(const std::string& text);
 	void SetColor(const SDL_Color& color);
 	/**
 	 * Set the name of the font. Must be known to the data holder.
+	 * The name could for instance be "freeserif".
 	 * @param fontName Name of the font as required by SagoDataHolder
 	 */
 	void SetFont(const char* fontName);
@@ -72,7 +87,18 @@ public:
 	 * @return The text
 	 */
 	const std::string& GetText() const;
-	void Draw(SDL_Renderer* target, int x, int y);
+	/**
+	 * A Shorthand for calling TTF_SizeUTF8 on the right font
+	 * The size is measuered WITHOUT the outline!
+	 * Will fail silently on error (except writing to stderr) and set w and h to 0 if they are not null.
+	 * @param text The text to check the rendered size for
+	 * @param w Pointer to an int where the width of the text will be stored. Maybe null.
+	 * @param h Pointer to an int where the hight of the text will be stored. Maybe null.
+	 */
+	void GetRenderedSize(const char* text, int* w = nullptr, int* h = nullptr);
+	enum class Alignment { left = 0, right=1, center = 2 };
+	enum class VerticalAlignment { top = 0, center = 1, bottom = 2};
+	void Draw(SDL_Renderer* target, int x, int y, Alignment alignment = Alignment::left, VerticalAlignment verticalAlignment = VerticalAlignment::top);
 	/**
 	 * Updates the cache.
 	 * You normally do not want to call this from the outside as it is done just in time.
@@ -88,7 +114,6 @@ public:
 	void ClearCache();
 private:
 	SagoTextField(const SagoTextField& orig) = delete;
-	SagoTextField& operator=(const SagoTextField& base) = delete;
 	struct SagoTextFieldData;
 	SagoTextFieldData *data;
 };

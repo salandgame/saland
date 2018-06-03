@@ -30,13 +30,20 @@ SOFTWARE.
 
 namespace sago {
 
-class SagoTextBox {
+class SagoTextBox final {
 public:
 	SagoTextBox();
-	virtual ~SagoTextBox();
+	~SagoTextBox();
 	void SetHolder(const SagoDataHolder* holder);
 	void SetText(const char* text);
+	void SetText(const std::string& text);
 	void SetColor(const SDL_Color& color);
+	
+	/**
+	 * Set the name of the font. Must be known to the data holder.
+	 * The name could for instance be "freeserif".
+	 * @param fontName Name of the font as required by SagoDataHolder
+	 */
 	void SetFont(const char* fontName);
 	void SetFontSize(int fontSize);
 	void SetOutline(int outlineSize, const SDL_Color& color);

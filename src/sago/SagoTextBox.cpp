@@ -60,6 +60,10 @@ void SagoTextBox::SetText(const char* text) {
 	data->text = text;
 }
 
+void SagoTextBox::SetText(const std::string& text) {
+	data->text = text;
+}
+
 void SagoTextBox::SetColor(const SDL_Color& color) {
 	data->color = color;
 }
@@ -93,14 +97,11 @@ void SagoTextBox::AppendLineToCache(const std::string& text) {
 	tf.SetFontSize(data->fontSize);
 	tf.SetColor(data->color);
 	tf.SetOutline(data->outline, data->outlineColor);
-	tf.SetText(text.c_str());
+	tf.SetText(text);
 }
 
 
 void SagoTextBox::SplitAndAppendLineToCache(TTF_Font* font, const std::string& text) {
-	if (text.length() == 0) {
-		return;
-	}
 	int width = data->maxWidth;
 	TTF_SizeUTF8(font, text.c_str(),&width, nullptr);
 	if (data->maxWidth <= 0 || width <= data->maxWidth || text.length() == 1) {
@@ -156,6 +157,10 @@ void SagoTextBox::SplitAndAppendLineToCache(TTF_Font* font, const std::string& t
 }
 
 void SagoTextBox::UpdateCache() {
+	if (!data->tex) {
+		std::cerr << "FATAL: SagoTextBox::UpdateCache - DataHolder not set!\n";
+		abort();
+	}
 	TTF_Font *font = data->tex->getFontPtr(data->fontName, data->fontSize);
 	const char delim = '\n';
 	const std::string& s = data->text;

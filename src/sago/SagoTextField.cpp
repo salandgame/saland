@@ -83,6 +83,22 @@ SagoTextField::SagoTextField(SagoTextField&& o) noexcept {
 	o.data = nullptr;
 }
 
+SagoTextField& SagoTextField::CopyFrom(const SagoTextField& base) {
+	ClearCache();
+	try {
+		*data = *(base.data);
+		//Copy all data but do not reuse the cache as it would result in a double free
+		data->outlineTextSurface = nullptr;
+		data->outlineTexture = nullptr;
+		data->textSurface = nullptr;
+		data->texture = nullptr;
+		return *this;
+	} catch (...) {
+		delete data;
+		throw;
+	}
+}
+
 SagoTextField::~SagoTextField() {
 	if(!data) {
 		return;
@@ -96,6 +112,10 @@ void SagoTextField::SetHolder(const SagoDataHolder* holder) {
 }
 
 void SagoTextField::SetText(const char* text) {
+	data->text = text;
+}
+
+void SagoTextField::SetText(const std::string& text) {
 	data->text = text;
 }
 
@@ -121,10 +141,6 @@ const std::string& SagoTextField::GetText() const {
 }
 
 void SagoTextField::ClearCache() {
-	if (!data->tex) {
-		std::cerr << "FATAL: DataHolder not set!\n";
-		abort();
-	}
 	if (data->texture) {
 		SDL_DestroyTexture(data->texture);
 		data->texture = nullptr;
@@ -144,12 +160,14 @@ void SagoTextField::ClearCache() {
 }
 
 void SagoTextField::UpdateCache(SDL_Renderer* target) {
+	if (!data->tex) {
+		std::cerr << "FATAL: DataHolder not set!\n";
+		abort();
+	}
 	ClearCache();
 	TTF_Font *font = data->tex->getFontPtr(data->fontName, data->fontSize);
 	data->textSurface = TTF_RenderUTF8_Blended (font, data->text.c_str(), data->color);
 	data->texture = SDL_CreateTextureFromSurface(target, data->textSurface);
-	int textWidth = 0;
-	SDL_QueryTexture(data->texture, NULL, NULL, &textWidth, NULL);
 	if (data->outline > 0) {
 		OutlineHandler oh(font, data->outline);
 		data->outlineTextSurface = TTF_RenderUTF8_Blended (font, data->text.c_str(), data->outlineColor);
@@ -160,7 +178,21 @@ void SagoTextField::UpdateCache(SDL_Renderer* target) {
 	data->renderedVersion = data->tex->getVersion();
 }
 
-void SagoTextField::Draw(SDL_Renderer* target, int x, int y) {
+void SagoTextField::GetRenderedSize(const char* text, int* w, int* h) {
+	TTF_Font *font = data->tex->getFontPtr(data->fontName, data->fontSize);
+	int ret = TTF_SizeUTF8(font, text, w, h);
+	if (ret) {
+		if (w) {
+			*w = 0;
+		}
+		if (h) {
+			*h = 0;
+		}
+		std::cerr << "GetRenderedSize failed to find size of " << text << ". Error code: " << ret << "\n";
+	}
+}
+
+void SagoTextField::Draw(SDL_Renderer* target, int x, int y, Alignment alignment, VerticalAlignment verticalAlignment) {
 	if (data->text.empty()) {
 		return;
 	}
@@ -173,6 +205,18 @@ void SagoTextField::Draw(SDL_Renderer* target, int x, int y) {
 	int texW = 0;
 	int texH = 0;
 	SDL_QueryTexture(data->texture, NULL, NULL, &texW, &texH);
+	if (alignment == Alignment::center) {
+		x -= texW/2;
+	}
+	if (alignment == Alignment::right) {
+		y -= texW;
+	}
+	if (verticalAlignment == VerticalAlignment::center) {
+		y -= texH/2;
+	}
+	if (verticalAlignment == VerticalAlignment::bottom) {
+		y -= texH;
+	}
 	SDL_Rect dstrect = { x, y, texW, texH };
 	if (data->outlineTexture) {
 		int outlineTexW = 0;
