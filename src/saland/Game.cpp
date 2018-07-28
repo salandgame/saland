@@ -241,6 +241,12 @@ static void DrawProjectile(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder
 	}
 }
 
+static void SetLengthToOne(float& x, float& y) {
+	float currentLength = std::sqrt(x*x + y*y);
+	x = x/currentLength;
+	y = y/currentLength;
+}
+
 void Game::Draw(SDL_Renderer* target) {
 	data->topx = std::round(data->center_x - 1024.0 / 2.0);
 	data->topy = std::round(data->center_y - 768.0 / 2.0);
@@ -294,6 +300,7 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 				projectile->Radius = 8.0f;
 				projectile->directionX = projectile->X - data->world_mouse_x;
 				projectile->directionY = projectile->Y - data->world_mouse_y;
+				SetLengthToOne(projectile->directionX, projectile->directionY);
 				data->placeables.push_back(projectile);
 			}
 			processed = true;
@@ -371,8 +378,8 @@ static void UpdateProjectile(Projectile *entity, float fDeltaTime) {
 		entity->removeMe = true;
 		return;
 	}
-	entity->X -= entity->directionX*fDeltaTime*entity->velocity/320.0f;
-	entity->Y -= entity->directionY*fDeltaTime*entity->velocity/320.0f;
+	entity->X -= entity->directionX*fDeltaTime*entity->velocity;
+	entity->Y -= entity->directionY*fDeltaTime*entity->velocity;
 }
 
 void Game::Update() {
