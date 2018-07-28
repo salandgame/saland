@@ -369,7 +369,10 @@ static void UpdateProjectile(Projectile *entity, float fDeltaTime) {
 	entity->timeToLive -= fDeltaTime;
 	if (entity->timeToLive < 0.0f) {
 		entity->removeMe = true;
+		return;
 	}
+	entity->X -= entity->directionX*fDeltaTime*entity->velocity/320.0f;
+	entity->Y -= entity->directionY*fDeltaTime*entity->velocity/320.0f;
 }
 
 void Game::Update() {
