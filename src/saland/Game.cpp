@@ -301,6 +301,7 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 				projectile->directionX = projectile->X - data->world_mouse_x;
 				projectile->directionY = projectile->Y - data->world_mouse_y;
 				SetLengthToOne(projectile->directionX, projectile->directionY);
+				projectile->fired_by = data->human;
 				data->placeables.push_back(projectile);
 			}
 			processed = true;
@@ -370,6 +371,9 @@ static void UpdateMonster(Monster *entity) {
 	b2Vec2 place = entity->body->GetPosition();
 	entity->X = place.x*pixel2unit;
 	entity->Y = place.y*pixel2unit;
+	if (entity->health <= 0.0) {
+		entity->removeMe = true;
+	}
 }
 
 static void UpdateProjectile(Projectile *entity, float fDeltaTime) {
@@ -380,6 +384,22 @@ static void UpdateProjectile(Projectile *entity, float fDeltaTime) {
 	}
 	entity->X -= entity->directionX*fDeltaTime*entity->velocity;
 	entity->Y -= entity->directionY*fDeltaTime*entity->velocity;
+}
+
+static bool Intersect(const Placeable& p1, const Placeable& p2) {
+	double distance = std::sqrt( std::pow(p1.X-p2.X, 2) + std::pow(p1.Y-p2.Y,2));
+	if (distance < p1.Radius + p2.Radius) {
+		return true;
+	}
+	return false;
+}
+
+static void ProjectileHit(Projectile* p, Placeable* target) {
+	Monster* monster = dynamic_cast<Monster*> (target);
+	if (monster) {
+		monster->health -= 10.0f;
+		p->removeMe = true;
+	}
 }
 
 void Game::Update() {
@@ -410,6 +430,18 @@ void Game::Update() {
 		Projectile* projectile = dynamic_cast<Projectile*> (entity.get());
 		if (projectile) {
 			UpdateProjectile(projectile, deltaTime);
+			for (std::shared_ptr<Placeable>& target : data->placeables) {
+				if (target->removeMe) {
+					continue;
+				}
+				if (entity != target && Intersect(*entity.get(), *target.get())) {
+					if (projectile->fired_by.get() == target.get()) {
+						continue;
+					}
+					std::cout << "Hit\n" << entity->X << "," << entity->Y << " " << target->X << "," << target->Y << "\n";
+					ProjectileHit(projectile, target.get());
+				}
+			}
 		}
 		Monster* monster = dynamic_cast<Monster*> (entity.get());
 		if (monster) {
