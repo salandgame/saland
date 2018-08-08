@@ -100,7 +100,6 @@ static void DrawOjbectGroup(SDL_Renderer* renderer, const sago::tiled::TileMap& 
 
 struct Game::GameImpl {
 	std::vector<std::shared_ptr<Placeable> > placeables;
-	float time = 0.0;
 	std::shared_ptr<Human> human;
 	std::shared_ptr<b2World> physicsBox;
 	float center_x = 0;
