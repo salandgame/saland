@@ -184,7 +184,7 @@ bool Game::IsActive() {
 
 static void DrawMiscEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const MiscItem *entity, float time,
 	int offsetX, int offsetY, bool drawCollision) {
-	if (drawCollision || true) {
+	if (drawCollision) {
 		circleRGBA(target,
 			entity->X - offsetX, entity->Y - offsetY, entity->Radius,
 			255, 255, 0, 255);
@@ -205,7 +205,7 @@ static void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolde
 		relativeAnimation = true;
 		relativeAnimationState = 1.0f - (entity->castTimeRemaining / entity->castTime);
 	}
-	if (drawCollision || true) {
+	if (drawCollision) {
 		circleRGBA(target,
 			entity->X - offsetX, entity->Y - offsetY, entity->Radius,
 			255, 255, 0, 255);
@@ -221,7 +221,7 @@ static void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolde
 }
 
 static void DrawMonster(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Monster *entity, float time, int offsetX, int offsetY, bool drawCollision) {
-	if (drawCollision || true) {
+	if (drawCollision) {
 		circleRGBA(target,
 			entity->X - offsetX, entity->Y - offsetY, entity->Radius,
 			255, 255, 0, 255);
@@ -234,7 +234,7 @@ static void DrawMonster(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, c
 static void DrawProjectile(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Projectile *entity, float time, int offsetX, int offsetY, bool drawCollision) {
 	(void)sHolder;
 	(void)time;
-	if (drawCollision || true) {
+	if (drawCollision) {
 		circleRGBA(target,
 			entity->X - offsetX, entity->Y - offsetY, entity->Radius,
 			255, 255, 0, 255);
@@ -272,15 +272,15 @@ void Game::Draw(SDL_Renderer* target) {
 	for (const auto& p : data->placeables) {
 		MiscItem* m = dynamic_cast<MiscItem*> (p.get());
 		if (m) {
-			DrawMiscEntity(target, globalData.spriteHolder.get(), m, SDL_GetTicks(), data->topx, data->topy, false);
+			DrawMiscEntity(target, globalData.spriteHolder.get(), m, SDL_GetTicks(), data->topx, data->topy, data->drawCollision);
 		}
 		Human* h = dynamic_cast<Human*> (p.get());
 		if (h) {
-			DrawHumanEntity(target, globalData.spriteHolder.get(), h, SDL_GetTicks(), data->topx, data->topy, false);
+			DrawHumanEntity(target, globalData.spriteHolder.get(), h, SDL_GetTicks(), data->topx, data->topy, data->drawCollision);
 		}
 		Monster* monster = dynamic_cast<Monster*> (p.get());
 		if (monster) {
-			DrawMonster(target, globalData.spriteHolder.get(), monster, SDL_GetTicks(), data->topx, data->topy, false);
+			DrawMonster(target, globalData.spriteHolder.get(), monster, SDL_GetTicks(), data->topx, data->topy, data->drawCollision);
 		}
 		Projectile* projectile = dynamic_cast<Projectile*> (p.get());
 		if (projectile) {
