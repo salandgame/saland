@@ -27,6 +27,7 @@ https://github.com/sago007/saland
 #include "model/World.hpp"
 #include "../sagotmx/tmx_struct.h"
 #include "../sago/SagoMisc.hpp"
+#include "../sago/SagoTextField.hpp"
 #include "globals.hpp"
 #include "model/placeables.hpp"
 #include "SDL.h"
@@ -112,6 +113,7 @@ struct Game::GameImpl {
 	int world_mouse_y = 0;
 	char direction = 0;
 	Uint32 lastUpdate = 0;
+	sago::SagoTextField bottomField;
 };
 
 Game::Game() {
@@ -170,6 +172,9 @@ Game::Game() {
 	barrelBodyDef.linearDamping = 1.0f;
 	barrel->body = data->physicsBox->CreateBody(&barrelBodyDef);
 	barrel->body->CreateFixture(&myFixtureDef);
+
+	data->bottomField.SetHolder(globalData.dataHolder);
+	data->bottomField.SetFontSize(20);
 }
 
 Game::~Game() {
@@ -286,6 +291,8 @@ void Game::Draw(SDL_Renderer* target) {
 			DrawProjectile(target, globalData.spriteHolder.get(), projectile, SDL_GetTicks(), data->topx, data->topy, true);
 		}
 	}
+	data->bottomField.SetText("This is in the lower part of the screen");
+	data->bottomField.Draw(target, 2, 768, sago::SagoTextField::Alignment::left, sago::SagoTextField::VerticalAlignment::bottom);
 }
 
 void Game::ProcessInput(const SDL_Event& event, bool& processed) {
