@@ -291,7 +291,9 @@ void Game::Draw(SDL_Renderer* target) {
 			DrawProjectile(target, globalData.spriteHolder.get(), projectile, SDL_GetTicks(), data->topx, data->topy, true);
 		}
 	}
-	data->bottomField.SetText("This is in the lower part of the screen");
+	char buffer[200];
+	snprintf(buffer, sizeof(buffer), "world_x = %d, world_y = %d", data->world_mouse_x/32, data->world_mouse_y/32);
+	data->bottomField.SetText(buffer);
 	data->bottomField.Draw(target, 2, 768, sago::SagoTextField::Alignment::left, sago::SagoTextField::VerticalAlignment::bottom);
 }
 
