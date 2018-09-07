@@ -34,6 +34,7 @@ https://github.com/sago007/saland
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include <cmath>
 #include <condition_variable>
+#include <sstream>
 
 int32 velocityIterations = 6;
 int32 positionIterations = 2;
@@ -97,6 +98,16 @@ static void DrawOjbectGroup(SDL_Renderer* renderer, const sago::tiled::TileMap& 
 				o.x + o.width - topx, o.y + o.height - topy, 255, 255, 0, 255);
 		}
 	}
+}
+
+bool PlaceablesSortLowerY(const std::shared_ptr<Placeable>& i, const std::shared_ptr<Placeable>& j) {
+	if (!j) {
+		return true;
+	}
+	if (!i) {
+		return false;
+	}
+	return i->Y+i->Radius > j->Y+j->Radius;
 }
 
 struct Game::GameImpl {
@@ -251,6 +262,18 @@ static void SetLengthToOne(float& x, float& y) {
 	y = y/currentLength;
 }
 
+static std::string GetLayerInfoForTile(const World& w, int x, int y) {
+	std::stringstream ret;
+	for (size_t i = 0; i < w.tm.layers.size(); ++i) {
+		const sago::tiled::TileLayer& tl = w.tm.layers[i];
+		int tile = sago::tiled::getTileFromLayer(w.tm, tl, x, y);
+		if (tile != 0) {
+			ret << "(" << tl.name << ":" << tile << ")";
+		}
+	}
+	return ret.str();
+}
+
 void Game::Draw(SDL_Renderer* target) {
 	data->topx = std::round(data->center_x - 1024.0 / 2.0);
 	data->topy = std::round(data->center_y - 768.0 / 2.0);
@@ -260,6 +283,7 @@ void Game::Draw(SDL_Renderer* target) {
 	if (data->topy < -10) {
 		data->topy = -10;
 	}
+	std::sort(data->placeables.begin(), data->placeables.end(),sort_placeable);
 	SDL_Texture* texture = globalData.spriteHolder->GetDataHolder().getTexturePtr("terrain");
 	for (size_t i = 0; i < data->world.tm.layers.size(); ++i) {
 		DrawLayer(target, texture, data->world.tm, i, data->topx, data->topy);
@@ -292,7 +316,10 @@ void Game::Draw(SDL_Renderer* target) {
 		}
 	}
 	char buffer[200];
-	snprintf(buffer, sizeof(buffer), "world_x = %d, world_y = %d", data->world_mouse_x/32, data->world_mouse_y/32);
+	snprintf(buffer, sizeof(buffer), "world_x = %d, world_y = %d, layer_info:%s", 
+		data->world_mouse_x/32, data->world_mouse_y/32, 
+		GetLayerInfoForTile(data->world, data->world_mouse_x/32, data->world_mouse_y/32).c_str()
+	);
 	data->bottomField.SetText(buffer);
 	data->bottomField.Draw(target, 2, 768, sago::SagoTextField::Alignment::left, sago::SagoTextField::VerticalAlignment::bottom);
 }
