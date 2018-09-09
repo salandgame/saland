@@ -73,7 +73,7 @@ static b2Body* AddStaticBody(b2World* world) {
 	return body;
 }
 
-static void AddStaticTilesToWorld(b2World* world, const sago::tiled::TileMap& tm, const sago::tiled::TileLayer& layer) {
+static b2Body* AddStaticTilesToWorld(b2World* world, const sago::tiled::TileMap& tm, const sago::tiled::TileLayer& layer) {
 	b2Body* body = AddStaticBody(world);
 	for (int i = 0; i < tm.height; ++i) {
 		for (int j = 0; j < tm.width; ++j) {
@@ -84,6 +84,34 @@ static void AddStaticTilesToWorld(b2World* world, const sago::tiled::TileMap& tm
 			AddRectToBody(body, i*32.0f, j*32.0f, 32.0f, 32.0f);
 		}
 	}
+	return body;
+}
+
+void World::init_physics(std::shared_ptr<b2World>& world) {
+	for (b2Body* b : managed_bodies) {
+		world->DestroyBody(b);
+	}
+	managed_bodies.clear();
+	const std::vector<sago::tiled::TileObjectGroup>& object_groups = tm.object_groups;
+	for (const auto& group : object_groups) {
+		for (const auto& item : group.objects) {
+			if (item.isEllipse) {
+				continue;
+			}
+			if (item.x > 0 && item.y > 0 && item.width > 0 && item.height > 0) {
+				b2Body* bodyAdded = AddStaticRect(physicsWorld.get(), item.x, item.y, item.width, item.height);
+				managed_bodies.push_back(bodyAdded);
+			}
+		}
+	}
+	const std::vector<sago::tiled::TileLayer>& layers = tm.layers;
+	for (const auto& layer : layers) {
+		if (layer.name != "blocking") {
+			continue;
+		}
+		b2Body* bodyAdded = AddStaticTilesToWorld(physicsWorld.get(), tm, layer);
+		managed_bodies.push_back(bodyAdded);
+	}
 }
 
 void World::init(std::shared_ptr<b2World>& world) {
@@ -93,23 +121,6 @@ void World::init(std::shared_ptr<b2World>& world) {
 	ts = sago::tiled::string2tileset(tsx_file);
 	tm = sago::tiled::string2tilemap(tmx_file);
 	tm.tileset.alternativeSource = &ts;
-	const std::vector<sago::tiled::TileObjectGroup>& object_groups = tm.object_groups;
-	for (const auto& group : object_groups) {
-		for (const auto& item : group.objects) {
-			if (item.isEllipse) {
-				continue;
-			}
-			if (item.x > 0 && item.y > 0 && item.width > 0 && item.height > 0) {
-				AddStaticRect(physicsWorld.get(), item.x, item.y, item.width, item.height);
-			}
-		}
-	}
-	const std::vector<sago::tiled::TileLayer>& layers = tm.layers;
-	for (const auto& layer : layers) {
-		if (layer.name != "blocking") {
-			continue;
-		}
-		AddStaticTilesToWorld(physicsWorld.get(), tm, layer);
-	}
+	init_physics(world);
 }
 

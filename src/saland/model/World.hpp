@@ -32,10 +32,12 @@ class World {
 public:
 	World();
 	void init(std::shared_ptr<b2World>& world);
+	void init_physics(std::shared_ptr<b2World>& world);
 //private:
 	sago::tiled::TileSet ts;
 	sago::tiled::TileMap tm;
 	std::shared_ptr<b2World> physicsWorld;
+	std::vector<b2Body*> managed_bodies;
 };
 
 #endif /* WORLD_HPP */

@@ -531,6 +531,18 @@ inline uint32_t getTileFromLayer(const TileMap& m, const TileLayer& l, int x, in
 	return global_tile_id;
 }
 
+inline void setTileOnLayerNumber(TileMap& m, int layer_number, int x, int y, uint32_t tile) {
+	size_t tile_index = (m.height*y+x)*sizeof(uint32_t);
+	TileLayer& l = m.layers.at(layer_number);
+	if (tile_index > l.data.payload.size()-sizeof(uint32_t) ) {
+		throw SagoTiledException("ERROR: setTileOnLayerNumber called with coordiantes out-of-bound. Called with (%d, %d). Limit (%d, %d). Or the layer is corrupt. "
+				"Reported number of tiles in layer: %ld", x, y, m.width-1, m.height-1, l.data.payload.size()/sizeof(uint32_t));
+	}
+	std::string& data = l.data.payload;
+	uint32_t* dp = reinterpret_cast<uint32_t*> (&data[tile_index]);
+	*dp = tile;
+}
+
 }  //tiled
 }  //sago
 
