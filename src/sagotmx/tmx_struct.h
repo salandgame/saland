@@ -505,6 +505,13 @@ inline void getTextureLocationFromGid(const TileMap& tm, int gid, std::string* i
 	}
 }
 
+inline bool tileInBound(const TileMap& tm, int x, int y) {
+	if (x < 0 || y < 0 || x >= tm.width || y >= tm.height) {
+		return false;
+	}
+	return true;
+}
+
 /**
  * This function tells the gid of the tile in a given location on a given map, on a given layer
  * 
