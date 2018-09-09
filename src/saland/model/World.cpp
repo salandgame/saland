@@ -89,6 +89,12 @@ static b2Body* AddStaticTilesToWorld(b2World* world, const sago::tiled::TileMap&
 
 void World::init_physics(std::shared_ptr<b2World>& world) {
 	for (b2Body* b : managed_bodies) {
+		b2Fixture* f = b->GetFixtureList();
+		while (f) {
+			b2Fixture* next_f = f->GetNext();
+			b->DestroyFixture(f);
+			f = next_f;
+		}
 		world->DestroyBody(b);
 	}
 	managed_bodies.clear();
