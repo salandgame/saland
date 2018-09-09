@@ -264,6 +264,10 @@ static void SetLengthToOne(float& x, float& y) {
 
 static std::string GetLayerInfoForTile(const World& w, int x, int y) {
 	std::stringstream ret;
+	if (x < 0 || y < 0 || x >= w.tm.width || y >= w.tm.height) {
+		ret << "Out of bound";
+		return ret.str();
+	}
 	for (size_t i = 0; i < w.tm.layers.size(); ++i) {
 		const sago::tiled::TileLayer& tl = w.tm.layers[i];
 		int tile = sago::tiled::getTileFromLayer(w.tm, tl, x, y);
@@ -341,16 +345,18 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 			}
 			processed = true;
 		}
+		int tile_x = data->world_mouse_x/32;
+		int tile_y = data->world_mouse_y/32;
 		if (event.key.keysym.sym == SDLK_w) {
 			int layer_number = 2; //  Do not hardcode
 			uint32_t tile = 485;
-			sago::tiled::setTileOnLayerNumber(data->world.tm, layer_number, data->world_mouse_x/32, data->world_mouse_y/32, tile);
+			sago::tiled::setTileOnLayerNumber(data->world.tm, layer_number, tile_x, tile_y, tile);
 			data->world.init_physics(data->physicsBox);
 		}
 		if (event.key.keysym.sym == SDLK_e) {
 			int layer_number = 2; //  Do not hardcode
 			uint32_t tile = 0;
-			sago::tiled::setTileOnLayerNumber(data->world.tm, layer_number, data->world_mouse_x/32, data->world_mouse_y/32, tile);
+			sago::tiled::setTileOnLayerNumber(data->world.tm, layer_number, tile_x, tile_y, tile);
 			data->world.init_physics(data->physicsBox);
 		}
 	}
