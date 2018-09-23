@@ -118,6 +118,28 @@ void World::init_physics(std::shared_ptr<b2World>& world) {
 		b2Body* bodyAdded = AddStaticTilesToWorld(physicsWorld.get(), tm, layer);
 		managed_bodies.push_back(bodyAdded);
 	}
+	{
+		//Top left
+		b2Body* bodyAdded = AddStaticRect(physicsWorld.get(), -32, -32, (layers.at(0).width/2-5)*32, 32);
+		managed_bodies.push_back(bodyAdded);
+		//top right
+		bodyAdded = AddStaticRect(physicsWorld.get(), (layers.at(0).width/2+5)*32, -32, (layers.at(0).width)*32, 32);
+		managed_bodies.push_back(bodyAdded);
+		//bottom left
+		bodyAdded = AddStaticRect(physicsWorld.get(), 0, (layers.at(0).height*32), (layers.at(0).width/2-5)*32, 32);
+		managed_bodies.push_back(bodyAdded);
+		//bottom right
+		bodyAdded = AddStaticRect(physicsWorld.get(), (layers.at(0).width/2+5)*32, (layers.at(0).height*32), (layers.at(0).width)*32, 32);
+		managed_bodies.push_back(bodyAdded);
+		bodyAdded = AddStaticRect(physicsWorld.get(), -32, 0, 32, (layers.at(0).height/2-5)*32);
+		managed_bodies.push_back(bodyAdded);
+		bodyAdded = AddStaticRect(physicsWorld.get(), -32, (layers.at(0).height/2+5)*32, 32, layers.at(0).height*32);
+		managed_bodies.push_back(bodyAdded);
+		bodyAdded = AddStaticRect(physicsWorld.get(), (layers.at(0).width)*32, 0, 32, (layers.at(0).height/2-5)*32);
+		managed_bodies.push_back(bodyAdded);
+		bodyAdded = AddStaticRect(physicsWorld.get(), (layers.at(0).width)*32, (layers.at(0).height/2+5)*32, 32, layers.at(0).height*32);
+		managed_bodies.push_back(bodyAdded);
+	}
 }
 
 void World::init(std::shared_ptr<b2World>& world) {
