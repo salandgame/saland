@@ -23,6 +23,7 @@ https://github.com/sago007/saland
 
 #include <SDL2/SDL_timer.h>
 
+#include "GameRegion.hpp"
 #include "Game.hpp"
 #include "model/World.hpp"
 #include "../sagotmx/tmx_struct.h"
@@ -111,13 +112,12 @@ bool PlaceablesSortLowerY(const std::shared_ptr<Placeable>& i, const std::shared
 }
 
 struct Game::GameImpl {
-	std::vector<std::shared_ptr<Placeable> > placeables;
+	GameRegion gameRegion;
+	
 	std::shared_ptr<Human> human;
-	std::shared_ptr<b2World> physicsBox;
 	float center_x = 0;
 	float center_y = 0;
 	bool drawCollision = true;
-	World world;
 	int topx = 0.0;
 	int topy = 0.0;
 	int world_mouse_x = 0; //Mouse cooridinates relative to the world
@@ -130,8 +130,8 @@ struct Game::GameImpl {
 Game::Game() {
 	data.reset(new Game::GameImpl());
 	b2Vec2 gravity(0.0f, 0.0f);
-	data->physicsBox.reset(new b2World(gravity));
-	data->world.init(data->physicsBox);
+	data->gameRegion.physicsBox.reset(new b2World(gravity));
+	data->gameRegion.world.init(data->gameRegion.physicsBox);
 	data->lastUpdate = SDL_GetTicks();
 	data->human.reset(new Human());
 	std::shared_ptr<MiscItem> barrel = std::make_shared<MiscItem>();
@@ -139,7 +139,7 @@ Game::Game() {
 	barrel.get()->sprite = "item_barrel";
 	barrel.get()->X = 100.0f;
 	barrel.get()->Y = 100.0f;
-	data->placeables.push_back(barrel);
+	data->gameRegion.placeables.push_back(barrel);
 
 
 	std::shared_ptr<Monster> bat = std::make_shared<Monster>();
@@ -147,15 +147,15 @@ Game::Game() {
 	bat.get()->race = "bat";
 	bat.get()->X = 200.0f;
 	bat.get()->Y = 200.0f;
-	data->placeables.push_back(bat);
-	data->placeables.push_back(data->human);
+	data->gameRegion.placeables.push_back(bat);
+	data->gameRegion.placeables.push_back(data->human);
 
 
 	b2BodyDef myBodyDef;
 	myBodyDef.type = b2_dynamicBody; //this will be a dynamic body
 	myBodyDef.position.Set(0, 0);
 	myBodyDef.linearDamping = 1.0f;
-	data->human->body = data->physicsBox->CreateBody(&myBodyDef);
+	data->human->body = data->gameRegion.physicsBox->CreateBody(&myBodyDef);
 
 	b2CircleShape circleShape;
 	circleShape.m_p.Set(0, 0); //position, relative to body position
@@ -170,7 +170,7 @@ Game::Game() {
 	batBodyDef.type = b2_dynamicBody;
 	batBodyDef.position.Set(0, 0);
 	batBodyDef.linearDamping = 1.0f;
-	bat->body = data->physicsBox->CreateBody(&batBodyDef);
+	bat->body = data->gameRegion.physicsBox->CreateBody(&batBodyDef);
 	b2FixtureDef batDef;
 	batDef.shape = &circleShape;
 	batDef.density = 10.0f;
@@ -181,7 +181,7 @@ Game::Game() {
 	barrelBodyDef.type = b2_staticBody;
 	barrelBodyDef.position.Set(barrel.get()->X / 32.0f, barrel.get()->Y / 32.0f);
 	barrelBodyDef.linearDamping = 1.0f;
-	barrel->body = data->physicsBox->CreateBody(&barrelBodyDef);
+	barrel->body = data->gameRegion.physicsBox->CreateBody(&barrelBodyDef);
 	barrel->body->CreateFixture(&myFixtureDef);
 
 	data->bottomField.SetHolder(globalData.dataHolder);
@@ -189,7 +189,7 @@ Game::Game() {
 }
 
 Game::~Game() {
-	std::string data2save = sago::tiled::tilemap2string(data->world.tm);
+	std::string data2save = sago::tiled::tilemap2string(data->gameRegion.world.tm);
 	sago::WriteFileContent("maps/sample1.tmx", data2save);
 }
 
@@ -287,13 +287,13 @@ void Game::Draw(SDL_Renderer* target) {
 	if (data->topy < -10) {
 		data->topy = -10;
 	}
-	std::sort(data->placeables.begin(), data->placeables.end(),sort_placeable);
+	std::sort(data->gameRegion.placeables.begin(), data->gameRegion.placeables.end(),sort_placeable);
 	SDL_Texture* texture = globalData.spriteHolder->GetDataHolder().getTexturePtr("terrain");
-	for (size_t i = 0; i < data->world.tm.layers.size(); ++i) {
-		DrawLayer(target, texture, data->world.tm, i, data->topx, data->topy);
+	for (size_t i = 0; i < data->gameRegion.world.tm.layers.size(); ++i) {
+		DrawLayer(target, texture, data->gameRegion.world.tm, i, data->topx, data->topy);
 	}
-	for (size_t i = 0; i < data->world.tm.object_groups.size(); ++i) {
-		DrawOjbectGroup(target, data->world.tm, i, data->topx, data->topy);
+	for (size_t i = 0; i < data->gameRegion.world.tm.object_groups.size(); ++i) {
+		DrawOjbectGroup(target, data->gameRegion.world.tm, i, data->topx, data->topy);
 	}
 	int mousebox_x = data->world_mouse_x - data->world_mouse_x % 32 - data->topx;
 	int mousebox_y = data->world_mouse_y - data->world_mouse_y % 32 - data->topy;
@@ -301,7 +301,7 @@ void Game::Draw(SDL_Renderer* target) {
 		mousebox_x + 32, mousebox_y + 32, 255, 255, 0, 255);
 
 	//Draw
-	for (const auto& p : data->placeables) {
+	for (const auto& p : data->gameRegion.placeables) {
 		MiscItem* m = dynamic_cast<MiscItem*> (p.get());
 		if (m) {
 			DrawMiscEntity(target, globalData.spriteHolder.get(), m, SDL_GetTicks(), data->topx, data->topy, data->drawCollision);
@@ -322,7 +322,7 @@ void Game::Draw(SDL_Renderer* target) {
 	char buffer[200];
 	snprintf(buffer, sizeof(buffer), "world_x = %d, world_y = %d, layer_info:%s", 
 		data->world_mouse_x/32, data->world_mouse_y/32, 
-		GetLayerInfoForTile(data->world, data->world_mouse_x/32, data->world_mouse_y/32).c_str()
+		GetLayerInfoForTile(data->gameRegion.world, data->world_mouse_x/32, data->world_mouse_y/32).c_str()
 	);
 	data->bottomField.SetText(buffer);
 	data->bottomField.Draw(target, 2, 768, sago::SagoTextField::Alignment::left, sago::SagoTextField::VerticalAlignment::bottom);
@@ -341,23 +341,23 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 				projectile->directionY = projectile->Y - data->world_mouse_y;
 				SetLengthToOne(projectile->directionX, projectile->directionY);
 				projectile->fired_by = data->human;
-				data->placeables.push_back(projectile);
+				data->gameRegion.placeables.push_back(projectile);
 			}
 			processed = true;
 		}
 		int tile_x = data->world_mouse_x/32;
 		int tile_y = data->world_mouse_y/32;
-		if (event.key.keysym.sym == SDLK_w && sago::tiled::tileInBound(data->world.tm, tile_x, tile_y)) {
+		if (event.key.keysym.sym == SDLK_w && sago::tiled::tileInBound(data->gameRegion.world.tm, tile_x, tile_y)) {
 			int layer_number = 2; //  Do not hardcode
 			uint32_t tile = 485;
-			sago::tiled::setTileOnLayerNumber(data->world.tm, layer_number, tile_x, tile_y, tile);
-			data->world.init_physics(data->physicsBox);
+			sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
+			data->gameRegion.world.init_physics(data->gameRegion.physicsBox);
 		}
-		if (event.key.keysym.sym == SDLK_e && sago::tiled::tileInBound(data->world.tm, tile_x, tile_y)) {
+		if (event.key.keysym.sym == SDLK_e && sago::tiled::tileInBound(data->gameRegion.world.tm, tile_x, tile_y)) {
 			int layer_number = 2; //  Do not hardcode
 			uint32_t tile = 0;
-			sago::tiled::setTileOnLayerNumber(data->world.tm, layer_number, tile_x, tile_y, tile);
-			data->world.init_physics(data->physicsBox);
+			sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
+			data->gameRegion.world.init_physics(data->gameRegion.physicsBox);
 		}
 	}
 }
@@ -476,14 +476,14 @@ void Game::Update() {
 	data->human->moveX = deltaX;
 	data->human->moveY = deltaY;
 	UpdateHuman(data->human.get(), deltaTime);
-	for (std::shared_ptr<Placeable>& entity : data->placeables) {
+	for (std::shared_ptr<Placeable>& entity : data->gameRegion.placeables) {
 		if (entity->removeMe) {
 			continue;
 		}
 		Projectile* projectile = dynamic_cast<Projectile*> (entity.get());
 		if (projectile) {
 			UpdateProjectile(projectile, deltaTime);
-			for (std::shared_ptr<Placeable>& target : data->placeables) {
+			for (std::shared_ptr<Placeable>& target : data->gameRegion.placeables) {
 				if (target->removeMe) {
 					continue;
 				}
@@ -501,7 +501,7 @@ void Game::Update() {
 			UpdateMonster(monster);
 		}
 	}
-	auto& vp = data->placeables;
+	auto& vp = data->gameRegion.placeables;
 	vp.erase(std::remove_if(std::begin(vp), std::end(vp), [](std::shared_ptr<Placeable> p) { return p->removeMe; }), std::end(vp));
 	data->center_x = std::round(data->human->X);
 	data->center_y = std::round(data->human->Y);
@@ -512,6 +512,6 @@ void Game::Update() {
 	data->world_mouse_y = data->topy + mousey;
 	//std::cout << "world x: " << data->world_mouse_x << ", y: " << data->world_mouse_y << "             \r";
 	data->lastUpdate = nowTime;
-	data->physicsBox->Step(deltaTime / 1000.0f / 60.0f, velocityIterations, positionIterations);
-	std::sort(data->placeables.begin(), data->placeables.end(), sort_placeable);
+	data->gameRegion.physicsBox->Step(deltaTime / 1000.0f / 60.0f, velocityIterations, positionIterations);
+	std::sort(data->gameRegion.placeables.begin(), data->gameRegion.placeables.end(), sort_placeable);
 }
