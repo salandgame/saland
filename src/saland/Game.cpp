@@ -191,8 +191,10 @@ static void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolde
 	} else {
 		mySprite.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
 	}
-	/*const sago::SagoSprite &myHair = sHolder->GetSprite(entity->race + "_"+animation+"_hair_1_"+string(1,entity->direction));
-	myHair.Draw(target, time, entity->X-offsetX, entity->Y-offsetY);*/
+	if (entity->hair.length() > 0) {
+		const sago::SagoSprite &myHair = sHolder->GetSprite(entity->race + "_"+animation+"_"+entity->hair+"_"+std::string(1,entity->direction));
+		myHair.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
+	}
 }
 
 static void DrawMonster(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Monster *entity, float time, int offsetX, int offsetY, bool drawCollision) {
