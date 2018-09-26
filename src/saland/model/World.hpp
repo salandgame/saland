@@ -32,6 +32,7 @@ class World {
 public:
 	World();
 	void init(std::shared_ptr<b2World>& world);
+	void init(std::shared_ptr<b2World>& world, const std::string& mapFileName);
 	void init_physics(std::shared_ptr<b2World>& world);
 //private:
 	sago::tiled::TileSet ts;

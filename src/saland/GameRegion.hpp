@@ -31,12 +31,15 @@ https://github.com/sago007/saland
 class GameRegion {
 public:
 	GameRegion();
-	void Init();
+	void Init(int x, int y);
 	std::vector<std::shared_ptr<Placeable> > placeables;
 	std::shared_ptr<b2World> physicsBox;
+	void SaveRegion();
 	World world;
 private:
-
+	int region_x = 0;
+	int region_y = 0;
+	std::string mapFileName = "maps/sample1.tmx";
 };
 
 #endif /* GAMEREGION_HPP */

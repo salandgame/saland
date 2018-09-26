@@ -24,13 +24,25 @@ https://github.com/sago007/saland
 #include "GameRegion.hpp"
 
 GameRegion::GameRegion() {
-	Init();
+	Init(0, 0);
 }
 
-void GameRegion::Init() {
+static std::string createFileName(int x, int y) {
+	std::string ret = std::string("maps/m")+std::to_string(x)+"x"+std::to_string(y)+".tmx" ;
+	return ret;
+}
+
+void GameRegion::Init(int x, int y) {
+	region_x = x;
+	region_y = y;
+	mapFileName = createFileName(region_x, region_y);
+	std::string loadMap = mapFileName;
+	if (!sago::FileExists(loadMap.c_str())) {
+		loadMap = "maps/sample1.tmx";
+	}
 	b2Vec2 gravity(0.0f, 0.0f);
 	physicsBox.reset(new b2World(gravity));
-	world.init(physicsBox);
+	world.init(physicsBox, loadMap);
 	
 	std::shared_ptr<MiscItem> barrel = std::make_shared<MiscItem>();
 	barrel.get()->Radius = 16.0f;
@@ -74,5 +86,8 @@ void GameRegion::Init() {
 
 }
 
-
+void GameRegion::SaveRegion() {
+	std::string data2save = sago::tiled::tilemap2string(world.tm);
+	sago::WriteFileContent(mapFileName.c_str(), data2save);
+}
 

@@ -150,8 +150,7 @@ Game::Game() {
 }
 
 Game::~Game() {
-	std::string data2save = sago::tiled::tilemap2string(data->gameRegion.world.tm);
-	sago::WriteFileContent("maps/sample1.tmx", data2save);
+	data->gameRegion.SaveRegion();
 }
 
 bool Game::IsActive() {

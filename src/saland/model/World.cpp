@@ -142,13 +142,17 @@ void World::init_physics(std::shared_ptr<b2World>& world) {
 	}
 }
 
-void World::init(std::shared_ptr<b2World>& world) {
+void World::init(std::shared_ptr<b2World>& world, const std::string& mapFileName) {
 	this->physicsWorld = world;
 	std::string tsx_file = sago::GetFileContent("maps/terrain.tsx");
-	std::string tmx_file = sago::GetFileContent("maps/sample1.tmx");
+	std::string tmx_file = sago::GetFileContent(mapFileName);
 	ts = sago::tiled::string2tileset(tsx_file);
 	tm = sago::tiled::string2tilemap(tmx_file);
 	tm.tileset.alternativeSource = &ts;
 	init_physics(world);
+}
+
+void World::init(std::shared_ptr<b2World>& world) {
+	init(world, "maps/sample1.tmx");
 }
 
