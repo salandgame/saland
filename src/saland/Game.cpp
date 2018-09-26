@@ -69,6 +69,27 @@ static void Draw(SDL_Renderer* target, SDL_Texture* t, int x, int y, const SDL_R
 	SDL_RenderCopy(target, t, &part, &pos);
 }
 
+static void DrawOuterBorder(SDL_Renderer* renderer, SDL_Texture* texture, const sago::tiled::TileMap& tm, int topx, int topy, uint32 outerTile) {
+	for (int i = -1; i < tm.width + 1; ++i) {
+		if (i >= tm.width/2-5 && i < tm.width/2+5) {
+			continue;
+		}
+		SDL_Rect part{};
+		getTextureLocationFromGid(tm, outerTile, nullptr, &part.x, &part.y, &part.w, &part.h);
+		Draw(renderer, texture, 32 * i - topx, -32 - topy, part);
+		Draw(renderer, texture, 32 * i - topx, 32 * tm.height - topy, part);
+	}
+	for (int i = 0; i < tm.height; ++i) {
+		if (i >= tm.height/2-5 && i < tm.height/2+5) {
+			continue;
+		}
+		SDL_Rect part{};
+		getTextureLocationFromGid(tm, outerTile, nullptr, &part.x, &part.y, &part.w, &part.h);
+		Draw(renderer, texture, 32 * tm.width - topx, 32*i - topy, part);
+		Draw(renderer, texture, -32 - topx, 32*i - topy, part);
+	}
+}
+
 static void DrawLayer(SDL_Renderer* renderer, SDL_Texture* texture, const sago::tiled::TileMap& tm, size_t layer, int topx, int topy) {
 	for (int i = 0; i < tm.height; ++i) {
 		for (int j = 0; j < tm.width; ++j) {
@@ -135,7 +156,7 @@ Game::Game() {
 	myBodyDef.type = b2_dynamicBody; //this will be a dynamic body
 	myBodyDef.position.Set(0, 0);
 	myBodyDef.linearDamping = 1.0f;
-	data->human->body = data->gameRegion.physicsBox->CreateBody(&myBodyDef);	
+	data->human->body = data->gameRegion.physicsBox->CreateBody(&myBodyDef);
 	b2CircleShape circleShape;
 	circleShape.m_p.Set(0, 0); //position, relative to body position
 	circleShape.m_radius = 0.5f; //radius 16 pixel (32 pixel = 1)
@@ -251,6 +272,7 @@ void Game::Draw(SDL_Renderer* target) {
 	}
 	std::sort(data->gameRegion.placeables.begin(), data->gameRegion.placeables.end(),sort_placeable);
 	SDL_Texture* texture = globalData.spriteHolder->GetDataHolder().getTexturePtr("terrain");
+	DrawOuterBorder(target, texture, data->gameRegion.world.tm, data->topx, data->topy, data->gameRegion.outerTile);
 	for (size_t i = 0; i < data->gameRegion.world.tm.layers.size(); ++i) {
 		DrawLayer(target, texture, data->gameRegion.world.tm, i, data->topx, data->topy);
 	}
@@ -282,8 +304,8 @@ void Game::Draw(SDL_Renderer* target) {
 		}
 	}
 	char buffer[200];
-	snprintf(buffer, sizeof(buffer), "world_x = %d, world_y = %d, layer_info:%s", 
-		data->world_mouse_x/32, data->world_mouse_y/32, 
+	snprintf(buffer, sizeof(buffer), "world_x = %d, world_y = %d, layer_info:%s",
+		data->world_mouse_x/32, data->world_mouse_y/32,
 		GetLayerInfoForTile(data->gameRegion.world, data->world_mouse_x/32, data->world_mouse_y/32).c_str()
 	);
 	data->bottomField.SetText(buffer);

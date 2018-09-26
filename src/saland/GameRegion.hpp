@@ -36,6 +36,7 @@ public:
 	std::shared_ptr<b2World> physicsBox;
 	void SaveRegion();
 	World world;
+	uint32_t outerTile = 485;
 private:
 	int region_x = 0;
 	int region_y = 0;
