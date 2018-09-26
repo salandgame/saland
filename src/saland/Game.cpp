@@ -113,7 +113,6 @@ bool PlaceablesSortLowerY(const std::shared_ptr<Placeable>& i, const std::shared
 
 struct Game::GameImpl {
 	GameRegion gameRegion;
-	
 	std::shared_ptr<Human> human;
 	float center_x = 0;
 	float center_y = 0;
@@ -129,34 +128,14 @@ struct Game::GameImpl {
 
 Game::Game() {
 	data.reset(new Game::GameImpl());
-	b2Vec2 gravity(0.0f, 0.0f);
-	data->gameRegion.physicsBox.reset(new b2World(gravity));
-	data->gameRegion.world.init(data->gameRegion.physicsBox);
 	data->lastUpdate = SDL_GetTicks();
 	data->human.reset(new Human());
-	std::shared_ptr<MiscItem> barrel = std::make_shared<MiscItem>();
-	barrel.get()->Radius = 16.0f;
-	barrel.get()->sprite = "item_barrel";
-	barrel.get()->X = 100.0f;
-	barrel.get()->Y = 100.0f;
-	data->gameRegion.placeables.push_back(barrel);
-
-
-	std::shared_ptr<Monster> bat = std::make_shared<Monster>();
-	bat.get()->Radius = 16.0f;
-	bat.get()->race = "bat";
-	bat.get()->X = 200.0f;
-	bat.get()->Y = 200.0f;
-	data->gameRegion.placeables.push_back(bat);
 	data->gameRegion.placeables.push_back(data->human);
-
-
 	b2BodyDef myBodyDef;
 	myBodyDef.type = b2_dynamicBody; //this will be a dynamic body
 	myBodyDef.position.Set(0, 0);
 	myBodyDef.linearDamping = 1.0f;
-	data->human->body = data->gameRegion.physicsBox->CreateBody(&myBodyDef);
-
+	data->human->body = data->gameRegion.physicsBox->CreateBody(&myBodyDef);	
 	b2CircleShape circleShape;
 	circleShape.m_p.Set(0, 0); //position, relative to body position
 	circleShape.m_radius = 0.5f; //radius 16 pixel (32 pixel = 1)
@@ -165,24 +144,6 @@ Game::Game() {
 	myFixtureDef.density = 10.0f;
 	data->human->body->CreateFixture(&myFixtureDef); //add a fixture to the body
 	data->human->body->SetTransform(b2Vec2(data->human->X / 32.0f, data->human->Y / 32.0f),data->human->body->GetAngle());
-
-	b2BodyDef batBodyDef;
-	batBodyDef.type = b2_dynamicBody;
-	batBodyDef.position.Set(0, 0);
-	batBodyDef.linearDamping = 1.0f;
-	bat->body = data->gameRegion.physicsBox->CreateBody(&batBodyDef);
-	b2FixtureDef batDef;
-	batDef.shape = &circleShape;
-	batDef.density = 10.0f;
-	bat->body->CreateFixture(&batDef);
-	bat->body->SetTransform(b2Vec2(bat.get()->X / 32.0f, bat.get()->Y / 32.0f),bat->body->GetAngle());
-
-	b2BodyDef barrelBodyDef;
-	barrelBodyDef.type = b2_staticBody;
-	barrelBodyDef.position.Set(barrel.get()->X / 32.0f, barrel.get()->Y / 32.0f);
-	barrelBodyDef.linearDamping = 1.0f;
-	barrel->body = data->gameRegion.physicsBox->CreateBody(&barrelBodyDef);
-	barrel->body->CreateFixture(&myFixtureDef);
 
 	data->bottomField.SetHolder(globalData.dataHolder);
 	data->bottomField.SetFontSize(20);

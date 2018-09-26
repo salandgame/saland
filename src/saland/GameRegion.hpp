@@ -31,7 +31,7 @@ https://github.com/sago007/saland
 class GameRegion {
 public:
 	GameRegion();
-	
+	void Init();
 	std::vector<std::shared_ptr<Placeable> > placeables;
 	std::shared_ptr<b2World> physicsBox;
 	World world;
