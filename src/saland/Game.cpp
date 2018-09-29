@@ -147,9 +147,9 @@ struct Game::GameImpl {
 	sago::SagoTextField bottomField;
 };
 
-Game::Game() {
-	data.reset(new Game::GameImpl());
-	data->lastUpdate = SDL_GetTicks();
+void Game::ResetWorld(int x, int y) {
+	data->gameRegion.SaveRegion();
+	data->gameRegion.Init(x, y);
 	data->human.reset(new Human());
 	data->gameRegion.placeables.push_back(data->human);
 	b2BodyDef myBodyDef;
@@ -165,6 +165,12 @@ Game::Game() {
 	myFixtureDef.density = 10.0f;
 	data->human->body->CreateFixture(&myFixtureDef); //add a fixture to the body
 	data->human->body->SetTransform(b2Vec2(data->human->X / 32.0f, data->human->Y / 32.0f),data->human->body->GetAngle());
+}
+
+Game::Game() {
+	data.reset(new Game::GameImpl());
+	data->lastUpdate = SDL_GetTicks();
+	ResetWorld(0,0);
 
 	data->bottomField.SetHolder(globalData.dataHolder);
 	data->bottomField.SetFontSize(20);
@@ -498,4 +504,20 @@ void Game::Update() {
 	data->lastUpdate = nowTime;
 	data->gameRegion.physicsBox->Step(deltaTime / 1000.0f / 60.0f, velocityIterations, positionIterations);
 	std::sort(data->gameRegion.placeables.begin(), data->gameRegion.placeables.end(), sort_placeable);
+	if (data->human->X < 0) {
+		ResetWorld(data->gameRegion.GetRegionX()-1, data->gameRegion.GetRegionY());
+		data->human->body->SetTransform(b2Vec2(data->gameRegion.world.tm.width, data->gameRegion.world.tm.height/2),data->human->body->GetAngle()) ;
+	}
+	if (data->human->X > data->gameRegion.world.tm.width*32) {
+		ResetWorld(data->gameRegion.GetRegionX()+1, data->gameRegion.GetRegionY());
+		data->human->body->SetTransform(b2Vec2(1, data->gameRegion.world.tm.height/2),data->human->body->GetAngle()) ;
+	}
+	if (data->human->Y < 0) {
+		ResetWorld(data->gameRegion.GetRegionX(), data->gameRegion.GetRegionY()-1);
+		data->human->body->SetTransform(b2Vec2(data->gameRegion.world.tm.width/2, data->gameRegion.world.tm.height),data->human->body->GetAngle()) ;
+	}
+	if (data->human->Y > data->gameRegion.world.tm.height*32) {
+		ResetWorld(data->gameRegion.GetRegionX(), data->gameRegion.GetRegionY()+1);
+		data->human->body->SetTransform(b2Vec2(data->gameRegion.world.tm.width/2, 1),data->human->body->GetAngle()) ;
+	}
 }

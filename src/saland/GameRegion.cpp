@@ -41,7 +41,9 @@ void GameRegion::Init(int x, int y) {
 		loadMap = "maps/sample1.tmx";
 	}
 	b2Vec2 gravity(0.0f, 0.0f);
+	placeables.clear();
 	physicsBox.reset(new b2World(gravity));
+	world.managed_bodies.clear();
 	world.init(physicsBox, loadMap);
 	
 	std::shared_ptr<MiscItem> barrel = std::make_shared<MiscItem>();
