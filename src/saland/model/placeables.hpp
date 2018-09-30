@@ -69,5 +69,15 @@ public:
 	std::string race = "bat";
 };
 
+class Projectile : public Placeable {
+public:
+	bool active = true;
+	float directionX = 1;
+	float directionY = 1;
+	float velocity = 1.0f;
+	float timeToLive = 2000.0;
+	std::shared_ptr<Placeable> fired_by;
+};
+
 #endif /* PLACEABLES_HPP */
 

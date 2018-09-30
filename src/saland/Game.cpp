@@ -23,6 +23,7 @@ https://github.com/sago007/saland
 
 #include <SDL2/SDL_timer.h>
 
+#include "GameUpdates.hpp"
 #include "GameRegion.hpp"
 #include "Game.hpp"
 #include "model/World.hpp"
@@ -40,15 +41,6 @@ https://github.com/sago007/saland
 int32 velocityIterations = 6;
 int32 positionIterations = 2;
 
-class Projectile : public Placeable {
-public:
-	bool active = true;
-	float directionX = 1;
-	float directionY = 1;
-	float velocity = 1.0f;
-	float timeToLive = 2000.0;
-	std::shared_ptr<Placeable> fired_by;
-};
 
 /**
  * This sort method sorts the elements from furthest to screen to closest to screen, so that elemnets closer to the screen will be drawn last
@@ -352,82 +344,7 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 	}
 }
 
-static void SetDesiredVelocity(b2Body* body, float x, float y) {
-	b2Vec2 vel = body->GetLinearVelocity();
-	float velChangeX = x - vel.x;
-	float velChangeY = y - vel.y;
-	float impulseX = body->GetMass() * velChangeX; //disregard time factor
-	float impulseY = body->GetMass() * velChangeY; //disregard time factor
-	//std::cout << body->GetMass() << " " << impulseX  << "\n";
-	body->ApplyLinearImpulse(b2Vec2(impulseX, impulseY), body->GetWorldCenter(), true);
-}
 
-static void SetCreatureMovementEntity(Creature *entity, float directionX, float directionY) {
-	float deltaX = directionX;
-	float deltaY = directionY;
-
-	if (deltaX == 0.0f && deltaY == 0.0f) {
-		entity->moving = false;
-		SetDesiredVelocity(entity->body, 0, 0);
-		return;
-	}
-	entity->moving = true;
-	if (deltaX * deltaX + deltaY * deltaY > 1.5f) {
-		deltaX *= 0.7071067811865476f; //sqrt(0.5)
-		deltaY *= 0.7071067811865476f; //sqrt(0.5)
-	}
-	if (deltaY > 0.0f) {
-		entity->direction = 'S';
-	}
-	if (deltaY < 0.0f) {
-		entity->direction = 'N';
-	}
-	if (deltaX < 0.0f) {
-		entity->direction = 'W';
-	}
-	if (deltaX > 0.0f) {
-		entity->direction = 'E';
-	}
-	float speed = 500.0f;
-	SetDesiredVelocity(entity->body, deltaX*speed, deltaY * speed);
-}
-
-static void UpdateHuman(Human *entity, float fDeltaTime) {
-	if (entity->castTimeRemaining > 0) {
-		entity->castTimeRemaining -= fDeltaTime;
-	}
-	if (entity->castTimeRemaining < 0) {
-		entity->castTimeRemaining = 0;
-	}
-	if (entity->castTimeRemaining != 0) {
-		entity->moveX = 0.0f;
-		entity->moveY = 0.0f;
-	}
-	SetCreatureMovementEntity(entity, entity->moveX, entity->moveY);
-	b2Vec2 place = entity->body->GetPosition();
-	entity->X = place.x*pixel2unit;
-	entity->Y = place.y*pixel2unit;
-}
-
-static void UpdateMonster(Monster *entity) {
-	SetCreatureMovementEntity(entity, entity->moveX, entity->moveY);
-	b2Vec2 place = entity->body->GetPosition();
-	entity->X = place.x*pixel2unit;
-	entity->Y = place.y*pixel2unit;
-	if (entity->health <= 0.0) {
-		entity->removeMe = true;
-	}
-}
-
-static void UpdateProjectile(Projectile *entity, float fDeltaTime) {
-	entity->timeToLive -= fDeltaTime;
-	if (entity->timeToLive < 0.0f) {
-		entity->removeMe = true;
-		return;
-	}
-	entity->X -= entity->directionX*fDeltaTime*entity->velocity;
-	entity->Y -= entity->directionY*fDeltaTime*entity->velocity;
-}
 
 static bool Intersect(const Placeable& p1, const Placeable& p2) {
 	double distance = std::sqrt( std::pow(p1.X-p2.X, 2) + std::pow(p1.Y-p2.Y,2));
@@ -437,13 +354,7 @@ static bool Intersect(const Placeable& p1, const Placeable& p2) {
 	return false;
 }
 
-static void ProjectileHit(Projectile* p, Placeable* target) {
-	Monster* monster = dynamic_cast<Monster*> (target);
-	if (monster) {
-		monster->health -= 10.0f;
-		p->removeMe = true;
-	}
-}
+
 
 void Game::Update() {
 	Uint32 nowTime = SDL_GetTicks();
