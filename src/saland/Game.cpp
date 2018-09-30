@@ -23,6 +23,7 @@ https://github.com/sago007/saland
 
 #include <SDL2/SDL_timer.h>
 
+#include "GameDraw.hpp"
 #include "GameUpdates.hpp"
 #include "GameRegion.hpp"
 #include "Game.hpp"
@@ -50,68 +51,6 @@ int32 positionIterations = 2;
  */
 static bool sort_placeable(const std::shared_ptr<Placeable> &lhs, const std::shared_ptr<Placeable> &rhs) {
 	return lhs->Y < rhs->Y;
-}
-
-static void Draw(SDL_Renderer* target, SDL_Texture* t, int x, int y, const SDL_Rect& part) {
-	SDL_Rect pos = {};
-	pos.x = x;
-	pos.y = y;
-	pos.w = 32;
-	pos.h = 32;
-	SDL_RenderCopy(target, t, &part, &pos);
-}
-
-static void DrawOuterBorder(SDL_Renderer* renderer, SDL_Texture* texture, const sago::tiled::TileMap& tm, int topx, int topy, uint32 outerTile) {
-	for (int i = -1; i < tm.width + 1; ++i) {
-		if (i >= tm.width/2-5 && i < tm.width/2+5) {
-			continue;
-		}
-		SDL_Rect part{};
-		getTextureLocationFromGid(tm, outerTile, nullptr, &part.x, &part.y, &part.w, &part.h);
-		Draw(renderer, texture, 32 * i - topx, -32 - topy, part);
-		Draw(renderer, texture, 32 * i - topx, 32 * tm.height - topy, part);
-	}
-	for (int i = 0; i < tm.height; ++i) {
-		if (i >= tm.height/2-5 && i < tm.height/2+5) {
-			continue;
-		}
-		SDL_Rect part{};
-		getTextureLocationFromGid(tm, outerTile, nullptr, &part.x, &part.y, &part.w, &part.h);
-		Draw(renderer, texture, 32 * tm.width - topx, 32*i - topy, part);
-		Draw(renderer, texture, -32 - topx, 32*i - topy, part);
-	}
-}
-
-static void DrawLayer(SDL_Renderer* renderer, SDL_Texture* texture, const sago::tiled::TileMap& tm, size_t layer, int topx, int topy) {
-	for (int i = 0; i < tm.height; ++i) {
-		for (int j = 0; j < tm.width; ++j) {
-			uint32_t gid = sago::tiled::getTileFromLayer(tm, tm.layers.at(layer), i, j);
-			if (gid == 0) {
-				continue;
-			}
-			SDL_Rect part{};
-			getTextureLocationFromGid(tm, gid, nullptr, &part.x, &part.y, &part.w, &part.h);
-			Draw(renderer, texture, 32 * i - topx, 32 * j - topy, part);
-		}
-	}
-}
-
-static void DrawOjbectGroup(SDL_Renderer* renderer, const sago::tiled::TileMap& tm, size_t object_group, int topx, int topy) {
-	const sago::tiled::TileObjectGroup& group = tm.object_groups.at(object_group);
-	for (const sago::tiled::TileObject& o : group.objects) {
-		if (o.isEllipse) {
-			ellipseRGBA(renderer, (o.x + o.width / 2) - topx, (o.y + o.height / 2) - topy, o.width / 2, o.height / 2, 255, 255, 0, 255);
-		} else if (o.polygon_points.size() > 0) {
-			for (size_t i = 0; i < o.polygon_points.size(); ++i) {
-				std::pair<int, int> first = o.polygon_points.at(i);
-				std::pair<int, int> second = (i + 1 < o.polygon_points.size()) ? o.polygon_points.at(i + 1) : o.polygon_points.at(0);
-				lineRGBA(renderer, first.first + o.x - topx, first.second + o.y - topy, second.first + o.x - topx, second.second + o.y - topy, 255, 255, 0, 255);
-			}
-		} else {
-			rectangleRGBA(renderer, o.x - topx, o.y - topy,
-				o.x + o.width - topx, o.y + o.height - topy, 255, 255, 0, 255);
-		}
-	}
 }
 
 bool PlaceablesSortLowerY(const std::shared_ptr<Placeable>& i, const std::shared_ptr<Placeable>& j) {
@@ -174,71 +113,6 @@ Game::~Game() {
 
 bool Game::IsActive() {
 	return true;
-}
-
-static void DrawMiscEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const MiscItem *entity, float time,
-	int offsetX, int offsetY, bool drawCollision) {
-	if (drawCollision) {
-		circleRGBA(target,
-			entity->X - offsetX, entity->Y - offsetY, entity->Radius,
-			255, 255, 0, 255);
-	}
-	const sago::SagoSprite &mySprite = sHolder->GetSprite(entity->sprite);
-	mySprite.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
-}
-
-static void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Human *entity, float time, int offsetX, int offsetY, bool drawCollision) {
-	std::string animation = "standing";
-	bool relativeAnimation = false;
-	float relativeAnimationState = 0.0f;
-	if (entity->moving) {
-		animation = "walkcycle";
-	}
-	if (entity->castTimeRemaining) {
-		animation = "spellcast";
-		relativeAnimation = true;
-		relativeAnimationState = 1.0f - (entity->castTimeRemaining / entity->castTime);
-	}
-	if (drawCollision) {
-		circleRGBA(target,
-			entity->X - offsetX, entity->Y - offsetY, entity->Radius,
-			255, 255, 0, 255);
-	}
-	const sago::SagoSprite &mySprite = sHolder->GetSprite(entity->race + "_" + animation + "_" + std::string(1, entity->direction));
-	if (relativeAnimation) {
-		mySprite.DrawProgressive(target, relativeAnimationState, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
-	} else {
-		mySprite.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
-	}
-	if (entity->hair.length() > 0) {
-		std::string hairAnimation = animation;
-		if (hairAnimation == "spellcast") {
-			hairAnimation = "standing";
-		}
-		const sago::SagoSprite &myHair = sHolder->GetSprite(entity->race + "_"+hairAnimation+"_"+entity->hair+"_"+std::string(1,entity->direction));
-		myHair.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
-	}
-}
-
-static void DrawMonster(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Monster *entity, float time, int offsetX, int offsetY, bool drawCollision) {
-	if (drawCollision) {
-		circleRGBA(target,
-			entity->X - offsetX, entity->Y - offsetY, entity->Radius,
-			255, 255, 0, 255);
-	}
-	const sago::SagoSprite &mySprite = sHolder->GetSprite(entity->race + "_" + std::string(1, entity->direction));
-	mySprite.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
-}
-
-
-static void DrawProjectile(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Projectile *entity, float time, int offsetX, int offsetY, bool drawCollision) {
-	(void)sHolder;
-	(void)time;
-	if (drawCollision) {
-		circleRGBA(target,
-			entity->X - offsetX, entity->Y - offsetY, entity->Radius,
-			255, 255, 0, 255);
-	}
 }
 
 static void SetLengthToOne(float& x, float& y) {
@@ -348,8 +222,6 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 	}
 }
 
-
-
 static bool Intersect(const Placeable& p1, const Placeable& p2) {
 	double distance = std::sqrt( std::pow(p1.X-p2.X, 2) + std::pow(p1.Y-p2.Y,2));
 	if (distance < p1.Radius + p2.Radius) {
@@ -357,8 +229,6 @@ static bool Intersect(const Placeable& p1, const Placeable& p2) {
 	}
 	return false;
 }
-
-
 
 void Game::Update() {
 	Uint32 nowTime = SDL_GetTicks();
