@@ -211,7 +211,11 @@ static void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolde
 		mySprite.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
 	}
 	if (entity->hair.length() > 0) {
-		const sago::SagoSprite &myHair = sHolder->GetSprite(entity->race + "_"+animation+"_"+entity->hair+"_"+std::string(1,entity->direction));
+		std::string hairAnimation = animation;
+		if (hairAnimation == "spellcast") {
+			hairAnimation = "standing";
+		}
+		const sago::SagoSprite &myHair = sHolder->GetSprite(entity->race + "_"+hairAnimation+"_"+entity->hair+"_"+std::string(1,entity->direction));
 		myHair.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
 	}
 }
