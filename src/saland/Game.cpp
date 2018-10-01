@@ -75,12 +75,13 @@ struct Game::GameImpl {
 	int world_mouse_y = 0;
 	char direction = 0;
 	Uint32 lastUpdate = 0;
+	std::string worldName = "world1";
 	sago::SagoTextField bottomField;
 };
 
 void Game::ResetWorld(int x, int y) {
 	data->gameRegion.SaveRegion();
-	data->gameRegion.Init(x, y);
+	data->gameRegion.Init(x, y, data->worldName);
 	data->human.reset(new Human());
 	data->gameRegion.placeables.push_back(data->human);
 	b2BodyDef myBodyDef;

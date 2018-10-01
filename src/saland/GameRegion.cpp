@@ -24,18 +24,18 @@ https://github.com/sago007/saland
 #include "GameRegion.hpp"
 
 GameRegion::GameRegion() {
-	Init(0, 0);
+	Init(0, 0, "world1");
 }
 
-static std::string createFileName(int x, int y) {
-	std::string ret = std::string("maps/m")+std::to_string(x)+"x"+std::to_string(y)+".tmx" ;
+static std::string createFileName(int x, int y,const std::string& worldName) {
+	std::string ret = std::string("worlds/")+worldName+"/"+std::string("maps/m")+std::to_string(x)+"x"+std::to_string(y)+".tmx" ;
 	return ret;
 }
 
-void GameRegion::Init(int x, int y) {
+void GameRegion::Init(int x, int y, const std::string& worldName) {
 	region_x = x;
 	region_y = y;
-	mapFileName = createFileName(region_x, region_y);
+	mapFileName = createFileName(region_x, region_y, worldName);
 	std::string loadMap = mapFileName;
 	if (!sago::FileExists(loadMap.c_str())) {
 		loadMap = "maps/sample1.tmx";
