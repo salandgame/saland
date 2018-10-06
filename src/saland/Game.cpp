@@ -139,13 +139,22 @@ static std::string GetLayerInfoForTile(const World& w, int x, int y) {
 }
 
 void Game::Draw(SDL_Renderer* target) {
-	data->topx = std::round(data->center_x - 1024.0 / 2.0);
-	data->topy = std::round(data->center_y - 768.0 / 2.0);
-	if (data->topx < -10) {
-		data->topx = -10;
+	double screen_width = 1024.0;
+	double screen_height = 768.0;
+	int screen_boarder = 16;
+	data->topx = std::round(data->center_x - screen_width / 2.0);
+	data->topy = std::round(data->center_y - screen_height / 2.0);
+	if (data->topx < -screen_boarder) {
+		data->topx = -screen_boarder;
 	}
-	if (data->topy < -10) {
-		data->topy = -10;
+	if (data->topy < -screen_boarder) {
+		data->topy = -screen_boarder;
+	}
+	if (data->topx+screen_width > data->gameRegion.world.tm.width*32+screen_boarder) {
+		data->topx=data->gameRegion.world.tm.width*32+screen_boarder-screen_width;
+	}
+	if (data->topy+screen_height > data->gameRegion.world.tm.height*32+screen_boarder) {
+		data->topy = data->gameRegion.world.tm.height*32+screen_boarder-screen_height;
 	}
 	std::sort(data->gameRegion.placeables.begin(), data->gameRegion.placeables.end(),sort_placeable);
 	SDL_Texture* texture = globalData.spriteHolder->GetDataHolder().getTexturePtr("terrain");
