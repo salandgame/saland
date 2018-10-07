@@ -195,7 +195,7 @@ void Game::Draw(SDL_Renderer* target) {
 		GetLayerInfoForTile(data->gameRegion.world, data->world_mouse_x/32, data->world_mouse_y/32).c_str()
 	);
 	data->bottomField.SetText(buffer);
-	data->bottomField.Draw(target, 2, 768, sago::SagoTextField::Alignment::left, sago::SagoTextField::VerticalAlignment::bottom);
+	data->bottomField.Draw(target, 2, screen_height, sago::SagoTextField::Alignment::left, sago::SagoTextField::VerticalAlignment::bottom);
 }
 
 void Game::ProcessInput(const SDL_Event& event, bool& processed) {
