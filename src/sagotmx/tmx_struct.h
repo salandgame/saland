@@ -10,7 +10,7 @@ It still has some limitations:
 * Only one (1) TileSet
 * No functions to actually change the tilemap
 
-Compiles with g++ and requires C++11 support. 
+Compiles with g++ and requires C++11 support.
 
 Requirements:
 * zlib (http://www.zlib.net/)
@@ -229,7 +229,7 @@ struct TileSet {
 };
 
 struct TileLayerData {
-	std::string encoding; 
+	std::string encoding;
 	std::string compression;
 	std::string payload;
 };
@@ -269,7 +269,7 @@ struct TileMap {
 	int tilewidth=0;
 	int tileheight=0;
 	int nextobjectid = 0;
-	TileSet tileset;
+	std::vector<TileSet> tileset;
 	std::vector<TileLayer> layers;
 	std::vector<TileObjectGroup> object_groups;
 };
@@ -351,7 +351,7 @@ inline TileMap string2tilemap(const std::string& tmx_content) {
 	std::string tmx_parseable_content = tmx_content;
 	rapidxml::xml_document<> doc;    // character type defaults to char
 	char* parsable_pointer = &tmx_parseable_content[0];  //Legal from C++11 and forward
-	doc.parse<0>(parsable_pointer); 
+	doc.parse<0>(parsable_pointer);
 	rapidxml::xml_node<> * root_node = doc.first_node("map");
 	setValueFromAttribute( root_node, "verion", m.version);
 	setValueFromAttribute( root_node, "orientation", m.orientation);
@@ -361,8 +361,10 @@ inline TileMap string2tilemap(const std::string& tmx_content) {
 	setValueFromAttribute( root_node, "tilewidth", m.tilewidth);
 	setValueFromAttribute( root_node, "tileheight", m.tileheight);
 	setValueFromAttribute( root_node, "nextobjectid", m.nextobjectid);
-	const auto& tileset_node = getElement(root_node, "tileset");
-	m.tileset = node2tileset(tileset_node);
+	//const auto& tileset_node = getElement(root_node, "tileset");
+	for (rapidxml::xml_node<> * tileset_node = root_node->first_node("tileset"); tileset_node; tileset_node = tileset_node->next_sibling("tileset")) {
+		m.tileset.push_back(node2tileset(tileset_node));
+	}
 	for (rapidxml::xml_node<> * layer_node = root_node->first_node("layer"); layer_node; layer_node = layer_node->next_sibling("layer")) {
 		TileLayer tl;
 		setValueFromAttribute(layer_node, "name", tl.name);
@@ -428,12 +430,21 @@ inline void xml_add_attribute(std::iostream& io, const char* name, int value) {
 	}
 }
 
-inline void xml_add_tileset(std::iostream& io, const TileMap& m) {
-	const auto& ts = m.tileset;
+inline void xml_add_tileset(std::iostream& io, const TileMap& m, size_t tile_set_number) {
+	const auto& ts = m.tileset.at(tile_set_number);
 	io << "<tileset";
 	xml_add_attribute(io, "firstgid", ts.firstgid);
-	xml_add_attribute(io, "source", ts.source);
-	io << "/>\n";
+	if (ts.source.length() > 0) {
+		xml_add_attribute(io, "source", ts.source);
+	}
+	else {
+		io << " name=\"" << ts.name << "\" tilewidth=\""<<ts.tilewidth <<"\" tileheight=\""<< ts.tileheight<< "\" tilecount=\""<<ts.tilecount<<"\"";
+	}
+	io << ">\n";
+	if (ts.source.length() == 0) {
+		//Write image here
+	}
+	io << "</tileset>\n";
 }
 
 inline void xml_add_layer(std::iostream& io, const TileMap& m, size_t layer_number) {
@@ -495,7 +506,9 @@ inline std::string tilemap2string(const TileMap& m) {
 	xml_add_attribute(ret,  "tileheight", m.tileheight);
 	xml_add_attribute(ret,  "nextobjectid", m.nextobjectid);
 	ret << ">\n";
-	xml_add_tileset(ret, m);
+	for (size_t i = 0; i < m.tileset.size(); ++i) {
+		xml_add_tileset(ret, m, i);
+	}
 	for (size_t i = 0; i < m.layers.size(); ++i) {
 		xml_add_layer(ret, m, i);
 	}
@@ -519,7 +532,11 @@ inline std::string tilemap2string(const TileMap& m) {
  */
 inline void getTextureLocationFromGid(const TileMap& tm, int gid, std::string* imageFile, int* x, int* y, int* w, int* h ) {
 	//Currently hardcoded to one tileset
-	const TileSet *ts = &(tm.tileset);
+	const TileSet *ts = nullptr;
+	if (tm.tileset.size() < 1) {
+		return;
+	}
+	ts = &(tm.tileset.at(0));
 	//TODO: Check this. Is "firstgid" from the tiledset related?
 	gid--;  //Gids starts at 1 by default
 	while (ts->alternativeSource) {
@@ -552,13 +569,13 @@ inline bool tileInBound(const TileMap& tm, int x, int y) {
 
 /**
  * This function tells the gid of the tile in a given location on a given map, on a given layer
- * 
- * If the layer is corrupt or the coordinates out of bound then the behavior is unspecified. 
+ *
+ * If the layer is corrupt or the coordinates out of bound then the behavior is unspecified.
  * It may return the wrong gid or throw a SagoTiledException
- * 
+ *
  * @param m The TileMap to look at. Required because the total size are located here
  * @param l The layer to look at
- * @param x The X coordinate 
+ * @param x The X coordinate
  * @param y The Y coordiante
  * @return The gid number of the given tile. Provided that X and Y are within the map limits
  */

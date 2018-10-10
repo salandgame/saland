@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="11">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" nextobjectid="11">
  <tileset firstgid="1" source="terrain.tsx"/>
- <layer id="1" name="ground_1" width="100" height="100">
+ <tileset firstgid="1025" name="city_outside" tilewidth="32" tileheight="32" tilecount="432">
+  <image source="../textures/city_outside.png" width="768" height="576"/>
+ </tileset>
+ <layer name="ground_1" width="100" height="100">
   <data encoding="base64" compression="zlib">
    eJzt0aENADAMA8Hsv0U7aXkVHks5cNzy36q6AAAAAABDTmN602ZdD33ym+iS2USb3Ca66LLd/7ku2TQBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAGQ9zDLk7
   </data>
  </layer>
- <layer id="2" name="ground_2" width="100" height="100">
+ <layer name="ground_2" width="100" height="100">
   <data encoding="base64" compression="zlib">
    eJztmztvE0EURseh4Q0JUEIBDY8ECIgSJKDgFSBJTZAgBaEj1AgJKAgFzxpo7UgohIgy5A8QkQL4FTikAHrulfey15Nd74y9u0mY70if7F2vYmuO7p2ZtWNMa6YqxjynvKtkXAhKgX0swUfpfKXx/kb5bo07+/gJH6Xzi8b7N+Wj5YR9LMJH6bCP413GnKD8sXwswEfpSH0k+UC/Kp8d5GFnlF1d8fnVtL46TTmTkrMr+LnKpJ35Y5AylJLhNj8Hu9hHuZmSvSYMJ+34uEOZUZlW6Tf+TrJcSEY9/+5aROaPecrWruzrGfYxbpJ9fKDc9fwMN0y2i5B81D3nEF0f4mA8Cnx0Rh/VxDPy8N6jRqQ+pEb4cdrEjorwwR/rkeffXavIPRPX+ybsQ2pCHmei5+ylCB8h1IYgNeLq4wWlx8S1oXtVN+WV5/trH1wH60y4tSH4zuvs5GVCfF0wD0zsYDQ6fqgSmgvGt2fljdRIKPuMLKRnLXquffNC1wicNPCdR/JGzyMhzd+taGd/mBd2jYR03yqNdueRjXTtpiibO6gte+0buhe9P8zyoR3U6fhQpZEfpn03sray17wh968px/36wUrsIC3ipl0vIa95Bb3WalUjLj60l076WOi41IiPDzjpDPlepNV367aPz3TuUiXOvEl3soU9U7bBjxMu931tH72U7ZRuSk8luX7Y2QA99lEO89rawIkrshepp9RIko+jlH7KsRQfvVFtLJmGDzhxJ2u/nuRjkDJEGW7hQ2pDh52gf2Uj80hSz7pozRF632HvSbJ82F7gJhn5vVxajdhOspLlw3YDJ81Iz2r1/To7SVtPdeIDTpKRe1pZ+3UXL74+4GQ5ss5y/Z1WKy/s4zL3QOPn5Ah8/EN61oJDjWiS5hbZD7KTKx5e4KMZ+Z2vy31fTSsnTFatfDENb1fho4lOvs9NctKrxldqJSnwkI6eR9pxou9tDWCcO0avfdPuoYByWenfoYDlyNzuu94CxSA1Uq/gf91WC67f6YLykPso8FEM5yjnKRccr+caecr7NswfHSNjL2EHtyhjlP3G3QnIBxn7ahR2cIAySalFxz614sM1ygjlesK5kYTXQkB8yPhXo2NJLXqtCC/3KHOUkyYedz43G0VeC8nLY8oG0xh37YEdVE3sSJ7n6UXG/pOJndg+5tTroXjhGpk0sQN5PqaOa9bx7Rze9zVlj2mMN48/j/kpE3uYM81utLf/GakRu0/pfqXrROaZPGpEOxEvevyTzt/P4X1XO+JE+pK40HPKpDrHx3nUCMNO3piGF+lfOrpW+DgEHwz3rbS6mFSRa/JeD0ut6HlDfMyq5yH5kDlEasKeN7QTPpdXjQi6f2kv8sheQvMxph61j1rCa3n7YHSdiAPds0LzIb3KrhVxUlPXFOGD0XOK7lu7KW8Les/VBvuQvqTHvmod63VxUT4E8SIJxQWj94Z6HWX74KynTFCerMgnDQd2MuEQeAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARfIXqGm/kQ==
   </data>
  </layer>
- <layer id="3" name="blocking" width="100" height="100">
+ <layer name="blocking" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eJzt0bEJAEAIBEHtv87vQ8w/V2EGLj/YCAAAAAAAAAAA4LKX0w9o3eE3Zuixix4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAXFPX2xET
+   eJzt2blKxVAQBuAI18Kt1tdTn0J9CvUBtHZDK23dam3dStHWrdYJWERI4AYSMl6+D34uTHWZIQlzTlEAAAAAAAAAAAD/2fPU0P+AUjmHujAM88jFPAAAAAAAAAAAAAAAACCPnVFR7I7Gr9Ov0+j5WU3fm+r06yZ6flvT96Y6/XqJnr/W9L2pTr++y55Pj1+nX4vR86WavjfVyWcvnp39yIH32eDOYwYXkcvIVeTaTAZ1F/2/jzxEHiNP5tGptvvgW9TeIx+Rz8iXeXSq7T44E9/42chcZD6y4Jvfqbb74GHUjn7rx/F74vnoVNt9cDlqK5Wsmken2u6Da1Ffr2TDPDrVdh/cjP5vVbJtHgAAf7g/z8X9eS7uz3Nxf56L+/Nc3J8DADDJnF/l4vwqF+dXuTi/ysX5VS7OrwAmxw8dtWaX
   </data>
  </layer>
- <objectgroup id="4" name="object1">
+ <objectgroup name="object1">
   <object id="5" name="theName" type="myType" x="737" y="667" width="320" height="257"/>
   <object id="6" name="theEclipse" type="theType" x="712" y="281" width="298" height="140">
    <ellipse/>
@@ -24,11 +27,7 @@
   <object id="8" name="thePolygon" type="myType" x="265" y="691">
    <polygon points="0,0 139,173 -74,307 -255,65 -206,-106"/>
   </object>
-  <object id="9" name="Player" type="playerStart" x="477" y="359">
-   <point/>
-  </object>
-  <object id="10" x="-245" y="-80">
-   <point/>
-  </object>
+  <object id="9" name="Player" type="playerStart" x="477" y="359"/>
+  <object id="10" x="-245" y="-80"/>
  </objectgroup>
 </map>
