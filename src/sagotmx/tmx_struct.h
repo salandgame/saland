@@ -251,6 +251,7 @@ struct TileObject {
 	int width = 0;
 	int height = 0;
 	bool isEllipse = false;
+	bool isPoint = false;
 	std::vector<std::pair<int,int> > polygon_points;
 };
 
@@ -265,8 +266,8 @@ struct TileMap {
 	std::string renderorder;
 	int width = 0;
 	int height = 0;
-	int tilewidth=0; 
-	int tileheight=0; 
+	int tilewidth=0;
+	int tileheight=0;
 	int nextobjectid = 0;
 	TileSet tileset;
 	std::vector<TileLayer> layers;
@@ -340,7 +341,7 @@ inline TileSet string2tileset(const std::string& tsx_content) {
 	std::string tsx_parseable_content = tsx_content;
 	rapidxml::xml_document<> doc;    // character type defaults to char
 	char* parsable_pointer = &tsx_parseable_content[0];  //Legal from C++11 and forward
-	doc.parse<0>(parsable_pointer); 
+	doc.parse<0>(parsable_pointer);
 	rapidxml::xml_node<> * root_node = doc.first_node("tileset");
 	return node2tileset(root_node);
 }
@@ -387,6 +388,7 @@ inline TileMap string2tilemap(const std::string& tmx_content) {
 			setValueFromAttribute(object_node, "width", to.width);
 			setValueFromAttribute(object_node, "height", to.height);
 			getElement(object_node, "ellipse", to.isEllipse);
+			getElement(object_node, "point", to.isPoint);
 			bool isPolygon = false;
 			const auto& polygon = getElement(object_node, "polygon", isPolygon);
 			if (isPolygon) {
@@ -410,7 +412,7 @@ inline TileMap string2tilemap(const std::string& tmx_content) {
 			group.objects.push_back(to);
 		}
 		m.object_groups.push_back(group);
-	} 
+	}
 	return m;
 }
 
@@ -447,6 +449,39 @@ inline void xml_add_layer(std::iostream& io, const TileMap& m, size_t layer_numb
 	io << "</layer>\n";
 }
 
+inline void xml_add_objectgroup(std::iostream& io, const TileMap& m, size_t object_group_number) {
+	const TileObjectGroup& tog = m.object_groups.at(object_group_number);
+	io << "<objectgroup name=\"" << tog.name << "\"";
+	io << ">\n";
+	for (const TileObject& to : tog.objects) {
+		io << "<object";
+		io << " id=\"" << to.id << "\"";
+		if (to.name.length() > 0) {
+			io << " name=\"" << to.name << "\"";
+		}
+		io << " x=\"" << to.x << "\" y=\"" << to.y << "\" width=\"" << to.width << "\" height=\"" << to.height << "\"";
+		io << ">\n";
+		if (to.isEllipse) {
+			io << "<ellipse/>\n";
+		}
+		if (to.isPoint) {
+			io << "<point/>\n";
+		}
+		if (to.polygon_points.size() > 0) {
+			io << "<polygon points=\"";
+			for (size_t i=0; i < to.polygon_points.size(); ++i) {
+				if (i!=0) {
+					io << " ";
+				}
+				io << to.polygon_points.at(i).first << "," << to.polygon_points.at(i).second;
+			}
+			io << "\"/>\n";
+		}
+		io << "</object>\n";
+	}
+	io << "</objectgroup>\n";
+}
+
 inline std::string tilemap2string(const TileMap& m) {
 	//Assuming UTF-8 because rapidxml ignores it.
 	std::stringstream ret;
@@ -463,6 +498,9 @@ inline std::string tilemap2string(const TileMap& m) {
 	xml_add_tileset(ret, m);
 	for (size_t i = 0; i < m.layers.size(); ++i) {
 		xml_add_layer(ret, m, i);
+	}
+	for (size_t i = 0; i < m.object_groups.size(); ++i) {
+		xml_add_objectgroup(ret, m, i);
 	}
 	ret << "</map>\n";
 	return ret.str();
