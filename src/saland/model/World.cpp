@@ -144,11 +144,15 @@ void World::init_physics(std::shared_ptr<b2World>& world) {
 
 void World::init(std::shared_ptr<b2World>& world, const std::string& mapFileName) {
 	this->physicsWorld = world;
-	std::string tsx_file = sago::GetFileContent("maps/terrain.tsx");
 	std::string tmx_file = sago::GetFileContent(mapFileName);
-	ts = sago::tiled::string2tileset(tsx_file);
 	tm = sago::tiled::string2tilemap(tmx_file);
-	tm.tileset.at(0).alternativeSource = &ts;
+	for (size_t i = 0; i < tm.tileset.size(); ++i) {
+		if (tm.tileset[i].source.length()) {
+			std::string tsx_file = sago::GetFileContent("maps/"+tm.tileset[i].source);
+			ts = sago::tiled::string2tileset(tsx_file);
+			tm.tileset[i].alternativeSource = &ts;
+		}
+	}
 	init_physics(world);
 }
 
