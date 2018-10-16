@@ -71,7 +71,7 @@ struct Game::GameImpl {
 	bool drawCollision = true;
 	int topx = 0.0;
 	int topy = 0.0;
-	int world_mouse_x = 0; //Mouse cooridinates relative to the world
+	int world_mouse_x = 0; //Mouse coordinates relative to the world
 	int world_mouse_y = 0;
 	char direction = 0;
 	Uint32 lastUpdate = 0;

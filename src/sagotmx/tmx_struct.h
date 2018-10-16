@@ -212,7 +212,7 @@ struct Image {
 
 
 struct TileSet {
-	std::string firstgid;
+	int firstgid = 0;
 	std::string source;
 	TileSet* alternativeSource = nullptr;  //< Set to non-null to use an alternative TileSet. Must be set if source is set.
 	std::string name;
@@ -313,9 +313,13 @@ inline TileSet node2tileset(rapidxml::xml_node<> * tileset_node) {
 	bool found = false;
 	rapidxml::xml_node<> * image_node = getElement(tileset_node, "image", found);
 	if (found) {
+		std::cout << "Found image for " << ts.name << ":" << ts.source << "\n";
 		setValueFromAttribute(image_node, "source", ts.image.source);
 		setValueFromAttribute(image_node, "width", ts.image.width);
 		setValueFromAttribute(image_node, "height", ts.image.height);
+	}
+	else {
+		std::cout << "Did not find an image node for " << ts.name << ":" << ts.source << "\n";
 	}
 	rapidxml::xml_node<> * terraintypes_node = tileset_node->first_node("terraintypes");
 	if (terraintypes_node) {
@@ -441,8 +445,8 @@ inline void xml_add_tileset(std::iostream& io, const TileMap& m, size_t tile_set
 		io << " name=\"" << ts.name << "\" tilewidth=\""<<ts.tilewidth <<"\" tileheight=\""<< ts.tileheight<< "\" tilecount=\""<<ts.tilecount<<"\"";
 	}
 	io << ">\n";
-	if (ts.source.length() == 0) {
-		//Write image here
+	if (ts.image.source.length() > 0) {
+		io << "<image source=\"" << ts.image.source << "\" width=\"" << ts.image.width << "\" hight=\"" << ts.image.height << "\"/>\n";
 	}
 	io << "</tileset>\n";
 }
@@ -531,18 +535,25 @@ inline std::string tilemap2string(const TileMap& m) {
  * @param[out] h The tile height will be written to this pointer if not NULL. May be null.
  */
 inline void getTextureLocationFromGid(const TileMap& tm, int gid, std::string* imageFile, int* x, int* y, int* w, int* h ) {
-	//Currently hardcoded to one tileset
+	//Currently hardcodeed to one tileset
 	const TileSet *ts = nullptr;
 	if (tm.tileset.size() < 1) {
 		return;
 	}
 	ts = &(tm.tileset.at(0));
-	//TODO: Check this. Is "firstgid" from the tiledset related?
-	gid--;  //Gids starts at 1 by default
+	for (size_t i = 1; i < tm.tileset.size(); ++i) {
+		const TileSet *newTs = &(tm.tileset.at(i));
+		if (newTs->firstgid > gid) {
+			break;
+		}
+		ts = newTs;
+	}
+	gid -= ts->firstgid;  //Final gid needs to be set before we check for alternative source
 	while (ts->alternativeSource) {
 		//Follow source links
 		ts = ts->alternativeSource;
 	}
+	//std::cout << "ts: " << ts->name << ", " << ts->image.source << ", " << ts->image.height << ", " << ts->image.width << "\n";
 	if (imageFile) {
 		*imageFile = ts->image.source;
 	}

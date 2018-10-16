@@ -65,7 +65,7 @@ void DrawLayer(SDL_Renderer* renderer, sago::SagoSpriteHolder* sHolder, const sa
 			std::string imageFile;
 			getTextureLocationFromGid(tm, gid, &imageFile, &part.x, &part.y, &part.w, &part.h);
 			imageFile = imageFile.substr(12);
-			imageFile = imageFile.substr(0,imageFile.length()-4);
+			imageFile = imageFile.substr(0, imageFile.length()-4);
 			SDL_Texture* texture = sHolder->GetDataHolder().getTexturePtr(imageFile);
 			Draw(renderer, texture, 32 * i - topx, 32 * j - topy, part);
 		}
