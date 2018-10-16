@@ -160,7 +160,7 @@ void Game::Draw(SDL_Renderer* target) {
 	SDL_Texture* texture = globalData.spriteHolder->GetDataHolder().getTexturePtr("terrain");
 	DrawOuterBorder(target, texture, data->gameRegion.world.tm, data->topx, data->topy, data->gameRegion.outerTile);
 	for (size_t i = 0; i < data->gameRegion.world.tm.layers.size(); ++i) {
-		DrawLayer(target, texture, data->gameRegion.world.tm, i, data->topx, data->topy);
+		DrawLayer(target, globalData.spriteHolder.get(), data->gameRegion.world.tm, i, data->topx, data->topy);
 	}
 	for (size_t i = 0; i < data->gameRegion.world.tm.object_groups.size(); ++i) {
 		DrawOjbectGroup(target, data->gameRegion.world.tm, i, data->topx, data->topy);

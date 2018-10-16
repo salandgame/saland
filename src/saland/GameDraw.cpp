@@ -54,7 +54,7 @@ void DrawOuterBorder(SDL_Renderer* renderer, SDL_Texture* texture, const sago::t
 	}
 }
 
-void DrawLayer(SDL_Renderer* renderer, SDL_Texture* texture, const sago::tiled::TileMap& tm, size_t layer, int topx, int topy) {
+void DrawLayer(SDL_Renderer* renderer, sago::SagoSpriteHolder* sHolder, const sago::tiled::TileMap& tm, size_t layer, int topx, int topy) {
 	for (int i = 0; i < tm.height; ++i) {
 		for (int j = 0; j < tm.width; ++j) {
 			uint32_t gid = sago::tiled::getTileFromLayer(tm, tm.layers.at(layer), i, j);
@@ -62,7 +62,11 @@ void DrawLayer(SDL_Renderer* renderer, SDL_Texture* texture, const sago::tiled::
 				continue;
 			}
 			SDL_Rect part{};
-			getTextureLocationFromGid(tm, gid, nullptr, &part.x, &part.y, &part.w, &part.h);
+			std::string imageFile;
+			getTextureLocationFromGid(tm, gid, &imageFile, &part.x, &part.y, &part.w, &part.h);
+			imageFile = imageFile.substr(12);
+			imageFile = imageFile.substr(0,imageFile.length()-4);
+			SDL_Texture* texture = sHolder->GetDataHolder().getTexturePtr(imageFile);
 			Draw(renderer, texture, 32 * i - topx, 32 * j - topy, part);
 		}
 	}
