@@ -1,7 +1,7 @@
 /*
 ===========================================================================
  * Saland Adventures
-Copyright (C) 2014-2017 Poul Sander
+Copyright (C) 2014-2018 Poul Sander
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -45,10 +45,9 @@ https://github.com/sago007/saland
 #include "sagotmx/tmx_struct.h"
 #include "sago/SagoTextBox.hpp"
 
-#if defined(_WIN32)
-#include <windows.h>
-#include <shlobj.h>
-#endif
+#include "common.h"
+#include "os.hpp"
+
 
 #ifndef VERSIONNUMBER
 #define VERSIONNUMBER "0.1.0"
@@ -68,14 +67,12 @@ public:
 		testBox.SetHolder(globalData.dataHolder);
 		testBox.SetFontSize(16);
 	}
-	
+
 	virtual bool IsActive() override {
 		return isActive;
 	}
 
 	virtual void Draw(SDL_Renderer* target) override {
-		
-		
 		textField.SetText("Saland Adventures - The game that has a very long subtitle to test the outline");
 		textField.SetOutline(3, SDL_Color{255,165,0,255});
 		textField.Draw(target, 10, 10);
@@ -175,27 +172,6 @@ void runGame() {
 	SDL_Quit();
 
 }
-
-static sago::PlatformFolders pf;
-
-std::string getPathToSaveFiles() {
-	return pf.getSaveGamesFolder1()+"/"+GAMENAME;
-}
-
-void OsCreateSaveFolder() {
-#if defined(__unix__)
-	std::string cmd = "mkdir -p '"+getPathToSaveFiles()+"/'";
-	int retcode = system(cmd.c_str());
-	if (retcode != 0) {
-		std::cerr << "Failed to create: " << getPathToSaveFiles()+"/" << "\n";
-	}
-#elif defined(_WIN32)
-	//Now for Windows NT/2k/xp/2k3 etc.
-	std::string tempA = getPathToSaveFiles();
-	CreateDirectory(tempA.c_str(),nullptr);
-#endif
-}
-
 
 int main(int argc, char* argv[]) {
 	PHYSFS_init(argv[0]);
