@@ -47,13 +47,7 @@ https://github.com/sago007/saland
 
 #include "common.h"
 #include "os.hpp"
-
-
-#ifndef VERSIONNUMBER
-#define VERSIONNUMBER "0.1.0"
-#endif
-
-#define GAMENAME "saland_game"
+#include "version.h"
 
 GlobalData globalData;
 
@@ -193,7 +187,7 @@ int main(int argc, char* argv[]) {
 		return 0;
 	}
 	if (vm.count("version")) {
-		std::cout << "saland " << VERSIONNUMBER << "\n";
+		std::cout << "saland " << VERSION_NUMBER << "\n";
 		return 0;
 	}
 	runGame();
