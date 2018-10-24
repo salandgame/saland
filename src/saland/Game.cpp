@@ -42,6 +42,7 @@ https://github.com/sago007/saland
 int32 velocityIterations = 6;
 int32 positionIterations = 2;
 
+typedef std::pair<float,float> SpawnPoint;
 
 /**
  * This sort method sorts the elements from furthest to screen to closest to screen, so that elemnets closer to the screen will be drawn last
@@ -79,8 +80,19 @@ struct Game::GameImpl {
 	sago::SagoTextField bottomField;
 };
 
-static std::pair<float,float> GetSpawnpoint(const sago::tiled::TileMap& tm) {
-	std::pair<float,float> ret(tm.width/2.0f, tm.height/2.0f);
+static SpawnPoint GetSpawnpoint(const sago::tiled::TileMap& tm) {
+	SpawnPoint ret(tm.width/2.0f, tm.height/2.0f);
+	std::vector<SpawnPoint> points;
+	for (const sago::tiled::TileObjectGroup& og : tm.object_groups) {
+		for (const sago::tiled::TileObject& o : og.objects) {
+			if (o.type == "playerStart") {
+				points.push_back(SpawnPoint(o.x/32.0f, o.y/32.0f));
+			}
+		}
+	}
+	if (points.size() > 0) {
+		ret = points[rand()%points.size()];
+	}
 	return ret;
 }
 

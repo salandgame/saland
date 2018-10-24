@@ -470,6 +470,9 @@ inline void xml_add_objectgroup(std::iostream& io, const TileMap& m, size_t obje
 		if (to.name.length() > 0) {
 			io << " name=\"" << to.name << "\"";
 		}
+		if (to.type.length() > 0) {
+			io << " type=\"" << to.type << "\"";
+		}
 		io << " x=\"" << to.x << "\" y=\"" << to.y << "\" width=\"" << to.width << "\" height=\"" << to.height << "\"";
 		io << ">\n";
 		if (to.isEllipse) {
