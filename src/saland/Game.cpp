@@ -79,6 +79,11 @@ struct Game::GameImpl {
 	sago::SagoTextField bottomField;
 };
 
+static std::pair<float,float> GetSpawnpoint(const sago::tiled::TileMap& tm) {
+	std::pair<float,float> ret(tm.width/2.0f, tm.height/2.0f);
+	return ret;
+}
+
 void Game::ResetWorld(int x, int y) {
 	data->gameRegion.SaveRegion();
 	data->gameRegion.Init(x, y, data->worldName);
@@ -96,7 +101,8 @@ void Game::ResetWorld(int x, int y) {
 	myFixtureDef.shape = &circleShape; //this is a pointer to the shape above
 	myFixtureDef.density = 10.0f;
 	data->human->body->CreateFixture(&myFixtureDef); //add a fixture to the body
-	data->human->body->SetTransform(b2Vec2(data->human->X / 32.0f, data->human->Y / 32.0f),data->human->body->GetAngle());
+	std::pair<float,float> spawnpoint = GetSpawnpoint(data->gameRegion.world.tm);
+	data->human->body->SetTransform(b2Vec2(spawnpoint.first, spawnpoint.second),data->human->body->GetAngle());
 }
 
 Game::Game() {
