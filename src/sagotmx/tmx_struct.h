@@ -313,13 +313,9 @@ inline TileSet node2tileset(rapidxml::xml_node<> * tileset_node) {
 	bool found = false;
 	rapidxml::xml_node<> * image_node = getElement(tileset_node, "image", found);
 	if (found) {
-		std::cout << "Found image for " << ts.name << ":" << ts.source << "\n";
 		setValueFromAttribute(image_node, "source", ts.image.source);
 		setValueFromAttribute(image_node, "width", ts.image.width);
 		setValueFromAttribute(image_node, "height", ts.image.height);
-	}
-	else {
-		std::cout << "Did not find an image node for " << ts.name << ":" << ts.source << "\n";
 	}
 	rapidxml::xml_node<> * terraintypes_node = tileset_node->first_node("terraintypes");
 	if (terraintypes_node) {
