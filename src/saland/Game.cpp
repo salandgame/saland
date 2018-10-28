@@ -214,6 +214,24 @@ void Game::Draw(SDL_Renderer* target) {
 	);
 	data->bottomField.SetText(buffer);
 	data->bottomField.Draw(target, 2, screen_height, sago::SagoTextField::Alignment::left, sago::SagoTextField::VerticalAlignment::bottom);
+//#if DEBUG
+	static unsigned long int Frames;
+	static unsigned long int Ticks;
+	static char FPS[10];
+	static sago::SagoTextField fpsField;
+	fpsField.SetHolder(globalData.dataHolder);
+	Frames++;
+	if (SDL_GetTicks() >= Ticks + 1000) {
+		if (Frames > 999) {
+			Frames=999;
+		}
+		snprintf(FPS, sizeof(FPS), "%lu fps", Frames);
+		Frames = 0;
+		Ticks = SDL_GetTicks();
+	}
+	fpsField.SetText(FPS);
+	fpsField.Draw(globalData.screen, globalData.xsize-4, 4, sago::SagoTextField::Alignment::right);
+//#endif
 }
 
 void Game::ProcessInput(const SDL_Event& event, bool& processed) {
