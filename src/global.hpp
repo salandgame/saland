@@ -26,5 +26,7 @@ https://github.com/sago007/saland
 
 #include "saland/globals.hpp"
 
+void UpdateMouseCoordinates(const SDL_Event& event, int& mousex, int& mousey);
+
 #endif /* GLOBAL_HPP */
 

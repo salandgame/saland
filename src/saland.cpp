@@ -111,6 +111,29 @@ private:
 	sago::SagoTextBox testBox;
 };
 
+/**
+ * This function reads the mouse coordinates from a relevant event.
+ * Unlike SDL_GetMouseState this works even if SDL_RenderSetLogicalSize is used
+ * @param event
+ * @param mousex
+ * @param mousey
+ */
+void UpdateMouseCoordinates(const SDL_Event& event, int& mousex, int& mousey) {
+	switch (event.type) {
+	case SDL_MOUSEBUTTONDOWN:
+	case SDL_MOUSEBUTTONUP:
+		mousex = event.button.x;
+		mousey = event.button.y;
+		break;
+	case SDL_MOUSEMOTION:
+		mousex = event.motion.x;
+		mousey = event.motion.y;
+		break;
+	default:
+		break;
+	}
+}
+
 void RunGameState(sago::GameStateInterface& state ) {
 	bool done = false;     //We are done!
 	while (!done && !globalData.isShuttingDown) {

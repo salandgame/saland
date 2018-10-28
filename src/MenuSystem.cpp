@@ -57,11 +57,7 @@ sago::SagoTextField* ButtonGfx::getLabel(const std::string& text) {
 	return labels[text].get();
 }
 
-Button::Button() {
-	label = "";
-	marked = false;
-	action = nullptr;
-	popOnRun = false;
+Button::Button()  {
 }
 
 Button::~Button() {
@@ -71,7 +67,6 @@ Button::Button(const Button& b) {
 	label = b.label;
 	marked = b.marked;
 	action = b.action;
-	popOnRun = false;
 }
 
 void Button::setLabel(const std::string& text) {
@@ -149,14 +144,13 @@ void Menu::addButton(Button* b) {
 
 Menu::Menu(SDL_Renderer* screen) {
 	this->screen = screen;
-	buttons = std::vector<Button*>(10);
+	buttons.reserve(10);
 	isSubmenu = true;
 	exit.setLabel( _("Back") );
 }
 
 Menu::Menu(SDL_Renderer* screen,bool submenu) {
 	this->screen = screen;
-	buttons = std::vector<Button*>(0);
 	isSubmenu = submenu;
 	if (isSubmenu) {
 		exit.setLabel( _("Back") );
@@ -168,7 +162,6 @@ Menu::Menu(SDL_Renderer* screen,bool submenu) {
 
 Menu::Menu(SDL_Renderer* screen, const std::string& title, bool submenu) {
 	this->screen = screen;
-	buttons = std::vector<Button*>(0);
 	isSubmenu = submenu;
 	this->title = title;
 	if (isSubmenu) {
@@ -250,12 +243,12 @@ bool Menu::IsActive() {
 void Menu::Draw(SDL_Renderer* target) {
 	placeButtons();
 	drawSelf(target);
-#if DEBUG
+//#if DEBUG
 	static unsigned long int Frames;
 	static unsigned long int Ticks;
 	static char FPS[10];
 	static sago::SagoTextField fpsField;
-	sagoTextSetBlueFont(fpsField);
+	fpsField.SetHolder(globalData.dataHolder);
 	Frames++;
 	if (SDL_GetTicks() >= Ticks + 1000) {
 		if (Frames > 999) {
@@ -266,10 +259,11 @@ void Menu::Draw(SDL_Renderer* target) {
 		Ticks = SDL_GetTicks();
 	}
 	fpsField.SetText(FPS);
-	fpsField.Draw(globalData.screen, 800, 4);
-#endif
+	fpsField.Draw(globalData.screen, globalData.xsize-4, 4, sago::SagoTextField::Alignment::right);
+//#endif
 }
 void Menu::ProcessInput(const SDL_Event& event, bool& processed) {
+	UpdateMouseCoordinates(event, globalData.mousex, globalData.mousey);
 	if (isUpEvent(event)) {
 		marked--;
 		if (marked<0) {
