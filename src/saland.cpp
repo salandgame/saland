@@ -45,6 +45,8 @@ https://github.com/sago007/saland
 #include "sagotmx/tmx_struct.h"
 #include "sago/SagoTextBox.hpp"
 
+#include "MenuSystem.h"
+
 #include "common.h"
 #include "os.hpp"
 #include "version.h"
@@ -141,6 +143,11 @@ void RunGameState(sago::GameStateInterface& state ) {
 	}
 }
 
+void startWorld() {
+	Game g;
+	RunGameState(g);
+}
+
 void runGame() {
 	int posX = 100, posY = 100, width = 1024, height = 768;
 	SDL_Init(SDL_INIT_VIDEO);
@@ -157,8 +164,13 @@ void runGame() {
 	TitleScreen ts;
 	RunGameState(ts);
 
-	Game g;
-	RunGameState(g);
+	standardButton.setSurfaces();
+	Menu m(globalData.screen, false);
+	Button bStart;
+	bStart.setLabel("Start");
+	bStart.setAction(startWorld);
+	m.addButton(&bStart);
+	RunGameState(m);
 
 	SDL_DestroyRenderer(globalData.screen);
 	SDL_DestroyWindow(win);

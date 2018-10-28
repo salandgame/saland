@@ -1,7 +1,7 @@
 /*
 ===========================================================================
  * Saland Adventures
-Copyright (C) 2014-2017 Poul Sander
+Copyright (C) 2014-2018 Poul Sander
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -21,24 +21,10 @@ https://github.com/sago007/saland
 ===========================================================================
 */
 
-#ifndef GLOBALS_HPP
-#define GLOBALS_HPP
+#ifndef GLOBAL_HPP
+#define GLOBAL_HPP
 
-#include "../sago/SagoSpriteHolder.hpp"
-#include <memory>
+#include "saland/globals.hpp"
 
-struct GlobalData {
-	bool isShuttingDown = false;
-	SDL_Renderer* screen = nullptr;
-	std::unique_ptr<sago::SagoSpriteHolder> spriteHolder;
-	sago::SagoDataHolder* dataHolder;
-	int verboseLevel = 0;
-	int mousex = 0;
-	int mousey = 0;
-	int xsize = 1024;
-};
-
-extern GlobalData globalData;
-
-#endif /* GLOBALS_HPP */
+#endif /* GLOBAL_HPP */
 

@@ -1,0 +1,22 @@
+{
+
+"menu_marked" : {
+	"texture" : "menu_marked",
+ 	"topx" : 0,
+	"topy" : 0,
+	"height" : 60,
+	"width" : 600,
+	"number_of_frames" : 1,
+	"frame_time" : 1
+},
+"menu_unmarked" : {
+	"texture" : "menu_unmarked",
+ 	"topx" : 0,
+	"topy" : 0,
+	"height" : 60,
+	"width" : 600,
+	"number_of_frames" : 1,
+	"frame_time" : 1
+}
+
+}
