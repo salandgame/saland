@@ -63,10 +63,7 @@ Button::Button()  {
 Button::~Button() {
 }
 
-Button::Button(const Button& b) {
-	label = b.label;
-	marked = b.marked;
-	action = b.action;
+Button::Button(const Button& b) : action{b.action}, label{b.label}, marked{b.marked} {
 }
 
 void Button::setLabel(const std::string& text) {
@@ -160,10 +157,9 @@ Menu::Menu(SDL_Renderer* screen,bool submenu) {
 	}
 }
 
-Menu::Menu(SDL_Renderer* screen, const std::string& title, bool submenu) {
+Menu::Menu(SDL_Renderer* screen, const std::string& title, bool submenu) : title{title} {
 	this->screen = screen;
 	isSubmenu = submenu;
-	this->title = title;
 	if (isSubmenu) {
 		exit.setLabel(_("Back") );
 	}
