@@ -36,6 +36,7 @@ struct GlobalData {
 	int mousex = 0;
 	int mousey = 0;
 	int xsize = 1024;
+	int ysize = 768;
 };
 
 extern GlobalData globalData;

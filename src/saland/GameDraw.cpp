@@ -55,8 +55,8 @@ void DrawOuterBorder(SDL_Renderer* renderer, SDL_Texture* texture, const sago::t
 }
 
 void DrawLayer(SDL_Renderer* renderer, sago::SagoSpriteHolder* sHolder, const sago::tiled::TileMap& tm, size_t layer, int topx, int topy) {
-	for (int i = 0; i < tm.height; ++i) {
-		for (int j = 0; j < tm.width; ++j) {
+	for (int i = topx/32; i < tm.width && i < (topx+globalData.xsize)/32+1; ++i) {
+		for (int j = topy/32; j < tm.height && j < (topy+globalData.ysize)/32+1; ++j) {
 			uint32_t gid = sago::tiled::getTileFromLayer(tm, tm.layers.at(layer), i, j);
 			if (gid == 0) {
 				continue;

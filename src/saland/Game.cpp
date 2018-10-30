@@ -157,8 +157,8 @@ static std::string GetLayerInfoForTile(const World& w, int x, int y) {
 }
 
 void Game::Draw(SDL_Renderer* target) {
-	double screen_width = 1024.0;
-	double screen_height = 768.0;
+	double screen_width = globalData.xsize;
+	double screen_height = globalData.ysize;
 	int screen_boarder = 16;
 	data->topx = std::round(data->center_x - screen_width / 2.0);
 	data->topy = std::round(data->center_y - screen_height / 2.0);

@@ -173,7 +173,7 @@ void startWorld() {
 
 void ResetFullscreen(SDL_Window* sdlWindow, sago::SagoDataHolder& dataHolder) {
 	Mix_HaltMusic();  //We need to reload all data in case the screen type changes. Music must be stopped before unload.
-	if (false) {
+	if (true) {
 		SDL_SetWindowFullscreen(sdlWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
 	}
 	else {
@@ -182,6 +182,10 @@ void ResetFullscreen(SDL_Window* sdlWindow, sago::SagoDataHolder& dataHolder) {
 	dataHolder.invalidateAll(globalData.screen);
 	globalData.spriteHolder.reset(new sago::SagoSpriteHolder( dataHolder ) );
 	SDL_ShowCursor(SDL_ENABLE);
+	SDL_DisplayMode DM;
+	SDL_GetCurrentDisplayMode(0, &DM);
+	globalData.xsize = DM.w;
+	globalData.ysize = DM.h;
 }
 
 void runGame() {
@@ -193,7 +197,7 @@ void runGame() {
 
 	SDL_Window* win = SDL_CreateWindow("Saland Adventures", posX, posY, width, height, 0);
 	globalData.screen = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
-	SDL_RenderSetLogicalSize(globalData.screen, 1024, 768);
+	//SDL_RenderSetLogicalSize(globalData.screen, 1024, 768);
 	sago::SagoDataHolder holder(globalData.screen);
 	globalData.spriteHolder.reset(new sago::SagoSpriteHolder(holder));
 	globalData.dataHolder = &holder;
