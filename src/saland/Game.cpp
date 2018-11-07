@@ -38,6 +38,7 @@ https://github.com/sago007/saland
 #include <cmath>
 #include <condition_variable>
 #include <sstream>
+#include "console/Console.hpp"
 
 int32 velocityIterations = 6;
 int32 positionIterations = 2;
@@ -78,6 +79,7 @@ struct Game::GameImpl {
 	Uint32 lastUpdate = 0;
 	std::string worldName = "world1";
 	sago::SagoTextField bottomField;
+	std::shared_ptr<Console> c;
 };
 
 static SpawnPoint GetSpawnpoint(const sago::tiled::TileMap& tm) {
@@ -214,6 +216,9 @@ void Game::Draw(SDL_Renderer* target) {
 	);
 	data->bottomField.SetText(buffer);
 	data->bottomField.Draw(target, 2, screen_height, sago::SagoTextField::Alignment::left, sago::SagoTextField::VerticalAlignment::bottom);
+	if (data->c) {
+		data->c->Draw(target);
+	}
 //#if DEBUG
 	static unsigned long int Frames;
 	static unsigned long int Ticks;
@@ -235,6 +240,12 @@ void Game::Draw(SDL_Renderer* target) {
 }
 
 void Game::ProcessInput(const SDL_Event& event, bool& processed) {
+	if (data->c) {
+		data->c->ProcessInput(event, processed);
+		if (processed) {
+			return;
+		}
+	}
 	if (event.type == SDL_KEYDOWN) {
 		if (event.key.keysym.sym == SDLK_SPACE) {
 			if (data->human->castTimeRemaining == 0) {
@@ -264,6 +275,9 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 			uint32_t tile = 0;
 			sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
 			data->gameRegion.world.init_physics(data->gameRegion.physicsBox);
+		}
+		if (event.key.keysym.sym == SDLK_ESCAPE && event.key.keysym.mod & KMOD_LSHIFT) {
+			data->c = std::make_shared<Console>();
 		}
 	}
 }
@@ -350,5 +364,8 @@ void Game::Update() {
 	if (data->human->Y > data->gameRegion.world.tm.height*32) {
 		ResetWorld(data->gameRegion.GetRegionX(), data->gameRegion.GetRegionY()+1);
 		data->human->body->SetTransform(b2Vec2(data->gameRegion.world.tm.width/2, 1),data->human->body->GetAngle()) ;
+	}
+	if (data->c && !data->c->IsActive()) {
+		data->c = nullptr;
 	}
 }

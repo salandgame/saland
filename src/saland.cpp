@@ -252,5 +252,6 @@ int main(int argc, char* argv[]) {
 		Config::getInstance()->setInt("fullscreen", 0);
 	}
 	runGame();
+	Config::getInstance()->save();
 	return 0;
 }

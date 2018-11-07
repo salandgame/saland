@@ -38,5 +38,8 @@ void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, cons
 void DrawMonster(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Monster *entity, float time, int offsetX, int offsetY, bool drawCollision);
 void DrawProjectile(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Projectile *entity, float time, int offsetX, int offsetY, bool drawCollision);
 
+void DrawRectWhite(SDL_Renderer* target, int topx, int topy, int height, int width);
+void DrawRectYellow(SDL_Renderer* target, int topx, int topy, int height, int width);
+
 #endif /* GAMEDRAW_HPP */
 
