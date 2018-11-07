@@ -29,6 +29,7 @@ https://github.com/sago007/saland
 
 struct GlobalData {
 	bool isShuttingDown = false;
+	bool fullscreen = false;
 	SDL_Renderer* screen = nullptr;
 	std::unique_ptr<sago::SagoSpriteHolder> spriteHolder;
 	sago::SagoDataHolder* dataHolder;

@@ -173,7 +173,7 @@ void startWorld() {
 
 void ResetFullscreen(SDL_Window* sdlWindow, sago::SagoDataHolder& dataHolder) {
 	Mix_HaltMusic();  //We need to reload all data in case the screen type changes. Music must be stopped before unload.
-	if (true) {
+	if (globalData.fullscreen) {
 		SDL_SetWindowFullscreen(sdlWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
 	}
 	else {
@@ -182,10 +182,7 @@ void ResetFullscreen(SDL_Window* sdlWindow, sago::SagoDataHolder& dataHolder) {
 	dataHolder.invalidateAll(globalData.screen);
 	globalData.spriteHolder.reset(new sago::SagoSpriteHolder( dataHolder ) );
 	SDL_ShowCursor(SDL_ENABLE);
-	SDL_DisplayMode DM;
-	SDL_GetCurrentDisplayMode(0, &DM);
-	globalData.xsize = DM.w;
-	globalData.ysize = DM.h;
+	SDL_GetRendererOutputSize(globalData.screen, &globalData.xsize, &globalData.ysize);
 }
 
 void runGame() {
@@ -194,6 +191,8 @@ void runGame() {
 	IMG_Init(IMG_INIT_PNG);
 	TTF_Init();
 	Mix_Init(MIX_INIT_OGG);
+
+	globalData.fullscreen = Config::getInstance()->getInt("fullscreen");
 
 	SDL_Window* win = SDL_CreateWindow("Saland Adventures", posX, posY, width, height, 0);
 	globalData.screen = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
@@ -232,6 +231,8 @@ int main(int argc, char* argv[]) {
 	desc.add_options()
 	("version", "Print version information and quit")
 	("help,h", "Print basic usage information to stdout and quit")
+	("fullscreen", "Run in fullscreen")
+	("no-fullscreen", "Run in window")
 	;
 	boost::program_options::variables_map vm;
 	boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
@@ -243,6 +244,12 @@ int main(int argc, char* argv[]) {
 	if (vm.count("version")) {
 		std::cout << "saland " << VERSION_NUMBER << "\n";
 		return 0;
+	}
+	if (vm.count("fullscreen")) {
+		Config::getInstance()->setInt("fullscreen", 1);
+	}
+	if (vm.count("no-fullscreen")) {
+		Config::getInstance()->setInt("fullscreen", 0);
 	}
 	runGame();
 	return 0;
