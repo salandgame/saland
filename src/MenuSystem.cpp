@@ -66,6 +66,13 @@ Button::~Button() {
 Button::Button(const Button& b) : action{b.action}, label{b.label}, marked{b.marked} {
 }
 
+Button& Button::operator=(const Button& other) {
+	action = other.action;
+	label = other.label;
+	marked = other.marked;
+	return *this;
+}
+
 void Button::setLabel(const std::string& text) {
 	label = text;
 }
