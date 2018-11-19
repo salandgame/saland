@@ -247,21 +247,6 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 		}
 	}
 	if (event.type == SDL_KEYDOWN) {
-		if (event.key.keysym.sym == SDLK_SPACE) {
-			if (data->human->castTimeRemaining == 0) {
-				data->human->castTimeRemaining = data->human->castTime;
-				std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>();
-				projectile->X = data->human->X;
-				projectile->Y = data->human->Y;
-				projectile->Radius = 8.0f;
-				projectile->directionX = projectile->X - data->world_mouse_x;
-				projectile->directionY = projectile->Y - data->world_mouse_y;
-				SetLengthToOne(projectile->directionX, projectile->directionY);
-				projectile->fired_by = data->human;
-				data->gameRegion.placeables.push_back(projectile);
-			}
-			processed = true;
-		}
 		int tile_x = data->world_mouse_x/32;
 		int tile_y = data->world_mouse_y/32;
 		if (event.key.keysym.sym == SDLK_w && sago::tiled::tileInBound(data->gameRegion.world.tm, tile_x, tile_y)) {
@@ -367,5 +352,19 @@ void Game::Update() {
 	}
 	if (data->c && !data->c->IsActive()) {
 		data->c = nullptr;
+	}
+	if (SDL_GetMouseState(nullptr,nullptr) & 1) {
+		if (data->human->castTimeRemaining == 0) {
+			data->human->castTimeRemaining = data->human->castTime;
+			std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>();
+			projectile->X = data->human->X;
+			projectile->Y = data->human->Y;
+			projectile->Radius = 8.0f;
+			projectile->directionX = projectile->X - data->world_mouse_x;
+			projectile->directionY = projectile->Y - data->world_mouse_y;
+			SetLengthToOne(projectile->directionX, projectile->directionY);
+			projectile->fired_by = data->human;
+			data->gameRegion.placeables.push_back(projectile);
+		}
 	}
 }
