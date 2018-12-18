@@ -276,22 +276,27 @@ static bool Intersect(const Placeable& p1, const Placeable& p2) {
 }
 
 void Game::Update() {
+	if (data->c) {
+		data->c->Update();
+	}
 	Uint32 nowTime = SDL_GetTicks();
 	Uint32 deltaTime = nowTime - data->lastUpdate;
 	const Uint8 *state = SDL_GetKeyboardState(NULL);
 	float deltaX = 0.0f;
 	float deltaY = 0.0f;
-	if (state[SDL_SCANCODE_DOWN]) {
-		deltaY += 1.0f;
-	}
-	if (state[SDL_SCANCODE_UP]) {
-		deltaY -= 1.0f;
-	}
-	if (state[SDL_SCANCODE_RIGHT]) {
-		deltaX += 1.0f;
-	}
-	if (state[SDL_SCANCODE_LEFT]) {
-		deltaX -= 1.0f;
+	if (!data->c) {
+		if (state[SDL_SCANCODE_DOWN]) {
+			deltaY += 1.0f;
+		}
+		if (state[SDL_SCANCODE_UP]) {
+			deltaY -= 1.0f;
+		}
+		if (state[SDL_SCANCODE_RIGHT]) {
+			deltaX += 1.0f;
+		}
+		if (state[SDL_SCANCODE_LEFT]) {
+			deltaX -= 1.0f;
+		}
 	}
 	data->human->moveX = deltaX;
 	data->human->moveY = deltaY;
@@ -353,7 +358,7 @@ void Game::Update() {
 	if (data->c && !data->c->IsActive()) {
 		data->c = nullptr;
 	}
-	if (SDL_GetMouseState(nullptr,nullptr) & 1) {
+	if (SDL_GetMouseState(nullptr,nullptr) & 1 && !data->c) {
 		if (data->human->castTimeRemaining == 0) {
 			data->human->castTimeRemaining = data->human->castTime;
 			std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>();

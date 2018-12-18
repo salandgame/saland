@@ -25,6 +25,8 @@ https://github.com/sago007/saland
 #define CONSOLE_HPP
 
 #include "../../sago/GameStateInterface.hpp"
+#include <string>
+#include "utf8.h"
 
 class Console : public sago::GameStateInterface {
 public:
@@ -37,7 +39,12 @@ public:
 	Console& operator=(const Console&) = delete;
 	virtual ~Console();
 private:
+	void putchar(const std::string& thing);
+	bool ReadKey(SDL_Keycode keyPressed);
+	void removeChar();
 	bool active = true;
+	std::string editLine;
+	std::string::iterator editPosition;
 };
 
 #endif /* CONSOLE_HPP */

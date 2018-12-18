@@ -26,9 +26,12 @@ https://github.com/sago007/saland
 #include "../globals.hpp"
 
 Console::Console() {
+	editPosition = editLine.begin();
+	SDL_StartTextInput();
 }
 
 Console::~Console() {
+	SDL_StopTextInput();
 }
 
 bool Console::IsActive() {
@@ -39,12 +42,70 @@ void Console::Draw(SDL_Renderer* target) {
 	DrawRectYellow(target, sideBoarder, 10, globalData.ysize/2, globalData.xsize - sideBoarder*2);
 }
 
+void Console::putchar(const std::string& thing) {
+	{
+		int oldPostition = utf8::distance(editLine.begin(), editPosition);
+		int lengthOfInsertString = utf8::distance(thing.begin(), thing.end());
+		editLine.insert(editPosition, thing.begin(), thing.end());
+		editPosition = editLine.begin();  //Inserting may destroy our old iterator
+		utf8::advance(editPosition, oldPostition + lengthOfInsertString, editLine.end());
+	}
+}
+
+void Console::removeChar() {
+	if (editPosition < editLine.end()) {
+		std::string::iterator endChar= editPosition;
+		utf8::advance(endChar, 1, editLine.end());
+		editLine.erase(editPosition, endChar);
+	}
+}
+
+bool Console::ReadKey(SDL_Keycode keyPressed) {
+	if (keyPressed == SDLK_DELETE) {
+		if ((editLine.length()>0)&& (editPosition<editLine.end())) {
+			removeChar();
+		}
+		return true;
+	}
+	if (keyPressed == SDLK_BACKSPACE) {
+		if (editPosition>editLine.begin()) {
+			utf8::prior(editPosition, editLine.begin());
+			removeChar();
+			return true;
+		}
+		return false;
+	}
+	if (keyPressed == SDLK_HOME) {
+		editPosition = editLine.begin();
+		return true;
+	}
+	if (keyPressed == SDLK_END) {
+		editPosition=editLine.end();
+		return true;
+	}
+	if ((keyPressed == SDLK_LEFT) && (editPosition>editLine.begin())) {
+		utf8::prior(editPosition, editLine.begin());
+		return true;
+	}
+	if ((keyPressed == SDLK_RIGHT) && (editPosition<editLine.end())) {
+		utf8::next(editPosition, editLine.end());
+		return true;
+	}
+	return true;
+}
+
 void Console::ProcessInput(const SDL_Event& event, bool &processed) {
 	if (event.type == SDL_KEYDOWN) {
 		if (event.key.keysym.sym == SDLK_ESCAPE && event.key.keysym.mod & KMOD_LSHIFT) {
 			active = false;
 			processed = true;
 		}
+		else {
+			processed = ReadKey(event.key.keysym.sym);
+		}
+	}
+	if (event.type == SDL_TEXTINPUT) {
+		putchar(event.text.text);
 	}
 }
 
