@@ -28,6 +28,10 @@ https://github.com/sago007/saland
 Console::Console() {
 	editPosition = editLine.begin();
 	SDL_StartTextInput();
+	editField.SetHolder(&globalData.spriteHolder->GetDataHolder());
+	editField.SetFont("freeserif");
+	editField.SetFontSize(20);
+	editField.SetOutline(1, {64,64,64,255});
 }
 
 Console::~Console() {
@@ -40,6 +44,8 @@ bool Console::IsActive() {
 void Console::Draw(SDL_Renderer* target) {
 	int sideBoarder = 20;
 	DrawRectYellow(target, sideBoarder, 10, globalData.ysize/2, globalData.xsize - sideBoarder*2);
+	editField.SetText(editLine);
+	editField.Draw(target, sideBoarder+10, globalData.ysize/2-16);
 }
 
 void Console::putchar(const std::string& thing) {

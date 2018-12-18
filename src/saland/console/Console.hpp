@@ -25,6 +25,7 @@ https://github.com/sago007/saland
 #define CONSOLE_HPP
 
 #include "../../sago/GameStateInterface.hpp"
+#include "../../sago/SagoTextField.hpp"
 #include <string>
 #include "utf8.h"
 
@@ -45,6 +46,7 @@ private:
 	bool active = true;
 	std::string editLine;
 	std::string::iterator editPosition;
+	sago::SagoTextField editField;
 };
 
 #endif /* CONSOLE_HPP */
