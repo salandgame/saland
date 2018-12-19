@@ -25,6 +25,13 @@ https://github.com/sago007/saland
 #include "../GameDraw.hpp"
 #include "../globals.hpp"
 
+static void SetFieldValues(sago::SagoTextField& field) {
+	field.SetHolder(&globalData.spriteHolder->GetDataHolder());
+	field.SetFont("freeserif");
+	field.SetFontSize(20);
+	field.SetOutline(1, {64,64,64,255});
+}
+
 Console::Console() {
 	editPosition = editLine.begin();
 	SDL_StartTextInput();
@@ -32,6 +39,11 @@ Console::Console() {
 	editField.SetFont("freeserif");
 	editField.SetFontSize(20);
 	editField.SetOutline(1, {64,64,64,255});
+	editFieldMarker.SetHolder(&globalData.spriteHolder->GetDataHolder());
+	editFieldMarker.SetFont("freeserif");
+	editFieldMarker.SetFontSize(20);
+	editFieldMarker.SetOutline(1, {64,64,64,255});
+	editFieldMarker.SetText(">");
 }
 
 Console::~Console() {
@@ -45,17 +57,23 @@ void Console::Draw(SDL_Renderer* target) {
 	int sideBoarder = 20;
 	DrawRectYellow(target, sideBoarder, 10, globalData.ysize/2, globalData.xsize - sideBoarder*2);
 	editField.SetText(editLine);
-	editField.Draw(target, sideBoarder+10, globalData.ysize/2-16);
+	editFieldMarker.Draw(target, sideBoarder+10, globalData.ysize/2-16);
+	editField.Draw(target, sideBoarder+24, globalData.ysize/2-16);
+	int j = 1;
+	for (int i = (int)historyField.size()-1; i > -1; --i, ++j) {
+		historyField.at(i).Draw(target, sideBoarder+10, globalData.ysize/2-16-j*22);
+	}
 }
 
 void Console::putchar(const std::string& thing) {
-	{
-		int oldPostition = utf8::distance(editLine.begin(), editPosition);
-		int lengthOfInsertString = utf8::distance(thing.begin(), thing.end());
-		editLine.insert(editPosition, thing.begin(), thing.end());
-		editPosition = editLine.begin();  //Inserting may destroy our old iterator
-		utf8::advance(editPosition, oldPostition + lengthOfInsertString, editLine.end());
+	if (thing == "" || thing == "\n") {
+		return;
 	}
+	int oldPostition = utf8::distance(editLine.begin(), editPosition);
+	int lengthOfInsertString = utf8::distance(thing.begin(), thing.end());
+	editLine.insert(editPosition, thing.begin(), thing.end());
+	editPosition = editLine.begin();  //Inserting may destroy our old iterator
+	utf8::advance(editPosition, oldPostition + lengthOfInsertString, editLine.end());
 }
 
 void Console::removeChar() {
@@ -97,7 +115,19 @@ bool Console::ReadKey(SDL_Keycode keyPressed) {
 		utf8::next(editPosition, editLine.end());
 		return true;
 	}
-	return true;
+	if (keyPressed == SDLK_RETURN || keyPressed == SDLK_RETURN2) {
+		if (editLine.length() > 0) {
+			commandHistory.push_back(editLine);
+			sago::SagoTextField f;
+			SetFieldValues(f);
+			f.SetText(editLine);
+			historyField.push_back(std::move(f));
+		}
+		editLine.clear();
+		editPosition = editLine.begin();
+		return true;
+	}
+	return false;
 }
 
 void Console::ProcessInput(const SDL_Event& event, bool &processed) {

@@ -27,6 +27,7 @@ https://github.com/sago007/saland
 #include "../../sago/GameStateInterface.hpp"
 #include "../../sago/SagoTextField.hpp"
 #include <string>
+#include <vector>
 #include "utf8.h"
 
 class Console : public sago::GameStateInterface {
@@ -44,9 +45,12 @@ private:
 	bool ReadKey(SDL_Keycode keyPressed);
 	void removeChar();
 	bool active = true;
+	std::vector<std::string> commandHistory;
 	std::string editLine;
 	std::string::iterator editPosition;
 	sago::SagoTextField editField;
+	sago::SagoTextField editFieldMarker;
+	std::vector<sago::SagoTextField> historyField;
 };
 
 #endif /* CONSOLE_HPP */
