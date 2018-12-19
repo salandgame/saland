@@ -84,6 +84,17 @@ void Console::removeChar() {
 	}
 }
 
+void Console::ProcessCommand(const std::string& command) {
+	sago::SagoTextField f;
+	SetFieldValues(f);
+	f.SetText(command);
+	historyField.push_back(std::move(f));
+	sago::SagoTextField response;
+	SetFieldValues(response);
+	response.SetText(std::string("   \"")+command+"\" not recognized");
+	historyField.push_back(std::move(response));
+}
+
 bool Console::ReadKey(SDL_Keycode keyPressed) {
 	if (keyPressed == SDLK_DELETE) {
 		if ((editLine.length()>0)&& (editPosition<editLine.end())) {
@@ -118,10 +129,7 @@ bool Console::ReadKey(SDL_Keycode keyPressed) {
 	if (keyPressed == SDLK_RETURN || keyPressed == SDLK_RETURN2) {
 		if (editLine.length() > 0) {
 			commandHistory.push_back(editLine);
-			sago::SagoTextField f;
-			SetFieldValues(f);
-			f.SetText(editLine);
-			historyField.push_back(std::move(f));
+			ProcessCommand(editLine);
 		}
 		editLine.clear();
 		editPosition = editLine.begin();

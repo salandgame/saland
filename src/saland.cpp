@@ -134,9 +134,15 @@ void UpdateMouseCoordinates(const SDL_Event& event, int& mousex, int& mousey) {
 	}
 }
 
+void ResetFullscreen();
+
 void RunGameState(sago::GameStateInterface& state ) {
 	bool done = false;     //We are done!
 	while (!done && !globalData.isShuttingDown) {
+		if (globalData.resetVideo) {
+			ResetFullscreen();
+			globalData.resetVideo = false;
+		}
 		SDL_SetRenderDrawColor(globalData.screen, 0, 0, 0, 0);
 		SDL_RenderClear(globalData.screen);
 		state.Draw(globalData.screen);
@@ -148,6 +154,13 @@ void RunGameState(sago::GameStateInterface& state ) {
 			if ( event.type == SDL_QUIT ) {
 				globalData.isShuttingDown = true;
 				done = true;
+			}
+
+			if (event.type == SDL_KEYDOWN) {
+				if (!globalData.resetVideo && event.key.keysym.sym == SDLK_RETURN && event.key.keysym.mod & KMOD_LALT) {
+					globalData.fullscreen = !globalData.fullscreen;
+					globalData.resetVideo = true;
+				}
 			}
 
 			bool processed = false;
@@ -171,13 +184,16 @@ void startWorld() {
 	RunGameState(g);
 }
 
-void ResetFullscreen(SDL_Window* sdlWindow, sago::SagoDataHolder& dataHolder) {
+static SDL_Window* win = nullptr;
+
+void ResetFullscreen() {
+	sago::SagoDataHolder& dataHolder = *globalData.dataHolder;
 	Mix_HaltMusic();  //We need to reload all data in case the screen type changes. Music must be stopped before unload.
 	if (globalData.fullscreen) {
-		SDL_SetWindowFullscreen(sdlWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
+		SDL_SetWindowFullscreen(win, SDL_WINDOW_FULLSCREEN_DESKTOP);
 	}
 	else {
-		SDL_SetWindowFullscreen(sdlWindow, 0);
+		SDL_SetWindowFullscreen(win, 0);
 	}
 	dataHolder.invalidateAll(globalData.screen);
 	globalData.spriteHolder.reset(new sago::SagoSpriteHolder( dataHolder ) );
@@ -194,13 +210,13 @@ void runGame() {
 
 	globalData.fullscreen = Config::getInstance()->getInt("fullscreen");
 
-	SDL_Window* win = SDL_CreateWindow("Saland Adventures", posX, posY, width, height, 0);
+	win = SDL_CreateWindow("Saland Adventures", posX, posY, width, height, 0);
 	globalData.screen = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
 	//SDL_RenderSetLogicalSize(globalData.screen, 1024, 768);
 	sago::SagoDataHolder holder(globalData.screen);
 	globalData.spriteHolder.reset(new sago::SagoSpriteHolder(holder));
 	globalData.dataHolder = &holder;
-	ResetFullscreen(win, *globalData.dataHolder);
+	ResetFullscreen();
 
 	TitleScreen ts;
 	RunGameState(ts);

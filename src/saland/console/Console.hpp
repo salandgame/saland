@@ -44,6 +44,7 @@ private:
 	void putchar(const std::string& thing);
 	bool ReadKey(SDL_Keycode keyPressed);
 	void removeChar();
+	void ProcessCommand(const std::string& command);
 	bool active = true;
 	std::vector<std::string> commandHistory;
 	std::string editLine;
