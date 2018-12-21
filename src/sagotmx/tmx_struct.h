@@ -442,7 +442,7 @@ inline void xml_add_tileset(std::iostream& io, const TileMap& m, size_t tile_set
 	}
 	io << ">\n";
 	if (ts.image.source.length() > 0) {
-		io << "<image source=\"" << ts.image.source << "\" width=\"" << ts.image.width << "\" hight=\"" << ts.image.height << "\"/>\n";
+		io << "<image source=\"" << ts.image.source << "\" width=\"" << ts.image.width << "\" height=\"" << ts.image.height << "\"/>\n";
 	}
 	io << "</tileset>\n";
 }
@@ -555,6 +555,10 @@ inline void getTextureLocationFromGid(const TileMap& tm, int gid, std::string* i
 	//std::cout << "ts: " << ts->name << ", " << ts->image.source << ", " << ts->image.height << ", " << ts->image.width << "\n";
 	if (imageFile) {
 		*imageFile = ts->image.source;
+	}
+	if (ts->image.width == 0) {
+		std::cerr << "image: " << ts->image.source << " (" << ts->image.width << ", " << ts->image.height << ") is not good\n";
+		abort();
 	}
 	if (x) {
 		*x = ( gid *ts->tilewidth)%ts->image.width;
