@@ -43,6 +43,16 @@ https://github.com/sago007/saland
 int32 velocityIterations = 6;
 int32 positionIterations = 2;
 
+struct PlayerControls {
+	SDL_Scancode move_up = SDL_SCANCODE_UP;
+	SDL_Scancode move_down = SDL_SCANCODE_DOWN;
+	SDL_Scancode move_left = SDL_SCANCODE_LEFT;
+	SDL_Scancode move_right = SDL_SCANCODE_RIGHT;
+};
+
+PlayerControls playerControls;
+
+
 typedef std::pair<float,float> SpawnPoint;
 
 /**
@@ -285,16 +295,16 @@ void Game::Update() {
 	float deltaX = 0.0f;
 	float deltaY = 0.0f;
 	if (!data->c) {
-		if (state[SDL_SCANCODE_DOWN]) {
+		if (state[playerControls.move_down]) {
 			deltaY += 1.0f;
 		}
-		if (state[SDL_SCANCODE_UP]) {
+		if (state[playerControls.move_up]) {
 			deltaY -= 1.0f;
 		}
-		if (state[SDL_SCANCODE_RIGHT]) {
+		if (state[playerControls.move_right]) {
 			deltaX += 1.0f;
 		}
-		if (state[SDL_SCANCODE_LEFT]) {
+		if (state[playerControls.move_left]) {
 			deltaX -= 1.0f;
 		}
 	}
