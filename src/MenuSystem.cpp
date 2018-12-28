@@ -86,7 +86,7 @@ void Button::doAction() {
 		action();
 		return;
 	}
-	std::cerr << "Warning: button \"" << label << "\" has no action assigned!";
+	std::cerr << "Warning: button \"" << label << "\" has no action assigned!\n";
 }
 
 void Button::setPopOnRun(bool popOnRun) {

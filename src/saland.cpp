@@ -156,6 +156,11 @@ void RunGameState(sago::GameStateInterface& state ) {
 				done = true;
 			}
 
+			if (event.type == SDL_WINDOWEVENT_RESIZED) {
+				std::cout << event.window.data1 << ", " << event.window.data2 << "\n";
+				SDL_GetRendererOutputSize(globalData.screen, &globalData.xsize, &globalData.ysize);
+			}
+
 			if (event.type == SDL_KEYDOWN) {
 				if (!globalData.resetVideo && event.key.keysym.sym == SDLK_RETURN && event.key.keysym.mod & KMOD_LALT) {
 					globalData.fullscreen = !globalData.fullscreen;
@@ -201,6 +206,20 @@ void ResetFullscreen() {
 	SDL_GetRendererOutputSize(globalData.screen, &globalData.xsize, &globalData.ysize);
 }
 
+void toggleFullscreen() {
+	globalData.fullscreen = !globalData.fullscreen;
+	ResetFullscreen();
+}
+
+void runMenuOptions() {
+	Menu m(globalData.screen, true);
+	Button bFullscreen;
+	bFullscreen.setLabel("Fullscreen");
+	bFullscreen.setAction(toggleFullscreen);
+	m.addButton(&bFullscreen);
+	RunGameState(m);
+}
+
 void runGame() {
 	int posX = 100, posY = 100, width = 1024, height = 768;
 	SDL_Init(SDL_INIT_VIDEO);
@@ -227,6 +246,10 @@ void runGame() {
 	bStart.setLabel("Start");
 	bStart.setAction(startWorld);
 	m.addButton(&bStart);
+	Button bOptions;
+	bOptions.setLabel("Options");
+	bOptions.setAction(runMenuOptions);
+	m.addButton(&bOptions);
 	RunGameState(m);
 
 	SDL_DestroyRenderer(globalData.screen);
