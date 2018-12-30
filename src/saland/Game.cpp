@@ -87,9 +87,10 @@ struct Game::GameImpl {
 	int world_mouse_y = 0;
 	char direction = 0;
 	Uint32 lastUpdate = 0;
+	bool isActive = true;
 	std::string worldName = "world1";
 	sago::SagoTextField bottomField;
-	std::shared_ptr<Console> c;
+	std::shared_ptr<Console> console;
 };
 
 static SpawnPoint GetSpawnpoint(const sago::tiled::TileMap& tm) {
@@ -143,7 +144,7 @@ Game::~Game() {
 }
 
 bool Game::IsActive() {
-	return true;
+	return data->isActive;
 }
 
 static void SetLengthToOne(float& x, float& y) {
@@ -155,14 +156,14 @@ static void SetLengthToOne(float& x, float& y) {
 static std::string GetLayerInfoForTile(const World& w, int x, int y) {
 	std::stringstream ret;
 	if (!sago::tiled::tileInBound(w.tm, x, y)) {
-		ret << "Out of bound";
+		ret << "Out of bound\n";
 		return ret.str();
 	}
 	for (size_t i = 0; i < w.tm.layers.size(); ++i) {
 		const sago::tiled::TileLayer& tl = w.tm.layers[i];
 		int tile = sago::tiled::getTileFromLayer(w.tm, tl, x, y);
 		if (tile != 0) {
-			ret << "(" << tl.name << ":" << tile << ")";
+			ret << "(" << tl.name << ":" << tile << ")\n";
 		}
 	}
 	return ret.str();
@@ -226,8 +227,8 @@ void Game::Draw(SDL_Renderer* target) {
 	);
 	data->bottomField.SetText(buffer);
 	data->bottomField.Draw(target, 2, screen_height, sago::SagoTextField::Alignment::left, sago::SagoTextField::VerticalAlignment::bottom);
-	if (data->c) {
-		data->c->Draw(target);
+	if (data->console) {
+		data->console->Draw(target);
 	}
 //#if DEBUG
 	static unsigned long int Frames;
@@ -250,8 +251,8 @@ void Game::Draw(SDL_Renderer* target) {
 }
 
 void Game::ProcessInput(const SDL_Event& event, bool& processed) {
-	if (data->c) {
-		data->c->ProcessInput(event, processed);
+	if (data->console) {
+		data->console->ProcessInput(event, processed);
 		if (processed) {
 			return;
 		}
@@ -272,7 +273,10 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 			data->gameRegion.world.init_physics(data->gameRegion.physicsBox);
 		}
 		if (event.key.keysym.sym == SDLK_ESCAPE && event.key.keysym.mod & KMOD_LSHIFT) {
-			data->c = std::make_shared<Console>();
+			data->console = std::make_shared<Console>();
+		}
+		if (event.key.keysym.sym == SDLK_F12) {
+			data->isActive = false;
 		}
 	}
 }
@@ -286,15 +290,15 @@ static bool Intersect(const Placeable& p1, const Placeable& p2) {
 }
 
 void Game::Update() {
-	if (data->c) {
-		data->c->Update();
+	if (data->console) {
+		data->console->Update();
 	}
 	Uint32 nowTime = SDL_GetTicks();
 	Uint32 deltaTime = nowTime - data->lastUpdate;
 	const Uint8 *state = SDL_GetKeyboardState(NULL);
 	float deltaX = 0.0f;
 	float deltaY = 0.0f;
-	if (!data->c) {
+	if (!data->console) {
 		if (state[playerControls.move_down]) {
 			deltaY += 1.0f;
 		}
@@ -365,10 +369,10 @@ void Game::Update() {
 		ResetWorld(data->gameRegion.GetRegionX(), data->gameRegion.GetRegionY()+1);
 		data->human->body->SetTransform(b2Vec2(data->gameRegion.world.tm.width/2, 1),data->human->body->GetAngle()) ;
 	}
-	if (data->c && !data->c->IsActive()) {
-		data->c = nullptr;
+	if (data->console && !data->console->IsActive()) {
+		data->console = nullptr;
 	}
-	if (SDL_GetMouseState(nullptr,nullptr) & 1 && !data->c) {
+	if (SDL_GetMouseState(nullptr,nullptr) & 1 && !data->console) {
 		if (data->human->castTimeRemaining == 0) {
 			data->human->castTimeRemaining = data->human->castTime;
 			std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>();

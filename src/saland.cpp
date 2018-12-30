@@ -250,7 +250,9 @@ void runGame() {
 	bOptions.setLabel("Options");
 	bOptions.setAction(runMenuOptions);
 	m.addButton(&bOptions);
-	RunGameState(m);
+	while (!globalData.isShuttingDown) {
+		RunGameState(m);
+	}
 
 	SDL_DestroyRenderer(globalData.screen);
 	SDL_DestroyWindow(win);
