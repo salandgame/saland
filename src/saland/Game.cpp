@@ -43,15 +43,6 @@ https://github.com/sago007/saland
 int32 velocityIterations = 6;
 int32 positionIterations = 2;
 
-struct PlayerControls {
-	SDL_Scancode move_up = SDL_SCANCODE_UP;
-	SDL_Scancode move_down = SDL_SCANCODE_DOWN;
-	SDL_Scancode move_left = SDL_SCANCODE_LEFT;
-	SDL_Scancode move_right = SDL_SCANCODE_RIGHT;
-};
-
-PlayerControls playerControls;
-
 
 typedef std::pair<float,float> SpawnPoint;
 
@@ -260,13 +251,15 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 	if (event.type == SDL_KEYDOWN) {
 		int tile_x = data->world_mouse_x/32;
 		int tile_y = data->world_mouse_y/32;
-		if (event.key.keysym.sym == SDLK_w && sago::tiled::tileInBound(data->gameRegion.world.tm, tile_x, tile_y)) {
+		if (event.key.keysym.sym == globalData.playerControls.block_create
+		  && sago::tiled::tileInBound(data->gameRegion.world.tm, tile_x, tile_y)) {
 			int layer_number = 2; //  Do not hardcode
 			uint32_t tile = 607;
 			sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
 			data->gameRegion.world.init_physics(data->gameRegion.physicsBox);
 		}
-		if (event.key.keysym.sym == SDLK_e && sago::tiled::tileInBound(data->gameRegion.world.tm, tile_x, tile_y)) {
+		if (event.key.keysym.sym == globalData.playerControls.block_delete
+		  && sago::tiled::tileInBound(data->gameRegion.world.tm, tile_x, tile_y)) {
 			int layer_number = 2; //  Do not hardcode
 			uint32_t tile = 0;
 			sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
@@ -299,16 +292,16 @@ void Game::Update() {
 	float deltaX = 0.0f;
 	float deltaY = 0.0f;
 	if (!data->console) {
-		if (state[playerControls.move_down]) {
+		if (state[globalData.playerControls.move_down]) {
 			deltaY += 1.0f;
 		}
-		if (state[playerControls.move_up]) {
+		if (state[globalData.playerControls.move_up]) {
 			deltaY -= 1.0f;
 		}
-		if (state[playerControls.move_right]) {
+		if (state[globalData.playerControls.move_right]) {
 			deltaX += 1.0f;
 		}
-		if (state[playerControls.move_left]) {
+		if (state[globalData.playerControls.move_left]) {
 			deltaX -= 1.0f;
 		}
 	}

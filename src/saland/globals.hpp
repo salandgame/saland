@@ -27,6 +27,16 @@ https://github.com/sago007/saland
 #include "../sago/SagoSpriteHolder.hpp"
 #include <memory>
 
+struct PlayerControls {
+	SDL_Scancode move_up = SDL_SCANCODE_W;
+	SDL_Scancode move_down = SDL_SCANCODE_S;
+	SDL_Scancode move_left = SDL_SCANCODE_A;
+	SDL_Scancode move_right = SDL_SCANCODE_D;
+	SDL_Keycode block_create = SDLK_q;
+	SDL_Keycode block_delete = SDLK_e;
+};
+
+
 struct GlobalData {
 	bool isShuttingDown = false;
 	bool fullscreen = false;
@@ -39,6 +49,7 @@ struct GlobalData {
 	int mousey = 0;
 	int xsize = 1024;
 	int ysize = 768;
+	PlayerControls playerControls;
 };
 
 extern GlobalData globalData;
