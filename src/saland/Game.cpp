@@ -262,7 +262,7 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 		int tile_y = data->world_mouse_y/32;
 		if (event.key.keysym.sym == SDLK_w && sago::tiled::tileInBound(data->gameRegion.world.tm, tile_x, tile_y)) {
 			int layer_number = 2; //  Do not hardcode
-			uint32_t tile = 485;
+			uint32_t tile = 607;
 			sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
 			data->gameRegion.world.init_physics(data->gameRegion.physicsBox);
 		}
