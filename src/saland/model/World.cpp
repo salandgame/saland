@@ -123,7 +123,7 @@ void World::init_physics(std::shared_ptr<b2World>& world) {
 		b2Body* bodyAdded = AddStaticRect(physicsWorld.get(), 0, -32, (layers.at(0).width/2-5)*32, 32);
 		managed_bodies.push_back(bodyAdded);
 		//top right
-		bodyAdded = AddStaticRect(physicsWorld.get(), (layers.at(0).width/2+5)*32, 32, (layers.at(0).width)*32, 32);
+		bodyAdded = AddStaticRect(physicsWorld.get(), (layers.at(0).width/2+5)*32, -32, (layers.at(0).width)*32, 32);
 		managed_bodies.push_back(bodyAdded);
 		//bottom left
 		bodyAdded = AddStaticRect(physicsWorld.get(), 0, (layers.at(0).height*32), (layers.at(0).width/2-5)*32, 32);
