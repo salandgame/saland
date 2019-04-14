@@ -39,6 +39,9 @@ void GameRegion::Init(int x, int y, const std::string& worldName) {
 	std::string loadMap = mapFileName;
 	if (!sago::FileExists(loadMap.c_str())) {
 		loadMap = "maps/sample1.tmx";
+		if (region_x == 0 && region_y == -2) {
+			loadMap = "maps/city_0x-2.tmx";
+		}
 	}
 	b2Vec2 gravity(0.0f, 0.0f);
 	placeables.clear();
