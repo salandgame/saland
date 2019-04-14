@@ -40,6 +40,7 @@ void DrawProjectile(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const
 
 void DrawRectWhite(SDL_Renderer* target, int topx, int topy, int height, int width);
 void DrawRectYellow(SDL_Renderer* target, int topx, int topy, int height, int width);
+void DrawTile(SDL_Renderer* renderer, sago::SagoSpriteHolder* sHolder, const sago::tiled::TileMap& tm, uint32_t gid, int x, int y);
 
 #endif /* GAMEDRAW_HPP */
 

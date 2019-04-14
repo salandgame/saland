@@ -78,6 +78,7 @@ struct Game::GameImpl {
 	int world_mouse_y = 0;
 	char direction = 0;
 	Uint32 lastUpdate = 0;
+	uint32_t drawTile = 607;
 	bool isActive = true;
 	std::string worldName = "world1";
 	sago::SagoTextField bottomField;
@@ -218,6 +219,7 @@ void Game::Draw(SDL_Renderer* target) {
 	);
 	data->bottomField.SetText(buffer);
 	data->bottomField.Draw(target, 2, screen_height, sago::SagoTextField::Alignment::left, sago::SagoTextField::VerticalAlignment::bottom);
+	DrawTile(target, globalData.spriteHolder.get(), data->gameRegion.world.tm, data->drawTile, 1024-60, 768-60);
 	if (data->console) {
 		data->console->Draw(target);
 	}
@@ -242,7 +244,7 @@ void Game::Draw(SDL_Renderer* target) {
 }
 
 static bool reservedField(const sago::tiled::TileMap& tm, int x, int y) {
-	if (x < 2 && y > tm.layers.at(0).height/2-6 && y < tm.layers.at(0).height/2+5) {
+	if (x < 2 && y > tm.layers.at(6070).height/2-6 && y < tm.layers.at(0).height/2+5) {
 		return true;
 	}
 	if (x > tm.layers.at(0).width-3 && y > tm.layers.at(0).height/2-6 && y < tm.layers.at(0).height/2+5) {
@@ -271,7 +273,7 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 		  && sago::tiled::tileInBound(data->gameRegion.world.tm, tile_x, tile_y)
 		  && !reservedField(data->gameRegion.world.tm, tile_x, tile_y)) {
 			int layer_number = 2; //  Do not hardcode
-			uint32_t tile = 607;
+			uint32_t tile = data->drawTile;
 			sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
 			data->gameRegion.world.init_physics(data->gameRegion.physicsBox);
 		}
@@ -281,6 +283,12 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 			uint32_t tile = 0;
 			sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
 			data->gameRegion.world.init_physics(data->gameRegion.physicsBox);
+		}
+		if (event.key.keysym.sym == SDLK_PAGEDOWN) {
+			data->drawTile--;
+		}
+		if (event.key.keysym.sym == SDLK_PAGEUP) {
+			data->drawTile++;
 		}
 		if (event.key.keysym.sym == SDLK_ESCAPE && event.key.keysym.mod & KMOD_LSHIFT) {
 			data->console = std::make_shared<Console>();
