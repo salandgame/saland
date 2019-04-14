@@ -53,6 +53,11 @@ Console::~Console() {
 bool Console::IsActive() {
 	return active;
 };
+
+void Console::Activate() {
+	active = true;
+}
+
 void Console::Draw(SDL_Renderer* target) {
 	int sideBoarder = 20;
 	DrawRectYellow(target, sideBoarder, 10, globalData.ysize/2, globalData.xsize - sideBoarder*2);

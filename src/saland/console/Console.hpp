@@ -37,6 +37,7 @@ public:
 	virtual void Draw(SDL_Renderer* target) override;
 	virtual void ProcessInput(const SDL_Event& event, bool &processed) override;
 	virtual void Update() override;
+	void Activate();
 	Console(const Console& orig) = delete;
 	Console& operator=(const Console&) = delete;
 	virtual ~Console();

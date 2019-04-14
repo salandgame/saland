@@ -83,6 +83,7 @@ struct Game::GameImpl {
 	std::string worldName = "world1";
 	sago::SagoTextField bottomField;
 	std::shared_ptr<Console> console;
+	bool consoleActive = false;
 };
 
 static SpawnPoint GetSpawnpoint(const sago::tiled::TileMap& tm) {
@@ -220,7 +221,7 @@ void Game::Draw(SDL_Renderer* target) {
 	data->bottomField.SetText(buffer);
 	data->bottomField.Draw(target, 2, screen_height, sago::SagoTextField::Alignment::left, sago::SagoTextField::VerticalAlignment::bottom);
 	DrawTile(target, globalData.spriteHolder.get(), data->gameRegion.world.tm, data->drawTile, 1024-60, 768-60);
-	if (data->console) {
+	if (data->consoleActive && data->console) {
 		data->console->Draw(target);
 	}
 //#if DEBUG
@@ -260,7 +261,7 @@ static bool reservedField(const sago::tiled::TileMap& tm, int x, int y) {
 }
 
 void Game::ProcessInput(const SDL_Event& event, bool& processed) {
-	if (data->console) {
+	if (data->consoleActive && data->console) {
 		data->console->ProcessInput(event, processed);
 		if (processed) {
 			return;
@@ -291,7 +292,11 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 			data->drawTile++;
 		}
 		if (event.key.keysym.sym == SDLK_ESCAPE && event.key.keysym.mod & KMOD_LSHIFT) {
-			data->console = std::make_shared<Console>();
+			if (!data->console) {
+				data->console = std::make_shared<Console>();
+			}
+			data->console->Activate();
+			data->consoleActive = true;
 		}
 		if (event.key.keysym.sym == SDLK_F12) {
 			data->isActive = false;
@@ -308,7 +313,7 @@ static bool Intersect(const Placeable& p1, const Placeable& p2) {
 }
 
 void Game::Update() {
-	if (data->console) {
+	if (data->consoleActive && data->console) {
 		data->console->Update();
 	}
 	Uint32 nowTime = SDL_GetTicks();
@@ -316,7 +321,7 @@ void Game::Update() {
 	const Uint8 *state = SDL_GetKeyboardState(NULL);
 	float deltaX = 0.0f;
 	float deltaY = 0.0f;
-	if (!data->console) {
+	if (!data->consoleActive) {
 		if (state[globalData.playerControls.move_down]) {
 			deltaY += 1.0f;
 		}
@@ -387,10 +392,10 @@ void Game::Update() {
 		ResetWorld(data->gameRegion.GetRegionX(), data->gameRegion.GetRegionY()+1);
 		data->human->body->SetTransform(b2Vec2(data->gameRegion.world.tm.width/2, 0.01f),data->human->body->GetAngle()) ;
 	}
-	if (data->console && !data->console->IsActive()) {
-		data->console = nullptr;
+	if (data->consoleActive && data->console && !data->console->IsActive()) {
+		data->consoleActive = false;
 	}
-	if (SDL_GetMouseState(nullptr,nullptr) & 1 && !data->console) {
+	if (SDL_GetMouseState(nullptr,nullptr) & 1 && !data->consoleActive) {
 		if (data->human->castTimeRemaining == 0) {
 			data->human->castTimeRemaining = data->human->castTime;
 			std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>();
