@@ -369,7 +369,7 @@ void Game::Update() {
 	}
 	if (data->human->X > data->gameRegion.world.tm.width*32) {
 		ResetWorld(data->gameRegion.GetRegionX()+1, data->gameRegion.GetRegionY());
-		data->human->body->SetTransform(b2Vec2(1, data->gameRegion.world.tm.height/2),data->human->body->GetAngle()) ;
+		data->human->body->SetTransform(b2Vec2(0.01f, data->gameRegion.world.tm.height/2),data->human->body->GetAngle()) ;
 	}
 	if (data->human->Y < 0) {
 		ResetWorld(data->gameRegion.GetRegionX(), data->gameRegion.GetRegionY()-1);
@@ -377,7 +377,7 @@ void Game::Update() {
 	}
 	if (data->human->Y > data->gameRegion.world.tm.height*32) {
 		ResetWorld(data->gameRegion.GetRegionX(), data->gameRegion.GetRegionY()+1);
-		data->human->body->SetTransform(b2Vec2(data->gameRegion.world.tm.width/2, 1),data->human->body->GetAngle()) ;
+		data->human->body->SetTransform(b2Vec2(data->gameRegion.world.tm.width/2, 0.01f),data->human->body->GetAngle()) ;
 	}
 	if (data->console && !data->console->IsActive()) {
 		data->console = nullptr;
