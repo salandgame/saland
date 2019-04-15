@@ -39,7 +39,7 @@ public:
 private:
 	struct GameImpl;
 	std::unique_ptr<GameImpl> data;
-	void ResetWorld(int region_x, int region_y);
+	void ResetWorld(int region_x, int region_y, bool forceResetWorld);
 };
 
 #endif /* GAME_HPP */

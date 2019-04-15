@@ -24,6 +24,7 @@ https://github.com/sago007/saland
 #include "Console.hpp"
 #include "../GameDraw.hpp"
 #include "../globals.hpp"
+#include <boost/tokenizer.hpp>
 
 static void SetFieldValues(sago::SagoTextField& field) {
 	field.SetHolder(&globalData.spriteHolder->GetDataHolder());
@@ -41,7 +42,7 @@ void RegisterCommand(ConsoleCommand* command) {
 struct HelpConsoleCommand : public ConsoleCommand {
 	virtual std::string getCommand() const override {return "help"; }
 
-	virtual std::string run(std::vector<std::string>) override {
+	virtual std::string run(const std::vector<std::string>&) override {
 		std::string helpMessage = "Allowed commands: ";
 		for (const auto& cmd : commands) {
 			helpMessage += cmd.first + ", ";
@@ -110,11 +111,14 @@ void Console::removeChar() {
 	}
 }
 
-static std::vector<std::string> splitByWhitespace(std::string const &input) { 
-    std::istringstream buffer(input);
-    std::vector<std::string> ret((std::istream_iterator<std::string>(buffer)), 
-                                 std::istream_iterator<std::string>());
-    return ret;
+static std::vector<std::string> splitByWhitespace(std::string const &line) { 
+	std::vector<std::string> arg;
+	boost::escaped_list_separator<char> els('\\',' ','\"');
+	boost::tokenizer<boost::escaped_list_separator<char> > tok(line, els);
+	for (const std::string& item : tok) {
+		arg.push_back(item);
+	}
+	return arg;
 }
 
 void Console::ProcessCommand(const std::string& command) {

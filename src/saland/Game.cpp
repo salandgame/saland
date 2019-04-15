@@ -66,13 +66,14 @@ bool PlaceablesSortLowerY(const std::shared_ptr<Placeable>& i, const std::shared
 	return i->Y+i->Radius > j->Y+j->Radius;
 }
 
+static bool reset_region = false;
 static bool teleport = false;
 static int teleportX = 0;
 static int teleportY = 0;
 
 struct GotoConsoleCommand : public ConsoleCommand {
 	virtual std::string getCommand() const override {return "goto";}
-	virtual std::string run(std::vector<std::string> args) {
+	virtual std::string run(const std::vector<std::string>& args) override {
 		if (args.size() != 3) {
 			return "Must be ran like \"goto X Y\"";
 		}
@@ -83,7 +84,16 @@ struct GotoConsoleCommand : public ConsoleCommand {
 	}
 };
 
+struct ResetRegionConsoleCommand : public ConsoleCommand {
+	virtual std::string getCommand() const override {return "reset_region";}
+	virtual std::string run(const std::vector<std::string>&) override {
+		reset_region = true;
+		return "Region reset queued!";
+	}
+};
+
 static GotoConsoleCommand gcc;
+static ResetRegionConsoleCommand rrcc;
 
 struct Game::GameImpl {
 	GameRegion gameRegion;
@@ -121,9 +131,9 @@ static SpawnPoint GetSpawnpoint(const sago::tiled::TileMap& tm) {
 	return ret;
 }
 
-void Game::ResetWorld(int x, int y) {
+void Game::ResetWorld(int x, int y, bool forceResetWorld) {
 	data->gameRegion.SaveRegion();
-	data->gameRegion.Init(x, y, data->worldName);
+	data->gameRegion.Init(x, y, data->worldName, forceResetWorld);
 	data->human.reset(new Human());
 	data->gameRegion.placeables.push_back(data->human);
 	b2BodyDef myBodyDef;
@@ -144,9 +154,10 @@ void Game::ResetWorld(int x, int y) {
 
 Game::Game() {
 	RegisterCommand(&gcc);
+	RegisterCommand(&rrcc);
 	data.reset(new Game::GameImpl());
 	data->lastUpdate = SDL_GetTicks();
-	ResetWorld(0,0);
+	ResetWorld(0, 0, false);
 
 	data->bottomField.SetHolder(globalData.dataHolder);
 	data->bottomField.SetFontSize(20);
@@ -169,14 +180,14 @@ static void SetLengthToOne(float& x, float& y) {
 static std::string GetLayerInfoForTile(const World& w, int x, int y) {
 	std::stringstream ret;
 	if (!sago::tiled::tileInBound(w.tm, x, y)) {
-		ret << "Out of bound\n";
+		ret << "Out of bound";
 		return ret.str();
 	}
 	for (size_t i = 0; i < w.tm.layers.size(); ++i) {
 		const sago::tiled::TileLayer& tl = w.tm.layers[i];
 		int tile = sago::tiled::getTileFromLayer(w.tm, tl, x, y);
 		if (tile != 0) {
-			ret << "(" << tl.name << ":" << tile << ")\n";
+			ret << "(" << tl.name << ":" << tile << ")";
 		}
 	}
 	return ret.str();
@@ -397,24 +408,28 @@ void Game::Update() {
 	data->gameRegion.physicsBox->Step(deltaTime / 1000.0f / 60.0f, velocityIterations, positionIterations);
 	std::sort(data->gameRegion.placeables.begin(), data->gameRegion.placeables.end(), sort_placeable);
 	if (data->human->X < 0) {
-		ResetWorld(data->gameRegion.GetRegionX()-1, data->gameRegion.GetRegionY());
+		ResetWorld(data->gameRegion.GetRegionX()-1, data->gameRegion.GetRegionY(), false);
 		data->human->body->SetTransform(b2Vec2(data->gameRegion.world.tm.width, data->gameRegion.world.tm.height/2),data->human->body->GetAngle()) ;
 	}
 	if (data->human->X > data->gameRegion.world.tm.width*32) {
-		ResetWorld(data->gameRegion.GetRegionX()+1, data->gameRegion.GetRegionY());
+		ResetWorld(data->gameRegion.GetRegionX()+1, data->gameRegion.GetRegionY(), false);
 		data->human->body->SetTransform(b2Vec2(0.01f, data->gameRegion.world.tm.height/2),data->human->body->GetAngle()) ;
 	}
 	if (data->human->Y < 0) {
-		ResetWorld(data->gameRegion.GetRegionX(), data->gameRegion.GetRegionY()-1);
+		ResetWorld(data->gameRegion.GetRegionX(), data->gameRegion.GetRegionY()-1, false);
 		data->human->body->SetTransform(b2Vec2(data->gameRegion.world.tm.width/2, data->gameRegion.world.tm.height),data->human->body->GetAngle()) ;
 	}
 	if (data->human->Y > data->gameRegion.world.tm.height*32) {
-		ResetWorld(data->gameRegion.GetRegionX(), data->gameRegion.GetRegionY()+1);
+		ResetWorld(data->gameRegion.GetRegionX(), data->gameRegion.GetRegionY()+1, false);
 		data->human->body->SetTransform(b2Vec2(data->gameRegion.world.tm.width/2, 0.01f),data->human->body->GetAngle()) ;
 	}
 	if (teleport) {
-		ResetWorld(teleportX, teleportY);
+		ResetWorld(teleportX, teleportY, false);
 		teleport = false;
+	}
+	if (reset_region) {
+		ResetWorld(data->gameRegion.GetRegionX(), data->gameRegion.GetRegionY(), true);
+		reset_region = false;
 	}
 	if (data->consoleActive && data->console && !data->console->IsActive()) {
 		data->consoleActive = false;
