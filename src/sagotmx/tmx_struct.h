@@ -241,6 +241,11 @@ struct TileLayer {
 	TileLayerData data;
 };
 
+struct TileProperty {
+	std::string name;
+	std::string type;
+	std::string value;
+};
 
 struct TileObject {
 	int id = 0;
@@ -253,6 +258,7 @@ struct TileObject {
 	bool isEllipse = false;
 	bool isPoint = false;
 	std::vector<std::pair<int,int> > polygon_points;
+	std::map<std::string, TileProperty> properties;
 };
 
 struct TileObjectGroup {
@@ -411,6 +417,17 @@ inline TileMap string2tilemap(const std::string& tmx_content) {
 					to.polygon_points.push_back(std::make_pair(x, y));
 				}
 			}
+			rapidxml::xml_node<> * properties_node = object_node->first_node("properties");
+			if (properties_node) {
+				for (rapidxml::xml_node<> * property_node = properties_node->first_node("property"); 
+				property_node; property_node = property_node->next_sibling("property") ) {
+					TileProperty tp;
+					setValueFromAttribute(property_node, "name", tp.name);
+					setValueFromAttribute(property_node, "type", tp.type);
+					setValueFromAttribute(property_node, "value", tp.value);
+					to.properties[tp.name] = tp;
+				}
+			}
 			group.objects.push_back(to);
 		}
 		m.object_groups.push_back(group);
@@ -490,6 +507,18 @@ inline void xml_add_objectgroup(std::iostream& io, const TileMap& m, size_t obje
 				io << to.polygon_points.at(i).first << "," << to.polygon_points.at(i).second;
 			}
 			io << "\"/>\n";
+		}
+		if (to.properties.size() > 0) {
+			io << "<properties>\n";
+			for (const auto& prop : to.properties) {
+				io << "<property name=\"" << prop.first << "\" ";
+				if (prop.second.type.size()> 0) {
+					io << "type=\"" << prop.second.type << "\" ";
+				}
+				io << "value=\"" << prop.second.value << "\" ";
+				io << "/>\n";
+			}
+			io << "</properties>\n";
 		}
 		io << "</object>\n";
 	}

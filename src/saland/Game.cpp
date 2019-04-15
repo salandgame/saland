@@ -425,6 +425,18 @@ void Game::Update() {
 	data->lastUpdate = nowTime;
 	data->gameRegion.physicsBox->Step(deltaTime / 1000.0f / 60.0f, velocityIterations, positionIterations);
 	std::sort(data->gameRegion.placeables.begin(), data->gameRegion.placeables.end(), sort_placeable);
+	const std::vector<sago::tiled::TileObjectGroup>& object_groups = data->gameRegion.world.tm.object_groups;
+	for (const auto& group : object_groups) {
+		for (const auto& item : group.objects) {
+			if (item.isEllipse) {
+				continue;
+			}
+			if (item.x < data->human->X && item.y < data->human->Y && item.width+item.x > data->human->X
+			&& item.height+item.y > data->human->Y && item.type == "text") {
+				std::cout << "text\n";
+			}
+		}
+	}
 	if (data->human->X < 0) {
 		ResetWorld(data->gameRegion.GetRegionX()-1, data->gameRegion.GetRegionY(), false);
 		data->human->body->SetTransform(b2Vec2(data->gameRegion.world.tm.width, data->gameRegion.world.tm.height/2),data->human->body->GetAngle()) ;
