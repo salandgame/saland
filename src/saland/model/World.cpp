@@ -104,7 +104,7 @@ void World::init_physics(std::shared_ptr<b2World>& world) {
 			if (item.isEllipse) {
 				continue;
 			}
-			if (item.x > 0 && item.y > 0 && item.width > 0 && item.height > 0) {
+			if (item.x > 0 && item.y > 0 && item.width > 0 && item.height > 0 && item.type == "blocking") {
 				b2Body* bodyAdded = AddStaticRect(physicsWorld.get(), item.x, item.y, item.width, item.height);
 				managed_bodies.push_back(bodyAdded);
 			}
