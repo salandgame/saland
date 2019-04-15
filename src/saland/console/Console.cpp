@@ -42,13 +42,20 @@ void RegisterCommand(ConsoleCommand* command) {
 struct HelpConsoleCommand : public ConsoleCommand {
 	virtual std::string getCommand() const override {return "help"; }
 
-	virtual std::string run(const std::vector<std::string>&) override {
+	virtual std::string run(const std::vector<std::string>& args) override {
+		if (args.size() > 1 && commands.find(args.at(1)) != commands.end() ) {
+			std::stringstream ss;
+			ss << "Command \"" << args.at(1) << "\": " << commands[args.at(1)]->helpMessage();
+			return ss.str();
+		}
 		std::string helpMessage = "Allowed commands: ";
 		for (const auto& cmd : commands) {
 			helpMessage += cmd.first + ", ";
 		}
 		return helpMessage;
 	}
+
+	virtual std::string helpMessage() const { return "Displays this message"; }
 };
 
 static HelpConsoleCommand hcc;

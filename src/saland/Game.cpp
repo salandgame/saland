@@ -92,6 +92,10 @@ struct GotoConsoleCommand : public ConsoleCommand {
 		teleportY = string2int_trows(args[2]);
 		return "Teleport queued!";
 	}
+
+	virtual std::string helpMessage() const override {
+		return "Call like \"goto <X> <Y>\". Where <X> and <Y> is the regions to go to.";
+	}
 };
 
 struct ResetRegionConsoleCommand : public ConsoleCommand {
@@ -99,6 +103,10 @@ struct ResetRegionConsoleCommand : public ConsoleCommand {
 	virtual std::string run(const std::vector<std::string>&) override {
 		reset_region = true;
 		return "Region reset queued!";
+	}
+
+	virtual std::string helpMessage() const override {
+		return "Resets the current region back to default";
 	}
 };
 

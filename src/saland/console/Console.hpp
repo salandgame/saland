@@ -33,6 +33,7 @@ https://github.com/sago007/saland
 struct ConsoleCommand {
 	virtual std::string getCommand() const {return "version"; }
 	virtual std::string run(const std::vector<std::string>&) { return "Not implemented"; }
+	virtual std::string helpMessage() const { return "No help availeble"; }
 };
 
 /**
