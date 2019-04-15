@@ -130,8 +130,12 @@ void Console::ProcessCommand(const std::string& command) {
 	sago::SagoTextField response;
 	SetFieldValues(response);
 	if (commandVector.size() && commands.find(commandVector[0]) != commands.end() ) {
-		std::string ret = commands[commandVector[0]]->run(commandVector);
-		response.SetText(ret);
+		try {
+			std::string ret = commands[commandVector[0]]->run(commandVector);
+			response.SetText(ret);
+		} catch (std::exception& e) {
+			response.SetText(e.what());
+		}
 	}
 	else {
 		response.SetText(std::string("   \"")+command+"\" not recognized");

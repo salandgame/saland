@@ -66,6 +66,16 @@ bool PlaceablesSortLowerY(const std::shared_ptr<Placeable>& i, const std::shared
 	return i->Y+i->Radius > j->Y+j->Radius;
 }
 
+static int string2int_trows(const std::string& s) {
+	try {
+		return std::stoi(s);
+	} catch (std::exception&){
+		std::stringstream ss;
+		ss << "Failed to convert \"" << s << "\" to an integer";
+		throw std::runtime_error(ss.str());
+	}
+}
+
 static bool reset_region = false;
 static bool teleport = false;
 static int teleportX = 0;
@@ -78,8 +88,8 @@ struct GotoConsoleCommand : public ConsoleCommand {
 			return "Must be ran like \"goto X Y\"";
 		}
 		teleport = true;
-		teleportX = std::stoi(args[1]);
-		teleportY = std::stoi(args[2]);
+		teleportX = string2int_trows(args[1]);
+		teleportY = string2int_trows(args[2]);
 		return "Teleport queued!";
 	}
 };
