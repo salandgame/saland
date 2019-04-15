@@ -66,6 +66,25 @@ bool PlaceablesSortLowerY(const std::shared_ptr<Placeable>& i, const std::shared
 	return i->Y+i->Radius > j->Y+j->Radius;
 }
 
+static bool teleport = false;
+static int teleportX = 0;
+static int teleportY = 0;
+
+struct GotoConsoleCommand : public ConsoleCommand {
+	virtual std::string getCommand() const override {return "goto";}
+	virtual std::string run(std::vector<std::string> args) {
+		if (args.size() != 3) {
+			return "Must be ran like \"goto X Y\"";
+		}
+		teleport = true;
+		teleportX = std::stoi(args[1]);
+		teleportY = std::stoi(args[2]);
+		return "Teleport queued!";
+	}
+};
+
+static GotoConsoleCommand gcc;
+
 struct Game::GameImpl {
 	GameRegion gameRegion;
 	std::shared_ptr<Human> human;
@@ -124,6 +143,7 @@ void Game::ResetWorld(int x, int y) {
 }
 
 Game::Game() {
+	RegisterCommand(&gcc);
 	data.reset(new Game::GameImpl());
 	data->lastUpdate = SDL_GetTicks();
 	ResetWorld(0,0);
@@ -391,6 +411,10 @@ void Game::Update() {
 	if (data->human->Y > data->gameRegion.world.tm.height*32) {
 		ResetWorld(data->gameRegion.GetRegionX(), data->gameRegion.GetRegionY()+1);
 		data->human->body->SetTransform(b2Vec2(data->gameRegion.world.tm.width/2, 0.01f),data->human->body->GetAngle()) ;
+	}
+	if (teleport) {
+		ResetWorld(teleportX, teleportY);
+		teleport = false;
 	}
 	if (data->consoleActive && data->console && !data->console->IsActive()) {
 		data->consoleActive = false;

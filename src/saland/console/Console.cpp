@@ -32,7 +32,28 @@ static void SetFieldValues(sago::SagoTextField& field) {
 	field.SetOutline(1, {64,64,64,255});
 }
 
+static std::map<std::string, ConsoleCommand*> commands;
+
+void RegisterCommand(ConsoleCommand* command) {
+	commands[command->getCommand()] = command;
+}
+
+struct HelpConsoleCommand : public ConsoleCommand {
+	virtual std::string getCommand() const override {return "help"; }
+
+	virtual std::string run(std::vector<std::string>) override {
+		std::string helpMessage = "Allowed commands: ";
+		for (const auto& cmd : commands) {
+			helpMessage += cmd.first + ", ";
+		}
+		return helpMessage;
+	}
+};
+
+static HelpConsoleCommand hcc;
+
 Console::Console() {
+	RegisterCommand(&hcc);
 	editPosition = editLine.begin();
 	SDL_StartTextInput();
 	editField.SetHolder(&globalData.spriteHolder->GetDataHolder());
@@ -89,14 +110,28 @@ void Console::removeChar() {
 	}
 }
 
+static std::vector<std::string> splitByWhitespace(std::string const &input) { 
+    std::istringstream buffer(input);
+    std::vector<std::string> ret((std::istream_iterator<std::string>(buffer)), 
+                                 std::istream_iterator<std::string>());
+    return ret;
+}
+
 void Console::ProcessCommand(const std::string& command) {
 	sago::SagoTextField f;
 	SetFieldValues(f);
 	f.SetText(command);
 	historyField.push_back(std::move(f));
+	std::vector<std::string> commandVector = splitByWhitespace(command);
 	sago::SagoTextField response;
 	SetFieldValues(response);
-	response.SetText(std::string("   \"")+command+"\" not recognized");
+	if (commandVector.size() && commands.find(commandVector[0]) != commands.end() ) {
+		std::string ret = commands[commandVector[0]]->run(commandVector);
+		response.SetText(ret);
+	}
+	else {
+		response.SetText(std::string("   \"")+command+"\" not recognized");
+	}
 	historyField.push_back(std::move(response));
 }
 

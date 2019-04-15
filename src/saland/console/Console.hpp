@@ -30,6 +30,16 @@ https://github.com/sago007/saland
 #include <vector>
 #include "utf8.h"
 
+struct ConsoleCommand {
+	virtual std::string getCommand() const {return "version"; }
+	virtual std::string run(std::vector<std::string>) { return "Not implemented"; }
+};
+
+/**
+ * Registers a command for the console. The pointer MUST have static life time!
+ * */
+void RegisterCommand(ConsoleCommand* command);
+
 class Console : public sago::GameStateInterface {
 public:
 	Console();
