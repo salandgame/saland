@@ -129,6 +129,7 @@ struct Game::GameImpl {
 	bool isActive = true;
 	std::string worldName = "world1";
 	sago::SagoTextField bottomField;
+	sago::SagoTextField middleField;
 	std::shared_ptr<Console> console;
 	bool consoleActive = false;
 };
@@ -179,6 +180,8 @@ Game::Game() {
 
 	data->bottomField.SetHolder(globalData.dataHolder);
 	data->bottomField.SetFontSize(20);
+	data->middleField.SetHolder(globalData.dataHolder);
+	data->middleField.SetFontSize(20);
 }
 
 Game::~Game() {
@@ -269,6 +272,7 @@ void Game::Draw(SDL_Renderer* target) {
 	);
 	data->bottomField.SetText(buffer);
 	data->bottomField.Draw(target, 2, screen_height, sago::SagoTextField::Alignment::left, sago::SagoTextField::VerticalAlignment::bottom);
+	data->middleField.Draw(target, 1024/2, screen_height/4, sago::SagoTextField::Alignment::center, sago::SagoTextField::VerticalAlignment::bottom);
 	DrawTile(target, globalData.spriteHolder.get(), data->gameRegion.world.tm, data->drawTile, 1024-60, 768-60);
 	if (data->consoleActive && data->console) {
 		data->console->Draw(target);
@@ -362,6 +366,7 @@ static bool Intersect(const Placeable& p1, const Placeable& p2) {
 }
 
 void Game::Update() {
+	std::string middleText = "";
 	if (data->consoleActive && data->console) {
 		data->console->Update();
 	}
@@ -433,7 +438,10 @@ void Game::Update() {
 			}
 			if (item.x < data->human->X && item.y < data->human->Y && item.width+item.x > data->human->X
 			&& item.height+item.y > data->human->Y && item.type == "text") {
-				std::cout << "text\n";
+				const auto& itr = item.properties.find("text");
+				if (itr != item.properties.end()) {
+					middleText = itr->second.value;
+				}
 			}
 		}
 	}
@@ -478,4 +486,5 @@ void Game::Update() {
 			data->gameRegion.placeables.push_back(projectile);
 		}
 	}
+	data->middleField.SetText(middleText);
 }
