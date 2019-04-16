@@ -297,21 +297,6 @@ void Game::Draw(SDL_Renderer* target) {
 //#endif
 }
 
-static bool reservedField(const sago::tiled::TileMap& tm, int x, int y) {
-	if (x < 2 && y > tm.layers.at(6070).height/2-6 && y < tm.layers.at(0).height/2+5) {
-		return true;
-	}
-	if (x > tm.layers.at(0).width-3 && y > tm.layers.at(0).height/2-6 && y < tm.layers.at(0).height/2+5) {
-		return true;
-	}
-	if (y < 2 && x > tm.layers.at(0).width/2-6 && x < tm.layers.at(0).width/2+5) {
-		return true;
-	}
-	if (y > tm.layers.at(0).height-3 && x > tm.layers.at(0).width/2-6 && x < tm.layers.at(0).width/2+5) {
-		return true;
-	}
-	return false;
-}
 
 void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 	if (data->consoleActive && data->console) {
@@ -325,7 +310,7 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 		int tile_y = data->world_mouse_y/32;
 		if (event.key.keysym.sym == globalData.playerControls.block_create
 		  && sago::tiled::tileInBound(data->gameRegion.world.tm, tile_x, tile_y)
-		  && !reservedField(data->gameRegion.world.tm, tile_x, tile_y)) {
+		  && !(data->gameRegion.world.tile_protected(tile_x, tile_y)) ) {
 			int layer_number = 2; //  Do not hardcode
 			uint32_t tile = data->drawTile;
 			sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);

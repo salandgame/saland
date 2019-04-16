@@ -34,11 +34,13 @@ public:
 	void init(std::shared_ptr<b2World>& world);
 	void init(std::shared_ptr<b2World>& world, const std::string& mapFileName);
 	void init_physics(std::shared_ptr<b2World>& world);
+	bool tile_protected(int x, int y) const;
 //private:
 	sago::tiled::TileSet ts;
 	sago::tiled::TileMap tm;
 	std::shared_ptr<b2World> physicsWorld;
 	std::vector<b2Body*> managed_bodies;
+	std::vector<bool> protected_tiles;
 };
 
 #endif /* WORLD_HPP */

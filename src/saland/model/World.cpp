@@ -154,9 +154,34 @@ void World::init(std::shared_ptr<b2World>& world, const std::string& mapFileName
 		}
 	}
 	init_physics(world);
+	protected_tiles.resize(tm.height*tm.width);
+	for (int x=0; x < tm.width; ++x){
+		for (int y=0; y < tm.height; ++y){
+			if (x < 2 && y > tm.layers.at(0).height/2-6 && y < tm.layers.at(0).height/2+5) {
+				protected_tiles[x+y*tm.width] = true;
+			}
+			if (x > tm.layers.at(0).width-3 && y > tm.layers.at(0).height/2-6 && y < tm.layers.at(0).height/2+5) {
+				protected_tiles[x+y*tm.width] = true;
+			}
+			if (y < 2 && x > tm.layers.at(0).width/2-6 && x < tm.layers.at(0).width/2+5) {
+				protected_tiles[x+y*tm.width] = true;
+			}
+			if (y > tm.layers.at(0).height-3 && x > tm.layers.at(0).width/2-6 && x < tm.layers.at(0).width/2+5) {
+				protected_tiles[x+y*tm.width] = true;
+			}
+		}
+	}
 }
 
 void World::init(std::shared_ptr<b2World>& world) {
 	init(world, "maps/sample1.tmx");
 }
 
+bool World::tile_protected(int x, int y) const {
+	size_t index = x+y*tm.width;
+	if (x<0 || y<0 || x>=tm.width || y>=tm.height || index >= protected_tiles.size()) {
+		//Outside the area. Assume protected
+		return true;
+	}
+	return protected_tiles.at(index);
+}
