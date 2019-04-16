@@ -2,7 +2,9 @@ cmake_minimum_required(VERSION 2.8.9)
 project (saland)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${saland_SOURCE_DIR}/src/cmake")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -std=c++11 -g")
+# -Wno-deprecated-declarations is needed until all supported platforms are using PhysFS 3.0.1+.
+# This will happen once Debian 10 is realeased
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wsuggest-override -Wno-deprecated-declarations -std=c++11 -g")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -g")
 
 find_package(Boost COMPONENTS program_options REQUIRED)

@@ -55,7 +55,7 @@ struct HelpConsoleCommand : public ConsoleCommand {
 		return helpMessage;
 	}
 
-	virtual std::string helpMessage() const { return "Displays this message"; }
+	virtual std::string helpMessage() const override { return "Displays this message"; }
 };
 
 static HelpConsoleCommand hcc;
