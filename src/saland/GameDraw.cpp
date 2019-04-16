@@ -23,6 +23,7 @@ https://github.com/sago007/saland
 
 #include "GameDraw.hpp"
 #include <SDL2/SDL2_gfxPrimitives.h>
+#include <cmath>
 
 static void Draw(SDL_Renderer* target, SDL_Texture* t, int x, int y, const SDL_Rect& part) {
 	SDL_Rect pos = {};
