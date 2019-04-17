@@ -171,6 +171,21 @@ void World::init(std::shared_ptr<b2World>& world, const std::string& mapFileName
 			}
 		}
 	}
+	const std::vector<sago::tiled::TileObjectGroup>& object_groups = tm.object_groups;
+	for (const auto& group : object_groups) {
+		for (const auto& item : group.objects) {
+			if (item.isEllipse) {
+				continue;
+			}
+			if (item.x > 0 && item.y > 0 && item.width > 0 && item.height > 0) {
+				for (int x = item.x/32; x <item.x/32+(item.width+31)/32 && x < tm.width; ++x) {
+					for (int y = item.y/32; y < item.y/32+(item.height+31)/32 && y < tm.height; ++y) {
+						protected_tiles[x+y*tm.width] = true;
+					}
+				}
+			}
+		}
+	}
 }
 
 void World::init(std::shared_ptr<b2World>& world) {
