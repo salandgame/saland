@@ -275,9 +275,9 @@ void Game::Draw(SDL_Renderer* target) {
 	);
 	data->bottomField.SetText(buffer);
 	data->bottomField.Draw(target, 2, screen_height, sago::SagoTextField::Alignment::left, sago::SagoTextField::VerticalAlignment::bottom);
-	data->middleField.Draw(target, 1024/2, screen_height/4, sago::SagoTextField::Alignment::center, sago::SagoTextField::VerticalAlignment::bottom);
-	DrawRectYellow(target, 1024-70, 768-70, 52, 52);
-	DrawTile(target, globalData.spriteHolder.get(), data->gameRegion.world.tm, data->drawTile, 1024-60, 768-60);
+	data->middleField.Draw(target, screen_width/2, screen_height/4, sago::SagoTextField::Alignment::center, sago::SagoTextField::VerticalAlignment::bottom);
+	DrawRectYellow(target, screen_width-70, screen_height-70, 52, 52);
+	DrawTile(target, globalData.spriteHolder.get(), data->gameRegion.world.tm, data->drawTile, screen_width-60, screen_height-60);
 	if (data->consoleActive && data->console) {
 		data->console->Draw(target);
 	}
