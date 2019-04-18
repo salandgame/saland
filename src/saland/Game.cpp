@@ -239,7 +239,9 @@ void Game::Draw(SDL_Renderer* target) {
 	SDL_Texture* texture = globalData.spriteHolder->GetDataHolder().getTexturePtr("terrain");
 	DrawOuterBorder(target, texture, data->gameRegion.world.tm, data->topx, data->topy, data->gameRegion.outerTile);
 	for (size_t i = 0; i < data->gameRegion.world.tm.layers.size(); ++i) {
-		DrawLayer(target, globalData.spriteHolder.get(), data->gameRegion.world.tm, i, data->topx, data->topy);
+		if (std::string(data->gameRegion.world.tm.layers.at(i).name).find("overlay",0) == std::string::npos ) {
+			DrawLayer(target, globalData.spriteHolder.get(), data->gameRegion.world.tm, i, data->topx, data->topy);
+		}
 	}
 	for (size_t i = 0; i < data->gameRegion.world.tm.object_groups.size(); ++i) {
 		DrawOjbectGroup(target, data->gameRegion.world.tm, i, data->topx, data->topy);
@@ -266,6 +268,11 @@ void Game::Draw(SDL_Renderer* target) {
 		Projectile* projectile = dynamic_cast<Projectile*> (p.get());
 		if (projectile) {
 			DrawProjectile(target, globalData.spriteHolder.get(), projectile, SDL_GetTicks(), data->topx, data->topy, true);
+		}
+	}
+	for (size_t i = 0; i < data->gameRegion.world.tm.layers.size(); ++i) {
+		if (std::string(data->gameRegion.world.tm.layers.at(i).name).find("overlay",0) != std::string::npos ) {
+			DrawLayer(target, globalData.spriteHolder.get(), data->gameRegion.world.tm, i, data->topx, data->topy);
 		}
 	}
 	char buffer[200];
