@@ -84,7 +84,7 @@ public:
 				0, 0, 255, 255);
 		const sago::SagoSprite& s = globalData.spriteHolder->GetSprite("male_walkcycle_E");
 		s.Draw(globalData.screen, SDL_GetTicks(), 100, 100);
-		const sago::SagoSprite& sc = globalData.spriteHolder->GetSprite("male_spellcast_E");
+		const sago::SagoSprite& sc = globalData.spriteHolder->GetSprite("female_spellcast_E");
 		sc.Draw(globalData.screen, SDL_GetTicks(), 200, 100);
 		const sago::SagoSprite& bee = globalData.spriteHolder->GetSprite("bee_E");
 		bee.Draw(globalData.screen, SDL_GetTicks(), 100, 200);

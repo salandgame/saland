@@ -153,6 +153,150 @@
 	"frame_time" : 100,
     "originx" : 32,
     "originy" : 50
+},
+
+"female_walkcycle_N" :  {
+	"texture" : "female_walkcycle",
+	"topx" : 64,
+	"topy" : 0,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 8,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"female_walkcycle_W" :  {
+	"texture" : "female_walkcycle",
+	"topx" : 64,
+	"topy" : 64,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 8,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"female_walkcycle_S" :  {
+	"texture" : "female_walkcycle",
+	"topx" : 64,
+	"topy" : 128,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 8,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"female_walkcycle_E" :  {
+	"texture" : "female_walkcycle",
+	"topx" : 64,
+	"topy" : 192,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 8,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"female_standing_N" :  {
+	"texture" : "female_walkcycle",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"female_standing_W" :  {
+	"texture" : "female_walkcycle",
+	"topx" : 0,
+	"topy" : 64,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"female_standing_S" :  {
+	"texture" : "female_walkcycle",
+	"topx" : 0,
+	"topy" : 128,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"female_standing_E" :  {
+	"texture" : "female_walkcycle",
+	"topx" : 0,
+	"topy" : 192,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"female_spellcast_N" :  {
+	"texture" : "female_spellcast",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 7,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"female_spellcast_W" :  {
+	"texture" : "female_spellcast",
+	"topx" : 0,
+	"topy" : 64,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 7,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"female_spellcast_S" :  {
+	"texture" : "female_spellcast",
+	"topx" : 0,
+	"topy" : 128,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 7,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"female_spellcast_E" :  {
+	"texture" : "female_spellcast",
+	"topx" : 0,
+	"topy" : 192,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 7,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
 }
 
 }

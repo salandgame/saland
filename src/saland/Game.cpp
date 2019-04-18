@@ -153,7 +153,6 @@ static SpawnPoint GetSpawnpoint(const sago::tiled::TileMap& tm) {
 void Game::ResetWorld(int x, int y, bool forceResetWorld) {
 	data->gameRegion.SaveRegion();
 	data->gameRegion.Init(x, y, data->worldName, forceResetWorld);
-	data->human.reset(new Human());
 	data->gameRegion.placeables.push_back(data->human);
 	b2BodyDef myBodyDef;
 	myBodyDef.type = b2_dynamicBody; //this will be a dynamic body
@@ -175,8 +174,11 @@ Game::Game() {
 	RegisterCommand(&gcc);
 	RegisterCommand(&rrcc);
 	data.reset(new Game::GameImpl());
+	data->human.reset(new Human());
 	data->lastUpdate = SDL_GetTicks();
 	ResetWorld(0, 0, false);
+	data->human->pants = "pants_1";
+	data->human->hair = "hair_1";
 
 	data->bottomField.SetHolder(globalData.dataHolder);
 	data->bottomField.SetFontSize(20);

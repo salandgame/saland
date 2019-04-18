@@ -59,8 +59,8 @@ public:
 class Human : public Creature {
 public:
 	std::string race = "male";
-	std::string hair = "hair_1";
-	std::string pants = "pants_1";
+	std::string hair = "";
+	std::string pants = "";
 	float castTimeRemaining = 0;  //If non-zero then we are casting a spell
 	float castTime = 400;    //Number of milliseconds it will take to complete the cast
 };
