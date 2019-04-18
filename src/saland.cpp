@@ -221,7 +221,7 @@ void runMenuOptions() {
 }
 
 void runGame() {
-	int posX = 100, posY = 100, width = 1024, height = 768;
+	int posX = 100, posY = 100, width = 1280, height = 800;
 	SDL_Init(SDL_INIT_VIDEO);
 	IMG_Init(IMG_INIT_PNG);
 	TTF_Init();
