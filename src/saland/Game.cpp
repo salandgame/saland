@@ -87,9 +87,9 @@ struct GotoConsoleCommand : public ConsoleCommand {
 		if (args.size() != 3) {
 			return "Must be ran like \"goto X Y\"";
 		}
-		teleport = true;
 		teleportX = string2int_trows(args[1]);
 		teleportY = string2int_trows(args[2]);
+		teleport = true;
 		return "Teleport queued!";
 	}
 

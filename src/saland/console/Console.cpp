@@ -26,6 +26,9 @@ https://github.com/sago007/saland
 #include "../globals.hpp"
 #include <boost/tokenizer.hpp>
 
+
+const SDL_Color error_color = { 255, 64, 64, 255 };
+
 static void SetFieldValues(sago::SagoTextField& field) {
 	field.SetHolder(&globalData.spriteHolder->GetDataHolder());
 	field.SetFont("freeserif");
@@ -142,6 +145,7 @@ void Console::ProcessCommand(const std::string& command) {
 			response.SetText(ret);
 		} catch (std::exception& e) {
 			response.SetText(e.what());
+			response.SetColor(error_color);
 		}
 	}
 	else {
