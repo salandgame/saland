@@ -129,14 +129,6 @@ void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, cons
 	} else {
 		mySprite.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
 	}
-	if (entity->hair.length() > 0) {
-		std::string hairAnimation = animation;
-		if (hairAnimation == "spellcast") {
-			hairAnimation = "standing";
-		}
-		const sago::SagoSprite &myHair = sHolder->GetSprite(entity->race + "_"+hairAnimation+"_"+entity->hair+"_"+std::string(1,entity->direction));
-		myHair.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
-	}
 	if (entity->pants.length() > 0) {
 		const sago::SagoSprite &myPants = sHolder->GetSprite(entity->race + "_"+animation+"_"+entity->pants+"_"+std::string(1,entity->direction));
 		if (relativeAnimation) {
@@ -154,6 +146,14 @@ void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, cons
 		else {
 			myTop.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
 		}
+	}
+	if (entity->hair.length() > 0) {
+		std::string hairAnimation = animation;
+		if (hairAnimation == "spellcast") {
+			hairAnimation = "standing";
+		}
+		const sago::SagoSprite &myHair = sHolder->GetSprite(entity->race + "_"+hairAnimation+"_"+entity->hair+"_"+std::string(1,entity->direction));
+		myHair.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
 	}
 }
 

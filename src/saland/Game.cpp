@@ -114,10 +114,11 @@ struct ResetRegionConsoleCommand : public ConsoleCommand {
 static GotoConsoleCommand gcc;
 static ResetRegionConsoleCommand rrcc;
 
+static Player player;
+
 struct Game::GameImpl {
 	GameRegion gameRegion;
 	std::shared_ptr<Human> human;
-	Player player;
 	float center_x = 0;
 	float center_y = 0;
 	bool drawCollision = true;
@@ -179,11 +180,11 @@ Game::Game() {
 	data->human.reset(new Human());
 	data->lastUpdate = SDL_GetTicks();
 	ResetWorld(0, 0, false);
-	data->human->pants = data->player.get_visible_bottom();
-	data->human->hair = data->player.get_visible_hair();
+	data->human->pants = player.get_visible_bottom();
+	data->human->hair = player.get_visible_hair();
 
-	data->human->race = data->player.get_visible_race();
-	data->human->top = data->player.get_visible_top();
+	data->human->race = player.get_visible_race();
+	data->human->top = player.get_visible_top();
 
 	data->bottomField.SetHolder(globalData.dataHolder);
 	data->bottomField.SetFontSize(20);

@@ -30,7 +30,7 @@ struct Player {
     Player() {};
     std::string save_name="player1";
     std::string get_visible_race() {return "female";}
-    std::string get_visible_hair() {return "hair_1";}
+    std::string get_visible_hair() {return "standard_hair";}
     std::string get_visible_bottom() {return "pants_1";}
     std::string get_visible_top(){return "pirate_shirt_sky";}
     std::string get_visibla_hat(){ return "";}

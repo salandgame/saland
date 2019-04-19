@@ -1,0 +1,99 @@
+{
+
+"male_walkcycle_standard_hair_N" :  {
+	"texture" : "std_hair/plain-male/redhead",
+	"topx" : 64,
+	"topy" : 512,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 8,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"male_walkcycle_standard_hair_W" :  {
+	"texture" : "std_hair/plain-male/redhead",
+	"topx" : 64,
+	"topy" : 576,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 8,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"male_walkcycle_standard_hair_S" :  {
+	"texture" : "std_hair/plain-male/redhead",
+	"topx" : 64,
+	"topy" : 640,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 8,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"male_walkcycle_standard_hair_E" :  {
+	"texture" : "std_hair/plain-male/redhead",
+	"topx" : 64,
+	"topy" : 704,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 8,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"male_standing_standard_hair_N" :  {
+	"texture" : "std_hair/plain-male/redhead",
+	"topx" : 0,
+	"topy" : 512,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"male_standing_standard_hair_W" :  {
+	"texture" : "std_hair/plain-male/redhead",
+	"topx" : 0,
+	"topy" : 576,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"male_standing_standard_hair_S" :  {
+	"texture" : "std_hair/plain-male/redhead",
+	"topx" : 0,
+	"topy" : 640,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"male_standing_standard_hair_E" :  {
+	"texture" : "std_hair/plain-male/redhead",
+	"topx" : 0,
+	"topy" : 704,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+}
+
+}
