@@ -250,7 +250,7 @@ void runGame() {
 	bOptions.setLabel("Options");
 	bOptions.setAction(runMenuOptions);
 	m.addButton(&bOptions);
-	while (!globalData.isShuttingDown) {
+	if (!globalData.isShuttingDown) {
 		RunGameState(m);
 	}
 
