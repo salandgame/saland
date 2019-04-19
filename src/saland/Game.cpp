@@ -33,6 +33,7 @@ https://github.com/sago007/saland
 #include "../sago/SagoTextField.hpp"
 #include "globals.hpp"
 #include "model/placeables.hpp"
+#include "model/Player.hpp"
 #include "SDL.h"
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include <cmath>
@@ -116,6 +117,7 @@ static ResetRegionConsoleCommand rrcc;
 struct Game::GameImpl {
 	GameRegion gameRegion;
 	std::shared_ptr<Human> human;
+	Player player;
 	float center_x = 0;
 	float center_y = 0;
 	bool drawCollision = true;
@@ -177,11 +179,11 @@ Game::Game() {
 	data->human.reset(new Human());
 	data->lastUpdate = SDL_GetTicks();
 	ResetWorld(0, 0, false);
-	data->human->pants = "pants_1";
-	data->human->hair = "hair_1";
+	data->human->pants = data->player.get_visible_bottom();
+	data->human->hair = data->player.get_visible_hair();
 
-	data->human->race = "female";
-	data->human->top = "sleeveless_shirt_red";
+	data->human->race = data->player.get_visible_race();
+	data->human->top = data->player.get_visible_top();
 
 	data->bottomField.SetHolder(globalData.dataHolder);
 	data->bottomField.SetFontSize(20);
