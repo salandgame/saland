@@ -1,0 +1,148 @@
+{
+
+
+"female_walkcycle_pants_1_N" :  {
+	"texture" : "male_pants",
+	"topx" : 64,
+	"topy" : 0,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 8,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"female_walkcycle_pants_1_W" :  {
+	"texture" : "male_pants",
+	"topx" : 64,
+	"topy" : 64,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 8,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"female_walkcycle_pants_1_S" :  {
+	"texture" : "male_pants",
+	"topx" : 64,
+	"topy" : 128,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 8,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"female_walkcycle_pants_1_E" :  {
+	"texture" : "male_pants",
+	"topx" : 64,
+	"topy" : 192,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 8,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"female_standing_pants_1_N" :  {
+	"texture" : "male_pants",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"female_standing_pants_1_W" :  {
+	"texture" : "male_pants",
+	"topx" : 0,
+	"topy" : 64,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"female_standing_pants_1_S" :  {
+	"texture" : "male_pants",
+	"topx" : 0,
+	"topy" : 128,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"female_standing_pants_1_E" :  {
+	"texture" : "male_pants",
+	"topx" : 0,
+	"topy" : 192,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"female_spellcast_pants_1_N" :  {
+	"texture" : "male_spellcast_pants",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 7,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"female_spellcast_pants_1_W" :  {
+	"texture" : "male_spellcast_pants",
+	"topx" : 0,
+	"topy" : 64,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 7,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"female_spellcast_pants_1_S" :  {
+	"texture" : "male_spellcast_pants",
+	"topx" : 0,
+	"topy" : 128,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 7,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"female_spellcast_pants_1_E" :  {
+	"texture" : "male_spellcast_pants",
+	"topx" : 0,
+	"topy" : 192,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 7,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+}
+
+}

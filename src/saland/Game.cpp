@@ -180,6 +180,9 @@ Game::Game() {
 	data->human->pants = "pants_1";
 	data->human->hair = "hair_1";
 
+	data->human->race = "female";
+	data->human->top = "sleeveless_shirt_red";
+
 	data->bottomField.SetHolder(globalData.dataHolder);
 	data->bottomField.SetFontSize(20);
 	data->middleField.SetHolder(globalData.dataHolder);

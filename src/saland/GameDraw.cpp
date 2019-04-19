@@ -146,6 +146,15 @@ void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, cons
 			myPants.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
 		}
 	}
+	if (entity->top.length() > 0) {
+		const sago::SagoSprite &myTop = sHolder->GetSprite(entity->race + "_"+animation+"_"+entity->top+"_"+std::string(1,entity->direction));
+		if (relativeAnimation) {
+			myTop.DrawProgressive(target, relativeAnimationState, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
+		}
+		else {
+			myTop.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
+		}
+	}
 }
 
 void DrawMonster(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Monster *entity, float time, int offsetX, int offsetY, bool drawCollision) {
