@@ -27,6 +27,7 @@ https://github.com/sago007/saland
 #include "GameUpdates.hpp"
 #include "GameRegion.hpp"
 #include "Game.hpp"
+#include "GameShop.hpp"
 #include "model/World.hpp"
 #include "../sagotmx/tmx_struct.h"
 #include "../sago/SagoMisc.hpp"
@@ -111,11 +112,14 @@ struct ResetRegionConsoleCommand : public ConsoleCommand {
 	}
 };
 
+void RunGameState(sago::GameStateInterface& state );
+
 struct ShopCommand : public ConsoleCommand {
 	virtual std::string getCommand() const override {return "shop";}
 	virtual std::string run(const std::vector<std::string>&) override {
-		throw std::runtime_error("Not implemented!");
-		return "Region reset queued!";
+		GameShop gs;
+		RunGameState(gs);
+		return "Shop!";
 	}
 
 	virtual std::string helpMessage() const override {
