@@ -111,8 +111,21 @@ struct ResetRegionConsoleCommand : public ConsoleCommand {
 	}
 };
 
+struct ShopCommand : public ConsoleCommand {
+	virtual std::string getCommand() const override {return "shop";}
+	virtual std::string run(const std::vector<std::string>&) override {
+		throw std::runtime_error("Not implemented!");
+		return "Region reset queued!";
+	}
+
+	virtual std::string helpMessage() const override {
+		return "Opens a shop";
+	}
+};
+
 static GotoConsoleCommand gcc;
 static ResetRegionConsoleCommand rrcc;
+static ShopCommand sc;
 
 static Player player;
 
@@ -176,6 +189,7 @@ void Game::ResetWorld(int x, int y, bool forceResetWorld) {
 Game::Game() {
 	RegisterCommand(&gcc);
 	RegisterCommand(&rrcc);
+	RegisterCommand(&sc);
 	data.reset(new Game::GameImpl());
 	data->human.reset(new Human());
 	data->lastUpdate = SDL_GetTicks();
