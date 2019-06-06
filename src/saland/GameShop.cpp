@@ -25,9 +25,10 @@ https://github.com/sago007/saland
 #include "GameShop.hpp"
 
 struct GameShop::GameShopImpl {
-    bool active = true;
-    std::string name = "Shop!!";
-    sago::SagoTextField headerField;
+	bool active = true;
+	std::string name = "Shop!!";
+	sago::SagoTextField headerField;
+	sago::SagoTextField goldField;
 };
 
 
@@ -36,6 +37,8 @@ GameShop::GameShop() {
     data->headerField.SetHolder(globalData.dataHolder);
 	data->headerField.SetFontSize(20);
     data->headerField.SetText(data->name);
+	data->goldField.SetHolder(globalData.dataHolder);
+	data->goldField.SetFontSize(16);
 }
 
 bool GameShop::IsActive() {
@@ -44,6 +47,8 @@ bool GameShop::IsActive() {
 
 void GameShop::Draw(SDL_Renderer* target) {
     data->headerField.Draw(target, globalData.xsize/2, 4, sago::SagoTextField::Alignment::center);
+	data->goldField.SetText(std::string("Gold: ")+std::to_string(globalData.player.item_inventory["gold"]));
+	data->goldField.Draw(target, globalData.xsize-1, globalData.ysize-1, sago::SagoTextField::Alignment::right, sago::SagoTextField::VerticalAlignment::bottom);
 }
 
 void GameShop::ProcessInput(const SDL_Event& event, bool &) {

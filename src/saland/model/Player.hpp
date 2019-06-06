@@ -25,6 +25,7 @@ https://github.com/sago007/saland
 #define PLAYER_HPP
 
 #include <string>
+#include <map>
 
 struct Player {
     Player() {};
@@ -35,6 +36,7 @@ struct Player {
     std::string get_visible_top(){return "pirate_shirt_sky";}
     std::string get_visibla_hat(){ return "";}
     std::string get_visible_shoes(){ return "";}
+	std::map<std::string, int> item_inventory;
 };
 
 #endif  //PLAYER_HPP

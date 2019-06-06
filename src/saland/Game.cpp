@@ -131,8 +131,6 @@ static GotoConsoleCommand gcc;
 static ResetRegionConsoleCommand rrcc;
 static ShopCommand sc;
 
-static Player player;
-
 struct Game::GameImpl {
 	GameRegion gameRegion;
 	std::shared_ptr<Human> human;
@@ -198,11 +196,11 @@ Game::Game() {
 	data->human.reset(new Human());
 	data->lastUpdate = SDL_GetTicks();
 	ResetWorld(0, 0, false);
-	data->human->pants = player.get_visible_bottom();
-	data->human->hair = player.get_visible_hair();
+	data->human->pants = globalData.player.get_visible_bottom();
+	data->human->hair = globalData.player.get_visible_hair();
 
-	data->human->race = player.get_visible_race();
-	data->human->top = player.get_visible_top();
+	data->human->race = globalData.player.get_visible_race();
+	data->human->top = globalData.player.get_visible_top();
 
 	data->bottomField.SetHolder(globalData.dataHolder);
 	data->bottomField.SetFontSize(20);

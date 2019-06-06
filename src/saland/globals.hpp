@@ -26,6 +26,7 @@ https://github.com/sago007/saland
 
 #include "../sago/SagoSpriteHolder.hpp"
 #include <memory>
+#include "model/Player.hpp"
 
 struct PlayerControls {
 	SDL_Scancode move_up = SDL_SCANCODE_W;
@@ -50,6 +51,7 @@ struct GlobalData {
 	int xsize = 1024;
 	int ysize = 768;
 	PlayerControls playerControls;
+	Player player;
 };
 
 extern GlobalData globalData;
