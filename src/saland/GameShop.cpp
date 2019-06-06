@@ -34,27 +34,27 @@ struct GameShop::GameShopImpl {
 
 GameShop::GameShop() {
 	data.reset(new GameShop::GameShopImpl());
-    data->headerField.SetHolder(globalData.dataHolder);
+	data->headerField.SetHolder(globalData.dataHolder);
 	data->headerField.SetFontSize(20);
-    data->headerField.SetText(data->name);
+	data->headerField.SetText(data->name);
 	data->goldField.SetHolder(globalData.dataHolder);
 	data->goldField.SetFontSize(16);
 }
 
 bool GameShop::IsActive() {
-    return data->active;
+	return data->active;
 }
 
 void GameShop::Draw(SDL_Renderer* target) {
-    data->headerField.Draw(target, globalData.xsize/2, 4, sago::SagoTextField::Alignment::center);
+	data->headerField.Draw(target, globalData.xsize/2, 4, sago::SagoTextField::Alignment::center);
 	data->goldField.SetText(std::string("Gold: ")+std::to_string(globalData.player.item_inventory["gold"]));
 	data->goldField.Draw(target, globalData.xsize-1, globalData.ysize-1, sago::SagoTextField::Alignment::right, sago::SagoTextField::VerticalAlignment::bottom);
 }
 
 void GameShop::ProcessInput(const SDL_Event& event, bool &) {
-    if (event.type == SDL_KEYDOWN) {
-        data->active = false;
-    }
+	if (event.type == SDL_KEYDOWN) {
+		data->active = false;
+	}
 }
 
 void GameShop::Update() {
