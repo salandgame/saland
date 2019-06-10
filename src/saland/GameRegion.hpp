@@ -37,8 +37,9 @@ public:
 	void SaveRegion();
 	World world;
 	uint32_t outerTile = 485;
-	int GetRegionX() {return region_x; }
-	int GetRegionY() {return region_y; }
+	int GetRegionX() const {return region_x; }
+	int GetRegionY() const {return region_y; }
+	std::string GetFilename() const {return mapFileName; }
 private:
 	int region_x = 0;
 	int region_y = 0;

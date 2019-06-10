@@ -35,6 +35,7 @@ https://github.com/sago007/saland
 #include "globals.hpp"
 #include "model/placeables.hpp"
 #include "model/Player.hpp"
+#include "../os.hpp"
 #include "SDL.h"
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include <cmath>
@@ -82,6 +83,7 @@ static bool reset_region = false;
 static bool teleport = false;
 static int teleportX = 0;
 static int teleportY = 0;
+static bool openTiled = false;
 
 struct GotoConsoleCommand : public ConsoleCommand {
 	virtual std::string getCommand() const override {return "goto";}
@@ -127,9 +129,22 @@ struct ShopCommand : public ConsoleCommand {
 	}
 };
 
+struct ConcoleCommandTiled : public ConsoleCommand {
+	virtual std::string getCommand() const override {return "tiled";}
+	virtual std::string run(const std::vector<std::string>&) override {
+		openTiled = true;
+		return "Requesting tiled";
+	}
+
+	virtual std::string helpMessage() const override {
+		return "Opens current region in tiled";
+	}
+};
+
 static GotoConsoleCommand gcc;
 static ResetRegionConsoleCommand rrcc;
 static ShopCommand sc;
+static ConcoleCommandTiled cct;
 
 struct Game::GameImpl {
 	GameRegion gameRegion;
@@ -168,8 +183,7 @@ static SpawnPoint GetSpawnpoint(const sago::tiled::TileMap& tm) {
 	return ret;
 }
 
-void Game::ResetWorld(int x, int y, bool forceResetWorld) {
-	data->gameRegion.SaveRegion();
+void Game::ResetWorldNoSave(int x, int y, bool forceResetWorld) {
 	data->gameRegion.Init(x, y, data->worldName, forceResetWorld);
 	data->gameRegion.placeables.push_back(data->human);
 	b2BodyDef myBodyDef;
@@ -188,10 +202,16 @@ void Game::ResetWorld(int x, int y, bool forceResetWorld) {
 	data->human->body->SetTransform(b2Vec2(spawnpoint.first, spawnpoint.second),data->human->body->GetAngle());
 }
 
+void Game::ResetWorld(int x, int y, bool forceResetWorld) {
+	data->gameRegion.SaveRegion();
+	this->ResetWorldNoSave(x, y, forceResetWorld);
+}
+
 Game::Game() {
 	RegisterCommand(&gcc);
 	RegisterCommand(&rrcc);
 	RegisterCommand(&sc);
+	RegisterCommand(&cct);
 	data.reset(new Game::GameImpl());
 	data->human.reset(new Human());
 	data->lastUpdate = SDL_GetTicks();
@@ -484,6 +504,13 @@ void Game::Update() {
 	if (teleport) {
 		ResetWorld(teleportX, teleportY, false);
 		teleport = false;
+	}
+	if (openTiled) {
+		openTiled = false;
+		std::string filename = getPathToSaveFiles() + "/" + data->gameRegion.GetFilename();
+		std::string command = std::string("tiled \"")+filename+"\"";
+		std::system(command.c_str());
+		ResetWorldNoSave(data->gameRegion.GetRegionX(), data->gameRegion.GetRegionY(), false);
 	}
 	if (reset_region) {
 		ResetWorld(data->gameRegion.GetRegionX(), data->gameRegion.GetRegionY(), true);
