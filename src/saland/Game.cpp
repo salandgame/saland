@@ -507,6 +507,17 @@ void Game::Update() {
 	}
 	if (openTiled) {
 		openTiled = false;
+		for (const sago::tiled::TileSet& org_ts : data->gameRegion.world.tm.tileset) {
+			const sago::tiled::TileSet* ts = &org_ts;
+			while (ts->alternativeSource) {
+				ts = ts->alternativeSource;
+			}
+			std::string source_filename = ts->image.source.substr(3);
+			std::string dest_filename = std::string("worlds/")+ data->worldName + "/" + ts->image.source.substr(3);
+			std::cout << dest_filename << ":" << ts->image.source << "\n";
+			std::string imageFile = sago::GetFileContent(source_filename);
+			sago::WriteFileContent(dest_filename.c_str(), imageFile);
+		}
 		std::string filename = getPathToSaveFiles() + "/" + data->gameRegion.GetFilename();
 		std::string command = std::string("tiled \"")+filename+"\"";
 		std::system(command.c_str());
