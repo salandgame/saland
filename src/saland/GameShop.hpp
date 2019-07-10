@@ -27,6 +27,13 @@ https://github.com/sago007/saland
 #include "../sago/GameStateInterface.hpp"
 #include "../sago/SagoTextField.hpp"
 #include <memory>
+#include <vector>
+
+struct ShopInfo {
+	std::string id = "Default";
+	std::string name = "Default shop";
+	std::vector<std::string> items;
+};
 
 class GameShop : public sago::GameStateInterface {
 public:
