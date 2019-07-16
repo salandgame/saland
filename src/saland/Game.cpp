@@ -42,6 +42,7 @@ https://github.com/sago007/saland
 #include <condition_variable>
 #include <sstream>
 #include "console/Console.hpp"
+#include "GameConsoleCommand.hpp"
 
 int32 velocityIterations = 6;
 int32 positionIterations = 2;
@@ -212,6 +213,7 @@ Game::Game() {
 	RegisterCommand(&rrcc);
 	RegisterCommand(&sc);
 	RegisterCommand(&cct);
+	GameConsoleCommandRegister();
 	data.reset(new Game::GameImpl());
 	data->human.reset(new Human());
 	data->lastUpdate = SDL_GetTicks();
