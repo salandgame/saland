@@ -39,14 +39,28 @@ struct ConcoleCommandGiveItem : public ConsoleCommand {
             error_msg += args.at(2)+ "\" into an integer";
             throw std::runtime_error(error_msg);
         }
+        if (quantity == 0) {
+            return std::string("Inventory not touched");
+        }
+        int prevCount = globalData.player.item_inventory[item_name];
         globalData.player.item_inventory[item_name] += quantity;
-		return std::string("Added ")+std::to_string(quantity)+" of "+item_name;
+        if (quantity > 0) {
+		    return std::string("Added ")+std::to_string(quantity)+" of "+item_name;
+        }
+        else {
+            if (globalData.player.item_inventory[item_name] < 0) {
+                globalData.player.item_inventory[item_name] = 0;
+            }
+            return std::string("Removed ")+std::to_string(prevCount-globalData.player.item_inventory[item_name])+" of "+item_name;
+        }
+
 	}
 
 	virtual std::string helpMessage() const override {
 		return "Give item to player. Must be called like: give ITEM_NAME QUANTITY";
 	}
 };
+
 
 static ConcoleCommandGiveItem cc_give_item;
 
