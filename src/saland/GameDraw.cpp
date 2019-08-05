@@ -82,31 +82,33 @@ void DrawOjbectGroup(SDL_Renderer* renderer, const sago::tiled::TileMap& tm, siz
 	for (const sago::tiled::TileObject& o : group.objects) {
 		if (o.isEllipse) {
 			ellipseRGBA(renderer, (o.x + o.width / 2) - topx, (o.y + o.height / 2) - topy, o.width / 2, o.height / 2, 255, 255, 0, 255);
-		} else if (o.polygon_points.size() > 0) {
+		}
+		else if (o.polygon_points.size() > 0) {
 			for (size_t i = 0; i < o.polygon_points.size(); ++i) {
 				std::pair<int, int> first = o.polygon_points.at(i);
 				std::pair<int, int> second = (i + 1 < o.polygon_points.size()) ? o.polygon_points.at(i + 1) : o.polygon_points.at(0);
 				lineRGBA(renderer, first.first + o.x - topx, first.second + o.y - topy, second.first + o.x - topx, second.second + o.y - topy, 255, 255, 0, 255);
 			}
-		} else {
+		}
+		else {
 			rectangleRGBA(renderer, o.x - topx, o.y - topy,
-				o.x + o.width - topx, o.y + o.height - topy, 255, 255, 0, 255);
+			              o.x + o.width - topx, o.y + o.height - topy, 255, 255, 0, 255);
 		}
 	}
 }
 
-void DrawMiscEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const MiscItem *entity, float time,
-	int offsetX, int offsetY, bool drawCollision) {
+void DrawMiscEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const MiscItem* entity, float time,
+                    int offsetX, int offsetY, bool drawCollision) {
 	if (drawCollision) {
 		circleRGBA(target,
-			entity->X - offsetX, entity->Y - offsetY, entity->Radius,
-			255, 255, 0, 255);
+		           entity->X - offsetX, entity->Y - offsetY, entity->Radius,
+		           255, 255, 0, 255);
 	}
-	const sago::SagoSprite &mySprite = sHolder->GetSprite(entity->sprite);
+	const sago::SagoSprite& mySprite = sHolder->GetSprite(entity->sprite);
 	mySprite.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
 }
 
-void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Human *entity, float time, int offsetX, int offsetY, bool drawCollision) {
+void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Human* entity, float time, int offsetX, int offsetY, bool drawCollision) {
 	std::string animation = "standing";
 	bool relativeAnimation = false;
 	float relativeAnimationState = 0.0f;
@@ -120,17 +122,18 @@ void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, cons
 	}
 	if (drawCollision) {
 		circleRGBA(target,
-			entity->X - offsetX, entity->Y - offsetY, entity->Radius,
-			255, 255, 0, 255);
+		           entity->X - offsetX, entity->Y - offsetY, entity->Radius,
+		           255, 255, 0, 255);
 	}
-	const sago::SagoSprite &mySprite = sHolder->GetSprite(entity->race + "_" + animation + "_" + std::string(1, entity->direction));
+	const sago::SagoSprite& mySprite = sHolder->GetSprite(entity->race + "_" + animation + "_" + std::string(1, entity->direction));
 	if (relativeAnimation) {
 		mySprite.DrawProgressive(target, relativeAnimationState, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
-	} else {
+	}
+	else {
 		mySprite.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
 	}
 	if (entity->pants.length() > 0) {
-		const sago::SagoSprite &myPants = sHolder->GetSprite(entity->race + "_"+animation+"_"+entity->pants+"_"+std::string(1,entity->direction));
+		const sago::SagoSprite& myPants = sHolder->GetSprite(entity->race + "_"+animation+"_"+entity->pants+"_"+std::string(1,entity->direction));
 		if (relativeAnimation) {
 			myPants.DrawProgressive(target, relativeAnimationState, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
 		}
@@ -139,7 +142,7 @@ void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, cons
 		}
 	}
 	if (entity->top.length() > 0) {
-		const sago::SagoSprite &myTop = sHolder->GetSprite(entity->race + "_"+animation+"_"+entity->top+"_"+std::string(1,entity->direction));
+		const sago::SagoSprite& myTop = sHolder->GetSprite(entity->race + "_"+animation+"_"+entity->top+"_"+std::string(1,entity->direction));
 		if (relativeAnimation) {
 			myTop.DrawProgressive(target, relativeAnimationState, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
 		}
@@ -152,29 +155,29 @@ void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, cons
 		if (hairAnimation == "spellcast") {
 			hairAnimation = "standing";
 		}
-		const sago::SagoSprite &myHair = sHolder->GetSprite(entity->race + "_"+hairAnimation+"_"+entity->hair+"_"+std::string(1,entity->direction));
+		const sago::SagoSprite& myHair = sHolder->GetSprite(entity->race + "_"+hairAnimation+"_"+entity->hair+"_"+std::string(1,entity->direction));
 		myHair.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
 	}
 }
 
-void DrawMonster(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Monster *entity, float time, int offsetX, int offsetY, bool drawCollision) {
+void DrawMonster(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Monster* entity, float time, int offsetX, int offsetY, bool drawCollision) {
 	if (drawCollision) {
 		circleRGBA(target,
-			entity->X - offsetX, entity->Y - offsetY, entity->Radius,
-			255, 255, 0, 255);
+		           entity->X - offsetX, entity->Y - offsetY, entity->Radius,
+		           255, 255, 0, 255);
 	}
-	const sago::SagoSprite &mySprite = sHolder->GetSprite(entity->race + "_" + std::string(1, entity->direction));
+	const sago::SagoSprite& mySprite = sHolder->GetSprite(entity->race + "_" + std::string(1, entity->direction));
 	mySprite.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
 }
 
 
-void DrawProjectile(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Projectile *entity, float time, int offsetX, int offsetY, bool drawCollision) {
+void DrawProjectile(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Projectile* entity, float time, int offsetX, int offsetY, bool drawCollision) {
 	(void)sHolder;
 	(void)time;
 	if (drawCollision) {
 		circleRGBA(target,
-			entity->X - offsetX, entity->Y - offsetY, entity->Radius,
-			255, 255, 0, 255);
+		           entity->X - offsetX, entity->Y - offsetY, entity->Radius,
+		           255, 255, 0, 255);
 	}
 }
 

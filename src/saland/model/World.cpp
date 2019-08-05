@@ -47,7 +47,7 @@ static void AddRectToBody(b2Body* body, float x, float y, float width, float hig
 
 /**
  * Adds a static body to the world. Returns a pointer to the body
- * @param world The world to use for the body 
+ * @param world The world to use for the body
  * @param x X coordiante for the top left corner in pixels
  * @param y Y coordinate for the top left corner in pixels
  * @param width Width of the rectangle in pixels
@@ -155,8 +155,8 @@ void World::init(std::shared_ptr<b2World>& world, const std::string& mapFileName
 	}
 	init_physics(world);
 	protected_tiles.resize(tm.height*tm.width);
-	for (int x=0; x < tm.width; ++x){
-		for (int y=0; y < tm.height; ++y){
+	for (int x=0; x < tm.width; ++x) {
+		for (int y=0; y < tm.height; ++y) {
 			if (x < 2 && y > tm.layers.at(0).height/2-6 && y < tm.layers.at(0).height/2+5) {
 				protected_tiles[x+y*tm.width] = true;
 			}

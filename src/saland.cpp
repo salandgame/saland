@@ -80,8 +80,8 @@ public:
 		testBox.SetMaxWidth(1);
 		testBox.Draw(target, 300,500);
 		circleRGBA(target,
-				150, 150, 75,
-				0, 0, 255, 255);
+		           150, 150, 75,
+		           0, 0, 255, 255);
 		const sago::SagoSprite& s = globalData.spriteHolder->GetSprite("male_walkcycle_E");
 		s.Draw(globalData.screen, SDL_GetTicks(), 100, 100);
 		const sago::SagoSprite& sc = globalData.spriteHolder->GetSprite("female_spellcast_E");
@@ -92,7 +92,7 @@ public:
 		bat.Draw(globalData.screen, SDL_GetTicks(), 200, 200);
 	}
 
-	virtual void ProcessInput(const SDL_Event& event, bool &processed) override {
+	virtual void ProcessInput(const SDL_Event& event, bool& processed) override {
 		if ( event.type == SDL_KEYDOWN ) {
 			if (event.key.keysym.sym == SDLK_RETURN) {
 				isActive = false;

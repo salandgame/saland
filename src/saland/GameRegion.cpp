@@ -48,7 +48,7 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 	physicsBox.reset(new b2World(gravity));
 	world.managed_bodies.clear();
 	world.init(physicsBox, loadMap);
-	
+
 	std::shared_ptr<MiscItem> barrel = std::make_shared<MiscItem>();
 	barrel.get()->Radius = 16.0f;
 	barrel.get()->sprite = "item_barrel";

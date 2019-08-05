@@ -66,7 +66,7 @@ std::string GetFileContent(const char* filename) {
 		return ret;
 	}
 	PHYSFS_close(myfile);
-	//Now create a std::string 
+	//Now create a std::string
 	ret = string(m_data.get(), m_data.get()+m_size);
 	return ret;
 }

@@ -56,7 +56,7 @@ typedef std::pair<float,float> SpawnPoint;
  * @param rhs Right hand side
  * @return true if lhs < rhs
  */
-static bool sort_placeable(const std::shared_ptr<Placeable> &lhs, const std::shared_ptr<Placeable> &rhs) {
+static bool sort_placeable(const std::shared_ptr<Placeable>& lhs, const std::shared_ptr<Placeable>& rhs) {
 	return lhs->Y < rhs->Y;
 }
 
@@ -73,7 +73,8 @@ bool PlaceablesSortLowerY(const std::shared_ptr<Placeable>& i, const std::shared
 static int string2int_trows(const std::string& s) {
 	try {
 		return std::stoi(s);
-	} catch (std::exception&){
+	}
+	catch (std::exception&) {
 		std::stringstream ss;
 		ss << "Failed to convert \"" << s << "\" to an integer";
 		throw std::runtime_error(ss.str());
@@ -87,7 +88,9 @@ static int teleportY = 0;
 static bool openTiled = false;
 
 struct GotoConsoleCommand : public ConsoleCommand {
-	virtual std::string getCommand() const override {return "goto";}
+	virtual std::string getCommand() const override {
+		return "goto";
+	}
 	virtual std::string run(const std::vector<std::string>& args) override {
 		if (args.size() != 3) {
 			return "Must be ran like \"goto X Y\"";
@@ -104,7 +107,9 @@ struct GotoConsoleCommand : public ConsoleCommand {
 };
 
 struct ResetRegionConsoleCommand : public ConsoleCommand {
-	virtual std::string getCommand() const override {return "reset_region";}
+	virtual std::string getCommand() const override {
+		return "reset_region";
+	}
 	virtual std::string run(const std::vector<std::string>&) override {
 		reset_region = true;
 		return "Region reset queued!";
@@ -118,7 +123,9 @@ struct ResetRegionConsoleCommand : public ConsoleCommand {
 void RunGameState(sago::GameStateInterface& state );
 
 struct ShopCommand : public ConsoleCommand {
-	virtual std::string getCommand() const override {return "shop";}
+	virtual std::string getCommand() const override {
+		return "shop";
+	}
 	virtual std::string run(const std::vector<std::string>&) override {
 		GameShop gs;
 		RunGameState(gs);
@@ -131,7 +138,9 @@ struct ShopCommand : public ConsoleCommand {
 };
 
 struct ConcoleCommandTiled : public ConsoleCommand {
-	virtual std::string getCommand() const override {return "tiled";}
+	virtual std::string getCommand() const override {
+		return "tiled";
+	}
 	virtual std::string run(const std::vector<std::string>&) override {
 		openTiled = true;
 		return "Requesting tiled";
@@ -295,7 +304,7 @@ void Game::Draw(SDL_Renderer* target) {
 	int mousebox_x = data->world_mouse_x - data->world_mouse_x % 32 - data->topx;
 	int mousebox_y = data->world_mouse_y - data->world_mouse_y % 32 - data->topy;
 	rectangleRGBA(globalData.screen, mousebox_x, mousebox_y,
-		mousebox_x + 32, mousebox_y + 32, 255, 255, 0, 255);
+	              mousebox_x + 32, mousebox_y + 32, 255, 255, 0, 255);
 
 	//Draw
 	for (const auto& p : data->gameRegion.placeables) {
@@ -323,9 +332,9 @@ void Game::Draw(SDL_Renderer* target) {
 	}
 	char buffer[200];
 	snprintf(buffer, sizeof(buffer), "world_x = %d, world_y = %d, layer_info:%s",
-		data->world_mouse_x/32, data->world_mouse_y/32,
-		GetLayerInfoForTile(data->gameRegion.world, data->world_mouse_x/32, data->world_mouse_y/32).c_str()
-	);
+	         data->world_mouse_x/32, data->world_mouse_y/32,
+	         GetLayerInfoForTile(data->gameRegion.world, data->world_mouse_x/32, data->world_mouse_y/32).c_str()
+	        );
 	data->bottomField.SetText(buffer);
 	data->bottomField.Draw(target, 2, screen_height, sago::SagoTextField::Alignment::left, sago::SagoTextField::VerticalAlignment::bottom);
 	data->middleField.Draw(target, screen_width/2, screen_height/4, sago::SagoTextField::Alignment::center, sago::SagoTextField::VerticalAlignment::bottom);
@@ -366,15 +375,15 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 		int tile_x = data->world_mouse_x/32;
 		int tile_y = data->world_mouse_y/32;
 		if (event.key.keysym.sym == globalData.playerControls.block_create
-		  && sago::tiled::tileInBound(data->gameRegion.world.tm, tile_x, tile_y)
-		  && !(data->gameRegion.world.tile_protected(tile_x, tile_y)) ) {
+		        && sago::tiled::tileInBound(data->gameRegion.world.tm, tile_x, tile_y)
+		        && !(data->gameRegion.world.tile_protected(tile_x, tile_y)) ) {
 			int layer_number = 2; //  Do not hardcode
 			uint32_t tile = data->drawTile;
 			sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
 			data->gameRegion.world.init_physics(data->gameRegion.physicsBox);
 		}
 		if (event.key.keysym.sym == globalData.playerControls.block_delete
-		  && sago::tiled::tileInBound(data->gameRegion.world.tm, tile_x, tile_y)) {
+		        && sago::tiled::tileInBound(data->gameRegion.world.tm, tile_x, tile_y)) {
 			int layer_number = 2; //  Do not hardcode
 			uint32_t tile = 0;
 			sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
@@ -414,7 +423,7 @@ void Game::Update() {
 	}
 	Uint32 nowTime = SDL_GetTicks();
 	Uint32 deltaTime = nowTime - data->lastUpdate;
-	const Uint8 *state = SDL_GetKeyboardState(NULL);
+	const Uint8* state = SDL_GetKeyboardState(NULL);
 	float deltaX = 0.0f;
 	float deltaY = 0.0f;
 	if (!data->consoleActive) {
@@ -460,7 +469,9 @@ void Game::Update() {
 		}
 	}
 	auto& vp = data->gameRegion.placeables;
-	vp.erase(std::remove_if(std::begin(vp), std::end(vp), [](std::shared_ptr<Placeable> p) { return p->removeMe; }), std::end(vp));
+	vp.erase(std::remove_if(std::begin(vp), std::end(vp), [](std::shared_ptr<Placeable> p) {
+		return p->removeMe;
+	}), std::end(vp));
 	data->center_x = std::round(data->human->X);
 	data->center_y = std::round(data->human->Y);
 	int mousex;
@@ -479,7 +490,7 @@ void Game::Update() {
 				continue;
 			}
 			if (item.x < data->human->X && item.y < data->human->Y && item.width+item.x > data->human->X
-			&& item.height+item.y > data->human->Y && item.type == "text") {
+			        && item.height+item.y > data->human->Y && item.type == "text") {
 				const auto& itr = item.properties.find("text");
 				if (itr != item.properties.end()) {
 					middleText = itr->second.value;

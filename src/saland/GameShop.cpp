@@ -51,7 +51,7 @@ void GameShop::Draw(SDL_Renderer* target) {
 	data->goldField.Draw(target, globalData.xsize-1, globalData.ysize-1, sago::SagoTextField::Alignment::right, sago::SagoTextField::VerticalAlignment::bottom);
 }
 
-void GameShop::ProcessInput(const SDL_Event& event, bool &) {
+void GameShop::ProcessInput(const SDL_Event& event, bool&) {
 	if (event.type == SDL_KEYDOWN) {
 		data->active = false;
 	}

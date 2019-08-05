@@ -43,7 +43,9 @@ void RegisterCommand(ConsoleCommand* command) {
 }
 
 struct HelpConsoleCommand : public ConsoleCommand {
-	virtual std::string getCommand() const override {return "help"; }
+	virtual std::string getCommand() const override {
+		return "help";
+	}
 
 	virtual std::string run(const std::vector<std::string>& args) override {
 		if (args.size() > 1 && commands.find(args.at(1)) != commands.end() ) {
@@ -58,7 +60,9 @@ struct HelpConsoleCommand : public ConsoleCommand {
 		return helpMessage;
 	}
 
-	virtual std::string helpMessage() const override { return "Displays this message"; }
+	virtual std::string helpMessage() const override {
+		return "Displays this message";
+	}
 };
 
 static HelpConsoleCommand hcc;
@@ -121,7 +125,7 @@ void Console::removeChar() {
 	}
 }
 
-static std::vector<std::string> splitByWhitespace(std::string const &line) { 
+static std::vector<std::string> splitByWhitespace(std::string const& line) {
 	std::vector<std::string> arg;
 	boost::escaped_list_separator<char> els('\\',' ','\"');
 	boost::tokenizer<boost::escaped_list_separator<char> > tok(line, els);
@@ -143,7 +147,8 @@ void Console::ProcessCommand(const std::string& command) {
 		try {
 			std::string ret = commands[commandVector[0]]->run(commandVector);
 			response.SetText(ret);
-		} catch (std::exception& e) {
+		}
+		catch (std::exception& e) {
 			response.SetText(e.what());
 			response.SetColor(error_color);
 		}
@@ -197,7 +202,7 @@ bool Console::ReadKey(SDL_Keycode keyPressed) {
 	return false;
 }
 
-void Console::ProcessInput(const SDL_Event& event, bool &processed) {
+void Console::ProcessInput(const SDL_Event& event, bool& processed) {
 	if (event.type == SDL_KEYDOWN) {
 		if (event.key.keysym.sym == SDLK_ESCAPE && event.key.keysym.mod & KMOD_LSHIFT) {
 			active = false;

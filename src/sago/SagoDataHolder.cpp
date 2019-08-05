@@ -104,7 +104,7 @@ SDL_Texture* SagoDataHolder::getTexturePtr(const std::string& textureName) const
 		return ret;
 	}
 	std::string path = "textures/"+textureName+".png";
-	if (data->verbose) { 
+	if (data->verbose) {
 		printFileWeLoad(path);
 	}
 	if (!PHYSFS_exists(path.c_str())) {
@@ -145,7 +145,7 @@ TTF_Font* SagoDataHolder::getFontPtr(const std::string& fontName, int ptsize) co
 		return ret;
 	}
 	std::string path = "fonts/"+fontName+".ttf";
-	if (data->verbose) { 
+	if (data->verbose) {
 		printFileWeLoad(path);
 	}
 	if (!PHYSFS_exists(path.c_str())) {
@@ -188,7 +188,7 @@ Mix_Music* SagoDataHolder::getMusicPtr(const std::string& musicName) const {
 		return ret;
 	}
 	std::string path = "music/"+musicName+".ogg";
-	if (data->verbose) { 
+	if (data->verbose) {
 		printFileWeLoad(path);
 	}
 	if (!PHYSFS_exists(path.c_str())) {
@@ -231,7 +231,7 @@ Mix_Chunk* SagoDataHolder::getSoundPtr(const std::string& soundName) const {
 		return ret;
 	}
 	std::string path = "sounds/"+soundName+".ogg";
-	if (data->verbose) { 
+	if (data->verbose) {
 		printFileWeLoad(path);
 	}
 	if (!PHYSFS_exists(path.c_str())) {
@@ -271,7 +271,7 @@ Uint64 SagoDataHolder::getVersion() const {
 	return data->version;
 }
 
-TextureHandler::TextureHandler(const SagoDataHolder* holder, const std::string &textureName) {
+TextureHandler::TextureHandler(const SagoDataHolder* holder, const std::string& textureName) {
 	this->holder = holder;
 	this->version = 0;
 	this->textureName = textureName;
@@ -318,15 +318,15 @@ Mix_Chunk* SoundHandler::get() {
 }
 
 
-TextureHandler SagoDataHolder::getTextureHandler(const std::string &textureName) const {
+TextureHandler SagoDataHolder::getTextureHandler(const std::string& textureName) const {
 	return TextureHandler(this, textureName);
 }
 
-MusicHandler SagoDataHolder::getMusicHandler(const std::string &musicName) const {
+MusicHandler SagoDataHolder::getMusicHandler(const std::string& musicName) const {
 	return MusicHandler(this, musicName);
 }
 
-SoundHandler SagoDataHolder::getSoundHandler(const std::string &soundName) const {
+SoundHandler SagoDataHolder::getSoundHandler(const std::string& soundName) const {
 	return SoundHandler(this, soundName);
 }
 

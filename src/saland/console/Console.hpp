@@ -31,9 +31,15 @@ https://github.com/sago007/saland
 #include "utf8.h"
 
 struct ConsoleCommand {
-	virtual std::string getCommand() const {return "version"; }
-	virtual std::string run(const std::vector<std::string>&) { return "Not implemented"; }
-	virtual std::string helpMessage() const { return "No help availeble"; }
+	virtual std::string getCommand() const {
+		return "version";
+	}
+	virtual std::string run(const std::vector<std::string>&) {
+		return "Not implemented";
+	}
+	virtual std::string helpMessage() const {
+		return "No help availeble";
+	}
 };
 
 /**
@@ -46,7 +52,7 @@ public:
 	Console();
 	virtual bool IsActive() override;
 	virtual void Draw(SDL_Renderer* target) override;
-	virtual void ProcessInput(const SDL_Event& event, bool &processed) override;
+	virtual void ProcessInput(const SDL_Event& event, bool& processed) override;
 	virtual void Update() override;
 	void Activate();
 	Console(const Console& orig) = delete;

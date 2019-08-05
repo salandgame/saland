@@ -21,7 +21,7 @@ https://github.com/sago007/saland
 ===========================================================================
 */
 
-#if defined(_WIN32) 
+#if defined(_WIN32)
 #include "windows.h"
 #include "shlobj.h"
 #endif

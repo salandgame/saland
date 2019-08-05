@@ -36,7 +36,9 @@ public:
 	float Radius = 16.0;
 	bool removeMe = false;
 	b2Body* body = nullptr;
-	virtual bool isStatic() {return true; }
+	virtual bool isStatic() {
+		return true;
+	}
 };
 
 class MiscItem : public Placeable {
@@ -56,7 +58,9 @@ public:
 	bool moving = false;
 	float moveX = 0.0;
 	float moveY = 0.0;
-	virtual bool isStatic() override { return false; }
+	virtual bool isStatic() override {
+		return false;
+	}
 };
 
 class Human : public Creature {

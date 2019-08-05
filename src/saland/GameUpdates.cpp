@@ -33,7 +33,7 @@ static void SetDesiredVelocity(b2Body* body, float x, float y) {
 	body->ApplyLinearImpulse(b2Vec2(impulseX, impulseY), body->GetWorldCenter(), true);
 }
 
-static void SetCreatureMovementEntity(Creature *entity, float directionX, float directionY) {
+static void SetCreatureMovementEntity(Creature* entity, float directionX, float directionY) {
 	float deltaX = directionX;
 	float deltaY = directionY;
 
@@ -63,7 +63,7 @@ static void SetCreatureMovementEntity(Creature *entity, float directionX, float 
 	SetDesiredVelocity(entity->body, deltaX*speed, deltaY * speed);
 }
 
-void UpdateHuman(Human *entity, float fDeltaTime) {
+void UpdateHuman(Human* entity, float fDeltaTime) {
 	if (entity->castTimeRemaining > 0) {
 		entity->castTimeRemaining -= fDeltaTime;
 	}
@@ -80,7 +80,7 @@ void UpdateHuman(Human *entity, float fDeltaTime) {
 	entity->Y = place.y*pixel2unit;
 }
 
-void UpdateMonster(Monster *entity) {
+void UpdateMonster(Monster* entity) {
 	SetCreatureMovementEntity(entity, entity->moveX, entity->moveY);
 	b2Vec2 place = entity->body->GetPosition();
 	entity->X = place.x*pixel2unit;
@@ -90,7 +90,7 @@ void UpdateMonster(Monster *entity) {
 	}
 }
 
-void UpdateProjectile(Projectile *entity, float fDeltaTime) {
+void UpdateProjectile(Projectile* entity, float fDeltaTime) {
 	entity->timeToLive -= fDeltaTime;
 	if (entity->timeToLive < 0.0f) {
 		entity->removeMe = true;

@@ -30,9 +30,9 @@ https://github.com/sago007/saland
 
 
 void ProjectileHit(Projectile* p, Placeable* target);
-void UpdateHuman(Human *entity, float fDeltaTime);
-void UpdateMonster(Monster *entity);
-void UpdateProjectile(Projectile *entity, float fDeltaTime);
+void UpdateHuman(Human* entity, float fDeltaTime);
+void UpdateMonster(Monster* entity);
+void UpdateProjectile(Projectile* entity, float fDeltaTime);
 
 #endif /* GAMEUPDATES_HPP */
 

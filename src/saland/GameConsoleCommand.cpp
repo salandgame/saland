@@ -25,34 +25,37 @@ https://github.com/sago007/saland
 #include "console/Console.hpp"
 
 struct ConsoleCommandGiveItem : public ConsoleCommand {
-	virtual std::string getCommand() const override {return "give";}
+	virtual std::string getCommand() const override {
+		return "give";
+	}
 	virtual std::string run(const std::vector<std::string>& args) override {
-        if (args.size() != 3) {
-            throw std::runtime_error("Must be called like: give ITEM_NAME QUANTITY");
-        }
-        std::string item_name = args.at(1);
-        int quantity = 1;
-        try {
-            quantity = std::stoi(args.at(2));
-        } catch (...) {
-            std::string error_msg = "Failed to convert \"";
-            error_msg += args.at(2)+ "\" into an integer";
-            throw std::runtime_error(error_msg);
-        }
-        if (quantity == 0) {
-            return std::string("Inventory not touched");
-        }
-        int prevCount = globalData.player.item_inventory[item_name];
-        globalData.player.item_inventory[item_name] += quantity;
-        if (quantity > 0) {
-		    return std::string("Added ")+std::to_string(quantity)+" of "+item_name;
-        }
-        else {
-            if (globalData.player.item_inventory[item_name] < 0) {
-                globalData.player.item_inventory[item_name] = 0;
-            }
-            return std::string("Removed ")+std::to_string(prevCount-globalData.player.item_inventory[item_name])+" of "+item_name;
-        }
+		if (args.size() != 3) {
+			throw std::runtime_error("Must be called like: give ITEM_NAME QUANTITY");
+		}
+		std::string item_name = args.at(1);
+		int quantity = 1;
+		try {
+			quantity = std::stoi(args.at(2));
+		}
+		catch (...) {
+			std::string error_msg = "Failed to convert \"";
+			error_msg += args.at(2)+ "\" into an integer";
+			throw std::runtime_error(error_msg);
+		}
+		if (quantity == 0) {
+			return std::string("Inventory not touched");
+		}
+		int prevCount = globalData.player.item_inventory[item_name];
+		globalData.player.item_inventory[item_name] += quantity;
+		if (quantity > 0) {
+			return std::string("Added ")+std::to_string(quantity)+" of "+item_name;
+		}
+		else {
+			if (globalData.player.item_inventory[item_name] < 0) {
+				globalData.player.item_inventory[item_name] = 0;
+			}
+			return std::string("Removed ")+std::to_string(prevCount-globalData.player.item_inventory[item_name])+" of "+item_name;
+		}
 
 	}
 
@@ -63,12 +66,15 @@ struct ConsoleCommandGiveItem : public ConsoleCommand {
 
 
 struct ConsoleCommandQuit : public ConsoleCommand {
-	virtual std::string getCommand() const override {return "quit";}
-	virtual std::string run(const std::vector<std::string>& args) override {
-        globalData.isShuttingDown = true;
-    }
+	virtual std::string getCommand() const override {
+		return "quit";
+	}
+	virtual std::string run(const std::vector<std::string>&) override {
+		globalData.isShuttingDown = true;
+        return "Exiting...";
+	}
 
-    virtual std::string helpMessage() const override {
+	virtual std::string helpMessage() const override {
 		return "Exits the game";
 	}
 };
@@ -78,6 +84,6 @@ static ConsoleCommandQuit cc_quit;
 
 
 void GameConsoleCommandRegister() {
-    RegisterCommand(&cc_give_item);
-    RegisterCommand(&cc_quit);
+	RegisterCommand(&cc_give_item);
+	RegisterCommand(&cc_quit);
 }
