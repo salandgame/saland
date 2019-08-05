@@ -24,7 +24,7 @@ https://github.com/sago007/saland
 #include "../global.hpp"
 #include "console/Console.hpp"
 
-struct ConcoleCommandGiveItem : public ConsoleCommand {
+struct ConsoleCommandGiveItem : public ConsoleCommand {
 	virtual std::string getCommand() const override {return "give";}
 	virtual std::string run(const std::vector<std::string>& args) override {
         if (args.size() != 3) {
@@ -62,10 +62,22 @@ struct ConcoleCommandGiveItem : public ConsoleCommand {
 };
 
 
-static ConcoleCommandGiveItem cc_give_item;
+struct ConsoleCommandQuit : public ConsoleCommand {
+	virtual std::string getCommand() const override {return "quit";}
+	virtual std::string run(const std::vector<std::string>& args) override {
+        globalData.isShuttingDown = true;
+    }
 
+    virtual std::string helpMessage() const override {
+		return "Exits the game";
+	}
+};
+
+static ConsoleCommandGiveItem cc_give_item;
+static ConsoleCommandQuit cc_quit;
 
 
 void GameConsoleCommandRegister() {
     RegisterCommand(&cc_give_item);
+    RegisterCommand(&cc_quit);
 }
