@@ -7,6 +7,14 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${saland_SOURCE_DIR}/src/cmake")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wsuggest-override -Wno-deprecated-declarations -std=c++11 -g")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -g")
 
+if (WIN32)
+      SET(GUI_TYPE WIN32)
+      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=i686")
+	if(NOT _WIN32_WINNT AND NOT WINVER)
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_WIN32_WINNT=0x0601 -DWINVER=0x0601")
+	endif()
+endif()
+
 find_package(Boost COMPONENTS program_options REQUIRED)
 
 #Setup SDL2
@@ -20,7 +28,7 @@ pkg_search_module(SDL2IMAGE REQUIRED SDL2_image)
 pkg_search_module(SDL2TTF REQUIRED SDL2_ttf)
 pkg_search_module(SDL2GFX REQUIRED SDL2_gfx)
 
-include_directories("src/Libs/include")
+include_directories(SYSTEM "src/Libs/include")
 
 file(GLOB SOURCES "src/*.cpp" "src/*/*.cpp" "src/*/*/*.cpp" "src/Libs/*.c")
 
