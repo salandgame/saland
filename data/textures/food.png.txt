@@ -1,0 +1,291 @@
+"[LPC] Foods" by bluecarrot16, Daniel Eddeland (daneeklu), Joshua Taylor, Richard Kettering (Jetrel), thekingphoenix, RedVoxel, and Molly "Cougarmint" Willits. See CREDITS-food.txt. Please include a link back to this page on OpenGameArt. 
+
+# Based on:
+
+[LPC] Farming tilesets, magic animations and UI elements
+DE = Daniel Eddeland
+CC-BY-SA 3.0 / GPL 3.0
+https://opengameart.org/content/rpg-item-set
+
+Fruit and Veggie Inventory
+JT = Joshua Taylor
+CC-BY-SA 3.0 / GPL 3.0 
+https://opengameart.org/content/fruit-and-veggie-inventory
+
+RPG item set
+RK = Richard Kettering (Jetrel)
+CC0
+https://opengameart.org/content/rpg-item-set
+
+Icons: Food.
+TKP = thekingphoenix
+CC0
+http://opengameart.org/content/icons-food
+
+Food Items 16x16
+RV = RedVoxel
+CC0
+https://opengameart.org/content/food-items-16x16
+
+Chicken and Pork Icon Pack
+MW = Molly "Cougarmint" Willits
+CC-BY 3.0 / OGA-BY 3.0
+https://opengameart.org/content/chicken-and-pork-icon-pack
+
+LPC style farm animals
+daneeklu
+CC-BY 3.0 / GPL 2.0
+https://opengameart.org/content/lpc-style-farm-animals
+
+# LIST OF ITEMS
+
+All items edited by bluecarrot16. Original authors listed, otherwise drawn from scratch by bluecarrot16. 
+
+## FRUITS / VEGETABLES
+Russet potatoes - JT
+Gold potatoes - DE
+Purple potatoes - DE
+Sweet potatoes - DE
+Yucca - DE
+Carrots - DE
+Carrots - JT
+Parsnips - JT
+Radishes - JT
+Beets - JT
+Turnips - JT
+Rutabaga - JT
+Garlic - JT
+Yellow onion / Sweet onion - JT
+Red onion / Purple onion - JT
+White onion - JT
+Green onion - JT
+Hot pepper - DE
+Green bell pepper - JT
+Red bell pepper - JT
+Orange bell pepper - JT
+Yellow bell pepper - JT
+Chili peppers / Hot peppers / Poblano, Cayanne Serrano, Habanero, Jalapeño
+Watermelon - JT, RK
+Honeydew melon
+Cantaloupe melon
+Acorn squash
+Pumpkin - JT
+Crookneck squash - JT
+Butternut squash
+Ornamental gourds: turban squash, gooseneck, small pumpkins
+Ornamental gourds: pan patty squash, small pumpkins
+
+Asparagus
+Rhubarb
+Romaine lettuce
+Iceberg lettuce - RK
+Kale
+Red cabbage / Purple cabbage
+Green cabbage
+Celery
+Bok choy
+Fennel bulb
+Brussels sprouts
+Cauliflower - JT
+Broccoli - JT
+Artichoke - DE
+Leeks
+Kohlrabi
+Eggplant - DE, JT
+Zucchini / Green squash - DE
+Yellow squash / Summer squash - DE
+Cucumber - RK
+Strawberry - JT
+Blackberries
+Raspberries
+Red grapes
+Green grapes
+Cherry tomatoes 
+Tomatoes - DE
+Large tomatoes - JT
+Peas / Snap peas / Sugar peas - JT
+Hops
+Green beans
+
+Red delicious apples / red apples - JT
+Granny smith apples / green apples - JT
+Golden delicious apples / yellow apples - JT
+Golden delicious apples / yellow apples - JT
+Honeycrisp apples / variegated apples - JT
+Lemon - JT
+Lime - JT
+Cherries - JT
+Oranges - JT
+Bartlett pears / Green pears - JT
+D'anjou pears / Yellow pears - JT
+Bosc pears / Brown pears - JT
+Figs
+Starfruit / Carambola
+Banana - JT
+Peach
+Avocado
+Mango
+Mango
+Pomegranate
+Dragonfruit / Pitaya / Pitahaya
+Pineapple
+Coconut
+Coffee
+Mandarin orange / Kumquat
+Plums
+Jackfruit / Jack tree
+Breadfruit
+Papaya
+Kiwi
+Corn
+Corn
+
+## CHEESE, DAIRY, EGGS
+Brie - TKP
+Gouda - TKP
+White Swiss - TKP
+Cheddar - TKP
+Yellow Swiss - TKP
+Smoked gruyere
+Muenster
+Blue cheese / Gorgonzola - TKP
+Feta
+Mozarella
+Manchengo 
+Jack
+Parmesean
+
+White eggs
+Brown eggs
+Hardboiled eggs
+Fried eggs
+Scrambled eggs
+Butter
+
+## MUSHROOMS
+Common mushroom / button mushroom / crimini mushroom / champignon mushroom
+Oyster mushrooms
+Portobello mushrooms
+King trumpet mushrooms / King oyster mushrooms / French horn mushroom
+Black morels
+Enokitake / Enoki
+
+
+## NUTS
+Pisatcchio
+Pecan
+Peanut
+Walnut
+Almond
+Cashew
+
+## BREAD
+Vienna small - RV
+Loaf - RK
+Vienna large - TKP
+Baguette 
+Pullman loaf
+Coburg large
+???
+Crescent roll
+Coburg roll
+Muffin
+Cob / Boule roll
+Pretzel
+Croissant
+Donut
+Chocolate cake
+Pie
+Braided Pie
+Bagel
+Pancakes
+Waffles
+
+## MEAT
+Chicken - MCW
+Chicken drumstick - RK
+Rotisserie chicken - DE
+Large chicken drumstick - DE
+Turkey - DE
+Liver - DE
+Chop - RK
+Sausage - RK
+Ribeye steak - DE
+T-bone steak
+Rib roast
+Back ribs
+Ham - DE
+Pork chop - MCW
+Bacon
+Pig - 
+Kebab
+Meatballs
+
+
+
+## SEAFOOD
+Mussel
+Scallop
+Oyster
+Crab
+
+Anchovy
+Perch - DE
+Salmon - DE
+Trout - DE
+Catfish - DE
+Walleye - DE
+Carp - DE
+Bass
+Flounder
+Cod - DE
+Tilapia
+Herring
+Haddock
+Calamari
+Lobster
+
+
+
+Grouper - DE
+Halibut
+Tuna - DE
+Swordfish
+Pike - DE
+
+
+
+
+
+
+
+## Future ideas
+https://en.wikipedia.org/wiki/List_of_breads
+- Oval loaf w/ longitudinal slashes (ear)
+- Kaiser
+- Miche
+- Twisted roll
+- Breadsticks
+- Focaccia
+- Ciabatta?
+- English muffin
+- Challah
+- Jerkey
+
+- Eel 
+- Shrimp/prawn
+- Abalone
+- Basa
+- Crappie 
+- Crayfish 
+- Kingfish
+- Mackerel 
+- Marlin 
+- Milkfish 
+- Orange roughy  
+- Pacific saury  
+- Pollock 
+- Sardine
+- Sole 
+- Swai
+- Sea urchin
