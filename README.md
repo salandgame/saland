@@ -16,3 +16,7 @@ Q = Create block
 E = Remove block
 
 Click = Use magic
+
+## Downloads
+The game is unreleased but Windows nightly builds can be found here:
+https://files.poulsander.com/~poul19/public_files/saland/windows_nightly/ 
