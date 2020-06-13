@@ -59,7 +59,31 @@ void GameRegion::SpawnMonster(const MonsterDef& def, float destX, float destY) {
 	bat->body->SetTransform(b2Vec2(bat.get()->X / 32.0f, bat.get()->Y / 32.0f),bat->body->GetAngle());
 }
 
+void GameRegion::SpawnItem(const ItemDef& def, float destX, float destY) {
+	std::shared_ptr<MiscItem> barrel = std::make_shared<MiscItem>();
+	barrel.get()->Radius = def.radius;
+	barrel.get()->sprite = def.sprite;
+	barrel.get()->X = destX;
+	barrel.get()->Y = destY;
+	placeables.push_back(barrel);
 
+	if (def.isStatic) {
+		b2CircleShape circleShape;
+		circleShape.m_p.Set(0, 0); //position, relative to body position
+		circleShape.m_radius = 0.5f; //radius 16 pixel (32 pixel = 1)
+		b2FixtureDef myFixtureDef;
+		myFixtureDef.shape = &circleShape; //this is a pointer to the shape above
+		myFixtureDef.density = 10.0f;
+
+
+		b2BodyDef barrelBodyDef;
+		barrelBodyDef.type = b2_staticBody;
+		barrelBodyDef.position.Set(barrel.get()->X / 32.0f, barrel.get()->Y / 32.0f);
+		barrelBodyDef.linearDamping = 1.0f;
+		barrel->body = physicsBox->CreateBody(&barrelBodyDef);
+		barrel->body->CreateFixture(&myFixtureDef);
+	}
+}
 
 void GameRegion::Init(int x, int y, const std::string& worldName, bool forceResetWorld) {
 	region_x = x;
@@ -78,43 +102,29 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 	world.managed_bodies.clear();
 	world.init(physicsBox, loadMap);
 
-	std::shared_ptr<MiscItem> barrel = std::make_shared<MiscItem>();
-	barrel.get()->Radius = 16.0f;
-	barrel.get()->sprite = "item_barrel";
-	barrel.get()->X = 100.0f;
-	barrel.get()->Y = 100.0f;
-	placeables.push_back(barrel);
 
-	std::shared_ptr<MiscItem> potato = std::make_shared<MiscItem>();
-	potato.get()->Radius = 9.0f;
-	potato.get()->sprite = "item_food_potato";
-	potato.get()->X = 700.0f;
-	potato.get()->X = 600.0f;
-	placeables.push_back(potato);
+	ItemDef barrelDef;
+	barrelDef.radius = 16.0f;
+	barrelDef.sprite = "item_barrel";
+	barrelDef.itemid = "barrel";
+	barrelDef.isStatic = true;
+	SpawnItem(barrelDef, 100.0f, 100.0f);
+	SpawnItem(barrelDef, 100.0f, 100.0f+32.0f);
+	SpawnItem(barrelDef, 100.0f, 100.0f+64.0f);
+
+
+	ItemDef potatoDef;
+	potatoDef.radius = 9.0f;
+	potatoDef.sprite = "item_food_potato";
+	potatoDef.isStatic = false;
+	SpawnItem(potatoDef, 600.0f, 20.0f);
+
 
 	MonsterDef batDef;
 	batDef.radius = 16.0f;
 	batDef.race = "bat";
 	SpawnMonster(batDef, 200.0f, 200.0f);
 	SpawnMonster(batDef, 1200.0f, 1400.0f);
-
-
-	b2CircleShape circleShape;
-	circleShape.m_p.Set(0, 0); //position, relative to body position
-	circleShape.m_radius = 0.5f; //radius 16 pixel (32 pixel = 1)
-	b2FixtureDef myFixtureDef;
-	myFixtureDef.shape = &circleShape; //this is a pointer to the shape above
-	myFixtureDef.density = 10.0f;
-
-	
-
-	b2BodyDef barrelBodyDef;
-	barrelBodyDef.type = b2_staticBody;
-	barrelBodyDef.position.Set(barrel.get()->X / 32.0f, barrel.get()->Y / 32.0f);
-	barrelBodyDef.linearDamping = 1.0f;
-	barrel->body = physicsBox->CreateBody(&barrelBodyDef);
-	barrel->body->CreateFixture(&myFixtureDef);
-
 }
 
 void GameRegion::SaveRegion() {

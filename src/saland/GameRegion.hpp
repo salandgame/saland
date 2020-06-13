@@ -34,6 +34,15 @@ struct MonsterDef {
 	std::string race = "";
 };
 
+
+struct ItemDef {
+	float radius = 1.0f;
+	std::string itemid = "";
+	std::string sprite = "";
+	bool isStatic = true;
+};
+
+
 class GameRegion {
 public:
 	GameRegion();
@@ -53,6 +62,7 @@ public:
 		return mapFileName;
 	}
 	void SpawnMonster(const MonsterDef& def, float destX, float destY) ;
+	void SpawnItem(const ItemDef& def, float destX, float destY) ;
 private:
 	int region_x = 0;
 	int region_y = 0;
