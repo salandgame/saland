@@ -28,6 +28,12 @@ https://github.com/sago007/saland
 #include "model/placeables.hpp"
 #include "../sagotmx/tmx_struct.h"
 #include <vector>
+
+struct MonsterDef {
+	float radius = 1.0f;
+	std::string race = "";
+};
+
 class GameRegion {
 public:
 	GameRegion();
@@ -46,6 +52,7 @@ public:
 	std::string GetFilename() const {
 		return mapFileName;
 	}
+	void SpawnMonster(const MonsterDef& def, float destX, float destY) ;
 private:
 	int region_x = 0;
 	int region_y = 0;

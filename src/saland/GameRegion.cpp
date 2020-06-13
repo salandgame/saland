@@ -32,6 +32,35 @@ static std::string createFileName(int x, int y,const std::string& worldName) {
 	return ret;
 }
 
+
+
+void GameRegion::SpawnMonster(const MonsterDef& def, float destX, float destY) {
+	std::shared_ptr<Monster> bat = std::make_shared<Monster>();
+	bat.get()->Radius = def.radius;
+	bat.get()->race = def.race;
+	bat.get()->X = destX;
+	bat.get()->Y = destY;
+	placeables.push_back(bat);
+
+	b2BodyDef batBodyDef;
+	batBodyDef.type = b2_dynamicBody;
+	batBodyDef.position.Set(0, 0);
+	batBodyDef.linearDamping = 1.0f;
+	bat->body = physicsBox->CreateBody(&batBodyDef);
+
+	b2CircleShape circleShape;
+	circleShape.m_p.Set(0, 0); //position, relative to body position
+	circleShape.m_radius = 0.5f; //radius 16 pixel (32 pixel = 1)
+
+	b2FixtureDef batDef;
+	batDef.shape = &circleShape;
+	batDef.density = 10.0f;
+	bat->body->CreateFixture(&batDef);
+	bat->body->SetTransform(b2Vec2(bat.get()->X / 32.0f, bat.get()->Y / 32.0f),bat->body->GetAngle());
+}
+
+
+
 void GameRegion::Init(int x, int y, const std::string& worldName, bool forceResetWorld) {
 	region_x = x;
 	region_y = y;
@@ -63,13 +92,12 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 	potato.get()->X = 600.0f;
 	placeables.push_back(potato);
 
+	MonsterDef batDef;
+	batDef.radius = 16.0f;
+	batDef.race = "bat";
+	SpawnMonster(batDef, 200.0f, 200.0f);
+	SpawnMonster(batDef, 1200.0f, 1400.0f);
 
-	std::shared_ptr<Monster> bat = std::make_shared<Monster>();
-	bat.get()->Radius = 16.0f;
-	bat.get()->race = "bat";
-	bat.get()->X = 200.0f;
-	bat.get()->Y = 200.0f;
-	placeables.push_back(bat);
 
 	b2CircleShape circleShape;
 	circleShape.m_p.Set(0, 0); //position, relative to body position
@@ -78,16 +106,7 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 	myFixtureDef.shape = &circleShape; //this is a pointer to the shape above
 	myFixtureDef.density = 10.0f;
 
-	b2BodyDef batBodyDef;
-	batBodyDef.type = b2_dynamicBody;
-	batBodyDef.position.Set(0, 0);
-	batBodyDef.linearDamping = 1.0f;
-	bat->body = physicsBox->CreateBody(&batBodyDef);
-	b2FixtureDef batDef;
-	batDef.shape = &circleShape;
-	batDef.density = 10.0f;
-	bat->body->CreateFixture(&batDef);
-	bat->body->SetTransform(b2Vec2(bat.get()->X / 32.0f, bat.get()->Y / 32.0f),bat->body->GetAngle());
+	
 
 	b2BodyDef barrelBodyDef;
 	barrelBodyDef.type = b2_staticBody;
