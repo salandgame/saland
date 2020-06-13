@@ -90,7 +90,7 @@ public:
 		bee.Draw(globalData.screen, SDL_GetTicks(), 100, 200);
 		const sago::SagoSprite& bat = globalData.spriteHolder->GetSprite("bat_W");
 		bat.Draw(globalData.screen, SDL_GetTicks(), 200, 200);
-		const sago::SagoSprite& potato = globalData.spriteHolder->GetSprite("potato");
+		const sago::SagoSprite& potato = globalData.spriteHolder->GetSprite("item_food_potato");
 		potato.Draw(globalData.screen, SDL_GetTicks(), 240, 200);
 	}
 

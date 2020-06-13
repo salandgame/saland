@@ -56,6 +56,13 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 	barrel.get()->Y = 100.0f;
 	placeables.push_back(barrel);
 
+	std::shared_ptr<MiscItem> potato = std::make_shared<MiscItem>();
+	potato.get()->Radius = 9.0f;
+	potato.get()->sprite = "item_food_potato";
+	potato.get()->X = 700.0f;
+	potato.get()->X = 600.0f;
+	placeables.push_back(potato);
+
 
 	std::shared_ptr<Monster> bat = std::make_shared<Monster>();
 	bat.get()->Radius = 16.0f;
