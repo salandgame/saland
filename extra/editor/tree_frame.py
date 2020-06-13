@@ -20,7 +20,7 @@ class TreeFrame:
         self.filterString = tk.StringVar()
         self.filterEntryBox = tk.Entry (self.frame, textvariable=self.filterString)
         self.filterEntryBox.grid(row=3, column=0, sticky='nsew')
-        
+
 
     def get_treeview(self):
         return self.treeview

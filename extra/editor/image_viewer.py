@@ -1,7 +1,6 @@
 #! /bin/python3
 
 import tkinter as tk
-from tkinter import ttk
 from image_frame import *
 
 #This is the raltive directory to the base of the SagoSprite dir
