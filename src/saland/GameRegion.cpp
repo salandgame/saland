@@ -51,7 +51,7 @@ void GameRegion::SpawnMonster(const MonsterDef& def, float destX, float destY) {
 
 	b2CircleShape circleShape;
 	circleShape.m_p.Set(0, 0); //position, relative to body position
-	circleShape.m_radius = 0.5f; //radius 16 pixel (32 pixel = 1)
+	circleShape.m_radius = def.radius/32.0f; //32 pixel = 1 unit
 
 	b2FixtureDef batDef;
 	batDef.shape = &circleShape;
@@ -64,6 +64,7 @@ void GameRegion::SpawnItem(const ItemDef& def, float destX, float destY) {
 	std::shared_ptr<MiscItem> barrel = std::make_shared<MiscItem>();
 	barrel.get()->Radius = def.radius;
 	barrel.get()->sprite = def.sprite;
+	barrel.get()->sprite2 = def.sprite2;
 	barrel.get()->X = destX;
 	barrel.get()->Y = destY;
 	placeables.push_back(barrel);
@@ -71,7 +72,7 @@ void GameRegion::SpawnItem(const ItemDef& def, float destX, float destY) {
 	if (def.isStatic) {
 		b2CircleShape circleShape;
 		circleShape.m_p.Set(0, 0); //position, relative to body position
-		circleShape.m_radius = 0.5f; //radius 16 pixel (32 pixel = 1)
+		circleShape.m_radius = def.radius/32.0f; //32 pixel = 1 unit
 		b2FixtureDef myFixtureDef;
 		myFixtureDef.shape = &circleShape; //this is a pointer to the shape above
 		myFixtureDef.density = 10.0f;
@@ -125,6 +126,10 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 	SpawnItem(barrelDef, 100.0f, 100.0f);
 	SpawnItem(barrelDef, 100.0f, 100.0f+32.0f);
 	SpawnItem(barrelDef, 100.0f, 100.0f+64.0f);
+
+
+	const ItemDef& pineDef = getItem("tree_pine");
+	SpawnItem(pineDef, 200.0f, 400.0f);
 
 
 	const ItemDef& potatoDef = getItem("food_potato");

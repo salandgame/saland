@@ -106,6 +106,10 @@ void DrawMiscEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const
 	}
 	const sago::SagoSprite& mySprite = sHolder->GetSprite(entity->sprite);
 	mySprite.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
+	if (entity->sprite2[0]) {
+		const sago::SagoSprite& mySprite2 = sHolder->GetSprite(entity->sprite2);
+		mySprite2.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
+	}
 }
 
 void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Human* entity, float time, int offsetX, int offsetY, bool drawCollision) {

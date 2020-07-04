@@ -30,6 +30,7 @@ struct ItemDef {
 	float radius = 1.0f;
 	std::string itemid = "";
 	std::string sprite = "";
+    std::string sprite2 = "";
 	bool isStatic = true;
 };
 

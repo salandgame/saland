@@ -10,6 +10,30 @@
 	"frame_time" : 100,
 	"originx" : 16,
 	"originy" : 50
+},
+
+"tree_pine_trunk" : {
+	"texture" : "trunk",
+	"topx" : 96,
+	"topy" : 0,
+	"height" : 96,
+	"width" : 96,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+	"originx" : 48,
+	"originy" : 48
+},
+
+"tree_pine_top" : {
+	"texture" : "treetop",
+	"topx" : 96,
+	"topy" : 96,
+	"height" : 128,
+	"width" : 96,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+	"originx" : 48,
+	"originy" : 128
 }
 
 }
