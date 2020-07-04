@@ -104,6 +104,23 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 	world.init(physicsBox, loadMap);
 
 
+	const std::vector<sago::tiled::TileObjectGroup>& object_groups = world.tm.object_groups;
+	for (const auto& group : object_groups) {
+		for (const auto& item : group.objects) {
+			if (item.type == "itemSpawn") {
+				std::string itemname;
+				const auto& itr = item.properties.find("itemname");
+				if (itr != item.properties.end()) {
+					itemname = itr->second.value;
+				}
+				if (itemname[0]) {
+					const ItemDef& itemDef = getItem(itemname);
+					SpawnItem(itemDef, item.x, item.y);
+				}
+			}
+		}
+	}
+
 	const ItemDef& barrelDef = getItem("barrel");
 	SpawnItem(barrelDef, 100.0f, 100.0f);
 	SpawnItem(barrelDef, 100.0f, 100.0f+32.0f);
