@@ -22,6 +22,7 @@ https://github.com/sago007/saland
 */
 
 #include "GameRegion.hpp"
+#include "GameItems.hpp"
 
 GameRegion::GameRegion() {
 	Init(0, 0, "world1", false);
@@ -103,20 +104,13 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 	world.init(physicsBox, loadMap);
 
 
-	ItemDef barrelDef;
-	barrelDef.radius = 16.0f;
-	barrelDef.sprite = "item_barrel";
-	barrelDef.itemid = "barrel";
-	barrelDef.isStatic = true;
+	const ItemDef& barrelDef = getItem("barrel");
 	SpawnItem(barrelDef, 100.0f, 100.0f);
 	SpawnItem(barrelDef, 100.0f, 100.0f+32.0f);
 	SpawnItem(barrelDef, 100.0f, 100.0f+64.0f);
 
 
-	ItemDef potatoDef;
-	potatoDef.radius = 9.0f;
-	potatoDef.sprite = "item_food_potato";
-	potatoDef.isStatic = false;
+	const ItemDef& potatoDef = getItem("food_potato");
 	SpawnItem(potatoDef, 600.0f, 20.0f);
 
 

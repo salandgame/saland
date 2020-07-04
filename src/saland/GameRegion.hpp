@@ -26,6 +26,7 @@ https://github.com/sago007/saland
 
 #include "model/World.hpp"
 #include "model/placeables.hpp"
+#include "GameItems.hpp"
 #include "../sagotmx/tmx_struct.h"
 #include <vector>
 
@@ -34,13 +35,6 @@ struct MonsterDef {
 	std::string race = "";
 };
 
-
-struct ItemDef {
-	float radius = 1.0f;
-	std::string itemid = "";
-	std::string sprite = "";
-	bool isStatic = true;
-};
 
 
 class GameRegion {
