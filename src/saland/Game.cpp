@@ -467,6 +467,12 @@ void Game::Update() {
 		if (monster) {
 			UpdateMonster(monster);
 		}
+		MiscItem* item = dynamic_cast<MiscItem*> (entity.get());
+		if (item) {
+			if (item->destructible && item->health <= 0.0f && !item->removeMe) {
+				item->removeMe = true;
+			}
+		}
 	}
 	auto& vp = data->gameRegion.placeables;
 	vp.erase(std::remove_if(std::begin(vp), std::end(vp), [](std::shared_ptr<Placeable> p) {

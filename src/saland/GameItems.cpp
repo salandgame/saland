@@ -27,6 +27,8 @@ static ItemDef itemDef;
 
 const ItemDef& getItem(const std::string& itemName) {
     itemDef.sprite2 = "";
+    itemDef.isDestructible = true;
+    itemDef.health = 100.0f;
     if (itemName == "barrel") {
         itemDef.radius = 16.0f;
         itemDef.sprite = "item_barrel";
@@ -34,6 +36,7 @@ const ItemDef& getItem(const std::string& itemName) {
         itemDef.isStatic = true;
     }
     if (itemName == "food_potato") {
+        itemDef.isDestructible = false;
         itemDef.radius = 9.0f;
         itemDef.sprite = "item_food_potato";
         itemDef.isStatic = false;

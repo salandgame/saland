@@ -31,10 +31,12 @@ const float pixel2unit = 32.0f;
 
 class Placeable {
 public:
+	float health = 10.0;
 	float X = 20.0;
 	float Y = 20.0;
 	float Radius = 16.0;
 	bool removeMe = false;
+	bool destructible = true;
 	b2Body* body = nullptr;
 	virtual bool isStatic() {
 		return true;
@@ -52,7 +54,6 @@ public:
 
 class Creature : public Placeable {
 public:
-	float health = 10.0;
 	float stinema = 10.0;
 	float mana = 10.0;
 	char direction = 'S';

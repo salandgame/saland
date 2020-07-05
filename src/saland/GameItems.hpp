@@ -32,6 +32,8 @@ struct ItemDef {
 	std::string sprite = "";
     std::string sprite2 = "";
 	bool isStatic = true;
+	bool isDestructible = true;
+	float health = 10.0f;
 };
 
 const ItemDef& getItem(const std::string& itemName);

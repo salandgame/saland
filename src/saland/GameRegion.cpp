@@ -67,6 +67,8 @@ void GameRegion::SpawnItem(const ItemDef& def, float destX, float destY) {
 	barrel.get()->sprite2 = def.sprite2;
 	barrel.get()->X = destX;
 	barrel.get()->Y = destY;
+	barrel.get()->destructible = def.isDestructible;
+	barrel.get()->health = def.health;
 	placeables.push_back(barrel);
 
 	if (def.isStatic) {

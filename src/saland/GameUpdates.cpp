@@ -101,9 +101,9 @@ void UpdateProjectile(Projectile* entity, float fDeltaTime) {
 }
 
 void ProjectileHit(Projectile* p, Placeable* target) {
-	Monster* monster = dynamic_cast<Monster*> (target);
-	if (monster) {
-		monster->health -= 10.0f;
+	//Monster* monster = dynamic_cast<Monster*> (target);
+	if (target->destructible) {
+		target->health -= 10.0f;
 		p->removeMe = true;
 	}
 }
