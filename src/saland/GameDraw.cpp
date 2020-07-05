@@ -34,6 +34,14 @@ static void Draw(SDL_Renderer* target, SDL_Texture* t, int x, int y, const SDL_R
 	SDL_RenderCopy(target, t, &part, &pos);
 }
 
+static void DrawCollision(SDL_Renderer* target, const Placeable* entity, int offsetX, int offsetY, bool drawCollision) {
+	if (drawCollision) {
+		circleRGBA(target,
+		           entity->X - offsetX, entity->Y - offsetY, entity->Radius,
+		           255, 255, 0, 255);
+	}
+}
+
 void DrawOuterBorder(SDL_Renderer* renderer, SDL_Texture* texture, const sago::tiled::TileMap& tm, int topx, int topy, uint32 outerTile) {
 	for (int i = -1; i < tm.width + 1; ++i) {
 		if (i >= tm.width/2-5 && i < tm.width/2+5) {
@@ -99,11 +107,7 @@ void DrawOjbectGroup(SDL_Renderer* renderer, const sago::tiled::TileMap& tm, siz
 
 void DrawMiscEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const MiscItem* entity, float time,
                     int offsetX, int offsetY, bool drawCollision) {
-	if (drawCollision) {
-		circleRGBA(target,
-		           entity->X - offsetX, entity->Y - offsetY, entity->Radius,
-		           255, 255, 0, 255);
-	}
+	DrawCollision(target, entity, offsetX, offsetY, drawCollision);
 	const sago::SagoSprite& mySprite = sHolder->GetSprite(entity->sprite);
 	mySprite.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
 	if (entity->sprite2[0]) {
@@ -124,11 +128,7 @@ void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, cons
 		relativeAnimation = true;
 		relativeAnimationState = 1.0f - (entity->castTimeRemaining / entity->castTime);
 	}
-	if (drawCollision) {
-		circleRGBA(target,
-		           entity->X - offsetX, entity->Y - offsetY, entity->Radius,
-		           255, 255, 0, 255);
-	}
+	DrawCollision(target, entity, offsetX, offsetY, drawCollision);
 	const sago::SagoSprite& mySprite = sHolder->GetSprite(entity->race + "_" + animation + "_" + std::string(1, entity->direction));
 	if (relativeAnimation) {
 		mySprite.DrawProgressive(target, relativeAnimationState, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
@@ -165,11 +165,7 @@ void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, cons
 }
 
 void DrawMonster(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Monster* entity, float time, int offsetX, int offsetY, bool drawCollision) {
-	if (drawCollision) {
-		circleRGBA(target,
-		           entity->X - offsetX, entity->Y - offsetY, entity->Radius,
-		           255, 255, 0, 255);
-	}
+	DrawCollision(target, entity, offsetX, offsetY, drawCollision);
 	const sago::SagoSprite& mySprite = sHolder->GetSprite(entity->race + "_" + std::string(1, entity->direction));
 	mySprite.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
 }
@@ -178,11 +174,7 @@ void DrawMonster(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Mo
 void DrawProjectile(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Projectile* entity, float time, int offsetX, int offsetY, bool drawCollision) {
 	(void)sHolder;
 	(void)time;
-	if (drawCollision) {
-		circleRGBA(target,
-		           entity->X - offsetX, entity->Y - offsetY, entity->Radius,
-		           255, 255, 0, 255);
-	}
+	DrawCollision(target, entity, offsetX, offsetY, drawCollision);
 }
 
 static void DrawRect(SDL_Renderer* target, int topx, int topy, int height, int width, const std::string& name) {
