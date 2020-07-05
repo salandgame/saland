@@ -1,0 +1,13 @@
+{
+"effect_fireball" : {
+"texture" : "effects/shot_fireball",
+"topx" : 0,
+"topy" : 0,
+"height" : 32,
+"width" : 32,
+"number_of_frames" : 4,
+"frame_time" : 50,
+"originx" : 16,
+"originy" : 16
+}
+}

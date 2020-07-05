@@ -174,6 +174,8 @@ void DrawMonster(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Mo
 void DrawProjectile(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Projectile* entity, float time, int offsetX, int offsetY, bool drawCollision) {
 	(void)sHolder;
 	(void)time;
+	const sago::SagoSprite& mySprite = sHolder->GetSprite("effect_fireball");
+	mySprite.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
 	DrawCollision(target, entity, offsetX, offsetY, drawCollision);
 }
 
