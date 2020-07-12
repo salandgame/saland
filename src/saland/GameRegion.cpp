@@ -146,6 +146,37 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 }
 
 void GameRegion::SaveRegion() {
+	sago::tiled::TileObjectGroup tog;
+	tog.name = "mutableObjects";
+	for (const std::shared_ptr<Placeable>& p : placeables)
+	{
+		if (p->isStatic()) {
+			const MiscItem* m = dynamic_cast<MiscItem*>(p.get());
+			if (m) {
+				sago::tiled::TileObject to;
+				to.isPoint = true;
+				to.name = m->name;
+				to.type = "item";
+				to.x = m->X;
+				to.y = m->Y;
+				to.id = tog.objects.size()+1000;
+				tog.objects.push_back(to);
+			}
+		}
+	}
+	int mutableLayer = -1;
+	for (size_t i = 0; i < world.tm.object_groups.size(); ++i) {
+		const auto& l = world.tm.object_groups.at(i);
+		if (l.name == tog.name) {
+			mutableLayer = i;
+		}
+	}
+	if (mutableLayer == -1) {
+		world.tm.object_groups.push_back(tog);
+	}
+	else {
+		world.tm.object_groups.at(mutableLayer) = tog;
+	}
 	std::string data2save = sago::tiled::tilemap2string(world.tm);
 	sago::WriteFileContent(mapFileName.c_str(), data2save);
 }
