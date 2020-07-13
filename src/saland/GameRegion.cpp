@@ -69,6 +69,7 @@ void GameRegion::SpawnItem(const ItemDef& def, float destX, float destY) {
 	barrel.get()->Y = destY;
 	barrel.get()->destructible = def.isDestructible;
 	barrel.get()->health = def.health;
+	barrel.get()->name = def.itemid;
 	placeables.push_back(barrel);
 
 	if (def.isStatic) {
@@ -156,7 +157,8 @@ void GameRegion::SaveRegion() {
 				sago::tiled::TileObject to;
 				to.isPoint = true;
 				to.name = m->name;
-				to.type = "item";
+				to.type = "itemSpawn";
+				to.properties["itemname"].value = to.name;
 				to.x = m->X;
 				to.y = m->Y;
 				to.id = tog.objects.size()+1000;

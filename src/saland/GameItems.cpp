@@ -29,10 +29,10 @@ const ItemDef& getItem(const std::string& itemName) {
     itemDef.sprite2 = "";
     itemDef.isDestructible = true;
     itemDef.health = 100.0f;
+    itemDef.itemid = itemName;
     if (itemName == "barrel") {
         itemDef.radius = 16.0f;
         itemDef.sprite = "item_barrel";
-        itemDef.itemid = "barrel";
         itemDef.isStatic = true;
     }
     if (itemName == "food_potato") {
