@@ -87,6 +87,19 @@ static b2Body* AddStaticTilesToWorld(b2World* world, const sago::tiled::TileMap&
 	return body;
 }
 
+void fill_blocking_tiles(std::vector<bool>& output, const sago::tiled::TileMap& tm, const sago::tiled::TileLayer& layer) {
+	output.resize(tm.height*tm.width);
+	for (int i = 0; i < tm.height; ++i) {
+		for (int j = 0; j < tm.width; ++j) {
+			uint32_t gid = sago::tiled::getTileFromLayer(tm, layer, i, j);
+			if (gid == 0) {
+				continue;
+			}
+			output[i+j*tm.width] = true;		
+		}
+	}
+}
+
 void World::init_physics(std::shared_ptr<b2World>& world) {
 	for (b2Body* b : managed_bodies) {
 		b2Fixture* f = b->GetFixtureList();
@@ -117,6 +130,7 @@ void World::init_physics(std::shared_ptr<b2World>& world) {
 		}
 		b2Body* bodyAdded = AddStaticTilesToWorld(physicsWorld.get(), tm, layer);
 		managed_bodies.push_back(bodyAdded);
+		fill_blocking_tiles(blocking_tiles, tm, layer);
 	}
 	{
 		//Top left
@@ -141,6 +155,8 @@ void World::init_physics(std::shared_ptr<b2World>& world) {
 		managed_bodies.push_back(bodyAdded);
 	}
 }
+
+
 
 void World::init(std::shared_ptr<b2World>& world, const std::string& mapFileName) {
 	this->physicsWorld = world;
@@ -199,4 +215,9 @@ bool World::tile_protected(int x, int y) const {
 		return true;
 	}
 	return protected_tiles.at(index);
+}
+
+bool World::tile_blocking(int x, int y) const {
+	size_t index = x+y*tm.width;
+	return blocking_tiles.at(index);
 }

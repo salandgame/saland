@@ -79,7 +79,11 @@ void GameRegion::SpawnItem(const ItemDef& def, float destX, float destY) {
 	barrel.get()->health = def.health;
 	barrel.get()->name = def.itemid;
 	if (world.tile_protected(destX/32, destY/32)) {
-		std::cout << "Do not spawn " << def.itemid << "(" << destX << "," << "destY" << "), Protected tile\n";
+		std::cout << "Do not spawn " << def.itemid << "(" << destX << "," << destY << "), Protected tile\n";
+		return;
+	}
+	if (world.tile_blocking(destX/32, destY/32)) {
+		std::cout << "Do not spawn " << def.itemid << "(" << destX << "," << destY << "), Blocked tile\n";
 		return;
 	}
 	for (std::shared_ptr<Placeable>& target : placeables) {
@@ -163,9 +167,10 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 	//Forrest region
 	if (region_x == -1 && region_y == 0) {
 		std::cout << "Forrest region\n";
+		
 		for (int i=0; i<10; ++i) {
-			int x = (rand()%97+1)*32+rand()%32;
-			int y = (rand()%97+1)*32+rand()%32;
+			int x = (rand()%(world.tm.width-3)+1)*32+rand()%32;
+			int y = (rand()%(world.tm.height-3)+1)*32+rand()%32;
 			SpawnItem(pineDef, x, y);
 			std::cout << "Spawning at " << x << ", " << y << "\n";
 		}
