@@ -78,12 +78,16 @@ void GameRegion::SpawnItem(const ItemDef& def, float destX, float destY) {
 	barrel.get()->destructible = def.isDestructible;
 	barrel.get()->health = def.health;
 	barrel.get()->name = def.itemid;
+	if (world.tile_protected(destX/32, destY/32)) {
+		std::cout << "Do not spawn " << def.itemid << "(" << destX << "," << "destY" << "), Protected tile\n";
+		return;
+	}
 	for (std::shared_ptr<Placeable>& target : placeables) {
 		if (target->removeMe) {
 			continue;
 		}
 		if (Intersect(*barrel.get(), *target.get())) {
-			std::cout << "Do not spawn " << def.itemid << "\n";
+			std::cout << "Do not spawn " << def.itemid << "(" << destX << "," << "destY" << "), already an item placed\n";
 			return;
 		}
 	}
@@ -148,12 +152,24 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 	SpawnItem(barrelDef, 100.0f, 100.0f+64.0f);
 
 
-	const ItemDef& pineDef = getItem("tree_pine");
+	ItemDef pineDef = getItem("tree_pine");
 	SpawnItem(pineDef, 200.0f, 400.0f);
 
 
 	const ItemDef& potatoDef = getItem("food_potato");
 	SpawnItem(potatoDef, 600.0f, 20.0f);
+
+
+	//Forrest region
+	if (region_x == -1 && region_y == 0) {
+		std::cout << "Forrest region\n";
+		for (int i=0; i<10; ++i) {
+			int x = (rand()%97+1)*32+rand()%32;
+			int y = (rand()%97+1)*32+rand()%32;
+			SpawnItem(pineDef, x, y);
+			std::cout << "Spawning at " << x << ", " << y << "\n";
+		}
+	}
 
 
 	MonsterDef batDef;
