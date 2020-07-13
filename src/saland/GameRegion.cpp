@@ -60,6 +60,14 @@ void GameRegion::SpawnMonster(const MonsterDef& def, float destX, float destY) {
 	bat->body->SetTransform(b2Vec2(bat.get()->X / 32.0f, bat.get()->Y / 32.0f),bat->body->GetAngle());
 }
 
+static bool Intersect(const Placeable& p1, const Placeable& p2) {
+	double distance = std::sqrt( std::pow(p1.X-p2.X, 2) + std::pow(p1.Y-p2.Y,2));
+	if (distance < p1.Radius + p2.Radius) {
+		return true;
+	}
+	return false;
+}
+
 void GameRegion::SpawnItem(const ItemDef& def, float destX, float destY) {
 	std::shared_ptr<MiscItem> barrel = std::make_shared<MiscItem>();
 	barrel.get()->Radius = def.radius;
@@ -70,6 +78,15 @@ void GameRegion::SpawnItem(const ItemDef& def, float destX, float destY) {
 	barrel.get()->destructible = def.isDestructible;
 	barrel.get()->health = def.health;
 	barrel.get()->name = def.itemid;
+	for (std::shared_ptr<Placeable>& target : placeables) {
+		if (target->removeMe) {
+			continue;
+		}
+		if (Intersect(*barrel.get(), *target.get())) {
+			std::cout << "Do not spawn " << def.itemid << "\n";
+			return;
+		}
+	}
 	placeables.push_back(barrel);
 
 	if (def.isStatic) {
