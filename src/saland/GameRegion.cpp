@@ -122,6 +122,9 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 	std::string loadMap = mapFileName;
 	if (!sago::FileExists(loadMap.c_str()) || forceResetWorld) {
 		loadMap = "maps/sample1.tmx";
+		if (region_x == -1 && region_y == 0) {
+			loadMap = "maps/template_forrest.tmx";
+		}
 		if (region_x == 0 && region_y == -2) {
 			loadMap = "maps/city_0x-2.tmx";
 		}
