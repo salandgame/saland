@@ -162,11 +162,12 @@ void World::init(std::shared_ptr<b2World>& world, const std::string& mapFileName
 	this->physicsWorld = world;
 	std::string tmx_file = sago::GetFileContent(mapFileName);
 	tm = sago::tiled::string2tilemap(tmx_file);
+	// We run though all the externally referenced tilesets to inject them into the tilemap
 	for (size_t i = 0; i < tm.tileset.size(); ++i) {
 		if (tm.tileset[i].source.length()) {
 			std::string tsx_file = sago::GetFileContent("maps/"+tm.tileset[i].source);
-			ts = sago::tiled::string2tileset(tsx_file);
-			tm.tileset[i].alternativeSource = &ts;
+			ts.push_back(sago::tiled::string2tileset(tsx_file));
+			tm.tileset[i].alternativeSource = &ts.back();
 		}
 	}
 	init_physics(world);

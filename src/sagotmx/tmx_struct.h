@@ -581,7 +581,7 @@ inline void getTextureLocationFromGid(const TileMap& tm, int gid, std::string* i
 		//Follow source links
 		ts = ts->alternativeSource;
 	}
-	//std::cout << "ts: " << ts->name << ", " << ts->image.source << ", " << ts->image.height << ", " << ts->image.width << "\n";
+	//std::cout << "ts: " << ts->name << ", " << ts->image.source << ", " << ts->image.height << ", " << ts->image.width << ", gid: " << gid+ts->firstgid << "\n";
 	if (imageFile) {
 		*imageFile = ts->image.source;
 	}

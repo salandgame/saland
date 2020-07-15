@@ -27,6 +27,7 @@ https://github.com/sago007/saland
 #include "../../sagotmx/tmx_struct.h"
 #include "../../sago/SagoMisc.hpp"
 #include <Box2D/Box2D.h>
+#include <list>
 
 class World {
 public:
@@ -37,7 +38,7 @@ public:
 	bool tile_protected(int x, int y) const;
 	bool tile_blocking(int x, int y) const;
 //private:
-	sago::tiled::TileSet ts;
+	std::list<sago::tiled::TileSet> ts;  //External tilesets. Loaded into a list, so that references to the content does not become invalid
 	sago::tiled::TileMap tm;
 	std::shared_ptr<b2World> physicsWorld;
 	std::vector<b2Body*> managed_bodies;
