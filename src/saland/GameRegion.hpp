@@ -57,6 +57,7 @@ public:
 	}
 	void SpawnMonster(const MonsterDef& def, float destX, float destY) ;
 	void SpawnItem(const ItemDef& def, float destX, float destY) ;
+	std::string GetRegionType(int x, int y) const;
 private:
 	int region_x = 0;
 	int region_y = 0;

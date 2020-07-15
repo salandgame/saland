@@ -115,6 +115,13 @@ void GameRegion::SpawnItem(const ItemDef& def, float destX, float destY) {
 	}
 }
 
+std::string GameRegion::GetRegionType(int region_x, int region_y) const {
+	if (region_x == -1 && region_y == 0) {
+		return "forrest";
+	}
+	return "default";
+}
+
 void GameRegion::Init(int x, int y, const std::string& worldName, bool forceResetWorld) {
 	region_x = x;
 	region_y = y;
@@ -122,7 +129,7 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 	std::string loadMap = mapFileName;
 	if (!sago::FileExists(loadMap.c_str()) || forceResetWorld) {
 		loadMap = "maps/sample1.tmx";
-		if (region_x == -1 && region_y == 0) {
+		if (GetRegionType(region_x, region_y) == "forrest") {
 			loadMap = "maps/template_forrest.tmx";
 		}
 		if (region_x == 0 && region_y == -2) {
@@ -168,7 +175,7 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 
 
 	//Forrest region
-	if (region_x == -1 && region_y == 0) {
+	if (GetRegionType(region_x, region_y) == "forrest") {
 		std::cout << "Forrest region\n";
 		
 		for (int i=0; i<10; ++i) {
