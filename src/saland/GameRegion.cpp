@@ -78,14 +78,19 @@ void GameRegion::SpawnItem(const ItemDef& def, float destX, float destY) {
 	barrel.get()->destructible = def.isDestructible;
 	barrel.get()->health = def.health;
 	barrel.get()->name = def.itemid;
-	if (world.tile_protected(destX/32, destY/32)) {
-		std::cout << "Do not spawn " << def.itemid << "(" << destX << "," << destY << "), Protected tile\n";
-		return;
+	for (int i=(destX-def.radius)/32; i <= (destX+def.radius)/32+1; ++i) {
+		for (int j=(destY-def.radius)/32; j <= (destY+def.radius)/32+1; ++j) {
+			if (world.tile_protected(i, j)) {
+				std::cout << "Do not spawn " << def.itemid << "(" << destX << "," << destY << "), Protected tile\n";
+				return;
+			}
+			if (world.tile_blocking(i, j)) {
+				std::cout << "Do not spawn " << def.itemid << "(" << destX << "," << destY << "), Blocked tile\n";
+				return;
+			}
+		}
 	}
-	if (world.tile_blocking(destX/32, destY/32)) {
-		std::cout << "Do not spawn " << def.itemid << "(" << destX << "," << destY << "), Blocked tile\n";
-		return;
-	}
+	
 	for (std::shared_ptr<Placeable>& target : placeables) {
 		if (target->removeMe) {
 			continue;
@@ -119,6 +124,9 @@ std::string GameRegion::GetRegionType(int region_x, int region_y) const {
 	if (region_x == -1 && region_y == 0) {
 		return "forrest";
 	}
+	if (region_x == 0 && region_y == 0) {
+		return "start";
+	}
 	return "default";
 }
 
@@ -131,6 +139,9 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 		loadMap = "maps/sample1.tmx";
 		if (GetRegionType(region_x, region_y) == "forrest") {
 			loadMap = "maps/template_forrest.tmx";
+		}
+		if (GetRegionType(region_x, region_y) == "start") {
+			loadMap = "maps/template_start.tmx";
 		}
 		if (region_x == 0 && region_y == -2) {
 			loadMap = "maps/city_0x-2.tmx";
@@ -175,8 +186,9 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 
 
 	//Forrest region
-	if (GetRegionType(region_x, region_y) == "forrest") {
-		std::cout << "Forrest region\n";
+	std::string regionType = GetRegionType(region_x, region_y);
+	if (regionType == "forrest" || regionType == "start") {
+		std::cout << "Forrest (or start) region\n";
 		
 		for (int i=0; i<10; ++i) {
 			int x = (rand()%(world.tm.width-3)+1)*32+rand()%32;
