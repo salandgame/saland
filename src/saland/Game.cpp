@@ -383,7 +383,8 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 			data->gameRegion.world.init_physics(data->gameRegion.physicsBox);
 		}
 		if (event.key.keysym.sym == globalData.playerControls.block_delete
-		        && sago::tiled::tileInBound(data->gameRegion.world.tm, tile_x, tile_y)) {
+		        && sago::tiled::tileInBound(data->gameRegion.world.tm, tile_x, tile_y)
+		        && !(data->gameRegion.world.tile_protected(tile_x, tile_y)) ) {
 			int layer_number = 2; //  Do not hardcode
 			uint32_t tile = 0;
 			sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
