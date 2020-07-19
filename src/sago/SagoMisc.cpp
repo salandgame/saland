@@ -27,7 +27,11 @@ SOFTWARE.
 #include <iostream>
 #include <iconv.h>
 #include <string.h>
-#include <memory>
+
+#if PHYSFS_VER_MAJOR < 3
+#define PHYSFS_readBytes(X,Y,Z) PHYSFS_read(X,Y,1,Z)
+#define PHYSFS_writeBytes(X,Y,Z) PHYSFS_write(X,Y,1,Z)
+#endif
 
 using std::string;
 using std::cerr;
@@ -50,22 +54,35 @@ bool FileExists(const char* filename) {
 	return PHYSFS_exists(filename);
 }
 
+void ReadBytesFromFile(const char* filename, std::unique_ptr<char[]>& dest, unsigned int& bytes) {
+	bytes = 0;
+	if (!PHYSFS_exists(filename)) {
+		cerr << "ReadBytesFromFile - File does not exists: " << filename << "\n";
+		return;
+	}
+	PHYSFS_file* myfile = PHYSFS_openRead(filename);
+	unsigned int m_size = PHYSFS_fileLength(myfile);
+	std::unique_ptr<char[]> m_data(new char[m_size]);
+	int length_read = PHYSFS_readBytes (myfile, m_data.get(), m_size);
+	if (length_read != (int)m_size) {
+		PHYSFS_close(myfile);
+		cerr << "Error: Curropt data file: " << filename << "\n";
+		return;
+	}
+	PHYSFS_close(myfile);
+	std::swap(m_data, dest);
+	bytes = m_size;
+}
+
 std::string GetFileContent(const char* filename) {
 	string ret;
 	if (!PHYSFS_exists(filename)) {
 		cerr << "GetFileContent - File does not exists: " << filename << "\n";
 		return ret;
 	}
-	PHYSFS_file* myfile = PHYSFS_openRead(filename);
-	unsigned int m_size = PHYSFS_fileLength(myfile);
-	std::unique_ptr<char[]> m_data(new char[m_size]);
-	int length_read = PHYSFS_read (myfile, m_data.get(), 1, m_size);
-	if (length_read != (int)m_size) {
-		PHYSFS_close(myfile);
-		cerr << "Error: Curropt data file: " << filename << "\n";
-		return ret;
-	}
-	PHYSFS_close(myfile);
+	unsigned int m_size = 0;
+	std::unique_ptr<char[]> m_data;
+	ReadBytesFromFile(filename, m_data, m_size);
 	//Now create a std::string
 	ret = string(m_data.get(), m_data.get()+m_size);
 	return ret;
@@ -85,10 +102,15 @@ void WriteFileContent(const char* filename, const std::string& content) {
 	CreatePathToFile(filename);
 	PHYSFS_file* myfile = PHYSFS_openWrite(filename);
 	if (!myfile) {
-		cerr << "Failed to open file for writing, " << PHYSFS_getLastError() << "\n";
+#if PHYSFS_VER_MAJOR > 2
+		PHYSFS_ErrorCode code = PHYSFS_getLastErrorCode();
+		std::cerr << "Failed to open file for writing, " << PHYSFS_getErrorByCode(code) << " (" << code << ")\n";
+#else
+		std::cerr << "Failed to open file for writing, " << PHYSFS_getLastError() << "\n";
+#endif
 		return;
 	}
-	PHYSFS_write(myfile, content.c_str(), sizeof(char), content.length());
+	PHYSFS_writeBytes(myfile, content.c_str(), sizeof(char)*content.length());
 	PHYSFS_close(myfile);
 }
 

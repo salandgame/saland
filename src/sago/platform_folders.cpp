@@ -52,8 +52,16 @@ static std::string getHome() {
 		res = homeEnv;
 		return res;
 	}
-	struct passwd* pw = getpwuid(uid);
-	if (!pw) {
+	struct passwd* pw = nullptr;
+	struct passwd pwd;
+	long bufsize = sysconf(_SC_GETPW_R_SIZE_MAX);
+	if (bufsize < 0) {
+		bufsize = 16384;
+	}
+	std::vector<char> buffer;
+	buffer.resize(bufsize);
+	int error_code = getpwuid_r(uid, &pwd, buffer.data(), buffer.size(), &pw);
+	if (error_code) {
 		throw std::runtime_error("Unable to get passwd struct.");
 	}
 	const char* tempRes = pw->pw_dir;
@@ -90,7 +98,7 @@ std::string win32_utf16_to_utf8(const wchar_t* wstr) {
 	if (actualSize > 0) {
 		//If the converted UTF-8 string could not be in the initial buffer. Allocate one that can hold it.
 		std::vector<char> buffer(actualSize);
-		actualSize = WideCharToMultiByte(CP_UTF8, 0, wstr, -1, &buffer[0], buffer.size(), nullptr, nullptr);
+		actualSize = WideCharToMultiByte(CP_UTF8, 0, wstr, -1, &buffer[0], static_cast<int>(buffer.size()), nullptr, nullptr);
 		res = buffer.data();
 	}
 	if (actualSize == 0) {

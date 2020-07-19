@@ -38,7 +38,7 @@ public:
 	void SetText(const char* text);
 	void SetText(const std::string& text);
 	void SetColor(const SDL_Color& color);
-
+	
 	/**
 	 * Set the name of the font. Must be known to the data holder.
 	 * The name could for instance be "freeserif".
@@ -64,7 +64,7 @@ private:
 	SagoTextBox(const SagoTextBox& orig) = delete;
 	SagoTextBox& operator=(const SagoTextBox& base) = delete;
 	struct SagoTextBoxData;
-	SagoTextBoxData* data;
+	SagoTextBoxData *data;
 };
 
 }  //namespace sago
