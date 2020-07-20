@@ -74,8 +74,22 @@ void DrawTile(SDL_Renderer* renderer, sago::SagoSpriteHolder* sHolder, const sag
 }
 
 void DrawLayer(SDL_Renderer* renderer, sago::SagoSpriteHolder* sHolder, const sago::tiled::TileMap& tm, size_t layer, int topx, int topy) {
-	for (int i = topx/32; i < tm.width && i < (topx+globalData.xsize)/32+1; ++i) {
-		for (int j = topy/32; j < tm.height && j < (topy+globalData.ysize)/32+1; ++j) {
+	int startX = topx/32;
+	int startY = topy/32;
+	if (startX < 0) {
+		startX = 0;
+	}
+	if (startY < 0) {
+		startY = 0;
+	}
+	for (int i = startX; i < tm.width && i < (topx+globalData.xsize)/32+1; ++i) {
+		/*if (i < 0) {
+			continue;
+		}*/
+		for (int j = startY; j < tm.height && j < (topy+globalData.ysize)/32+1; ++j) {
+			/*if (j < 0) {
+				continue;
+			}*/
 			uint32_t gid = sago::tiled::getTileFromLayer(tm, tm.layers.at(layer), i, j);
 			if (gid == 0) {
 				continue;

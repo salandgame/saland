@@ -625,8 +625,9 @@ inline bool tileInBound(const TileMap& tm, int x, int y) {
 inline uint32_t getTileFromLayer(const TileMap& m, const TileLayer& l, int x, int y) {
 	size_t tile_index = (m.height*y+x)*sizeof(uint32_t);
 	if (tile_index > l.data.payload.size()-sizeof(uint32_t) ) {
-		throw SagoTiledException("ERROR: getTileFromLayer called with coordinates out-of-bound. Called with (%d, %d). Limit (%d, %d). Or the layer is corrupt. "
-				"Reported number of tiles in layer: %ld", x, y, m.width-1, m.height-1, (long int)l.data.payload.size()/sizeof(uint32_t));
+		return 0;
+		/*throw SagoTiledException("ERROR: getTileFromLayer called with coordinates out-of-bound. Called with (%d, %d). Limit (%d, %d). Or the layer is corrupt. "
+				"Reported number of tiles in layer: %ld", x, y, m.width-1, m.height-1, (long int)l.data.payload.size()/sizeof(uint32_t));*/
 	}
 	const unsigned char *data = reinterpret_cast<const unsigned char*>(l.data.payload.data());
 	uint32_t global_tile_id = data[tile_index] |

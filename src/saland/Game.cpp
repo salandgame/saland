@@ -275,7 +275,7 @@ static std::string GetLayerInfoForTile(const World& w, int x, int y) {
 void Game::Draw(SDL_Renderer* target) {
 	double screen_width = globalData.xsize;
 	double screen_height = globalData.ysize;
-	int screen_boarder = 16;
+	int screen_boarder = 64;
 	data->topx = std::round(data->center_x - screen_width / 2.0);
 	data->topy = std::round(data->center_y - screen_height / 2.0);
 	if (data->topx < -screen_boarder) {
@@ -301,11 +301,12 @@ void Game::Draw(SDL_Renderer* target) {
 	for (size_t i = 0; i < data->gameRegion.world.tm.object_groups.size(); ++i) {
 		DrawOjbectGroup(target, data->gameRegion.world.tm, i, data->topx, data->topy);
 	}
-	int mousebox_x = data->world_mouse_x - data->world_mouse_x % 32 - data->topx;
-	int mousebox_y = data->world_mouse_y - data->world_mouse_y % 32 - data->topy;
-	rectangleRGBA(globalData.screen, mousebox_x, mousebox_y,
-	              mousebox_x + 32, mousebox_y + 32, 255, 255, 0, 255);
-
+	if (data->world_mouse_x >= 0 && data->world_mouse_y >= 0) {
+		int mousebox_x = data->world_mouse_x - data->world_mouse_x % 32 - data->topx;
+		int mousebox_y = data->world_mouse_y - data->world_mouse_y % 32 - data->topy;
+		rectangleRGBA(globalData.screen, mousebox_x, mousebox_y,
+					mousebox_x + 32, mousebox_y + 32, 255, 255, 0, 255);
+	}
 	//Draw
 	for (const auto& p : data->gameRegion.placeables) {
 		MiscItem* m = dynamic_cast<MiscItem*> (p.get());
@@ -330,16 +331,24 @@ void Game::Draw(SDL_Renderer* target) {
 			DrawLayer(target, globalData.spriteHolder.get(), data->gameRegion.world.tm, i, data->topx, data->topy);
 		}
 	}
-	char buffer[200];
-	snprintf(buffer, sizeof(buffer), "world_x = %d, world_y = %d, layer_info:%s",
-	         data->world_mouse_x/32, data->world_mouse_y/32,
-	         GetLayerInfoForTile(data->gameRegion.world, data->world_mouse_x/32, data->world_mouse_y/32).c_str()
-	        );
-	data->bottomField.SetText(buffer);
+	if (data->world_mouse_x >= 0 && data->world_mouse_y >= 0) {
+		char buffer[200];
+		snprintf(buffer, sizeof(buffer), "world_x = %d, world_y = %d, layer_info:%s",
+				data->world_mouse_x/32, data->world_mouse_y/32,
+				GetLayerInfoForTile(data->gameRegion.world, data->world_mouse_x/32, data->world_mouse_y/32).c_str()
+				);
+		data->bottomField.SetText(buffer);
+	}
+	else {
+		data->bottomField.SetText("outside world");
+	}
 	data->bottomField.Draw(target, 2, screen_height, sago::SagoTextField::Alignment::left, sago::SagoTextField::VerticalAlignment::bottom);
 	data->middleField.Draw(target, screen_width/2, screen_height/4, sago::SagoTextField::Alignment::center, sago::SagoTextField::VerticalAlignment::bottom);
 	DrawRectYellow(target, screen_width-70, screen_height-70, 52, 52);
 	DrawTile(target, globalData.spriteHolder.get(), data->gameRegion.world.tm, data->drawTile, screen_width-60, screen_height-60);
+	for (int i = 0; i < 10; ++i) {
+		DrawRectYellow(target, 10+i*56, 10, 52, 52);
+	}
 	if (data->consoleActive && data->console) {
 		data->console->Draw(target);
 	}
