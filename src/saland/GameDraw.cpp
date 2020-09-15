@@ -83,13 +83,7 @@ void DrawLayer(SDL_Renderer* renderer, sago::SagoSpriteHolder* sHolder, const sa
 		startY = 0;
 	}
 	for (int i = startX; i < tm.width && i < (topx+globalData.xsize)/32+1; ++i) {
-		/*if (i < 0) {
-			continue;
-		}*/
 		for (int j = startY; j < tm.height && j < (topy+globalData.ysize)/32+1; ++j) {
-			/*if (j < 0) {
-				continue;
-			}*/
 			uint32_t gid = sago::tiled::getTileFromLayer(tm, tm.layers.at(layer), i, j);
 			if (gid == 0) {
 				continue;
@@ -189,7 +183,12 @@ void DrawProjectile(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const
 	(void)sHolder;
 	(void)time;
 	const sago::SagoSprite& mySprite = sHolder->GetSprite("effect_fireball");
-	mySprite.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
+	double angleRadian = 0.0;
+	if (entity->directionY || entity->directionX) {
+		//atan2 is defined if either of directionY or directionX is not zero
+		angleRadian = atan2(entity->directionY, entity->directionX)-M_PI/2.0;
+	}
+	mySprite.DrawRotated(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY, angleRadian);
 	DrawCollision(target, entity, offsetX, offsetY, drawCollision);
 }
 
