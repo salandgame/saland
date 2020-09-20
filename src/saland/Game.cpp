@@ -173,6 +173,7 @@ struct Game::GameImpl {
 	std::string worldName = "world1";
 	sago::SagoTextField bottomField;
 	sago::SagoTextField middleField;
+	std::array<sago::SagoTextField,10> number_labels;  //Label: 0,1...10
 	std::shared_ptr<Console> console;
 	bool consoleActive = false;
 };
@@ -237,6 +238,11 @@ Game::Game() {
 	data->bottomField.SetFontSize(20);
 	data->middleField.SetHolder(globalData.dataHolder);
 	data->middleField.SetFontSize(20);
+	for (size_t i = 0; i < data->number_labels.size(); ++i) {
+		data->number_labels.at(i).SetHolder(globalData.dataHolder);
+		data->number_labels.at(i).SetFontSize(20);
+		data->number_labels.at(i).SetText(std::to_string(i));
+	}
 }
 
 Game::~Game() {
@@ -346,8 +352,10 @@ void Game::Draw(SDL_Renderer* target) {
 	data->middleField.Draw(target, screen_width/2, screen_height/4, sago::SagoTextField::Alignment::center, sago::SagoTextField::VerticalAlignment::bottom);
 	DrawRectYellow(target, screen_width-70, screen_height-70, 52, 52);
 	DrawTile(target, globalData.spriteHolder.get(), data->gameRegion.world.tm, data->drawTile, screen_width-60, screen_height-60);
-	for (int i = 0; i < 10; ++i) {
+	for (size_t i = 0; i < 10; ++i) {
 		DrawRectYellow(target, 10+i*56, 10, 52, 52);
+		int key_number = (i+1)%10;
+		data->number_labels.at(key_number).Draw(target, 10+i*56, 10);
 	}
 	if (data->consoleActive && data->console) {
 		data->console->Draw(target);
