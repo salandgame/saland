@@ -174,6 +174,7 @@ struct Game::GameImpl {
 	sago::SagoTextField bottomField;
 	sago::SagoTextField middleField;
 	std::array<sago::SagoTextField,10> number_labels;  //Label: 0,1...10
+	size_t slot_selected = 0;
 	std::shared_ptr<Console> console;
 	bool consoleActive = false;
 };
@@ -353,7 +354,12 @@ void Game::Draw(SDL_Renderer* target) {
 	DrawRectYellow(target, screen_width-70, screen_height-70, 52, 52);
 	DrawTile(target, globalData.spriteHolder.get(), data->gameRegion.world.tm, data->drawTile, screen_width-60, screen_height-60);
 	for (size_t i = 0; i < 10; ++i) {
-		DrawRectYellow(target, 10+i*56, 10, 52, 52);
+		if (data->slot_selected == i) {
+			DrawRectWhite(target, 10+i*56, 10, 52, 52);
+		}
+		else {
+			DrawRectYellow(target, 10+i*56, 10, 52, 52);
+		}
 		int key_number = (i+1)%10;
 		data->number_labels.at(key_number).Draw(target, 10+i*56, 10);
 	}
