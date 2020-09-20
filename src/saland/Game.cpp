@@ -413,6 +413,36 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 			sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
 			data->gameRegion.world.init_physics(data->gameRegion.physicsBox);
 		}
+		if (event.key.keysym.sym == SDLK_1 || event.key.keysym.sym == SDLK_KP_1) {
+			data->slot_selected = 0;
+		}
+		if (event.key.keysym.sym == SDLK_2 || event.key.keysym.sym == SDLK_KP_2) {
+			data->slot_selected = 1;
+		}
+		if (event.key.keysym.sym == SDLK_3 || event.key.keysym.sym == SDLK_KP_3) {
+			data->slot_selected = 2;
+		}
+		if (event.key.keysym.sym == SDLK_4 || event.key.keysym.sym == SDLK_KP_4) {
+			data->slot_selected = 3;
+		}
+		if (event.key.keysym.sym == SDLK_5 || event.key.keysym.sym == SDLK_KP_5) {
+			data->slot_selected = 4;
+		}
+		if (event.key.keysym.sym == SDLK_6 || event.key.keysym.sym == SDLK_KP_6) {
+			data->slot_selected = 5;
+		}
+		if (event.key.keysym.sym == SDLK_7 || event.key.keysym.sym == SDLK_KP_7) {
+			data->slot_selected = 6;
+		}
+		if (event.key.keysym.sym == SDLK_8 || event.key.keysym.sym == SDLK_KP_8) {
+			data->slot_selected = 7;
+		}
+		if (event.key.keysym.sym == SDLK_9 || event.key.keysym.sym == SDLK_KP_9) {
+			data->slot_selected = 8;
+		}
+		if (event.key.keysym.sym == SDLK_0 || event.key.keysym.sym == SDLK_KP_0) {
+			data->slot_selected = 9;
+		}
 		if (event.key.keysym.sym == SDLK_PAGEDOWN) {
 			data->drawTile--;
 		}
