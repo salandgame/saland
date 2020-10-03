@@ -64,6 +64,13 @@ def callback_filter(sv):
     for t in textures:
         treeview.insert('','end',t, text = t)
 
+
+def callback_canvas_motion(event):
+    x, y = event.x, event.y
+    status_mouse_over['text'] = "Top: "+str(x-(x%32))+","+str(y-(y%32))
+    #print('{}, {}'.format(x, y))
+
+
 if __name__ == "__main__":
     textures = populateTree()
     root = tk.Tk()
@@ -78,6 +85,7 @@ if __name__ == "__main__":
 
     imageFrame = ImageFrame(root, None)
     imageFrame.get_frame().grid(row=0, column=1, sticky='nsew')
+    imageFrame.canvas.bind('<Motion>', callback_canvas_motion)
 
     treeFrame.filterString.trace("w", lambda name, index, mode, sv=treeFrame.filterString: callback_filter(treeFrame.filterString))
 
@@ -87,6 +95,8 @@ if __name__ == "__main__":
     status_file.pack(fill="both", side=tk.LEFT, expand=True)
     status_image = tk.Label(status_frame, text="Image size: X*Y")
     status_image.pack(fill="both", side=tk.LEFT, expand=True)
+    status_mouse_over = tk.Label(status_frame, text="Top: x,Y")
+    status_mouse_over.pack(fill="both", side=tk.LEFT, expand=True)
     status_frame.grid(row=2, column=0, columnspan=2, sticky="ew")
 
     root.mainloop()
