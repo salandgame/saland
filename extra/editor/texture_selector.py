@@ -44,7 +44,7 @@ def populateTree(filter2 = None):
 #addFolderToList()
 #print(folders)
 
-textures = populateTree()
+
 
 def callback_select(event):
     if not treeview.selection():
@@ -52,6 +52,8 @@ def callback_select(event):
     image = tk.PhotoImage(file=BASEDIR+'/data/textures/'+treeview.selection()[0])
     imageFrame.set_image(image)
     addLinesToCanvas(imageFrame.canvas, imageFrame.image_file)
+    status_file['text'] = "File: " + treeview.selection()[0]
+    status_image['text'] = "Size: " + str(image.width())+"*"+str(image.height())
 
 
 def callback_filter(sv):
@@ -62,19 +64,29 @@ def callback_filter(sv):
     for t in textures:
         treeview.insert('','end',t, text = t)
 
+if __name__ == "__main__":
+    textures = populateTree()
+    root = tk.Tk()
+    treeFrame = TreeFrame(root)
+    treeview = treeFrame.get_treeview()
+    treeFrame.get_frame().grid(row=0, column=0, sticky='ns')
+    for t in textures:
+        treeview.insert('','end',t, text = t)
+    root.columnconfigure(1, weight=1)
+    root.rowconfigure(0, weight=1)
+    treeview.bind('<<TreeviewSelect>>', callback_select)
 
-root = tk.Tk()
-treeFrame = TreeFrame(root)
-treeview = treeFrame.get_treeview()
-treeFrame.get_frame().grid(row=0, column=0, sticky='ns')
-for t in textures:
-    treeview.insert('','end',t, text = t)
-root.columnconfigure(1, weight=1)
-root.rowconfigure(0, weight=1)
-treeview.bind('<<TreeviewSelect>>', callback_select)
+    imageFrame = ImageFrame(root, None)
+    imageFrame.get_frame().grid(row=0, column=1, sticky='nsew')
 
-imageFrame = ImageFrame(root, None)
-imageFrame.get_frame().grid(row=0, column=1, sticky='nsew')
+    treeFrame.filterString.trace("w", lambda name, index, mode, sv=treeFrame.filterString: callback_filter(treeFrame.filterString))
 
-treeFrame.filterString.trace("w", lambda name, index, mode, sv=treeFrame.filterString: callback_filter(treeFrame.filterString))
-root.mainloop()
+    # status bar
+    status_frame = tk.Frame(root)
+    status_file = tk.Label(status_frame, text="File: NO FILE SELECTED")
+    status_file.pack(fill="both", side=tk.LEFT, expand=True)
+    status_image = tk.Label(status_frame, text="Image size: X*Y")
+    status_image.pack(fill="both", side=tk.LEFT, expand=True)
+    status_frame.grid(row=2, column=0, columnspan=2, sticky="ew")
+
+    root.mainloop()

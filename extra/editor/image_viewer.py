@@ -7,16 +7,17 @@ from image_frame import *
 #I am launching from extra/editor so I need to go two levels up
 BASEDIR = '../..'
 
-root = tk.Tk()
-image = tk.PhotoImage(file=BASEDIR+'/data/textures/terrain.png')
-imageFrame = ImageFrame(root, image)
-imageFrame.get_frame().pack(expand=tk.YES, fill=tk.BOTH)
+if __name__ == "__main__":
+	root = tk.Tk()
+	image = tk.PhotoImage(file=BASEDIR+'/data/textures/terrain.png')
+	imageFrame = ImageFrame(root, image)
+	imageFrame.get_frame().pack(expand=tk.YES, fill=tk.BOTH)
 
-import os
-textures = os.listdir(BASEDIR+"/data/textures")
-textures = list(filter(lambda x: x.endswith('.png'), textures))
-sprites = os.listdir(BASEDIR+"/data/sprites")
-sprites = list(filter(lambda x: x.endswith('.sprite'), sprites))
-print(textures, sprites)
+	import os
+	textures = os.listdir(BASEDIR+"/data/textures")
+	textures = list(filter(lambda x: x.endswith('.png'), textures))
+	sprites = os.listdir(BASEDIR+"/data/sprites")
+	sprites = list(filter(lambda x: x.endswith('.sprite'), sprites))
+	print(textures, sprites)
 
-root.mainloop()
+	root.mainloop()
