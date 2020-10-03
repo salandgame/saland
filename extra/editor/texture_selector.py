@@ -14,6 +14,17 @@ import os
 #textures.sort()
 
 
+def addLinesToCanvas(canvas, image_file, xstep = 32, ystep = 32, xoffset=0, yoffset=0):
+    canvas_width = image_file.width()
+    canvas_height = image_file.height()
+    if xstep > 0:
+        for i in range(xoffset, canvas_width, xstep):
+            canvas.create_line(i, 0, i, canvas_height, fill="red", width=1)
+    if ystep > 0:
+        for i in range(yoffset, canvas_height, ystep):
+            canvas.create_line(0, i, canvas_width, i, fill="red", width=1)
+
+
 def addFolderToList(theFolder, theList, filter2 = None):
     textures_filenames = os.listdir(BASEDIR+"/data/textures/"+theFolder)
     for x in textures_filenames:
@@ -40,6 +51,7 @@ def callback_select(event):
         return
     image = tk.PhotoImage(file=BASEDIR+'/data/textures/'+treeview.selection()[0])
     imageFrame.set_image(image)
+    addLinesToCanvas(imageFrame.canvas, imageFrame.image_file)
 
 
 def callback_filter(sv):
