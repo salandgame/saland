@@ -34,6 +34,7 @@ https://github.com/sago007/saland
 #include "../sago/SagoTextField.hpp"
 #include "globals.hpp"
 #include "model/placeables.hpp"
+#include "model/spells.hpp"
 #include "model/Player.hpp"
 #include "../os.hpp"
 #include "SDL.h"
@@ -175,6 +176,7 @@ struct Game::GameImpl {
 	sago::SagoTextField middleField;
 	std::array<sago::SagoTextField,10> number_labels;  //Label: 0,1...10
 	size_t slot_selected = 0;
+	std::array<Spell, 10> slot_spell;
 	std::shared_ptr<Console> console;
 	bool consoleActive = false;
 };
@@ -244,6 +246,9 @@ Game::Game() {
 		data->number_labels.at(i).SetFontSize(20);
 		data->number_labels.at(i).SetText(std::to_string(i));
 	}
+	Spell& slot0 = data->slot_spell.at(0);
+	slot0.icon = "effect_fireball";
+	slot0.name = "spell_fireball";
 }
 
 Game::~Game() {
@@ -362,6 +367,10 @@ void Game::Draw(SDL_Renderer* target) {
 		}
 		int key_number = (i+1)%10;
 		data->number_labels.at(key_number).Draw(target, 10+i*56, 10);
+		const Spell& current_spell = data->slot_spell.at(i);
+		if (current_spell.icon.length() > 0) {
+			globalData.spriteHolder.get()->GetSprite(current_spell.icon).Draw(target, SDL_GetTicks(), 36+i*56, 36);
+		}
 	}
 	if (data->consoleActive && data->console) {
 		data->console->Draw(target);
@@ -604,17 +613,19 @@ void Game::Update() {
 		data->consoleActive = false;
 	}
 	if (SDL_GetMouseState(nullptr,nullptr) & 1 && !data->consoleActive) {
-		if (data->human->castTimeRemaining == 0) {
-			data->human->castTimeRemaining = data->human->castTime;
-			std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>();
-			projectile->X = data->human->X;
-			projectile->Y = data->human->Y;
-			projectile->Radius = 8.0f;
-			projectile->directionX = projectile->X - data->world_mouse_x;
-			projectile->directionY = projectile->Y - data->world_mouse_y;
-			SetLengthToOne(projectile->directionX, projectile->directionY);
-			projectile->fired_by = data->human;
-			data->gameRegion.placeables.push_back(projectile);
+		if (data->slot_spell.at(data->slot_selected).name == "spell_fireball") {
+			if (data->human->castTimeRemaining == 0) {
+				data->human->castTimeRemaining = data->human->castTime;
+				std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>();
+				projectile->X = data->human->X;
+				projectile->Y = data->human->Y;
+				projectile->Radius = 8.0f;
+				projectile->directionX = projectile->X - data->world_mouse_x;
+				projectile->directionY = projectile->Y - data->world_mouse_y;
+				SetLengthToOne(projectile->directionX, projectile->directionY);
+				projectile->fired_by = data->human;
+				data->gameRegion.placeables.push_back(projectile);
+			}
 		}
 	}
 	data->middleField.SetText(middleText);
