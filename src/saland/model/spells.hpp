@@ -26,9 +26,13 @@ https://github.com/sago007/saland
 
 #include <string>
 
+enum class SpellCursorType { dot = 0, tile=1, shpere = 2 };
+
 struct Spell {
 	std::string name;
 	std::string icon;
+	int tile = 0;  //Number reference to a tile, we might also need a tileset at some point
+	SpellCursorType type = SpellCursorType::dot;
 };
 
 #endif  //MODEL_SPELLS_HPP

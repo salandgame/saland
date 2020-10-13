@@ -249,6 +249,15 @@ Game::Game() {
 	Spell& slot0 = data->slot_spell.at(0);
 	slot0.icon = "effect_fireball";
 	slot0.name = "spell_fireball";
+	Spell& slot2 = data->slot_spell.at(2);
+	slot2.icon = "";
+	slot2.name = "spell_create_block";
+	slot2.tile = 607;
+	slot2.type = SpellCursorType::tile;
+	Spell& slot9 = data->slot_spell.at(9);
+	slot9.icon = "";
+	slot9.name = "spell_clear_block";
+	slot9.type = SpellCursorType::tile;
 }
 
 Game::~Game() {
@@ -316,8 +325,10 @@ void Game::Draw(SDL_Renderer* target) {
 	if (data->world_mouse_x >= 0 && data->world_mouse_y >= 0) {
 		int mousebox_x = data->world_mouse_x - data->world_mouse_x % 32 - data->topx;
 		int mousebox_y = data->world_mouse_y - data->world_mouse_y % 32 - data->topy;
-		rectangleRGBA(globalData.screen, mousebox_x, mousebox_y,
+		if (data->slot_spell.at(data->slot_selected).type == SpellCursorType::tile) {
+			rectangleRGBA(globalData.screen, mousebox_x, mousebox_y,
 					mousebox_x + 32, mousebox_y + 32, 255, 255, 0, 255);
+		}
 	}
 	//Draw
 	for (const auto& p : data->gameRegion.placeables) {
@@ -370,6 +381,9 @@ void Game::Draw(SDL_Renderer* target) {
 		const Spell& current_spell = data->slot_spell.at(i);
 		if (current_spell.icon.length() > 0) {
 			globalData.spriteHolder.get()->GetSprite(current_spell.icon).Draw(target, SDL_GetTicks(), 36+i*56, 36);
+		}
+		if (current_spell.tile > 0) {
+			DrawTile(target, globalData.spriteHolder.get(), data->gameRegion.world.tm, current_spell.tile, 20+i*56, 20);
 		}
 	}
 	if (data->consoleActive && data->console) {
@@ -625,6 +639,34 @@ void Game::Update() {
 				SetLengthToOne(projectile->directionX, projectile->directionY);
 				projectile->fired_by = data->human;
 				data->gameRegion.placeables.push_back(projectile);
+			}
+		}
+		if (data->slot_spell.at(data->slot_selected).name == "spell_create_block") {
+			if (data->human->castTimeRemaining == 0) {
+				data->human->castTimeRemaining = data->human->castTime;
+				int tile_x = data->world_mouse_x/32;
+				int tile_y = data->world_mouse_y/32;
+				int tile = data->slot_spell.at(data->slot_selected).tile;
+				if (sago::tiled::tileInBound(data->gameRegion.world.tm, tile_x, tile_y)
+						&& !(data->gameRegion.world.tile_protected(tile_x, tile_y)) ) {
+					int layer_number = 2; //  Do not hardcode
+					sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
+					data->gameRegion.world.init_physics(data->gameRegion.physicsBox);
+				}
+			}
+		}
+		if (data->slot_spell.at(data->slot_selected).name == "spell_clear_block") {
+			if (data->human->castTimeRemaining == 0) {
+				data->human->castTimeRemaining = data->human->castTime;
+				int tile_x = data->world_mouse_x/32;
+				int tile_y = data->world_mouse_y/32;
+				if (sago::tiled::tileInBound(data->gameRegion.world.tm, tile_x, tile_y)
+						&& !(data->gameRegion.world.tile_protected(tile_x, tile_y)) ) {
+					int layer_number = 2; //  Do not hardcode
+					uint32_t tile = 0;
+					sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
+					data->gameRegion.world.init_physics(data->gameRegion.physicsBox);
+				}
 			}
 		}
 	}
