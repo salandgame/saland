@@ -254,6 +254,11 @@ Game::Game() {
 	slot2.name = "spell_create_block";
 	slot2.tile = 607;
 	slot2.type = SpellCursorType::tile;
+	Spell& slot3 = data->slot_spell.at(3);
+	slot3.icon = "";
+	slot3.name = "spell_create_block";
+	slot3.tile = 188;
+	slot3.type = SpellCursorType::tile;
 	Spell& slot9 = data->slot_spell.at(9);
 	slot9.icon = "";
 	slot9.name = "spell_clear_block";
