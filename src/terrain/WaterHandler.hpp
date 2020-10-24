@@ -28,10 +28,24 @@ https://github.com/sago007/saland
 #include "../sagotmx/tmx_struct.h"
 
 struct WaterHandler {
-	std::unordered_set<uint32_t> tiles = {28, 29, 30, 60, 61, 62, 92, 93, 94, 188, 189, 190};
+	std::unordered_set<uint32_t> tiles;
+	std::map<std::string, uint32_t> tile_map;
 	uint32_t default_tile = 28;
 
-	void updateTile(sago::tiled::TileMap& world, int x, int y);
+	WaterHandler();
+
+	void setupTiles(uint32_t start_tile);
+
+	uint32_t getTile(sago::tiled::TileMap& tm, int x, int y);
+
+	void updateTile(sago::tiled::TileMap& tm, int x, int y);
+
+	bool isWaterTile(uint32_t tile) const;
+
+	bool isWater(const sago::tiled::TileMap& tm, int x, int y) const;
+
+	std::string stringForTileSurrounding(const sago::tiled::TileMap& tm, int x, int y) const;
+
 };
 
 #endif  //TERRAIN_WATERHANDLER_HPP
