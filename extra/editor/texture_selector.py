@@ -67,7 +67,9 @@ def callback_filter(sv):
 
 def callback_canvas_motion(event):
     x, y = event.x, event.y
-    status_mouse_over['text'] = "Top: "+str(x-(x%32))+","+str(y-(y%32))
+    if not imageFrame or not imageFrame.image_file:
+        return
+    status_mouse_over['text'] = "Top: "+str(x-(x%32))+","+str(y-(y%32))+", tile: "+ str( (y//32)*imageFrame.image_file.width()//32+x//32+1 )
     #print('{}, {}'.format(x, y))
 
 
