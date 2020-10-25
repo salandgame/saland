@@ -38,11 +38,14 @@ struct WaterHandler {
 
 	uint32_t getTile(sago::tiled::TileMap& tm, int x, int y);
 
-	void updateTile(sago::tiled::TileMap& tm, int x, int y);
+	void updateFirstTile(sago::tiled::TileMap& tm, int x, int y);
 
 	bool isWaterTile(uint32_t tile) const;
 
 	bool isWater(const sago::tiled::TileMap& tm, int x, int y) const;
+
+private:
+	void updateTile(sago::tiled::TileMap& tm, int x, int y);
 
 	std::string stringForTileSurrounding(const sago::tiled::TileMap& tm, int x, int y) const;
 

@@ -433,7 +433,7 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 			uint32_t tile = data->drawTile;
 			sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
 			WaterHandler wh;
-			wh.updateTile(data->gameRegion.world.tm, tile_x, tile_y);
+			wh.updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
 			data->gameRegion.world.init_physics(data->gameRegion.physicsBox);
 		}
 		if (event.key.keysym.sym == globalData.playerControls.block_delete
@@ -442,6 +442,8 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 			int layer_number = 2; //  Do not hardcode
 			uint32_t tile = 0;
 			sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
+			WaterHandler wh;
+			wh.updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
 			data->gameRegion.world.init_physics(data->gameRegion.physicsBox);
 		}
 		if (event.key.keysym.sym == SDLK_1 || event.key.keysym.sym == SDLK_KP_1) {
@@ -660,7 +662,7 @@ void Game::Update() {
 					int layer_number = 2; //  Do not hardcode
 					sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
 					WaterHandler wh;
-					wh.updateTile(data->gameRegion.world.tm, tile_x, tile_y);
+					wh.updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
 					data->gameRegion.world.init_physics(data->gameRegion.physicsBox);
 				}
 			}
@@ -675,6 +677,8 @@ void Game::Update() {
 					int layer_number = 2; //  Do not hardcode
 					uint32_t tile = 0;
 					sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
+					WaterHandler wh;
+					wh.updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
 					data->gameRegion.world.init_physics(data->gameRegion.physicsBox);
 				}
 			}

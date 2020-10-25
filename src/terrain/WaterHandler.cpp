@@ -84,6 +84,22 @@ uint32_t WaterHandler::getTile(sago::tiled::TileMap& tm, int x, int y) {
 	return default_tile;
 }
 
+void WaterHandler::updateFirstTile(sago::tiled::TileMap& tm, int x, int y) {
+	if (isWater(tm, x, y)) {
+		updateTile(tm, x, y);
+	}
+	else {
+		updateTile(tm, x-1, y-1);
+		updateTile(tm, x, y-1);
+		updateTile(tm, x+1, y-1);
+		updateTile(tm, x-1, y);
+		updateTile(tm, x+1, y);
+		updateTile(tm, x-1, y+1);
+		updateTile(tm, x, y+1);
+		updateTile(tm, x+1, y+1);
+	}
+}
+
 void WaterHandler::updateTile(sago::tiled::TileMap& tm, int x, int y) {
 	if (x < 0 || y < 0 || x > tm.width || y > tm.height) {
 		//Out of bound. Do nothing
