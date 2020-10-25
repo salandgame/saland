@@ -23,6 +23,7 @@ https://github.com/sago007/saland
 
 #include "GameRegion.hpp"
 #include "GameItems.hpp"
+#include <cmath>
 
 GameRegion::GameRegion() {
 	Init(0, 0, "world1", false);
