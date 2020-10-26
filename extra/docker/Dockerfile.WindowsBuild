@@ -6,9 +6,6 @@ RUN mkdir -p /staging/saland
 
 COPY . /staging/saland
 
-RUN cp -r /usr/include/utf8 /staging/saland/src/Libs/include/ && \
-cp /usr/include/utf8.h /staging/saland/src/Libs/include/
-
 RUN cd /staging/saland && \
 i686-w64-mingw32.static-cmake . && \
 make
