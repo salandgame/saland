@@ -159,6 +159,8 @@ void World::init_physics(std::shared_ptr<b2World>& world) {
 
 
 void World::init(std::shared_ptr<b2World>& world, const std::string& mapFileName) {
+	blockingLayer = -1;
+	blockingLayer_overlay_1 = -1;
 	this->physicsWorld = world;
 	std::string tmx_file = sago::GetFileContent(mapFileName);
 	tm = sago::tiled::string2tilemap(tmx_file);
@@ -169,6 +171,26 @@ void World::init(std::shared_ptr<b2World>& world, const std::string& mapFileName
 			ts.push_back(sago::tiled::string2tileset(tsx_file));
 			tm.tileset[i].alternativeSource = &ts.back();
 		}
+	}
+	for (size_t i=0;i < tm.layers.size(); ++i) {
+		if (tm.layers[i].name == "blocking") {
+			blockingLayer = i;
+		}
+		if (tm.layers[i].name == "blocking_overlay_1") {
+			blockingLayer_overlay_1 = i;
+		}
+	}
+	if (blockingLayer == -1) {
+		sago::tiled::TileLayer t = createEmptyLayerForMap(tm);
+		t.name = "blocking";
+		tm.layers.push_back(t);
+		blockingLayer = tm.layers.size()-1;
+	}
+	if (blockingLayer_overlay_1 == -1) {
+		sago::tiled::TileLayer t = createEmptyLayerForMap(tm);
+		t.name = "blocking_overlay_1";
+		tm.layers.push_back(t);
+		blockingLayer_overlay_1 = tm.layers.size()-1;
 	}
 	init_physics(world);
 	protected_tiles.resize(tm.height*tm.width);

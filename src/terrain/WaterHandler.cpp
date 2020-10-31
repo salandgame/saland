@@ -49,9 +49,10 @@ void WaterHandler::setupTiles(uint32_t start_tile) {
 	tiles = {28, 29, 30, 60, 61, 62, 92, 93, 94, 124, 125, 126, 156, 157, 158, 188, 189, 190};
 }
 
-uint32_t WaterHandler::getTile(sago::tiled::TileMap& tm, int x, int y) {
+uint32_t WaterHandler::getTile(sago::tiled::TileMap& tm, int x, int y, uint32_t& overlay_tile) {
 	std::string theString = stringForTileSurrounding(tm, x, y);
 	uint32_t tile = tile_map[theString];
+	overlay_tile = 0;
 	if (tile > 0) {
 		return tile;
 	}
@@ -69,9 +70,15 @@ uint32_t WaterHandler::getTile(sago::tiled::TileMap& tm, int x, int y) {
 	}
 
 	if (theString[1] == '1' && theString[2] == '1' && theString[4] == '1') {
+		if (theString[3] == '1' && theString[5] == '1' && theString[6] == '1') {
+			overlay_tile = tile_map["00010110"];
+		}
 		return tile_map["01101000"];
 	}
 	if (theString[0] == '1' && theString[1] == '1' && theString[3] == '1') {
+		if (theString[4] == '1' && theString[6] == '1' && theString[7] == '1') {
+			overlay_tile = tile_map["00001011"];
+		}
 		return tile_map["11010000"];
 	}
 
@@ -85,6 +92,10 @@ uint32_t WaterHandler::getTile(sago::tiled::TileMap& tm, int x, int y) {
 }
 
 void WaterHandler::updateFirstTile(sago::tiled::TileMap& tm, int x, int y) {
+	if (blockingLayer_overlay_1 < 0 || blockingLayer < 0) {
+		std::cerr << "blocking layers not set on WaterHandler\n";
+		return;
+	}
 	if (isWater(tm, x, y)) {
 		updateTile(tm, x, y);
 	}
@@ -105,13 +116,15 @@ void WaterHandler::updateTile(sago::tiled::TileMap& tm, int x, int y) {
 		//Out of bound. Do nothing
 		return;
 	}
-	int layer_number = 2; //  Do not hardcode
+	int layer_number = blockingLayer;
 	uint32_t current_tile = sago::tiled::getTileFromLayer(tm, tm.layers.at(layer_number), x, y);
 	std::cout << "tile: " << current_tile << ", surrounding: " << stringForTileSurrounding(tm, x, y) << "\n";
 	if (isWaterTile(current_tile)) {
-		uint32_t tile = getTile(tm, x, y);
+		uint32_t overlay_tile;
+		uint32_t tile = getTile(tm, x, y, overlay_tile);
 		if (tile != current_tile) {
 			sago::tiled::setTileOnLayerNumber(tm, layer_number, x, y, tile);
+			sago::tiled::setTileOnLayerNumber(tm, blockingLayer_overlay_1, x, y, overlay_tile);
 			updateTile(tm, x-1, y-1);
 			updateTile(tm, x, y-1);
 			updateTile(tm, x+1, y-1);

@@ -28,6 +28,7 @@ https://github.com/sago007/saland
 #include "model/placeables.hpp"
 #include "GameItems.hpp"
 #include "../sagotmx/tmx_struct.h"
+#include "../terrain/WaterHandler.hpp"
 #include <vector>
 
 struct MonsterDef {
@@ -45,6 +46,7 @@ public:
 	std::shared_ptr<b2World> physicsBox;
 	void SaveRegion();
 	World world;
+	WaterHandler wh;
 	uint32_t outerTile = 485;
 	int GetRegionX() const {
 		return region_x;

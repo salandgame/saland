@@ -147,12 +147,18 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 		if (region_x == 0 && region_y == -2) {
 			loadMap = "maps/city_0x-2.tmx";
 		}
+		if (region_x == 3 && region_y == 3) {
+			loadMap = "maps/template_forrest2.tmx";
+		}
 	}
 	b2Vec2 gravity(0.0f, 0.0f);
 	placeables.clear();
 	physicsBox.reset(new b2World(gravity));
 	world.managed_bodies.clear();
 	world.init(physicsBox, loadMap);
+	wh.blockingLayer = world.blockingLayer;
+	wh.blockingLayer_overlay_1 = world.blockingLayer_overlay_1;
+	
 
 
 	const std::vector<sago::tiled::TileObjectGroup>& object_groups = world.tm.object_groups;

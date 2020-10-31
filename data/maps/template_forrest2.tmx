@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="12">
+ <tileset firstgid="1" source="terrain.tsx"/>
+ <tileset firstgid="1025" source="city_outside.tsx"/>
+ <layer id="1" name="ground_1" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eAHt2zEKACAIAEB7q/3/DfUAxwSDG1wcJOIGBc0VkcIfMMAAAwwwwAADDDDAAAMMMMAAAwwwwAADDDDAAAMMMMAAAwwwwAADDDDAAAMMMMAAAwwwwAADDDDAAAMMXAObAw4YYIABBhhggIHvDVQ9XZVzY+zOmgEGGGCAAQYYYIABBhhggAEGGGCAAQYYYIABBhhggAEGGGCAAQYYYIABBqYYsOPE4hSL3sEiAwwwwAADDDDAAAMMdBswAzPWbUx9xhhggAEGGGCAAQYYYIABBhhggAEGGGCAAQYYYIABBhhggAEGGGCAAQYYYIABBhhggIG3Bg4x3kMn
+  </data>
+ </layer>
+ <layer id="2" name="ground_2" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eAHt07EJgDAQBVArN3ETdRJ1EnUSB/WnsBHbiOA7+E0IufCOaxpFgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABArUF+jQYkrF2I+8/Ctz919xqk+XxtsPaAlMazEmXXHtRZrIn6n2BYr8lZSeOxF4E4QN1zcVefGAYvkCAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECvxQ4AcQZCLo=
+  </data>
+ </layer>
+ <layer id="5" name="ground_2_overlay_1" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eAHt0DEBAAAAwqD1T+1lC4hAYcCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYMDABwacQAAB
+  </data>
+ </layer>
+ <layer id="3" name="blocking" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eAHt1eEJgzAQBtAuUjdpJ2mdRJykOontbP0OGpAOoCgv8EHwzyXvuHi5WAQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIEDinwCPXeib9Oa93uFsNOfGSjIc7+bkOXHNRM/FKpmROrP0Eai5uiXdqvx6sK5uLtcZ++3qn6v/tH75fD9aV6536/OK9Wstss/+fh/ZOdSn/TsZtjqFKBKoX96TmYUlqHto71foy55u1jcCQMtWH6kfNwjXpkupLn1jbCrQZmFK2UrPQvtXeIkCAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECRxX4AhvdHa4=
+  </data>
+ </layer>
+ <layer id="6" name="blocking_overlay_1" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eAHt0MENwCAMBEEKDVQSpRKgk/SWayB/JI+l+3unNUeAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAhUEbgS2rNRJfjwzjv/vdlz+J9V3psJXdmuEqyTAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQ+BX4AN11BKY=
+  </data>
+ </layer>
+ <objectgroup id="4" name="object1">
+  <object id="9" name="Player" type="playerStart" x="1894.29" y="1207.01"/>
+ </objectgroup>
+</map>

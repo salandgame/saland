@@ -44,6 +44,8 @@ public:
 	std::vector<b2Body*> managed_bodies;
 	std::vector<bool> protected_tiles;
 	std::vector<bool> blocking_tiles;
+	int blockingLayer = -1;
+	int blockingLayer_overlay_1 = -1;
 };
 
 #endif /* WORLD_HPP */

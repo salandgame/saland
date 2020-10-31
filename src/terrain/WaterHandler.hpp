@@ -31,12 +31,14 @@ struct WaterHandler {
 	std::unordered_set<uint32_t> tiles;
 	std::map<std::string, uint32_t> tile_map;
 	uint32_t default_tile = 28;
+	int blockingLayer = -1;
+	int blockingLayer_overlay_1 = -1;
 
 	WaterHandler();
 
 	void setupTiles(uint32_t start_tile);
 
-	uint32_t getTile(sago::tiled::TileMap& tm, int x, int y);
+	uint32_t getTile(sago::tiled::TileMap& tm, int x, int y, uint32_t& overlay_tile);
 
 	void updateFirstTile(sago::tiled::TileMap& tm, int x, int y);
 

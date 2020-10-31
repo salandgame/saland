@@ -46,6 +46,7 @@ SOFTWARE.
 
 #include <string>
 #include <sstream>
+#include <cstring>
 #include <vector>
 #include <map>
 #include <zlib.h>
@@ -229,8 +230,8 @@ struct TileSet {
 };
 
 struct TileLayerData {
-	std::string encoding;
-	std::string compression;
+	std::string encoding = "base64";
+	std::string compression = "zlib";
 	std::string payload;
 };
 
@@ -635,6 +636,16 @@ inline uint32_t getTileFromLayer(const TileMap& m, const TileLayer& l, int x, in
 				data[tile_index + 2] << 16 |
 				data[tile_index + 3] << 24;
 	return global_tile_id;
+}
+
+inline TileLayer createEmptyLayerForMap(const TileMap& tm) {
+	TileLayer t;
+	t.width = tm.width;
+	t.height = tm.height;
+	t.data.payload.resize(t.width*t.height*sizeof(u_int32_t));
+	std::string& data = t.data.payload;
+	memset(&data[0], 0, data.size());
+	return t;
 }
 
 inline void setTileOnLayerNumber(TileMap& m, int layer_number, int x, int y, uint32_t tile) {
