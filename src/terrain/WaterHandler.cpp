@@ -29,24 +29,28 @@ WaterHandler::WaterHandler() {
 }
 
 void WaterHandler::setupTiles(uint32_t start_tile) {
-	tile_map["11111110"] = 29;
-	tile_map["11111011"] = 30;
-	tile_map["11011111"] = 61;
-	tile_map["01111111"] = 62;
+	int tile_count_width = 32;
+	tile_map["11111110"] = start_tile+1;
+	tile_map["11111011"] = start_tile+2;
+	tile_map["11011111"] = start_tile+tile_count_width+1;
+	tile_map["01111111"] = start_tile+tile_count_width+2;
 
-	tile_map["00001011"] = 92;
-	tile_map["00011111"] = 93;
-	tile_map["00010110"] = 94;
+	tile_map["00001011"] = start_tile+tile_count_width*2;
+	tile_map["00011111"] = start_tile+tile_count_width*2+1;
+	tile_map["00010110"] = start_tile+tile_count_width*2+2;
 
-	tile_map["01101011"] = 124;
-	tile_map["11111111"] = 125;
-	tile_map["11010110"] = 126;
+	tile_map["01101011"] = start_tile+tile_count_width*3;
+	tile_map["11111111"] = start_tile+tile_count_width*3+1;
+	tile_map["11010110"] = start_tile+tile_count_width*3+2;
 
-	tile_map["01101000"] = 156;
-	tile_map["11111000"] = 157;
-	tile_map["11010000"] = 158;
+	tile_map["01101000"] = start_tile+tile_count_width*4;
+	tile_map["11111000"] = start_tile+tile_count_width*4+1;
+	tile_map["11010000"] = start_tile+tile_count_width*4+2;
 
-	tiles = {28, 29, 30, 60, 61, 62, 92, 93, 94, 124, 125, 126, 156, 157, 158, 188, 189, 190};
+	tiles = {start_tile, start_tile+1, start_tile+2, start_tile+33, start_tile+34,
+	start_tile+35, start_tile+64, start_tile+65, start_tile+66, start_tile+96,
+	start_tile+97, start_tile+98, start_tile+128, start_tile+129, start_tile+130,
+	start_tile+160, start_tile+161, start_tile+162};
 }
 
 uint32_t WaterHandler::getTile(sago::tiled::TileMap& tm, int x, int y, uint32_t& overlay_tile) {
