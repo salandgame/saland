@@ -118,11 +118,12 @@ void WaterHandler::updateTile(sago::tiled::TileMap& tm, int x, int y) {
 	}
 	int layer_number = blockingLayer;
 	uint32_t current_tile = sago::tiled::getTileFromLayer(tm, tm.layers.at(layer_number), x, y);
+	uint32_t current_overlay_tile = sago::tiled::getTileFromLayer(tm, tm.layers.at(blockingLayer_overlay_1), x, y);
 	std::cout << "tile: " << current_tile << ", surrounding: " << stringForTileSurrounding(tm, x, y) << "\n";
 	if (isWaterTile(current_tile)) {
 		uint32_t overlay_tile;
 		uint32_t tile = getTile(tm, x, y, overlay_tile);
-		if (tile != current_tile) {
+		if (tile != current_tile || overlay_tile != current_overlay_tile) {
 			sago::tiled::setTileOnLayerNumber(tm, layer_number, x, y, tile);
 			sago::tiled::setTileOnLayerNumber(tm, blockingLayer_overlay_1, x, y, overlay_tile);
 			updateTile(tm, x-1, y-1);
