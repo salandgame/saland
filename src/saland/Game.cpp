@@ -260,7 +260,7 @@ Game::Game() {
 	slot3.tile = 188;
 	slot3.type = SpellCursorType::tile;
 	Spell& slot9 = data->slot_spell.at(9);
-	slot9.icon = "";
+	slot9.icon = "icon_trash_can";
 	slot9.name = "spell_clear_block";
 	slot9.type = SpellCursorType::tile;
 }

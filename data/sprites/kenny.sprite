@@ -1,0 +1,12 @@
+{
+	"icon_trash_can" : {
+		"texture" : "kenny/sheet_white1x",
+		"topx" : 100,
+		"topy" : 200,
+		"height" : 50,
+		"width" : 50,
+		"number_of_frames" : 1,
+		"originx" : 25,
+		"originy" : 25
+	}
+}
