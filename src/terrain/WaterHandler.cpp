@@ -29,6 +29,7 @@ WaterHandler::WaterHandler() {
 }
 
 void WaterHandler::setupTiles(uint32_t start_tile) {
+	default_tile = start_tile;
 	int tile_count_width = 32;
 	tile_map["11111110"] = start_tile+1;
 	tile_map["11111011"] = start_tile+2;

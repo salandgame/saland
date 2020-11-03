@@ -156,8 +156,11 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 	physicsBox.reset(new b2World(gravity));
 	world.managed_bodies.clear();
 	world.init(physicsBox, loadMap);
-	wh.blockingLayer = world.blockingLayer;
-	wh.blockingLayer_overlay_1 = world.blockingLayer_overlay_1;
+	waterHandler.blockingLayer = world.blockingLayer;
+	waterHandler.blockingLayer_overlay_1 = world.blockingLayer_overlay_1;
+	lavaHandler.blockingLayer = world.blockingLayer;
+	lavaHandler.blockingLayer_overlay_1 = world.blockingLayer_overlay_1;
+	lavaHandler.setupTiles(16);
 	
 
 

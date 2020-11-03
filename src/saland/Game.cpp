@@ -257,8 +257,13 @@ Game::Game() {
 	Spell& slot3 = data->slot_spell.at(3);
 	slot3.icon = "";
 	slot3.name = "spell_create_block";
-	slot3.tile = 188;
+	slot3.tile = 28;
 	slot3.type = SpellCursorType::tile;
+	Spell& slot4 = data->slot_spell.at(4);
+	slot4.icon = "";
+	slot4.name = "spell_create_block";
+	slot4.tile = 16;
+	slot4.type = SpellCursorType::tile;
 	Spell& slot9 = data->slot_spell.at(9);
 	slot9.icon = "icon_trash_can";
 	slot9.name = "spell_clear_block";
@@ -431,7 +436,8 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 			int layer_number = 2; //  Do not hardcode
 			uint32_t tile = data->drawTile;
 			sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
-			data->gameRegion.wh.updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
+			data->gameRegion.waterHandler.updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
+			data->gameRegion.lavaHandler.updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
 			data->gameRegion.world.init_physics(data->gameRegion.physicsBox);
 		}
 		if (event.key.keysym.sym == globalData.playerControls.block_delete
@@ -440,7 +446,8 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 			int layer_number = 2; //  Do not hardcode
 			uint32_t tile = 0;
 			sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
-			data->gameRegion.wh.updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
+			data->gameRegion.waterHandler.updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
+			data->gameRegion.lavaHandler.updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
 			data->gameRegion.world.init_physics(data->gameRegion.physicsBox);
 		}
 		if (event.key.keysym.sym == SDLK_1 || event.key.keysym.sym == SDLK_KP_1) {
@@ -658,7 +665,8 @@ void Game::Update() {
 						&& !(data->gameRegion.world.tile_protected(tile_x, tile_y)) ) {
 					int layer_number = 2; //  Do not hardcode
 					sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
-					data->gameRegion.wh.updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
+					data->gameRegion.waterHandler.updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
+					data->gameRegion.lavaHandler.updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
 					data->gameRegion.world.init_physics(data->gameRegion.physicsBox);
 				}
 			}
@@ -673,7 +681,8 @@ void Game::Update() {
 					int layer_number = 2; //  Do not hardcode
 					uint32_t tile = 0;
 					sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
-					data->gameRegion.wh.updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
+					data->gameRegion.waterHandler.updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
+					data->gameRegion.lavaHandler.updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
 					data->gameRegion.world.init_physics(data->gameRegion.physicsBox);
 				}
 			}
