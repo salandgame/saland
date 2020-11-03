@@ -148,11 +148,11 @@ bool WaterHandler::isWaterTile(uint32_t tile) const {
 }
 
 bool WaterHandler::isWater(const sago::tiled::TileMap& tm, int x, int y) const {
-	if (x < 0 || y < 0 || x > tm.width || y > tm.height) {
+	if (x < 0 || y < 0 || x >= tm.width || y >= tm.height) {
 		//Assume that "water" is around the map
 		return true;
 	}
-	int layer_number = 2; //  Do not hardcode
+	int layer_number = blockingLayer;
 	uint32_t current_tile = sago::tiled::getTileFromLayer(tm, tm.layers.at(layer_number), x, y);
 	return tiles.find(current_tile) != tiles.end();
 }
