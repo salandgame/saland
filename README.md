@@ -11,9 +11,7 @@ The game is pre alpha.
 ## Controls
 WASD = Move
 
-Q = Create block
-
-E = Remove block
+1-9,0 = Choose spell
 
 Click = Use magic
 
