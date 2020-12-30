@@ -48,5 +48,14 @@ public:
 	int blockingLayer_overlay_1 = -1;
 };
 
+/**
+ * Helper function to destroy a body including the attached fixtures
+ * The body must be given as a reference to a pointer. The pointer will be nulled.
+ * 
+ * @param world The bod2d physics world that the body is attached to.
+ * @param bodyToDestroy Reference to a pointer to the body
+ */
+void destroyBodyWithFixtures(b2World* world, b2Body*& bodyToDestroy);
+
 #endif /* WORLD_HPP */
 

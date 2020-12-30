@@ -95,20 +95,31 @@ void fill_blocking_tiles(std::vector<bool>& output, const sago::tiled::TileMap& 
 			if (gid == 0) {
 				continue;
 			}
-			output[i+j*tm.width] = true;		
+			output[i+j*tm.width] = true;
 		}
 	}
 }
 
+void destroyBodyWithFixtures(b2World* world, b2Body*& bodyToDestroy) {
+	b2Fixture* f = bodyToDestroy->GetFixtureList();
+	while (f) {
+		b2Fixture* next_f = f->GetNext();
+		bodyToDestroy->DestroyFixture(f);
+		f = next_f;
+	}
+	world->DestroyBody(bodyToDestroy);
+}
+
 void World::init_physics(std::shared_ptr<b2World>& world) {
 	for (b2Body* b : managed_bodies) {
-		b2Fixture* f = b->GetFixtureList();
+		destroyBodyWithFixtures(world.get(), b);
+		/*b2Fixture* f = b->GetFixtureList();
 		while (f) {
 			b2Fixture* next_f = f->GetNext();
 			b->DestroyFixture(f);
 			f = next_f;
 		}
-		world->DestroyBody(b);
+		world->DestroyBody(b);*/
 	}
 	managed_bodies.clear();
 	const std::vector<sago::tiled::TileObjectGroup>& object_groups = tm.object_groups;
@@ -172,7 +183,7 @@ void World::init(std::shared_ptr<b2World>& world, const std::string& mapFileName
 			tm.tileset[i].alternativeSource = &ts.back();
 		}
 	}
-	for (size_t i=0;i < tm.layers.size(); ++i) {
+	for (size_t i=0; i < tm.layers.size(); ++i) {
 		if (tm.layers[i].name == "blocking") {
 			blockingLayer = i;
 		}

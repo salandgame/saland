@@ -71,7 +71,7 @@ struct ConsoleCommandQuit : public ConsoleCommand {
 	}
 	virtual std::string run(const std::vector<std::string>&) override {
 		globalData.isShuttingDown = true;
-        return "Exiting...";
+		return "Exiting...";
 	}
 
 	virtual std::string helpMessage() const override {

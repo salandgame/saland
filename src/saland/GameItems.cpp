@@ -26,26 +26,26 @@ https://github.com/sago007/saland
 static ItemDef itemDef;
 
 const ItemDef& getItem(const std::string& itemName) {
-    itemDef.sprite2 = "";
-    itemDef.isDestructible = true;
-    itemDef.health = 100.0f;
-    itemDef.itemid = itemName;
-    if (itemName == "barrel") {
-        itemDef.radius = 16.0f;
-        itemDef.sprite = "item_barrel";
-        itemDef.isStatic = true;
-    }
-    if (itemName == "food_potato") {
-        itemDef.isDestructible = false;
-        itemDef.radius = 9.0f;
-        itemDef.sprite = "item_food_potato";
-        itemDef.isStatic = false;
-    }
-    if (itemName == "tree_pine") {
-        itemDef.radius = 20.0f;
-        itemDef.sprite = "tree_pine_trunk";
-        itemDef.sprite2 = "tree_pine_top";
-        itemDef.isStatic = true;
-    }
-    return itemDef;
+	itemDef.sprite2 = "";
+	itemDef.isDestructible = true;
+	itemDef.health = 100.0f;
+	itemDef.itemid = itemName;
+	if (itemName == "barrel") {
+		itemDef.radius = 16.0f;
+		itemDef.sprite = "item_barrel";
+		itemDef.isStatic = true;
+	}
+	if (itemName == "food_potato") {
+		itemDef.isDestructible = false;
+		itemDef.radius = 9.0f;
+		itemDef.sprite = "item_food_potato";
+		itemDef.isStatic = false;
+	}
+	if (itemName == "tree_pine") {
+		itemDef.radius = 20.0f;
+		itemDef.sprite = "tree_pine_trunk";
+		itemDef.sprite2 = "tree_pine_top";
+		itemDef.isStatic = true;
+	}
+	return itemDef;
 }

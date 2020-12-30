@@ -49,9 +49,10 @@ void WaterHandler::setupTiles(uint32_t start_tile) {
 	tile_map["11010000"] = start_tile+tile_count_width*4+2;
 
 	tiles = {start_tile, start_tile+1, start_tile+2, start_tile+33, start_tile+34,
-	start_tile+35, start_tile+64, start_tile+65, start_tile+66, start_tile+96,
-	start_tile+97, start_tile+98, start_tile+128, start_tile+129, start_tile+130,
-	start_tile+160, start_tile+161, start_tile+162};
+	         start_tile+35, start_tile+64, start_tile+65, start_tile+66, start_tile+96,
+	         start_tile+97, start_tile+98, start_tile+128, start_tile+129, start_tile+130,
+	         start_tile+160, start_tile+161, start_tile+162
+	        };
 }
 
 uint32_t WaterHandler::getTile(sago::tiled::TileMap& tm, int x, int y, uint32_t& overlay_tile) {
@@ -159,7 +160,7 @@ bool WaterHandler::isWater(const sago::tiled::TileMap& tm, int x, int y) const {
 
 std::string WaterHandler::stringForTileSurrounding(const sago::tiled::TileMap& tm, int x, int y) const {
 	std::string ret = std::to_string(isWater(tm, x-1, y-1)) + std::to_string(isWater(tm, x, y-1)) + std::to_string(isWater(tm, x+1, y-1))
-	+ std::to_string(isWater(tm, x-1, y)) + std::to_string(isWater(tm, x+1, y))
-	+ std::to_string(isWater(tm, x-1, y+1)) + std::to_string(isWater(tm, x, y+1)) + std::to_string(isWater(tm, x+1, y+1));
-	return ret; 
+	                  + std::to_string(isWater(tm, x-1, y)) + std::to_string(isWater(tm, x+1, y))
+	                  + std::to_string(isWater(tm, x-1, y+1)) + std::to_string(isWater(tm, x, y+1)) + std::to_string(isWater(tm, x+1, y+1));
+	return ret;
 }

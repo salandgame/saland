@@ -337,7 +337,7 @@ void Game::Draw(SDL_Renderer* target) {
 		int mousebox_y = data->world_mouse_y - data->world_mouse_y % 32 - data->topy;
 		if (data->slot_spell.at(data->slot_selected).type == SpellCursorType::tile) {
 			rectangleRGBA(globalData.screen, mousebox_x, mousebox_y,
-					mousebox_x + 32, mousebox_y + 32, 255, 255, 0, 255);
+			              mousebox_x + 32, mousebox_y + 32, 255, 255, 0, 255);
 		}
 	}
 	//Draw
@@ -367,9 +367,9 @@ void Game::Draw(SDL_Renderer* target) {
 	if (data->world_mouse_x >= 0 && data->world_mouse_y >= 0) {
 		char buffer[200];
 		snprintf(buffer, sizeof(buffer), "world_x = %d, world_y = %d, layer_info:%s",
-				data->world_mouse_x/32, data->world_mouse_y/32,
-				GetLayerInfoForTile(data->gameRegion.world, data->world_mouse_x/32, data->world_mouse_y/32).c_str()
-				);
+		         data->world_mouse_x/32, data->world_mouse_y/32,
+		         GetLayerInfoForTile(data->gameRegion.world, data->world_mouse_x/32, data->world_mouse_y/32).c_str()
+		        );
 		data->bottomField.SetText(buffer);
 	}
 	else {
@@ -561,6 +561,11 @@ void Game::Update() {
 		MiscItem* item = dynamic_cast<MiscItem*> (entity.get());
 		if (item) {
 			if (item->destructible && item->health <= 0.0f && !item->removeMe) {
+				if (item->body) {
+					/*data->gameRegion.physicsBox->DestroyBody(item->body);
+					item->body = nullptr;*/
+					destroyBodyWithFixtures(data->gameRegion.physicsBox.get(), item->body);
+				}
 				item->removeMe = true;
 			}
 		}
@@ -662,7 +667,7 @@ void Game::Update() {
 				int tile_y = data->world_mouse_y/32;
 				int tile = data->slot_spell.at(data->slot_selected).tile;
 				if (sago::tiled::tileInBound(data->gameRegion.world.tm, tile_x, tile_y)
-						&& !(data->gameRegion.world.tile_protected(tile_x, tile_y)) ) {
+				        && !(data->gameRegion.world.tile_protected(tile_x, tile_y)) ) {
 					int layer_number = 2; //  Do not hardcode
 					sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
 					data->gameRegion.waterHandler.updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
@@ -677,7 +682,7 @@ void Game::Update() {
 				int tile_x = data->world_mouse_x/32;
 				int tile_y = data->world_mouse_y/32;
 				if (sago::tiled::tileInBound(data->gameRegion.world.tm, tile_x, tile_y)
-						&& !(data->gameRegion.world.tile_protected(tile_x, tile_y)) ) {
+				        && !(data->gameRegion.world.tile_protected(tile_x, tile_y)) ) {
 					int layer_number = 2; //  Do not hardcode
 					uint32_t tile = 0;
 					sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);

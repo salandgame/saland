@@ -91,7 +91,7 @@ void GameRegion::SpawnItem(const ItemDef& def, float destX, float destY) {
 			}
 		}
 	}
-	
+
 	for (std::shared_ptr<Placeable>& target : placeables) {
 		if (target->removeMe) {
 			continue;
@@ -161,7 +161,7 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 	lavaHandler.blockingLayer = world.blockingLayer;
 	lavaHandler.blockingLayer_overlay_1 = world.blockingLayer_overlay_1;
 	lavaHandler.setupTiles(16);
-	
+
 
 
 	const std::vector<sago::tiled::TileObjectGroup>& object_groups = world.tm.object_groups;
@@ -199,7 +199,7 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 	std::string regionType = GetRegionType(region_x, region_y);
 	if (regionType == "forrest" || regionType == "start") {
 		std::cout << "Forrest (or start) region\n";
-		
+
 		for (int i=0; i<10; ++i) {
 			int x = (rand()%(world.tm.width-3)+1)*32+rand()%32;
 			int y = (rand()%(world.tm.height-3)+1)*32+rand()%32;
@@ -219,8 +219,7 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 void GameRegion::SaveRegion() {
 	sago::tiled::TileObjectGroup tog;
 	tog.name = "mutableObjects";
-	for (const std::shared_ptr<Placeable>& p : placeables)
-	{
+	for (const std::shared_ptr<Placeable>& p : placeables) {
 		if (p->isStatic()) {
 			const MiscItem* m = dynamic_cast<MiscItem*>(p.get());
 			if (m) {
