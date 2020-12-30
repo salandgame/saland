@@ -642,7 +642,7 @@ inline TileLayer createEmptyLayerForMap(const TileMap& tm) {
 	TileLayer t;
 	t.width = tm.width;
 	t.height = tm.height;
-	t.data.payload.resize(t.width*t.height*sizeof(u_int32_t));
+	t.data.payload.resize(t.width*t.height*sizeof(uint32_t));
 	std::string& data = t.data.payload;
 	memset(&data[0], 0, data.size());
 	return t;
