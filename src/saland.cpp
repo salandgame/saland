@@ -265,7 +265,7 @@ void runGame() {
 
 int main(int argc, char* argv[]) {
 	PHYSFS_init(argv[0]);
-	PHYSFS_addToSearchPath((std::string(PHYSFS_getBaseDir())+"/saland.data").c_str(), 1);
+	PHYSFS_addToSearchPath((std::string(PHYSFS_getBaseDir())+"/packages/saland-0001.data").c_str(), 1);
 	PHYSFS_addToSearchPath((std::string(PHYSFS_getBaseDir())+"/data").c_str(), 1);
 	std::string savepath = getPathToSaveFiles();
 	OsCreateSaveFolder();
