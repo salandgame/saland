@@ -24,6 +24,33 @@ https://github.com/sago007/saland
 #include "GameDraw.hpp"
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include <cmath>
+#include "../sago/SagoTextField.hpp"
+
+struct TextCache
+{
+	sago::SagoTextField* getLabel(const std::string& text);
+private:
+	std::map<std::string, std::shared_ptr<sago::SagoTextField> > labels;
+};
+
+sago::SagoTextField* TextCache::getLabel(const std::string& text) {
+	const auto& theLabel = labels.find(text);
+	if (theLabel != labels.end()) {
+		return labels[text].get();
+	}
+	std::shared_ptr<sago::SagoTextField> newField = std::make_shared<sago::SagoTextField>();
+	newField->SetHolder(&globalData.spriteHolder->GetDataHolder());
+	newField->SetFont("freeserif");
+	newField->SetFontSize(12);
+	newField->SetOutline(0, {255,255,0,255});
+	newField->SetText(text);
+	labels[text] = newField;
+	return labels[text].get();
+}
+
+
+TextCache textCache;
+
 
 static void Draw(SDL_Renderer* target, SDL_Texture* t, int x, int y, const SDL_Rect& part) {
 	SDL_Rect pos = {};
@@ -39,6 +66,7 @@ static void DrawCollision(SDL_Renderer* target, const Placeable* entity, int off
 		circleRGBA(target,
 		           entity->X - offsetX, entity->Y - offsetY, entity->Radius,
 		           255, 255, 0, 255);
+		textCache.getLabel(entity->id)->Draw(target, entity->X - offsetX + entity->Radius + 4, entity->Y - offsetY, sago::SagoTextField::Alignment::left, sago::SagoTextField::VerticalAlignment::center);
 	}
 }
 

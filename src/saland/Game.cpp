@@ -33,6 +33,7 @@ https://github.com/sago007/saland
 #include "../sago/SagoMisc.hpp"
 #include "../sago/SagoTextField.hpp"
 #include "globals.hpp"
+#include "../common.h"
 #include "model/placeables.hpp"
 #include "model/spells.hpp"
 #include "model/Player.hpp"
@@ -162,7 +163,7 @@ struct Game::GameImpl {
 	std::shared_ptr<Human> human;
 	float center_x = 0;
 	float center_y = 0;
-	bool drawCollision = true;
+	bool drawCollision = Config::getInstance()->getInt("draw_collision");
 	int topx = 0.0;
 	int topy = 0.0;
 	int world_mouse_x = 0; //Mouse coordinates relative to the world
@@ -356,7 +357,7 @@ void Game::Draw(SDL_Renderer* target) {
 		}
 		Projectile* projectile = dynamic_cast<Projectile*> (p.get());
 		if (projectile) {
-			DrawProjectile(target, globalData.spriteHolder.get(), projectile, SDL_GetTicks(), data->topx, data->topy, true);
+			DrawProjectile(target, globalData.spriteHolder.get(), projectile, SDL_GetTicks(), data->topx, data->topy, data->drawCollision);
 		}
 	}
 	for (size_t i = 0; i < data->gameRegion.world.tm.layers.size(); ++i) {
@@ -571,9 +572,16 @@ void Game::Update() {
 		}
 	}
 	auto& vp = data->gameRegion.placeables;
-	vp.erase(std::remove_if(std::begin(vp), std::end(vp), [](std::shared_ptr<Placeable> p) {
+	size_t preSize = vp.size();
+	vp.erase(std::remove_if(vp.begin(), vp.end(), [](std::shared_ptr<Placeable>& p) {
+		if (p->removeMe) {
+			std::cout << "Found something to remove: "<< p->X << "," << p->Y << "\n" ;
+		}
 		return p->removeMe;
-	}), std::end(vp));
+	}), vp.end());
+	if (vp.size() != preSize) {
+		std::cout << "Before: " << preSize << ", after: " << vp.size() << "\n";
+	}
 	data->center_x = std::round(data->human->X);
 	data->center_y = std::round(data->human->Y);
 	int mousex;

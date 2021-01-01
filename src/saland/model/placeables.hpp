@@ -31,6 +31,7 @@ const float pixel2unit = 32.0f;
 
 class Placeable {
 public:
+	std::string id = "noid";
 	float health = 10.0;
 	float X = 20.0;
 	float Y = 20.0;
