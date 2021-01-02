@@ -247,3 +247,7 @@ double Config::getValue(const std::string& varName) {
 		return 0.0;
 	}
 }
+
+const std::map<std::string, std::string>& Config::getConfigPairs() const {
+	return configMap;
+}

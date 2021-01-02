@@ -295,6 +295,8 @@ int main(int argc, char* argv[]) {
 	if (vm.count("no-fullscreen")) {
 		Config::getInstance()->setInt("fullscreen", 0);
 	}
+	Config::getInstance()->setDefault("fullscreen", "0");
+	Config::getInstance()->setDefault("draw_collision", "0");
 	runGame();
 	Config::getInstance()->save();
 	return 0;

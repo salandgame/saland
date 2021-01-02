@@ -305,6 +305,7 @@ static std::string GetLayerInfoForTile(const World& w, int x, int y) {
 }
 
 void Game::Draw(SDL_Renderer* target) {
+	data->drawCollision = Config::getInstance()->getInt("draw_collision");
 	double screen_width = globalData.xsize;
 	double screen_height = globalData.ysize;
 	int screen_boarder = 64;

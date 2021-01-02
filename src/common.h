@@ -199,6 +199,13 @@ public:
 	 * @return
 	 */
 	long isShuttingDown() const;
+
+	/**
+	 * Return the list of config. The reference is until next call to the function;
+	 * 
+	 * @return const std::map<std::string, std::string>& 
+	 */
+	const std::map<std::string, std::string>& getConfigPairs() const;
 };
 
 #endif	/* _COMMON_H */

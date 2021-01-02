@@ -23,6 +23,7 @@ https://github.com/sago007/saland
 
 #include "../global.hpp"
 #include "console/Console.hpp"
+#include "../common.h"
 
 struct ConsoleCommandGiveItem : public ConsoleCommand {
 	virtual std::string getCommand() const override {
@@ -79,11 +80,56 @@ struct ConsoleCommandQuit : public ConsoleCommand {
 	}
 };
 
+struct ConsoleCommandConfig : public ConsoleCommand {
+	virtual std::string getCommand() const override {
+		return "config";
+	}
+
+	virtual std::string run(const std::vector<std::string>& args) override {
+		if (args.size() < 2) {
+			throw std::runtime_error("See \"help config\" for calling instructions.");
+		}
+		if (args[1] == "list") {
+			std::string theList;
+			const std::map<std::string, std::string>& configs = Config::getInstance()->getConfigPairs();
+			for (const auto& item : configs) {
+				theList += item.first + "\n";
+			}
+			return theList;
+		}
+		else if (args[1] == "get") {
+			if (args.size() < 3) {
+				throw std::runtime_error("Must be called like \"config get VARIABLE_NAME\". Use \"config list\" to get the names.");
+			}
+			const std::string& key = args[2];
+			if (!Config::getInstance()->exists(key)) {
+				throw std::runtime_error(std::string("key \"")+key+"\" not found");
+			}
+			return Config::getInstance()->getString(key);
+		}
+		else if (args[1] == "set") {
+			if (args.size() < 4) {
+				throw std::runtime_error("Must be called like \"config set VARIABLE_NAME NEW_VALUE\". Use \"config list\" to set the value.");
+			}
+			const std::string& key = args[2];
+			const std::string& value = args[3];
+			Config::getInstance()->setString(key, value);
+			return "Value set";
+		}
+		throw std::runtime_error("Missing command");
+	}
+
+	virtual std::string helpMessage() const override {
+		return "Use \"config list\" to list the variables already set";
+	}
+};
+
 static ConsoleCommandGiveItem cc_give_item;
 static ConsoleCommandQuit cc_quit;
-
+static ConsoleCommandConfig cc_config;
 
 void GameConsoleCommandRegister() {
 	RegisterCommand(&cc_give_item);
 	RegisterCommand(&cc_quit);
+	RegisterCommand(&cc_config);
 }
