@@ -24,8 +24,9 @@ https://github.com/sago007/saland
 #ifndef PLACEABLES_HPP
 #define PLACEABLES_HPP
 
+#include <box2d/box2d.h>
 #include <string>
-#include <Box2D/Box2D.h>
+#include <memory>
 
 const float pixel2unit = 32.0f;
 

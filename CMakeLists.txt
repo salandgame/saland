@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.9)
+cmake_minimum_required(VERSION 3.5.0)
 project (saland)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${saland_SOURCE_DIR}/src/cmake")
 
@@ -16,6 +16,8 @@ if (WIN32)
 endif()
 
 find_package(Boost COMPONENTS program_options REQUIRED)
+
+add_subdirectory("embedded_libs/box2d-2.4.1" EXCLUDE_FROM_ALL)
 
 #Setup SDL2
 find_package(SDL2 REQUIRED CONFIG)
@@ -37,9 +39,8 @@ include_directories(SYSTEM "src/Libs/include")
 
 file(GLOB SOURCES "src/*.cpp" "src/*/*.cpp" "src/*/*/*.cpp" "src/Libs/*.c")
 
-
 add_executable(saland ${SOURCES})
 TARGET_LINK_LIBRARIES( saland ${Boost_LIBRARIES} )
 target_link_libraries( saland ${SDL2_LIBRARIES})
-target_link_libraries( saland physfs z Box2D)
+target_link_libraries( saland physfs z box2d)
 target_link_libraries( saland ${SDL2MIXER_LIBRARIES} ${SDL2IMAGE_LIBRARIES} ${SDL2TTF_LIBRARIES} ${SDL2GFX_LIBRARIES})

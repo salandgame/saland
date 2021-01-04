@@ -40,8 +40,10 @@ https://github.com/sago007/saland
 #include "../os.hpp"
 #include "SDL.h"
 #include <SDL2/SDL2_gfxPrimitives.h>
+#include <algorithm>
 #include <cmath>
 #include <condition_variable>
+#include <memory>
 #include <sstream>
 #include "console/Console.hpp"
 #include "GameConsoleCommand.hpp"

@@ -26,7 +26,7 @@ https://github.com/sago007/saland
 
 #include "../../sagotmx/tmx_struct.h"
 #include "../../sago/SagoMisc.hpp"
-#include <Box2D/Box2D.h>
+#include <box2d/box2d.h>
 #include <list>
 
 class World {
