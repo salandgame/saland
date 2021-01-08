@@ -51,6 +51,20 @@ https://github.com/sago007/saland
 #include "os.hpp"
 #include "version.h"
 
+//if SHAREDIR is not used we look in current directory
+#ifndef SHAREDIR
+#define SHAREDIR "."
+#endif
+
+#ifndef LOCALEDIR
+#define LOCALEDIR SHAREDIR"/locale"
+#endif
+
+#ifndef PACKAGE
+#define PACKAGE "salandgame"
+#endif
+
+
 GlobalData globalData;
 
 class TitleScreen : public sago::GameStateInterface {
@@ -265,6 +279,7 @@ void runGame() {
 
 int main(int argc, char* argv[]) {
 	PHYSFS_init(argv[0]);
+	PHYSFS_addToSearchPath((std::string(SHAREDIR)+"/packages/saland-0001.data").c_str(), 1);
 	PHYSFS_addToSearchPath((std::string(PHYSFS_getBaseDir())+"/packages/saland-0001.data").c_str(), 1);
 	PHYSFS_addToSearchPath((std::string(PHYSFS_getBaseDir())+"/data").c_str(), 1);
 	std::string savepath = getPathToSaveFiles();

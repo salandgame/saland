@@ -1,0 +1,21 @@
+FROM ubuntu:18.04
+
+ENV TZ=UTC
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN apt-get update && apt-get install -y build-essential cmake pkg-config libfreetype6-dev libvorbis-dev libgl1-mesa-dev libpulse-dev libpng-dev zip gettext xorg-dev
+
+COPY extra/standalone/compile_requirements.sh /
+RUN /compile_requirements.sh
+
+
+
+COPY . /staging/saland-game
+
+ENV SALAND_VERSION UNKNOWN
+
+
+
+RUN cd /staging/saland-game && \
+./packdata.sh && \
+cmake -D Boost_USE_STATIC_LIBS=ON -D INSTALL_DATA_DIR=. -D CMAKE_INSTALL_PREFIX=. -D STANDALONE=1 . && make
