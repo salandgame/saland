@@ -560,7 +560,7 @@ void Game::Update() {
 		}
 		Monster* monster = dynamic_cast<Monster*> (entity.get());
 		if (monster) {
-			UpdateMonster(monster);
+			UpdateMonster(monster, deltaTime);
 		}
 		MiscItem* item = dynamic_cast<MiscItem*> (entity.get());
 		if (item) {

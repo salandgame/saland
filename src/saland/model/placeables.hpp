@@ -80,6 +80,9 @@ public:
 class Monster : public Creature {
 public:
 	std::string race = "bat";
+	float speed = 1.0f;
+	// AI logic:
+	float aiNextThink = 0.0;
 };
 
 class Projectile : public Placeable {

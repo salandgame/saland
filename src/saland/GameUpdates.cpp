@@ -80,11 +80,36 @@ void UpdateHuman(Human* entity, float fDeltaTime) {
 	entity->Y = place.y*pixel2unit;
 }
 
-void UpdateMonster(Monster* entity) {
+static void MonsterThink(Monster* entity) {
+	if (rand()%2==0) {
+		//1 in 2 chance of changing direction
+		if (rand()%2==0) {
+			entity->moveX = 0.1f;
+		}
+		else {
+			entity->moveX = -0.1f;
+		}
+		if (rand()%2 == 0) {
+			entity->moveY = 0.1f;
+		}
+		else {
+			entity->moveY = -0.1f;
+		}
+	}
+}
+
+void UpdateMonster(Monster* entity, float fDeltaTime) {
 	SetCreatureMovementEntity(entity, entity->moveX, entity->moveY);
 	b2Vec2 place = entity->body->GetPosition();
 	entity->X = place.x*pixel2unit;
 	entity->Y = place.y*pixel2unit;
+	if (entity->aiNextThink > 0.0) {
+		entity->aiNextThink -= fDeltaTime;
+	}
+	else {
+		entity->aiNextThink = 2000.0f;
+		MonsterThink(entity);
+	}
 	if (entity->health <= 0.0) {
 		entity->removeMe = true;
 	}
