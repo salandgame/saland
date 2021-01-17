@@ -46,8 +46,7 @@ public:
 	std::shared_ptr<b2World> physicsBox;
 	void SaveRegion();
 	World world;
-	WaterHandler waterHandler;
-	WaterHandler lavaHandler;
+	std::map<std::string, WaterHandler> liqudHandler;
 	uint32_t outerTile = 485;
 	int GetRegionX() const {
 		return region_x;

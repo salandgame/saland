@@ -156,11 +156,12 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 	physicsBox.reset(new b2World(gravity));
 	world.managed_bodies.clear();
 	world.init(physicsBox, loadMap);
-	waterHandler.blockingLayer = world.blockingLayer;
-	waterHandler.blockingLayer_overlay_1 = world.blockingLayer_overlay_1;
-	lavaHandler.blockingLayer = world.blockingLayer;
-	lavaHandler.blockingLayer_overlay_1 = world.blockingLayer_overlay_1;
-	lavaHandler.setupTiles(16);
+	
+	liqudHandler["water"].blockingLayer = world.blockingLayer;
+	liqudHandler["water"].blockingLayer_overlay_1 = world.blockingLayer_overlay_1;
+	liqudHandler["lava"].blockingLayer = world.blockingLayer;
+	liqudHandler["lava"].blockingLayer_overlay_1 = world.blockingLayer_overlay_1;
+	liqudHandler["lava"].setupTiles(16);
 
 
 
