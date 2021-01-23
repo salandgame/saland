@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="right-down" compressionlevel="-1" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="4">
+ <tileset firstgid="1" source="city_outside.tsx"/>
+ <layer id="1" name="ground_1" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJztzrERg0AQBMGPAxQFkAdSFEAKOEiZc+YZ8jDO+O6qqXW3NQB47kxR6/wTddbonfZTe6d7W7SnPWrvdO+Kvml/lWdoQzSmXrV3ujdFc2qpvQMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA3bkBo0MLbA==
+  </data>
+ </layer>
+ <layer id="2" name="blocking_1" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJztzs1pQlEUhdH7hiZam1pFtAp1KrYiIS1Em/CvCI2Zu4UniA1c4a0FH4cz26Xwzn7TJm1rD6Hs0j4d0jGd6s7prGV7z+mS/tI1/VdbxF2vKeUjfaZ+GjS1F3Xb+uX/qbKCh2EaPTWuO6ezVu39St9pmibtpZ5ZmqfF0wUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgHdwA0z7FGE=
+  </data>
+ </layer>
+ <layer id="3" name="overlay_1" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJztzrEJgEAMQNFs4RjuJk6lLmHhEBbu4hUWd9fYGYT3IISk+hGtpcxaZguy7d19pFQwPfvs/tfXIQD8ypwdwKshO4DGmB0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACVG1QTBmo=
+  </data>
+ </layer>
+ <objectgroup id="4" name="marking_prefab">
+  <object id="1" name="basic_house" type="prefab" x="112" y="16" width="129" height="317"/>
+  <object id="2" name="statue_1" type="prefab" x="38" y="69" width="22" height="51"/>
+  <object id="3" name="statue_2" type="prefab" x="38" y="200" width="22" height="47"/>
+ </objectgroup>
+</map>
