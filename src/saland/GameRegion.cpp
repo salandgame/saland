@@ -23,6 +23,7 @@ https://github.com/sago007/saland
 
 #include "GameRegion.hpp"
 #include "GameItems.hpp"
+#include "Prefabs.hpp"
 #include <cmath>
 
 GameRegion::GameRegion() {
@@ -156,7 +157,8 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 	physicsBox.reset(new b2World(gravity));
 	world.managed_bodies.clear();
 	world.init(physicsBox, loadMap);
-	
+	ScanPrefabs("prefabs01");
+
 	liqudHandler["water"].blockingLayer = world.blockingLayer;
 	liqudHandler["water"].blockingLayer_overlay_1 = world.blockingLayer_overlay_1;
 	liqudHandler["lava"].blockingLayer = world.blockingLayer;
