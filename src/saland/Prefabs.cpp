@@ -27,11 +27,74 @@ https://github.com/salandgame/saland
 
 
 std::vector<Prefab> prefabs;
+std::map<std::string, sago::tiled::TileMap> prefabTileMaps;
+
+static int GetLayerNumber(const sago::tiled::TileMap& tm, const char* name) {
+	for (size_t i=0; i < tm.layers.size(); ++i) {
+		if (tm.layers[i].name == name) {
+			return i;
+		}
+	}
+	std::cerr << "Failed to find layer: " << name << "\n";
+	return -1;
+}
+
+static int32_t translate_tile(const sago::tiled::TileMap& dest, const sago::tiled::TileMap& source, int32_t source_tile) {
+	if (source_tile == 0) {
+		return 0;
+	}
+	for (size_t i = 0; i < source.tileset.size(); ++i) {
+		const sago::tiled::TileSet ts = source.tileset.at(i);
+		std::cerr << "Tile: " << source_tile << " between " << ts.firstgid << " and " << 1024 << "?\n";
+		if (ts.firstgid <= source_tile && ts.firstgid+1024 > source_tile) {
+			std::cerr << "Looking at: " << ts.source << "\n";
+			for (size_t j = 0; j < dest.tileset.size(); ++j) {
+				const sago::tiled::TileSet ts2 = dest.tileset.at(j);
+				if (ts.source == ts2.source) {
+					return source_tile - ts.firstgid + ts2.firstgid;
+				}
+			}
+			break;
+		} 
+	}
+	return 1;
+}
+
+static void ApplyPrefabLayer(sago::tiled::TileMap& dest, int destX, int destY, const char* destLayer, const Prefab& prefab, const char* sourceLayer) {
+	const sago::tiled::TileMap& source = prefabTileMaps[prefab.filename];
+	int destLayerNumber = GetLayerNumber(dest, destLayer);
+	int sourceLayerNumber = GetLayerNumber(source, sourceLayer);
+	if (destLayerNumber < 0 || sourceLayerNumber < 0) {
+		return;
+	}
+	for (int i = 0; i < prefab.width; ++i) {
+		for (int j = 0; j < prefab.height; ++j) {
+			int32_t tile = sago::tiled::getTileFromLayer(source, source.layers.at(sourceLayerNumber), prefab.topx+i, prefab.topy+j);
+			tile = translate_tile(dest, source, tile);
+			sago::tiled::setTileOnLayerNumber(dest, destLayerNumber, destX+i, destY+j, tile);
+		}
+	}
+}
+
+void ApplyPrefab(sago::tiled::TileMap& dest, int destX, int destY, const Prefab& prefab) {
+	ApplyPrefabLayer(dest, destX, destY, "prefab_ground_1", prefab, "prefab_ground_1");
+	ApplyPrefabLayer(dest, destX, destY, "blocking", prefab, "prefab_blocking_1");
+	ApplyPrefabLayer(dest, destX, destY, "prefab_blocking_2", prefab, "prefab_blocking_2");
+	ApplyPrefabLayer(dest, destX, destY, "prefab_overlay_1", prefab, "prefab_overlay_1");
+}
+
+void TestApplyPrefab(sago::tiled::TileMap& dest, int destX, int destY) {
+	if (prefabs.size() == 0) {
+		return;
+	}
+	ApplyPrefab(dest, destX, destY, prefabs.front());
+} 
 
 void ScanPrefabs(const std::string& filename) {
 	std::string mapFileName = "maps/"+filename+".tmx";
 	std::string tmx_file = sago::GetFileContent(mapFileName);
 	sago::tiled::TileMap tm = sago::tiled::string2tilemap(tmx_file);
+	prefabTileMaps[filename] = tm;
 	for (const auto& t : tm.object_groups) {
 		std::cout << "Prefab object group: " << t.name << "\n";
 		for (const auto& o : t.objects) {
@@ -40,7 +103,10 @@ void ScanPrefabs(const std::string& filename) {
 			p.name = o.name;
 			p.topx = o.x/32;
 			p.topy = o.y/32;
-			std::cout << "Prefab: " << p.name << " " << p.filename << " (" << p.topx << ", " << p.topy << ")\n";
+			p.width = (o.x+o.width)/32+1 - p.topx;
+			p.height = (o.y+o.height)/32+1 - p.topy;
+			std::cout << "Prefab: " << p.name << " " << p.filename << " (" << p.topx << ", " << p.topy << ", " << p.width << ", " << p.height << ")\n";
+			prefabs.push_back(p);
 		}
 	}
 }

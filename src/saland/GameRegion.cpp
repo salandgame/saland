@@ -211,6 +211,7 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 		}
 	}
 
+	TestApplyPrefab(world.tm, 32, 32);
 
 	MonsterDef batDef;
 	batDef.radius = 16.0f;

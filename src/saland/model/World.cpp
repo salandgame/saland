@@ -168,10 +168,33 @@ void World::init_physics(std::shared_ptr<b2World>& world) {
 }
 
 
+static size_t append_layer(sago::tiled::TileMap& tm, const char* name) {
+	sago::tiled::TileLayer t = createEmptyLayerForMap(tm);
+	t.name = name;
+	tm.layers.push_back(t);
+	return tm.layers.size()-1;
+}
+
+static void object_group_add_group_if_not_exist(sago::tiled::TileMap& tm, const char* name) {
+	std::vector<sago::tiled::TileObjectGroup>& object_groups = tm.object_groups;
+	for (const auto& group : object_groups) {
+		if (group.name == name) {
+			std::cout << "Already contains group \"" << name << "\"\n";
+			return;
+		}
+	}
+	sago::tiled::TileObjectGroup tog;
+	tog.name = name;
+	object_groups.push_back(tog);
+}
+
 
 void World::init(std::shared_ptr<b2World>& world, const std::string& mapFileName) {
 	blockingLayer = -1;
 	blockingLayer_overlay_1 = -1;
+	int prefab_layer_ground = -1;
+	int prefab_blocking_2 = -1;
+	int prefab_layer_overlay = -1;
 	this->physicsWorld = world;
 	std::string tmx_file = sago::GetFileContent(mapFileName);
 	tm = sago::tiled::string2tilemap(tmx_file);
@@ -190,18 +213,30 @@ void World::init(std::shared_ptr<b2World>& world, const std::string& mapFileName
 		if (tm.layers[i].name == "blocking_overlay_1") {
 			blockingLayer_overlay_1 = i;
 		}
+		if (tm.layers[i].name == "prefab_ground_1") {
+			prefab_layer_ground = i;
+		}
+		if (tm.layers[i].name == "prefab_overlay_1") {
+			prefab_layer_overlay = i;
+		}
+		if (tm.layers[i].name == "prefab_blocking_2") {
+			prefab_blocking_2 = i;
+		}
+	}
+	if (prefab_layer_ground == -1) {
+		append_layer(tm, "prefab_ground_1");
 	}
 	if (blockingLayer == -1) {
-		sago::tiled::TileLayer t = createEmptyLayerForMap(tm);
-		t.name = "blocking";
-		tm.layers.push_back(t);
-		blockingLayer = tm.layers.size()-1;
+		blockingLayer = append_layer(tm, "blocking");
+	}
+	if (prefab_blocking_2 == -1) {
+		append_layer(tm, "prefab_blocking_2");
 	}
 	if (blockingLayer_overlay_1 == -1) {
-		sago::tiled::TileLayer t = createEmptyLayerForMap(tm);
-		t.name = "blocking_overlay_1";
-		tm.layers.push_back(t);
-		blockingLayer_overlay_1 = tm.layers.size()-1;
+		blockingLayer_overlay_1 = append_layer(tm, "blocking_overlay_1");
+	}
+	if (prefab_layer_overlay == -1) {
+		append_layer(tm, "prefab_overlay_1");
 	}
 	init_physics(world);
 	protected_tiles.resize(tm.height*tm.width);
@@ -221,6 +256,7 @@ void World::init(std::shared_ptr<b2World>& world, const std::string& mapFileName
 			}
 		}
 	}
+	object_group_add_group_if_not_exist(tm, "prefab_marking");
 	const std::vector<sago::tiled::TileObjectGroup>& object_groups = tm.object_groups;
 	for (const auto& group : object_groups) {
 		for (const auto& item : group.objects) {

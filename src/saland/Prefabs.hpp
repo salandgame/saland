@@ -23,6 +23,7 @@ https://github.com/salandgame/saland
 
 #include <string>
 #include <vector>
+#include "../sagotmx/tmx_struct.h"
 
 void ScanPrefabs(const std::string& filename);
 
@@ -35,3 +36,5 @@ struct Prefab {
 	int width = 1;
 	int height = 1;
 };
+
+void TestApplyPrefab(sago::tiled::TileMap& dest, int destX, int destY);
