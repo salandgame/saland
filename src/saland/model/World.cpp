@@ -204,24 +204,12 @@ static void bubble_layer_after(sago::tiled::TileMap& tm, const char* layer, cons
 	}
 }
 
-
-void World::init(std::shared_ptr<b2World>& world, const std::string& mapFileName) {
+static void init_tilemap(sago::tiled::TileMap& tm, int& blockingLayer, int& blockingLayer_overlay_1) {
 	blockingLayer = -1;
 	blockingLayer_overlay_1 = -1;
 	int prefab_layer_ground = -1;
 	int prefab_blocking_2 = -1;
 	int prefab_layer_overlay = -1;
-	this->physicsWorld = world;
-	std::string tmx_file = sago::GetFileContent(mapFileName);
-	tm = sago::tiled::string2tilemap(tmx_file);
-	// We run though all the externally referenced tilesets to inject them into the tilemap
-	for (size_t i = 0; i < tm.tileset.size(); ++i) {
-		if (tm.tileset[i].source.length()) {
-			std::string tsx_file = sago::GetFileContent("maps/"+tm.tileset[i].source);
-			ts.push_back(sago::tiled::string2tileset(tsx_file));
-			tm.tileset[i].alternativeSource = &ts.back();
-		}
-	}
 	for (size_t i=0; i < tm.layers.size(); ++i) {
 		if (tm.layers[i].name == "blocking") {
 			blockingLayer = i;
@@ -258,6 +246,21 @@ void World::init(std::shared_ptr<b2World>& world, const std::string& mapFileName
 	bubble_layer_after(tm, "prefab_blocking_2", "blocking");
 	bubble_layer_after(tm, "blocking_overlay_1", "prefab_blocking_2");
 	bubble_layer_after(tm, "prefab_overlay_1", "blocking_overlay_1");
+}
+
+void World::init(std::shared_ptr<b2World>& world, const std::string& mapFileName) {
+	this->physicsWorld = world;
+	std::string tmx_file = sago::GetFileContent(mapFileName);
+	tm = sago::tiled::string2tilemap(tmx_file);
+	// We run though all the externally referenced tilesets to inject them into the tilemap
+	for (size_t i = 0; i < tm.tileset.size(); ++i) {
+		if (tm.tileset[i].source.length()) {
+			std::string tsx_file = sago::GetFileContent("maps/"+tm.tileset[i].source);
+			ts.push_back(sago::tiled::string2tileset(tsx_file));
+			tm.tileset[i].alternativeSource = &ts.back();
+		}
+	}
+	init_tilemap(tm, blockingLayer, blockingLayer_overlay_1);
 	init_physics(world);
 	protected_tiles.resize(tm.height*tm.width);
 	for (int x=0; x < tm.width; ++x) {
