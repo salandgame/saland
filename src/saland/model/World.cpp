@@ -188,6 +188,22 @@ static void object_group_add_group_if_not_exist(sago::tiled::TileMap& tm, const 
 	object_groups.push_back(tog);
 }
 
+static void bubble_layer_after(sago::tiled::TileMap& tm, const char* layer, const char* layer_to_place_after) {
+	bool bubbeling = false;
+	for (size_t i = 0; i < tm.layers.size(); ++i) {
+		std::string layerName = tm.layers[i].name;
+		if (bubbeling) {
+			std::swap(tm.layers.at(i-1), tm.layers[i]);
+		}
+		if (layerName == layer) {
+			bubbeling = true;
+		}
+		if (layerName == layer_to_place_after) {
+			return;
+		}
+	}
+}
+
 
 void World::init(std::shared_ptr<b2World>& world, const std::string& mapFileName) {
 	blockingLayer = -1;
@@ -238,6 +254,10 @@ void World::init(std::shared_ptr<b2World>& world, const std::string& mapFileName
 	if (prefab_layer_overlay == -1) {
 		append_layer(tm, "prefab_overlay_1");
 	}
+	bubble_layer_after(tm, "blocking", "prefab_ground_1");
+	bubble_layer_after(tm, "prefab_blocking_2", "blocking");
+	bubble_layer_after(tm, "blocking_overlay_1", "prefab_blocking_2");
+	bubble_layer_after(tm, "prefab_overlay_1", "blocking_overlay_1");
 	init_physics(world);
 	protected_tiles.resize(tm.height*tm.width);
 	for (int x=0; x < tm.width; ++x) {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="4">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="4">
  <tileset firstgid="1" source="city_outside.tsx"/>
  <layer id="1" name="prefab_ground_1" width="100" height="100">
   <data encoding="base64" compression="zlib">
@@ -8,7 +8,7 @@
  </layer>
  <layer id="2" name="prefab_blocking_1" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eAHt0MsNAWEUhuGxdKsNVaAKbEUrIlpAE25FuO19i1lMpoAZieckb45Znd9TFOaXBQ553DGdfvmRf/K2c/7nJV3TLd2TaV5gXZ58ZD/TK73TJ5n2BLqdouilfhqkYTLtCWxrp/e1b5/NCoxyblxp0ux510qBTbmn2bs0T7NyZ5mWBBa5u0yrys5PQ4AAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIEWhf4Akz7FGE=
+   eAHt0E1OAkEUhdFyyN/axFUAq0Cnxq0QwhbQTaCwCEXm3kENOs28qxPPS75Uqiev+pRixixwzOPe08eYH/lP3nbKf36mr3ROl2SGF3itK79z/qRr+k23ZNoJTB5KmaZZmqdFMu0Edr3Vh97ddViBx6xbdnoadr1tVeCtnquc+7Subep3RxuBbdY+d3pp8wxbCRAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIDAncAfLAQUXw==
   </data>
  </layer>
  <layer id="5" name="prefab_blocking_2" width="100" height="100">
