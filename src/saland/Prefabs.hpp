@@ -45,4 +45,3 @@ void ApplyPrefab(sago::tiled::TileMap& dest, int destX, int destY, const Prefab&
 
 Prefab getPrefab(const char* name);
 
-void TestApplyPrefab(sago::tiled::TileMap& dest, int destX, int destY);

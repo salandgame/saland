@@ -132,6 +132,8 @@ std::string GameRegion::GetRegionType(int region_x, int region_y) const {
 	return "default";
 }
 
+
+
 void GameRegion::Init(int x, int y, const std::string& worldName, bool forceResetWorld) {
 	region_x = x;
 	region_y = y;
@@ -211,7 +213,7 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 		}
 	}
 
-	TestApplyPrefab(world.tm, 32, 32);
+	ApplyPrefab(world.tm, 32, 32, getPrefab("basic_house"));
 
 	MonsterDef batDef;
 	batDef.radius = 16.0f;

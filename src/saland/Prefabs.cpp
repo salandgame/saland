@@ -118,9 +118,7 @@ Prefab getPrefab(const char* name) {
 	return p;
 }
 
-void TestApplyPrefab(sago::tiled::TileMap& dest, int destX, int destY) {
-	ApplyPrefab(dest, destX, destY, getPrefab("basic_house"));
-} 
+
 
 void ScanPrefabs(const std::string& filename) {
 	std::string mapFileName = "maps/"+filename+".tmx";
