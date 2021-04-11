@@ -28,6 +28,7 @@ https://github.com/salandgame/saland
 
 std::vector<Prefab> prefabs;
 std::map<std::string, sago::tiled::TileMap> prefabTileMaps;
+std::map<std::string, size_t> prefabs_map;
 
 static int GetLayerNumber(const sago::tiled::TileMap& tm, const char* name) {
 	for (size_t i=0; i < tm.layers.size(); ++i) {
@@ -60,7 +61,7 @@ static int32_t translate_tile(const sago::tiled::TileMap& dest, const sago::tile
 	return 1;
 }
 
-static void ApplyPrefabLayer(sago::tiled::TileMap& dest, int destX, int destY, const char* destLayer, const Prefab& prefab, const char* sourceLayer) {
+void ApplyPrefabLayer(sago::tiled::TileMap& dest, int destX, int destY, const char* destLayer, const Prefab& prefab, const char* sourceLayer) {
 	const sago::tiled::TileMap& source = prefabTileMaps[prefab.filename];
 	int destLayerNumber = GetLayerNumber(dest, destLayer);
 	int sourceLayerNumber = GetLayerNumber(source, sourceLayer);
@@ -76,18 +77,49 @@ static void ApplyPrefabLayer(sago::tiled::TileMap& dest, int destX, int destY, c
 	}
 }
 
+void ApplyPrefabObjectMarker(sago::tiled::TileMap& dest, int destX, int destY, const Prefab& prefab) {
+	std::vector<sago::tiled::TileObjectGroup>& object_groups = dest.object_groups;
+	for (auto& group : object_groups) {
+		if (group.name == "prefab_marking") {
+			sago::tiled::TileObject o;
+			o.name = prefab.name;
+			o.x = destX*32+2;
+			o.y = destY*32+2;
+			o.width = prefab.width*32-4;
+			o.height = prefab.height*32-4;
+			group.objects.push_back(o);
+		}
+	}
+}
+
+
 void ApplyPrefab(sago::tiled::TileMap& dest, int destX, int destY, const Prefab& prefab) {
+	if (prefab.height < 1) {
+		return;
+	}
 	ApplyPrefabLayer(dest, destX, destY, "prefab_ground_1", prefab, "prefab_ground_1");
 	ApplyPrefabLayer(dest, destX, destY, "blocking", prefab, "prefab_blocking_1");
 	ApplyPrefabLayer(dest, destX, destY, "prefab_blocking_2", prefab, "prefab_blocking_2");
 	ApplyPrefabLayer(dest, destX, destY, "prefab_overlay_1", prefab, "prefab_overlay_1");
+	ApplyPrefabObjectMarker(dest, destX, destY, prefab);
+}
+
+Prefab getPrefab(const char* name) {
+	Prefab p;
+	auto it = prefabs_map.find(name);
+	if (it == prefabs_map.end()) {
+		return p;
+	}
+	size_t id = it->second;
+	if (id >= prefabs.size()) {
+		return p;
+	}
+	p = prefabs.at(id);
+	return p;
 }
 
 void TestApplyPrefab(sago::tiled::TileMap& dest, int destX, int destY) {
-	if (prefabs.size() == 0) {
-		return;
-	}
-	ApplyPrefab(dest, destX, destY, prefabs.front());
+	ApplyPrefab(dest, destX, destY, getPrefab("basic_house"));
 } 
 
 void ScanPrefabs(const std::string& filename) {
@@ -107,6 +139,7 @@ void ScanPrefabs(const std::string& filename) {
 			p.height = (o.y+o.height)/32+1 - p.topy;
 			std::cout << "Prefab: " << p.name << " " << p.filename << " (" << p.topx << ", " << p.topy << ", " << p.width << ", " << p.height << ")\n";
 			prefabs.push_back(p);
+			prefabs_map[p.name] = prefabs.size()-1;
 		}
 	}
 }

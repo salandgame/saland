@@ -33,8 +33,16 @@ struct Prefab {
 	std::string filename = "";
 	int topx = 0;
 	int topy = 0;
-	int width = 1;
-	int height = 1;
+	int width = 0;
+	int height = 0;
 };
+
+void ApplyPrefabLayer(sago::tiled::TileMap& dest, int destX, int destY, const char* destLayer, const Prefab& prefab, const char* sourceLayer);
+
+void ApplyPrefabObjectMarker(sago::tiled::TileMap& dest, int destX, int destY, const Prefab& prefab);
+
+void ApplyPrefab(sago::tiled::TileMap& dest, int destX, int destY, const Prefab& prefab);
+
+Prefab getPrefab(const char* name);
 
 void TestApplyPrefab(sago::tiled::TileMap& dest, int destX, int destY);
