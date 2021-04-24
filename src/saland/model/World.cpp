@@ -188,6 +188,9 @@ static void object_group_add_group_if_not_exist(sago::tiled::TileMap& tm, const 
 	object_groups.push_back(tog);
 }
 
+/**
+ * find the layer "layer" and move it up until it is after "layer_to_place_after"
+ * */
 static void bubble_layer_after(sago::tiled::TileMap& tm, const char* layer, const char* layer_to_place_after) {
 	bool bubbeling = false;
 	for (size_t i = 0; i < tm.layers.size(); ++i) {
@@ -246,6 +249,7 @@ static void init_tilemap(sago::tiled::TileMap& tm, int& blockingLayer, int& bloc
 	bubble_layer_after(tm, "prefab_blocking_2", "blocking");
 	bubble_layer_after(tm, "blocking_overlay_1", "prefab_blocking_2");
 	bubble_layer_after(tm, "prefab_overlay_1", "blocking_overlay_1");
+	bubble_layer_after(tm, "overlay_1", "prefab_overlay_1");
 }
 
 void World::init(std::shared_ptr<b2World>& world, const std::string& mapFileName) {
