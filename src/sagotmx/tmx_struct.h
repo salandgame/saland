@@ -265,6 +265,7 @@ struct TileObject {
 struct TileObjectGroup {
 	std::string name;
 	std::vector<TileObject> objects;
+	double opacity = 1.0;
 };
 
 struct TileMap {
@@ -292,6 +293,13 @@ inline void setValueFromAttribute(rapidxml::xml_node<> * node, const char* name,
 	auto val = node->first_attribute(name);
 	if (val) {
 		result = std::stoi(val->value());
+	}
+}
+
+inline void setValueFromAttribute(rapidxml::xml_node<> * node, const char* name, double& result) {
+	auto val = node->first_attribute(name);
+	if (val) {
+		result = std::stod(val->value());
 	}
 }
 
@@ -387,6 +395,7 @@ inline TileMap string2tilemap(const std::string& tmx_content) {
 	for (rapidxml::xml_node<> * object_group_node = root_node->first_node("objectgroup"); object_group_node; object_group_node = object_group_node->next_sibling("objectgroup") ) {
 		TileObjectGroup group;
 		setValueFromAttribute(object_group_node, "name", group.name);
+		setValueFromAttribute(object_group_node, "opacity", group.opacity);
 		for (rapidxml::xml_node<> * object_node = object_group_node->first_node("object"); object_node; object_node = object_node->next_sibling("object") ) {
 			TileObject to;
 			setValueFromAttribute(object_node, "id", to.id);
@@ -480,7 +489,7 @@ inline void xml_add_layer(std::iostream& io, const TileMap& m, size_t layer_numb
 
 inline void xml_add_objectgroup(std::iostream& io, const TileMap& m, size_t object_group_number) {
 	const TileObjectGroup& tog = m.object_groups.at(object_group_number);
-	io << "<objectgroup name=\"" << tog.name << "\"";
+	io << "<objectgroup name=\"" << tog.name << "\" opacity=\"" << tog.opacity << "\"";
 	io << ">\n";
 	for (const TileObject& to : tog.objects) {
 		io << "<object";
