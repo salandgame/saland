@@ -41,6 +41,10 @@ void ApplyPrefabLayer(sago::tiled::TileMap& dest, int destX, int destY, const ch
 
 void ApplyPrefabObjectMarker(sago::tiled::TileMap& dest, int destX, int destY, const Prefab& prefab);
 
+/**
+ * Does not validate if there are blocking elements underneth.
+ * Use GameRegion::SpawnPrefab check that.
+ * */
 void ApplyPrefab(sago::tiled::TileMap& dest, int destX, int destY, const Prefab& prefab);
 
 Prefab getPrefab(const char* name);

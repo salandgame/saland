@@ -27,6 +27,7 @@ https://github.com/sago007/saland
 #include "model/World.hpp"
 #include "model/placeables.hpp"
 #include "GameItems.hpp"
+#include "Prefabs.hpp"
 #include "../sagotmx/tmx_struct.h"
 #include "../terrain/WaterHandler.hpp"
 #include <vector>
@@ -59,6 +60,7 @@ public:
 	}
 	void SpawnMonster(const MonsterDef& def, float destX, float destY) ;
 	void SpawnItem(const ItemDef& def, float destX, float destY) ;
+	void SpawnPrefab(const Prefab& prefab, int destX, int destY);
 	std::string GetRegionType(int x, int y) const;
 private:
 	int region_x = 0;

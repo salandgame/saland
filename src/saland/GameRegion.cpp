@@ -23,7 +23,6 @@ https://github.com/sago007/saland
 
 #include "GameRegion.hpp"
 #include "GameItems.hpp"
-#include "Prefabs.hpp"
 #include <cmath>
 
 GameRegion::GameRegion() {
@@ -68,6 +67,22 @@ static bool Intersect(const Placeable& p1, const Placeable& p2) {
 		return true;
 	}
 	return false;
+}
+
+void GameRegion::SpawnPrefab(const Prefab& prefab, int destX, int destY) {
+	for (int i=destX; i < destX+prefab.width; ++i) {
+		for (int j=destY; j < destY+prefab.height; ++j) {
+			if (world.tile_protected(i, j)) {
+				std::cout << "Do not spawn prefab " << prefab.name << "(" << i << "," << j << "), Protected tile\n";
+				return;
+			}
+			if (world.tile_blocking(i, j)) {
+				std::cout << "Do not spawn prefab " << prefab.name << "(" << i << "," << j << "), Blocked tile\n";
+				return;
+			}
+		}
+	}
+	ApplyPrefab(world.tm, destX, destY, prefab);
 }
 
 void GameRegion::SpawnItem(const ItemDef& def, float destX, float destY) {
@@ -213,7 +228,7 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 		}
 	}
 
-	ApplyPrefab(world.tm, 32, 32, getPrefab("basic_house"));
+	SpawnPrefab(getPrefab("basic_house"), 32, 32);
 
 	MonsterDef batDef;
 	batDef.radius = 16.0f;
