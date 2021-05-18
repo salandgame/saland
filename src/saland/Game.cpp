@@ -687,7 +687,7 @@ void Game::Update() {
 				int tile = data->slot_spell.at(data->slot_selected).tile;
 				if (sago::tiled::tileInBound(data->gameRegion.world.tm, tile_x, tile_y)
 				        && !(data->gameRegion.world.tile_protected(tile_x, tile_y)) ) {
-					int layer_number = 2; //  Do not hardcode
+					int layer_number = data->gameRegion.world.blockingLayer;
 					sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
 					data->gameRegion.liqudHandler["water"].updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
 					data->gameRegion.liqudHandler["lava"].updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);

@@ -250,6 +250,15 @@ static void init_tilemap(sago::tiled::TileMap& tm, int& blockingLayer, int& bloc
 	bubble_layer_after(tm, "blocking_overlay_1", "prefab_blocking_2");
 	bubble_layer_after(tm, "prefab_overlay_1", "blocking_overlay_1");
 	bubble_layer_after(tm, "overlay_1", "prefab_overlay_1");
+	// Recheck blocking and blocking_overlay_1 layers as they might have been shifted while sorting.
+	for (size_t i=0; i < tm.layers.size(); ++i) {
+		if (tm.layers[i].name == "blocking") {
+			blockingLayer = i;
+		}
+		if (tm.layers[i].name == "blocking_overlay_1") {
+			blockingLayer_overlay_1 = i;
+		}
+	}
 }
 
 void World::init(std::shared_ptr<b2World>& world, const std::string& mapFileName) {
