@@ -644,18 +644,18 @@ void Game::Update() {
 			std::string imageFile = sago::GetFileContent(source_filename);
 			sago::WriteFileContent(dest_filename.c_str(), imageFile);
 		}
+		for (const sago::tiled::TileSet& ts : data->gameRegion.world.tm.tileset) {
+			if (ts.source.length()) {
+				std::string source_filename = std::string("/maps/") + ts.source;
+				std::string dest_filename = std::string("worlds/") + data->worldName + "/maps/" + ts.source;
+				std::string tsxFile = sago::GetFileContent(source_filename);
+				sago::WriteFileContent(dest_filename.c_str(), tsxFile);
+			}
+		}
 		std::string filename = getPathToSaveFiles() + "/" + data->gameRegion.GetFilename();
 		std::string command = std::string("tiled \"")+filename+"\"";
 		std::system(command.c_str());
 		ResetWorldNoSave(data->gameRegion.GetRegionX(), data->gameRegion.GetRegionY(), false);
-	}
-	for (const sago::tiled::TileSet& ts : data->gameRegion.world.tm.tileset) {
-		if (ts.source.length()) {
-			std::string source_filename = std::string("/maps/") + ts.source;
-			std::string dest_filename = std::string("worlds/") + data->worldName + "/maps/" + ts.source;
-			std::string tsxFile = sago::GetFileContent(source_filename);
-			sago::WriteFileContent(dest_filename.c_str(), tsxFile);
-		}
 	}
 	if (reset_region) {
 		ResetWorld(data->gameRegion.GetRegionX(), data->gameRegion.GetRegionY(), true);
