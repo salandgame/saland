@@ -17,18 +17,39 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see http://www.gnu.org/licenses/
 
 Source information and contacts persons can be found at
-https://github.com/sago007/saland
+https://github.com/salandgame/saland
 ===========================================================================
 */
 
-#ifndef GLOBAL_HPP
-#define GLOBAL_HPP
+#ifndef SCOPEHELPERS_HPP
+#define	SCOPEHELPERS_HPP
 
-#include "saland/globals.hpp"
-#include "sago/GameStateInterface.hpp"
+#include "../common.h"
 
-void UpdateMouseCoordinates(const SDL_Event& event, int& mousex, int& mousey);
-void RunGameState(sago::GameStateInterface& state );
 
-#endif /* GLOBAL_HPP */
+class SDL_RendererHolder {
+	SDL_Renderer* ptr;
+public:
+	explicit SDL_RendererHolder(SDL_Renderer* input) {
+		dieOnNullptr(input, "Failed to get render");
+		ptr = input;
+	}
+	
+	~SDL_RendererHolder() {
+		SDL_DestroyRenderer(ptr);
+	}
+};
+
+class SDL_TextInput {
+public:
+	SDL_TextInput() {
+		SDL_StartTextInput();
+	}
+	
+	~SDL_TextInput() {
+		SDL_StopTextInput();
+	}
+};
+
+#endif	/* SCOPEHELPERS_HPP */
 

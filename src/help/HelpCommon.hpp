@@ -17,18 +17,21 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see http://www.gnu.org/licenses/
 
 Source information and contacts persons can be found at
-https://github.com/sago007/saland
+https://github.com/salandgame/saland
 ===========================================================================
 */
 
-#ifndef GLOBAL_HPP
-#define GLOBAL_HPP
 
-#include "saland/globals.hpp"
-#include "sago/GameStateInterface.hpp"
+#ifndef _HELP_COMMON_HPP
+#define _HELP_COMMON_HPP
 
-void UpdateMouseCoordinates(const SDL_Event& event, int& mousex, int& mousey);
-void RunGameState(sago::GameStateInterface& state );
+#include "../sago/SagoTextBox.hpp"
+#include "../sago/SagoTextField.hpp"
 
-#endif /* GLOBAL_HPP */
 
+void setHelp30Font(const sago::SagoDataHolder* holder, sago::SagoTextField& field, const char* text);
+void setHelp30Font(const sago::SagoDataHolder* holder, sago::SagoTextBox& field, const char* text);
+
+void setHelpBoxFont(const sago::SagoDataHolder* holder, sago::SagoTextBox& field, const char* text);
+
+#endif  //_HELP_COMMON_HPP

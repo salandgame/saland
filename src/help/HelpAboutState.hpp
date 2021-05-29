@@ -17,18 +17,34 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see http://www.gnu.org/licenses/
 
 Source information and contacts persons can be found at
-https://github.com/sago007/saland
+https://github.com/salandgame/saland
 ===========================================================================
 */
 
-#ifndef GLOBAL_HPP
-#define GLOBAL_HPP
+#ifndef HELPABOUT_HPP
+#define HELPABOUT_HPP
 
-#include "saland/globals.hpp"
-#include "sago/GameStateInterface.hpp"
+#include "../sago/GameStateInterface.hpp"
+#include "../sago/SagoTextBox.hpp"
+#include "../sago/SagoTextField.hpp"
 
-void UpdateMouseCoordinates(const SDL_Event& event, int& mousex, int& mousey);
-void RunGameState(sago::GameStateInterface& state );
+class HelpAboutState : public sago::GameStateInterface {
+public:
+	HelpAboutState();
+	HelpAboutState(const HelpAboutState& orig) = delete;
+	virtual ~HelpAboutState();
+	
+	bool IsActive() override;
+	void Draw(SDL_Renderer* target) override;
+	void ProcessInput(const SDL_Event& event, bool &processed) override;
+	void Update() override;
 
-#endif /* GLOBAL_HPP */
+private:
+	bool isActive = true;
+	bool bMouseUp = true;
+	sago::SagoTextField titleField;
+	sago::SagoTextBox infoBox;
+};
+
+#endif /* HELPABOUT_HPP */
 

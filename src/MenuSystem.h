@@ -34,6 +34,8 @@ https://github.com/sago007/saland
 #include <memory>
 #include "sago/SagoTextField.hpp"
 
+void sagoTextSetBlueFont(sago::SagoTextField& field);
+
 //The ButtonGfx object hold common media for all buttons, so we can reskin them by only changeing one pointer
 struct ButtonGfx
 {

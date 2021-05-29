@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see http://www.gnu.org/licenses/
 
 Source information and contacts persons can be found at
-https://github.com/sago007/saland
+https://github.com/salandgame/saland
 ===========================================================================
 */
 
@@ -46,6 +46,7 @@ https://github.com/sago007/saland
 #include "sago/SagoTextBox.hpp"
 
 #include "MenuSystem.h"
+#include "help/HelpAboutState.hpp"
 
 #include "common.h"
 #include "os.hpp"
@@ -236,6 +237,11 @@ void runMenuOptions() {
 	RunGameState(m);
 }
 
+static void runHelpAbout() {
+        HelpAboutState helpAbout;
+        RunGameState(helpAbout);
+}
+
 void runGame() {
 	int posX = 100, posY = 100, width = 1280, height = 800;
 	SDL_Init(SDL_INIT_VIDEO);
@@ -266,6 +272,10 @@ void runGame() {
 	bOptions.setLabel("Options");
 	bOptions.setAction(runMenuOptions);
 	m.addButton(&bOptions);
+	Button bAbout;
+	bAbout.setLabel(_("About"));
+	bAbout.setAction(runHelpAbout);
+	m.addButton(&bAbout);
 	if (!globalData.isShuttingDown) {
 		RunGameState(m);
 	}

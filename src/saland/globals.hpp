@@ -42,6 +42,8 @@ struct GlobalData {
 	bool isShuttingDown = false;
 	bool fullscreen = false;
 	bool resetVideo = false;
+	bool SoundEnabled = true;
+	bool NoSound = false;
 	SDL_Renderer* screen = nullptr;
 	std::unique_ptr<sago::SagoSpriteHolder> spriteHolder;
 	sago::SagoDataHolder* dataHolder;

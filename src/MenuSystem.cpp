@@ -32,6 +32,14 @@ static int oldmousey = 0;
 const char* const menu_marked = "menu_marked";
 const char* const menu_unmarked = "menu_unmarked";
 
+void sagoTextSetBlueFont(sago::SagoTextField& field) {
+	field.SetHolder(&globalData.spriteHolder->GetDataHolder());
+	field.SetFont("freeserif");
+	field.SetFontSize(30);
+	field.SetColor({0,0,255,255});
+	field.SetOutline(1, {128,128,255,255});
+}
+
 ButtonGfx standardButton;
 
 void ButtonGfx::setSurfaces() {
