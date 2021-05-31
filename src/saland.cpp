@@ -249,10 +249,15 @@ void runGame() {
 	TTF_Init();
 	Mix_Init(MIX_INIT_OGG);
 
+	int rendererFlags = 0;
+
 	globalData.fullscreen = Config::getInstance()->getInt("fullscreen");
+	if (Config::getInstance()->getInt("always-software")) {
+		rendererFlags |= SDL_RENDERER_SOFTWARE;
+	}
 
 	win = SDL_CreateWindow("Saland Adventures", posX, posY, width, height, 0);
-	globalData.screen = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
+	globalData.screen = SDL_CreateRenderer(win, -1, rendererFlags);
 	//SDL_RenderSetLogicalSize(globalData.screen, 1024, 768);
 	sago::SagoDataHolder holder(globalData.screen);
 	globalData.spriteHolder.reset(new sago::SagoSpriteHolder(holder));
@@ -302,6 +307,7 @@ int main(int argc, char* argv[]) {
 	("help,h", "Print basic usage information to stdout and quit")
 	("fullscreen", "Run in fullscreen")
 	("no-fullscreen", "Run in window")
+	("software-renderer", boost::program_options::value<int>(), "Asks SDL2 to use software renderer")
 	;
 	boost::program_options::variables_map vm;
 	boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
@@ -319,6 +325,9 @@ int main(int argc, char* argv[]) {
 	}
 	if (vm.count("no-fullscreen")) {
 		Config::getInstance()->setInt("fullscreen", 0);
+	}
+	if (vm.count("software-renderer")) {
+		Config::getInstance()->setInt("always-software", vm["software-renderer"].as<int>());
 	}
 	Config::getInstance()->setDefault("fullscreen", "0");
 	Config::getInstance()->setDefault("draw_collision", "0");
