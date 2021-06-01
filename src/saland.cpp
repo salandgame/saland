@@ -128,6 +128,54 @@ private:
 	sago::SagoTextBox testBox;
 };
 
+
+std::string pathToScreenShots() {
+	Config::getInstance()->setDefault("screenshot_dir", "screenshots");
+	std::string screenshot_dir = Config::getInstance()->getString("screenshot_dir");
+	if (OsPathIsRelative(screenshot_dir)) {
+		return getPathToSaveFiles() + "/" + screenshot_dir;
+	}
+	return screenshot_dir;
+}
+
+static SDL_Window* win = nullptr;
+
+//writeScreenShot saves the screen as a bmp file, it uses the time to get a unique filename
+void writeScreenShot() {
+	if (globalData.verboseLevel) {
+		std::cout << "Saving screenshot" << "\n";
+	}
+	int rightNow = (int)time(nullptr);
+	SDL_Surface* infoSurface = SDL_GetWindowSurface(win);
+	if (!infoSurface) {
+		std::cerr << "Could not get infoSurface. No screenshot written. Be aware that the screenshot feature only works with software render\n";
+		return;
+	}
+	std::vector<char> pixels(infoSurface->w * infoSurface->h * infoSurface->format->BytesPerPixel);
+	int errorCode = SDL_RenderReadPixels(globalData.screen, &infoSurface->clip_rect, infoSurface->format->format, static_cast<void*>(pixels.data()), infoSurface->w * infoSurface->format->BytesPerPixel);
+	if (errorCode) {
+		SDL_FreeSurface(infoSurface);
+		std::cerr << "Could not do SDL_RenderReadPixels. Error code: " << errorCode << ". No screenshot written\n";
+		return;
+	}
+	SDL_Surface* sreenshotSurface = SDL_CreateRGBSurfaceFrom(static_cast<void*>(pixels.data()), infoSurface->w, infoSurface->h, infoSurface->format->BitsPerPixel, infoSurface->w * infoSurface->format->BytesPerPixel, infoSurface->format->Rmask, infoSurface->format->Gmask, infoSurface->format->Bmask, infoSurface->format->Amask);
+	SDL_FreeSurface(infoSurface);
+	if (!sreenshotSurface) {
+		std::cerr << "Could not get sreenshotSurface. No screenshot written\n";
+		return;
+	}
+	OsCreateFolder(pathToScreenShots());
+	std::string buf = pathToScreenShots() + "/screenshot"+std::to_string(rightNow)+".bmp";
+	SDL_SaveBMP(sreenshotSurface, buf.c_str());
+	SDL_FreeSurface(sreenshotSurface);
+	if (!globalData.NoSound) {
+		if (globalData.SoundEnabled) {
+			Mix_PlayChannel(1, globalData.dataHolder->getSoundHandler("cameraclick").get(), 0);
+		}
+	}
+}
+
+
 /**
  * This function reads the mouse coordinates from a relevant event.
  * Unlike SDL_GetMouseState this works even if SDL_RenderSetLogicalSize is used
@@ -166,6 +214,7 @@ void RunGameState(sago::GameStateInterface& state ) {
 
 		SDL_Delay(1);
 		SDL_Event event;
+		bool mustWriteScreenshot = false;
 
 		while ( SDL_PollEvent(&event) ) {
 			if ( event.type == SDL_QUIT ) {
@@ -183,8 +232,14 @@ void RunGameState(sago::GameStateInterface& state ) {
 					globalData.fullscreen = !globalData.fullscreen;
 					globalData.resetVideo = true;
 				}
+				if ( event.key.keysym.sym == SDLK_F9 ) {
+					mustWriteScreenshot = true;
+				}
 			}
 
+			if (mustWriteScreenshot) {
+				writeScreenShot();
+			}
 			bool processed = false;
 			state.ProcessInput(event, processed);
 
@@ -206,7 +261,6 @@ void startWorld() {
 	RunGameState(g);
 }
 
-static SDL_Window* win = nullptr;
 
 void ResetFullscreen() {
 	sago::SagoDataHolder& dataHolder = *globalData.dataHolder;

@@ -49,6 +49,31 @@ void setPathToSaveFiles(const std::string& path) {
 	overrideSavePath = path;
 }
 
+bool OsPathIsRelative(const std::string& path) {
+#if defined(_WIN32)
+	return PathIsRelativeW(win32_utf8_to_utf16(path.c_str()).c_str());
+#else
+	return path[0] != '/';
+#endif
+}
+
+void OsCreateFolder(const std::string& path) {
+#if defined(__unix__)
+	std::string cmd = "mkdir -p '"+path+"/'";
+	int retcode = system(cmd.c_str());
+	if (retcode != 0) {
+		std::cerr << "Failed to create: " << path+"/" << "\n";
+	}
+#elif defined(_WIN32)
+	//Now for Windows NT/2k/xp/2k3 etc.
+	CreateDirectoryW(win32_utf8_to_utf16(pf.getSaveGamesFolder1().c_str()).c_str(), nullptr);
+	std::string tempA = path;
+	CreateDirectoryW(win32_utf8_to_utf16(tempA.c_str()).c_str(), nullptr);
+#else
+	std::cerr << "Failed to create: \"" << path << "\"\n";
+#endif
+}
+
 void OsCreateSaveFolder() {
 #if defined(__unix__)
 	std::string cmd = "mkdir -p '"+getPathToSaveFiles()+"/'";

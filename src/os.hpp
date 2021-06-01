@@ -35,3 +35,13 @@ std::string getMyDocumentsPath();
 void setPathToSaveFiles(const std::string& path);
 
 void OsCreateSaveFolder();
+
+bool OsPathIsRelative(const std::string& path);
+
+/**
+ * Create a folder
+ * The folder path is created recursively
+ * Fails silently if failing to create the path
+ * @param path The folder to create
+ */
+void OsCreateFolder(const std::string& path);
