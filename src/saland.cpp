@@ -302,6 +302,14 @@ void runGame() {
 	IMG_Init(IMG_INIT_PNG);
 	TTF_Init();
 	Mix_Init(MIX_INIT_OGG);
+	if (!globalData.NoSound) {
+		//If sound has not been disabled, then load the sound system
+		if (Mix_OpenAudio(44100, AUDIO_S16SYS, 2, 2048) < 0) {
+			std::cerr << "Warning: Couldn't set 44100 Hz 16-bit audio - Reason: " << SDL_GetError() << "\n"
+						<< "Sound will be disabled!" << "\n";
+			globalData.NoSound = true; //Tries to stop all sound from playing/loading
+		}
+	}
 
 	int rendererFlags = 0;
 
