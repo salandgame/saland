@@ -27,8 +27,6 @@ https://github.com/sago007/saland
 #include "sago/platform_folders.h"
 #include "version.h"
 
-static sago::PlatformFolders pf;
-
 
 static std::string overrideSavePath = "";
 
@@ -42,7 +40,7 @@ std::string getPathToSaveFiles() {
 	if (overrideSavePath.length() > 0) {
 		return overrideSavePath;
 	}
-	return pf.getSaveGamesFolder1()+"/"+GAMENAME;
+	return sago::getSaveGamesFolder2()+"/"+GAMENAME;
 }
 
 void setPathToSaveFiles(const std::string& path) {
