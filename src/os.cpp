@@ -30,6 +30,29 @@ https://github.com/sago007/saland
 
 static std::string overrideSavePath = "";
 
+#if defined(_WIN32)
+#include "shlwapi.h"
+
+static std::wstring win32_utf8_to_utf16(const char* str) {
+	std::wstring res;
+	// If the 6th parameter is 0 then WideCharToMultiByte returns the number of bytes needed to store the result.
+	int actualSize = MultiByteToWideChar(CP_UTF8, 0, str, -1, nullptr, 0);
+	if (actualSize > 0) {
+		//If the converted UTF-8 string could not be in the initial buffer. Allocate one that can hold it.
+		std::vector<wchar_t> buffer(actualSize);
+		actualSize = MultiByteToWideChar(CP_UTF8, 0, str, -1, &buffer[0], buffer.size());
+		res = buffer.data();
+	}
+	if (actualSize == 0) {
+		// WideCharToMultiByte return 0 for errors.
+		const std::string errorMsg = "UTF8 to UTF16 failed with error code: " + GetLastError();
+		throw std::runtime_error(errorMsg.c_str());
+	}
+	return res;
+}
+#endif
+
+
 /**
  * Returns the path to where all settings must be saved.
  * On unix-like systems this is the home-folder under: ~/.local/share/GAMENAME
@@ -64,7 +87,7 @@ void OsCreateFolder(const std::string& path) {
 	}
 #elif defined(_WIN32)
 	//Now for Windows NT/2k/xp/2k3 etc.
-	CreateDirectoryW(win32_utf8_to_utf16(pf.getSaveGamesFolder1().c_str()).c_str(), nullptr);
+	CreateDirectoryW(win32_utf8_to_utf16(sago::getSaveGamesFolder2().c_str()).c_str(), nullptr);
 	std::string tempA = path;
 	CreateDirectoryW(win32_utf8_to_utf16(tempA.c_str()).c_str(), nullptr);
 #else
@@ -81,7 +104,7 @@ void OsCreateSaveFolder() {
 	}
 #elif defined(_WIN32)
 	//Now for Windows NT/2k/xp/2k3 etc.
-	CreateDirectory(pf.getSaveGamesFolder1().c_str(), nullptr);
+	CreateDirectory(sago::getSaveGamesFolder2().c_str(), nullptr);
 	std::string tempA = getPathToSaveFiles();
 	CreateDirectory(tempA.c_str(),nullptr);
 #endif
