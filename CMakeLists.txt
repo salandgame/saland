@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.5.0)
 project (saland)
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${saland_SOURCE_DIR}/src/cmake")
 
 # Define install paths
 set(INSTALL_BIN_DIR "bin" CACHE STRING "Install executable in this directory")
