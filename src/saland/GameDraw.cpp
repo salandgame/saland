@@ -135,8 +135,10 @@ void DrawOjbectGroup(SDL_Renderer* renderer, const sago::tiled::TileMap& tm, siz
 			}
 		}
 		else {
-			rectangleRGBA(renderer, o.x - topx, o.y - topy,
-			              o.x + o.width - topx, o.y + o.height - topy, 255, 255, 0, 255);
+			if (globalData.debugDrawProtectedAreas) {
+				rectangleRGBA(renderer, o.x - topx, o.y - topy,
+							o.x + o.width - topx, o.y + o.height - topy, 255, 255, 0, 255);
+			}
 		}
 	}
 }

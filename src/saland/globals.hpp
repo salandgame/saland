@@ -54,6 +54,9 @@ struct GlobalData {
 	int ysize = 768;
 	PlayerControls playerControls;
 	Player player;
+
+	bool debugDrawCollision = false;
+	bool debugDrawProtectedAreas = false;
 };
 
 extern GlobalData globalData;

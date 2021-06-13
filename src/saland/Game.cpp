@@ -124,6 +124,34 @@ struct ResetRegionConsoleCommand : public ConsoleCommand {
 	}
 };
 
+
+struct DrawOverlayConsoleCommand : public ConsoleCommand {
+	virtual std::string getCommand() const override {
+		return "draw_overlay";
+	}
+
+	virtual std::string run(const std::vector<std::string>& args) override {
+		if (args.size() != 3) {
+			return "Must be ran like \"goto X Y\"";
+		}
+		int turn_on = string2int_trows(args[2]);
+		if (turn_on) {
+			globalData.debugDrawCollision = true;
+			globalData.debugDrawProtectedAreas = true;
+			return "Overlay enabled!";
+		}
+		else {
+			globalData.debugDrawCollision = false;
+			globalData.debugDrawProtectedAreas = false;
+			return "Overlay disabled";
+		}
+	}
+
+	virtual std::string helpMessage() const override {
+		return "Call like \"draw_overlay TYPE 0/1\". Example: \"draw_overlay main 1\"";
+	}
+};
+
 void RunGameState(sago::GameStateInterface& state );
 
 struct ShopCommand : public ConsoleCommand {
@@ -159,13 +187,13 @@ static GotoConsoleCommand gcc;
 static ResetRegionConsoleCommand rrcc;
 static ShopCommand sc;
 static ConcoleCommandTiled cct;
+static DrawOverlayConsoleCommand docc;
 
 struct Game::GameImpl {
 	GameRegion gameRegion;
 	std::shared_ptr<Human> human;
 	float center_x = 0;
 	float center_y = 0;
-	bool drawCollision = Config::getInstance()->getInt("draw_collision");
 	int topx = 0.0;
 	int topy = 0.0;
 	int world_mouse_x = 0; //Mouse coordinates relative to the world
@@ -229,6 +257,7 @@ Game::Game() {
 	RegisterCommand(&rrcc);
 	RegisterCommand(&sc);
 	RegisterCommand(&cct);
+	RegisterCommand(&docc);
 	GameConsoleCommandRegister();
 	data.reset(new Game::GameImpl());
 	data->human.reset(new Human());
@@ -307,7 +336,6 @@ static std::string GetLayerInfoForTile(const World& w, int x, int y) {
 }
 
 void Game::Draw(SDL_Renderer* target) {
-	data->drawCollision = Config::getInstance()->getInt("draw_collision");
 	double screen_width = globalData.xsize;
 	double screen_height = globalData.ysize;
 	int screen_boarder = 64;
@@ -348,19 +376,19 @@ void Game::Draw(SDL_Renderer* target) {
 	for (const auto& p : data->gameRegion.placeables) {
 		MiscItem* m = dynamic_cast<MiscItem*> (p.get());
 		if (m) {
-			DrawMiscEntity(target, globalData.spriteHolder.get(), m, SDL_GetTicks(), data->topx, data->topy, data->drawCollision);
+			DrawMiscEntity(target, globalData.spriteHolder.get(), m, SDL_GetTicks(), data->topx, data->topy, globalData.debugDrawCollision);
 		}
 		Human* h = dynamic_cast<Human*> (p.get());
 		if (h) {
-			DrawHumanEntity(target, globalData.spriteHolder.get(), h, SDL_GetTicks(), data->topx, data->topy, data->drawCollision);
+			DrawHumanEntity(target, globalData.spriteHolder.get(), h, SDL_GetTicks(), data->topx, data->topy, globalData.debugDrawCollision);
 		}
 		Monster* monster = dynamic_cast<Monster*> (p.get());
 		if (monster) {
-			DrawMonster(target, globalData.spriteHolder.get(), monster, SDL_GetTicks(), data->topx, data->topy, data->drawCollision);
+			DrawMonster(target, globalData.spriteHolder.get(), monster, SDL_GetTicks(), data->topx, data->topy, globalData.debugDrawCollision);
 		}
 		Projectile* projectile = dynamic_cast<Projectile*> (p.get());
 		if (projectile) {
-			DrawProjectile(target, globalData.spriteHolder.get(), projectile, SDL_GetTicks(), data->topx, data->topy, data->drawCollision);
+			DrawProjectile(target, globalData.spriteHolder.get(), projectile, SDL_GetTicks(), data->topx, data->topy, globalData.debugDrawCollision);
 		}
 	}
 	for (size_t i = 0; i < data->gameRegion.world.tm.layers.size(); ++i) {
