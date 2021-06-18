@@ -222,9 +222,11 @@ void RunGameState(sago::GameStateInterface& state ) {
 				done = true;
 			}
 
-			if (event.type == SDL_WINDOWEVENT_RESIZED) {
-				std::cout << event.window.data1 << ", " << event.window.data2 << "\n";
-				SDL_GetRendererOutputSize(globalData.screen, &globalData.xsize, &globalData.ysize);
+			if (event.type == SDL_WINDOWEVENT) {
+				if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+					std::cout << event.window.data1 << ", " << event.window.data2 << "\n";
+					SDL_GetRendererOutputSize(globalData.screen, &globalData.xsize, &globalData.ysize);
+				}
 			}
 
 			if (event.type == SDL_KEYDOWN) {
@@ -297,7 +299,7 @@ static void runHelpAbout() {
 }
 
 void runGame() {
-	int posX = 100, posY = 100, width = 1280, height = 800;
+	int width = 1280, height = 800;
 	SDL_Init(SDL_INIT_VIDEO);
 	IMG_Init(IMG_INIT_PNG);
 	TTF_Init();
@@ -317,10 +319,9 @@ void runGame() {
 	if (Config::getInstance()->getInt("always-software")) {
 		rendererFlags |= SDL_RENDERER_SOFTWARE;
 	}
-
-	win = SDL_CreateWindow("Saland Adventures", posX, posY, width, height, 0);
+	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
+	win = SDL_CreateWindow("Saland Adventures", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_RESIZABLE);
 	globalData.screen = SDL_CreateRenderer(win, -1, rendererFlags);
-	//SDL_RenderSetLogicalSize(globalData.screen, 1024, 768);
 	sago::SagoDataHolder holder(globalData.screen);
 	globalData.spriteHolder.reset(new sago::SagoSpriteHolder(holder));
 	globalData.dataHolder = &holder;
