@@ -200,7 +200,6 @@ struct Game::GameImpl {
 	int world_mouse_y = 0;
 	char direction = 0;
 	Uint32 lastUpdate = 0;
-	uint32_t drawTile = 607;
 	bool isActive = true;
 	std::string worldName = "world1";
 	sago::SagoTextField bottomField;
@@ -409,8 +408,6 @@ void Game::Draw(SDL_Renderer* target) {
 	}
 	data->bottomField.Draw(target, 2, screen_height, sago::SagoTextField::Alignment::left, sago::SagoTextField::VerticalAlignment::bottom);
 	data->middleField.Draw(target, screen_width/2, screen_height/4, sago::SagoTextField::Alignment::center, sago::SagoTextField::VerticalAlignment::bottom);
-	DrawRectYellow(target, screen_width-70, screen_height-70, 52, 52);
-	DrawTile(target, globalData.spriteHolder.get(), data->gameRegion.world.tm, data->drawTile, screen_width-60, screen_height-60);
 	for (size_t i = 0; i < 10; ++i) {
 		if (data->slot_selected == i) {
 			DrawRectWhite(target, 10+i*56, 10, 52, 52);
@@ -460,28 +457,6 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 		}
 	}
 	if (event.type == SDL_KEYDOWN) {
-		int tile_x = data->world_mouse_x/32;
-		int tile_y = data->world_mouse_y/32;
-		if (event.key.keysym.sym == globalData.playerControls.block_create
-		        && sago::tiled::tileInBound(data->gameRegion.world.tm, tile_x, tile_y)
-		        && !(data->gameRegion.world.tile_protected(tile_x, tile_y)) ) {
-			int layer_number = 2; //  Do not hardcode
-			uint32_t tile = data->drawTile;
-			sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
-			data->gameRegion.liqudHandler["water"].updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
-			data->gameRegion.liqudHandler["lava"].updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
-			data->gameRegion.world.init_physics(data->gameRegion.physicsBox);
-		}
-		if (event.key.keysym.sym == globalData.playerControls.block_delete
-		        && sago::tiled::tileInBound(data->gameRegion.world.tm, tile_x, tile_y)
-		        && !(data->gameRegion.world.tile_protected(tile_x, tile_y)) ) {
-			int layer_number = 2; //  Do not hardcode
-			uint32_t tile = 0;
-			sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
-			data->gameRegion.liqudHandler["water"].updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
-			data->gameRegion.liqudHandler["lava"].updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
-			data->gameRegion.world.init_physics(data->gameRegion.physicsBox);
-		}
 		if (event.key.keysym.sym == SDLK_1 || event.key.keysym.sym == SDLK_KP_1) {
 			data->slot_selected = 0;
 		}
@@ -511,12 +486,6 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 		}
 		if (event.key.keysym.sym == SDLK_0 || event.key.keysym.sym == SDLK_KP_0) {
 			data->slot_selected = 9;
-		}
-		if (event.key.keysym.sym == SDLK_PAGEDOWN) {
-			data->drawTile--;
-		}
-		if (event.key.keysym.sym == SDLK_PAGEUP) {
-			data->drawTile++;
 		}
 		if (event.key.keysym.sym == SDLK_ESCAPE && event.key.keysym.mod & KMOD_LSHIFT) {
 			if (!data->console) {
