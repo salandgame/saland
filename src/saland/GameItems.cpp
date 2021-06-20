@@ -30,6 +30,7 @@ const ItemDef& getItem(const std::string& itemName) {
 	itemDef.isDestructible = true;
 	itemDef.health = 100.0f;
 	itemDef.itemid = itemName;
+	itemDef.pickup = false;
 	if (itemName == "barrel") {
 		itemDef.radius = 16.0f;
 		itemDef.sprite = "item_barrel";
@@ -40,6 +41,7 @@ const ItemDef& getItem(const std::string& itemName) {
 		itemDef.radius = 9.0f;
 		itemDef.sprite = "item_food_potato";
 		itemDef.isStatic = false;
+		itemDef.pickup = true;
 	}
 	if (itemName == "tree_pine") {
 		itemDef.radius = 20.0f;

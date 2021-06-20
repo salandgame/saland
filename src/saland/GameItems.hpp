@@ -34,6 +34,7 @@ struct ItemDef {
 	bool isStatic = true;
 	bool isDestructible = true;
 	float health = 10.0f;
+	bool pickup = false;
 };
 
 const ItemDef& getItem(const std::string& itemName);

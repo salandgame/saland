@@ -570,6 +570,10 @@ void Game::Update() {
 				}
 				item->removeMe = true;
 			}
+			if (item->pickup && Intersect(*item, *(data->human))) {
+				item->removeMe = true;
+				globalData.player.item_inventory[item->name]++;
+			}
 		}
 	}
 	auto& vp = data->gameRegion.placeables;

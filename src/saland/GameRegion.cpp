@@ -95,6 +95,7 @@ void GameRegion::SpawnItem(const ItemDef& def, float destX, float destY) {
 	barrel.get()->destructible = def.isDestructible;
 	barrel.get()->health = def.health;
 	barrel.get()->name = def.itemid;
+	barrel.get()->pickup = def.pickup;
 	for (int i=(destX-def.radius)/32; i <= (destX+def.radius)/32+1; ++i) {
 		for (int j=(destY-def.radius)/32; j <= (destY+def.radius)/32+1; ++j) {
 			if (world.tile_protected(i, j)) {
