@@ -183,6 +183,7 @@ struct ConcoleCommandTiled : public ConsoleCommand {
 	}
 };
 
+
 static GotoConsoleCommand gcc;
 static ResetRegionConsoleCommand rrcc;
 static ShopCommand sc;

@@ -66,6 +66,33 @@ struct ConsoleCommandGiveItem : public ConsoleCommand {
 };
 
 
+struct ConsoleCommandItem : public ConsoleCommand {
+	virtual std::string getCommand() const override {
+		return "item";
+	}
+
+	virtual std::string run(const std::vector<std::string>& args) override {
+		if (args.size() < 2) {
+			throw std::runtime_error("Must be called like: item list");
+		}
+		if (args.at(1) == "list") {
+			std::string message = "";
+			for (const auto& item : globalData.player.item_inventory) {
+				message += item.first + ":" + std::to_string(item.second) + ", ";
+			}
+			return message;
+		}
+		else {
+			throw std::runtime_error(args.at(2)+" not recognized");
+		}
+	}
+
+	virtual std::string helpMessage() const override {
+		return "Handles item functionality. Example: item list";
+	}
+};
+
+
 struct ConsoleCommandQuit : public ConsoleCommand {
 	virtual std::string getCommand() const override {
 		return "quit";
@@ -125,11 +152,13 @@ struct ConsoleCommandConfig : public ConsoleCommand {
 };
 
 static ConsoleCommandGiveItem cc_give_item;
+static ConsoleCommandItem cc_item;
 static ConsoleCommandQuit cc_quit;
 static ConsoleCommandConfig cc_config;
 
 void GameConsoleCommandRegister() {
 	RegisterCommand(&cc_give_item);
+	RegisterCommand(&cc_item);
 	RegisterCommand(&cc_quit);
 	RegisterCommand(&cc_config);
 }
