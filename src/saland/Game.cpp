@@ -296,6 +296,9 @@ Game::Game() {
 	slot4.name = "spell_create_block";
 	slot4.tile = 16;
 	slot4.type = SpellCursorType::tile;
+	Spell& slot5 = data->slot_spell.at(5);
+	slot5.icon = "item_food_potato";
+	slot5.name = "spell_spawn_item";
 	Spell& slot9 = data->slot_spell.at(9);
 	slot9.icon = "icon_trash_can";
 	slot9.name = "spell_clear_block";
@@ -679,6 +682,14 @@ void Game::Update() {
 				SetLengthToOne(projectile->directionX, projectile->directionY);
 				projectile->fired_by = data->human;
 				data->gameRegion.placeables.push_back(projectile);
+			}
+		}
+		if (data->slot_spell.at(data->slot_selected).name == "spell_spawn_item") {
+			if (data->human->castTimeRemaining == 0) {
+				data->human->castTimeRemaining = data->human->castTime;
+				const ItemDef& potatoDef = getItem("food_potato");
+				data->gameRegion.SpawnItem(potatoDef, data->world_mouse_x, data->world_mouse_y);
+				//spawn item
 			}
 		}
 		if (data->slot_spell.at(data->slot_selected).name == "spell_create_block") {
