@@ -262,6 +262,7 @@ Game::Game() {
 	data.reset(new Game::GameImpl());
 	data->human.reset(new Human());
 	data->lastUpdate = SDL_GetTicks();
+	data->worldName = Config::getInstance()->getString("world");
 	ResetWorld(0, 0, false);
 	data->human->pants = globalData.player.get_visible_bottom();
 	data->human->hair = globalData.player.get_visible_hair();
