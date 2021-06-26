@@ -1,0 +1,11 @@
+{
+  "name" : "Sarah",
+  "visible_race" : "female",
+  "hair" : "standard_hair",
+  "equip" : {
+    "bottom" : "pants_1",
+    "top" : "pirate_shirt_sky",
+    "hat" : "",
+    "shoes" : ""
+  }
+}
