@@ -260,22 +260,19 @@ void RunGameState(sago::GameStateInterface& state ) {
 
 void startWorld1() {
 	Config::getInstance()->setString("world", "world1");
-	Game g;
-	RunGameState(g);
 }
 
 void startWorld2() {
 	Config::getInstance()->setString("world", "world2");
-	Game g;
-	RunGameState(g);
 }
 void startWorld3() {
 	Config::getInstance()->setString("world", "world3");
-	Game g;
-	RunGameState(g);
 }
 void startWorld4() {
 	Config::getInstance()->setString("world", "world4");
+}
+
+void runStartGame() {
 	Game g;
 	RunGameState(g);
 }
@@ -283,18 +280,22 @@ void startWorld4() {
 void runWorldSelect() {
 	Menu m(globalData.screen, true);
 	Button bWorld1;
+	bWorld1.setPopOnRun(true);
 	bWorld1.setLabel("World 1");
 	bWorld1.setAction(startWorld1);
 	m.addButton(&bWorld1);
 	Button bWorld2;
+	bWorld2.setPopOnRun(true);
 	bWorld2.setLabel("World 2");
 	bWorld2.setAction(startWorld2);
 	m.addButton(&bWorld2);
 	Button bWorld3;
+	bWorld3.setPopOnRun(true);
 	bWorld3.setLabel("World 3");
 	bWorld3.setAction(startWorld3);
 	m.addButton(&bWorld3);
 	Button bWorld4;
+	bWorld4.setPopOnRun(true);
 	bWorld4.setLabel("World 4");
 	bWorld4.setAction(startWorld4);
 	m.addButton(&bWorld4);
@@ -336,6 +337,19 @@ static void runHelpAbout() {
         RunGameState(helpAbout);
 }
 
+class WouldSelectButton : public Button {
+public:
+	WouldSelectButton() {
+		this->setLabel(SPrintStringF("World: %s", Config::getInstance()->getString("world").c_str()));
+	}
+
+	virtual void doAction() override {
+		runWorldSelect();
+		this->setLabel(SPrintStringF("World: %s", Config::getInstance()->getString("world").c_str()));
+	}
+};
+
+
 void runGame() {
 	int width = 1280, height = 800;
 	SDL_Init(SDL_INIT_VIDEO);
@@ -372,8 +386,10 @@ void runGame() {
 	Menu m(globalData.screen, false);
 	Button bStart;
 	bStart.setLabel("Start");
-	bStart.setAction(runWorldSelect);
+	bStart.setAction(runStartGame);
 	m.addButton(&bStart);
+	WouldSelectButton bWorldSelect;
+	m.addButton(&bWorldSelect);
 	Button bOptions;
 	bOptions.setLabel("Options");
 	bOptions.setAction(runMenuOptions);
