@@ -411,12 +411,12 @@ void runGame() {
 
 int main(int argc, char* argv[]) {
 	PHYSFS_init(argv[0]);
-	PHYSFS_addToSearchPath((std::string(SHAREDIR)+"/packages/saland-0001.data").c_str(), 1);
-	PHYSFS_addToSearchPath((std::string(PHYSFS_getBaseDir())+"/packages/saland-0001.data").c_str(), 1);
-	PHYSFS_addToSearchPath((std::string(PHYSFS_getBaseDir())+"/data").c_str(), 1);
+	PHYSFS_mount((std::string(SHAREDIR)+"/packages/saland-0001.data").c_str(), nullptr, 0);
+	PHYSFS_mount((std::string(PHYSFS_getBaseDir())+"/packages/saland-0001.data").c_str(), nullptr, 0);
+	PHYSFS_mount((std::string(PHYSFS_getBaseDir())+"/data").c_str(), nullptr, 0);
 	std::string savepath = getPathToSaveFiles();
 	OsCreateSaveFolder();
-	PHYSFS_addToSearchPath(savepath.c_str(), 1);
+	PHYSFS_mount(savepath.c_str(), nullptr, 0);
 	PHYSFS_setWriteDir(savepath.c_str());
 	boost::program_options::options_description desc("Options");
 	desc.add_options()
