@@ -300,6 +300,11 @@ Game::Game() {
 	Spell& slot5 = data->slot_spell.at(5);
 	slot5.icon = "item_food_potato";
 	slot5.name = "spell_spawn_item";
+	slot5.item_name = "food_potato";
+	Spell& slot6 = data->slot_spell.at(6);
+	slot6.icon = "item_barrel";
+	slot6.name = "spell_spawn_item";
+	slot6.item_name = "barrel";
 	Spell& slot9 = data->slot_spell.at(9);
 	slot9.icon = "icon_trash_can";
 	slot9.name = "spell_clear_block";
@@ -685,10 +690,11 @@ void Game::Update() {
 				data->gameRegion.placeables.push_back(projectile);
 			}
 		}
+		const Spell& selectedSpell = data->slot_spell.at(data->slot_selected);
 		if (data->slot_spell.at(data->slot_selected).name == "spell_spawn_item") {
 			if (data->human->castTimeRemaining == 0) {
 				data->human->castTimeRemaining = data->human->castTime;
-				const ItemDef& potatoDef = getItem("food_potato");
+				const ItemDef& potatoDef = getItem(selectedSpell.item_name);
 				data->gameRegion.SpawnItem(potatoDef, data->world_mouse_x, data->world_mouse_y);
 				//spawn item
 			}
