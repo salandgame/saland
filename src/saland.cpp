@@ -353,26 +353,34 @@ static void runHelpAbout() {
 }
 
 class WorldSelectButton : public Button {
+private:
+	void UpdateLabel() {
+		this->setLabel(SPrintStringF("World: %s", Config::getInstance()->getString("world").c_str()));
+	}
 public:
 	WorldSelectButton() {
-		this->setLabel(SPrintStringF("World: %s", Config::getInstance()->getString("world").c_str()));
+		UpdateLabel();
 	}
 
 	virtual void doAction() override {
 		runWorldSelect();
-		this->setLabel(SPrintStringF("World: %s", Config::getInstance()->getString("world").c_str()));
+		UpdateLabel();
 	}
 };
 
 class PlayerSelectButton : public Button {
+private:
+	void UpdateLabel() {
+		this->setLabel(SPrintStringF("Player: %s", Config::getInstance()->getString("player").c_str() ));
+	}
 public:
 	PlayerSelectButton() {
-		this->setLabel(SPrintStringF("Player: %s", Config::getInstance()->getString("player").c_str() ));
+		UpdateLabel();
 	}
 
 	virtual void doAction() override {
 		runPlayerSelect();
-		this->setLabel(SPrintStringF("Player: %s", Config::getInstance()->getString("player").c_str() ));
+		UpdateLabel();
 	}
 };
 
