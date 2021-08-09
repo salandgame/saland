@@ -258,46 +258,48 @@ void RunGameState(sago::GameStateInterface& state ) {
 	}
 }
 
-void startWorld1() {
-	Config::getInstance()->setString("world", "world1");
-}
-
-void startWorld2() {
-	Config::getInstance()->setString("world", "world2");
-}
-void startWorld3() {
-	Config::getInstance()->setString("world", "world3");
-}
-void startWorld4() {
-	Config::getInstance()->setString("world", "world4");
-}
 
 void runStartGame() {
 	Game g;
 	RunGameState(g);
 }
 
+class ButtonConfigValue : public Button {
+private:
+	std::string config_key;
+	std::string config_value;
+public:
+	void setConfigValues(const std::string& key, const std::string& value) {
+		config_key = key;
+		config_value = value;
+	}
+
+	virtual void doAction() override {
+		Config::getInstance()->setString(config_key, config_value);
+	}
+};
+
 void runWorldSelect() {
 	Menu m(globalData.screen, true);
-	Button bWorld1;
+	ButtonConfigValue bWorld1;
 	bWorld1.setPopOnRun(true);
 	bWorld1.setLabel("World 1");
-	bWorld1.setAction(startWorld1);
+	bWorld1.setConfigValues("world", "world1");
 	m.addButton(&bWorld1);
-	Button bWorld2;
+	ButtonConfigValue bWorld2;
 	bWorld2.setPopOnRun(true);
 	bWorld2.setLabel("World 2");
-	bWorld2.setAction(startWorld2);
+	bWorld1.setConfigValues("world", "world2");
 	m.addButton(&bWorld2);
-	Button bWorld3;
+	ButtonConfigValue bWorld3;
 	bWorld3.setPopOnRun(true);
 	bWorld3.setLabel("World 3");
-	bWorld3.setAction(startWorld3);
+	bWorld1.setConfigValues("world", "world3");
 	m.addButton(&bWorld3);
-	Button bWorld4;
+	ButtonConfigValue bWorld4;
 	bWorld4.setPopOnRun(true);
 	bWorld4.setLabel("World 4");
-	bWorld4.setAction(startWorld4);
+	bWorld1.setConfigValues("world", "world4");
 	m.addButton(&bWorld4);
 	RunGameState(m);
 }
