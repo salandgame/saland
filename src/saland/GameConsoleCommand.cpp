@@ -24,6 +24,7 @@ https://github.com/sago007/saland
 #include "../global.hpp"
 #include "console/Console.hpp"
 #include "../common.h"
+#include <sstream>
 
 struct ConsoleCommandGiveItem : public ConsoleCommand {
 	virtual std::string getCommand() const override {
@@ -151,14 +152,55 @@ struct ConsoleCommandConfig : public ConsoleCommand {
 	}
 };
 
+static int string2int_trows(const std::string& s) {
+	try {
+		return std::stoi(s);
+	}
+	catch (std::exception&) {
+		std::stringstream ss;
+		ss << "Failed to convert \"" << s << "\" to an integer";
+		throw std::runtime_error(ss.str());
+	}
+}
+
+
+struct DrawOverlayConsoleCommand : public ConsoleCommand {
+	virtual std::string getCommand() const override {
+		return "draw_overlay";
+	}
+
+	virtual std::string run(const std::vector<std::string>& args) override {
+		if (args.size() != 3) {
+			return "Must be ran like \"draw_overlay <TYPE>(Ignored) 0|1\"";
+		}
+		int turn_on = string2int_trows(args[2]);
+		if (turn_on) {
+			globalData.debugDrawCollision = true;
+			globalData.debugDrawProtectedAreas = true;
+			return "Overlay enabled!";
+		}
+		else {
+			globalData.debugDrawCollision = false;
+			globalData.debugDrawProtectedAreas = false;
+			return "Overlay disabled";
+		}
+	}
+
+	virtual std::string helpMessage() const override {
+		return "Call like \"draw_overlay TYPE 0/1\". Example: \"draw_overlay main 1\"";
+	}
+};
+
 static ConsoleCommandGiveItem cc_give_item;
 static ConsoleCommandItem cc_item;
 static ConsoleCommandQuit cc_quit;
 static ConsoleCommandConfig cc_config;
+static DrawOverlayConsoleCommand docc;
 
 void GameConsoleCommandRegister() {
 	RegisterCommand(&cc_give_item);
 	RegisterCommand(&cc_item);
 	RegisterCommand(&cc_quit);
 	RegisterCommand(&cc_config);
+	RegisterCommand(&docc);
 }

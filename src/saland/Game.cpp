@@ -125,33 +125,6 @@ struct ResetRegionConsoleCommand : public ConsoleCommand {
 };
 
 
-struct DrawOverlayConsoleCommand : public ConsoleCommand {
-	virtual std::string getCommand() const override {
-		return "draw_overlay";
-	}
-
-	virtual std::string run(const std::vector<std::string>& args) override {
-		if (args.size() != 3) {
-			return "Must be ran like \"goto X Y\"";
-		}
-		int turn_on = string2int_trows(args[2]);
-		if (turn_on) {
-			globalData.debugDrawCollision = true;
-			globalData.debugDrawProtectedAreas = true;
-			return "Overlay enabled!";
-		}
-		else {
-			globalData.debugDrawCollision = false;
-			globalData.debugDrawProtectedAreas = false;
-			return "Overlay disabled";
-		}
-	}
-
-	virtual std::string helpMessage() const override {
-		return "Call like \"draw_overlay TYPE 0/1\". Example: \"draw_overlay main 1\"";
-	}
-};
-
 void RunGameState(sago::GameStateInterface& state );
 
 struct ShopCommand : public ConsoleCommand {
@@ -188,7 +161,6 @@ static GotoConsoleCommand gcc;
 static ResetRegionConsoleCommand rrcc;
 static ShopCommand sc;
 static ConcoleCommandTiled cct;
-static DrawOverlayConsoleCommand docc;
 
 struct Game::GameImpl {
 	GameRegion gameRegion;
@@ -257,7 +229,6 @@ Game::Game() {
 	RegisterCommand(&rrcc);
 	RegisterCommand(&sc);
 	RegisterCommand(&cct);
-	RegisterCommand(&docc);
 	GameConsoleCommandRegister();
 	data.reset(new Game::GameImpl());
 	data->human.reset(new Human());
