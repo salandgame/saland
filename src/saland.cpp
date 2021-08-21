@@ -485,6 +485,8 @@ int main(int argc, char* argv[]) {
 	}
 	Config::getInstance()->setDefault("fullscreen", "0");
 	Config::getInstance()->setDefault("draw_collision", "0");
+	Config::getInstance()->setDefault("world", "world1");
+	Config::getInstance()->setDefault("player", "player1");
 	runGame();
 	Config::getInstance()->save();
 	return 0;
