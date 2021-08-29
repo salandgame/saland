@@ -268,6 +268,7 @@ struct TileObjectGroup {
 	double opacity = 1.0;
 };
 
+
 struct TileMap {
 	std::string version;
 	std::string orientation;
@@ -280,6 +281,7 @@ struct TileMap {
 	std::vector<TileSet> tileset;
 	std::vector<TileLayer> layers;
 	std::vector<TileObjectGroup> object_groups;
+	std::map<std::string, TileProperty> properties;
 };
 
 inline void setValueFromAttribute(rapidxml::xml_node<> * node, const char* name, std::string& result) {
@@ -376,6 +378,17 @@ inline TileMap string2tilemap(const std::string& tmx_content) {
 	setValueFromAttribute( root_node, "tilewidth", m.tilewidth);
 	setValueFromAttribute( root_node, "tileheight", m.tileheight);
 	setValueFromAttribute( root_node, "nextobjectid", m.nextobjectid);
+	rapidxml::xml_node<> * custom_properties_node = root_node->first_node("properties");
+	if (custom_properties_node) {
+		for (rapidxml::xml_node<> * property_node = custom_properties_node->first_node("property");
+		property_node; property_node = property_node->next_sibling("property") ) {
+			TileProperty tp;
+			setValueFromAttribute(property_node, "name", tp.name);
+			setValueFromAttribute(property_node, "type", tp.type);
+			setValueFromAttribute(property_node, "value", tp.value);
+			m.properties[tp.name] = tp;
+		}
+	}
 	//const auto& tileset_node = getElement(root_node, "tileset");
 	for (rapidxml::xml_node<> * tileset_node = root_node->first_node("tileset"); tileset_node; tileset_node = tileset_node->next_sibling("tileset")) {
 		m.tileset.push_back(node2tileset(tileset_node));
@@ -548,6 +561,18 @@ inline std::string tilemap2string(const TileMap& m) {
 	xml_add_attribute(ret,  "tileheight", m.tileheight);
 	xml_add_attribute(ret,  "nextobjectid", m.nextobjectid);
 	ret << ">\n";
+	if (m.properties.size() > 0) {
+		ret << "<properties>\n";
+		for (const auto& prop : m.properties) {
+			ret << "<property name=\"" << prop.first << "\" ";
+			if (prop.second.type.size()> 0) {
+				ret << "type=\"" << prop.second.type << "\" ";
+			}
+			ret << "value=\"" << prop.second.value << "\" ";
+			ret << "/>\n";
+		}
+		ret << "</properties>\n";
+	}
 	for (size_t i = 0; i < m.tileset.size(); ++i) {
 		xml_add_tileset(ret, m, i);
 	}
