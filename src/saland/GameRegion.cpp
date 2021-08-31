@@ -149,6 +149,20 @@ std::string GameRegion::GetRegionType(int region_x, int region_y) const {
 }
 
 
+void GameRegion::ProcessRegionEnter(World& world) {
+	if (world.tm.properties["type"].value == "forrest") {
+		std::cout << "Forrest (or start) region\n";
+		ItemDef pineDef = getItem("tree_pine");
+
+		for (int i=0; i<10; ++i) {
+			int x = (rand()%(world.tm.width-3)+1)*32+rand()%32;
+			int y = (rand()%(world.tm.height-3)+1)*32+rand()%32;
+			SpawnItem(pineDef, x, y);
+			std::cout << "Spawning at " << x << ", " << y << "\n";
+		}
+	}
+}
+
 
 void GameRegion::Init(int x, int y, const std::string& worldName, bool forceResetWorld) {
 	region_x = x;
@@ -218,16 +232,10 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 
 	//Forrest region
 	std::string regionType = GetRegionType(region_x, region_y);
-	if (regionType == "forrest" || regionType == "start") {
-		std::cout << "Forrest (or start) region\n";
-
-		for (int i=0; i<10; ++i) {
-			int x = (rand()%(world.tm.width-3)+1)*32+rand()%32;
-			int y = (rand()%(world.tm.height-3)+1)*32+rand()%32;
-			SpawnItem(pineDef, x, y);
-			std::cout << "Spawning at " << x << ", " << y << "\n";
-		}
+	if (regionType == "forrest" || regionType == "start" ) {
+		world.tm.properties["type"].value = "forrest";
 	}
+	ProcessRegionEnter(world);
 
 	SpawnPrefab(getPrefab("basic_house"), 32, 32);
 
