@@ -91,6 +91,7 @@ void fill_blocking_tiles(std::vector<bool>& output, const sago::tiled::TileMap& 
 	output.resize(tm.height*tm.width);
 	for (int i = 0; i < tm.height; ++i) {
 		for (int j = 0; j < tm.width; ++j) {
+			output[i+j*tm.width] = false;
 			uint32_t gid = sago::tiled::getTileFromLayer(tm, layer, i, j);
 			if (gid == 0) {
 				continue;
@@ -276,8 +277,10 @@ void World::init(std::shared_ptr<b2World>& world, const std::string& mapFileName
 	init_tilemap(tm, blockingLayer, blockingLayer_overlay_1);
 	init_physics(world);
 	protected_tiles.resize(tm.height*tm.width);
+	
 	for (int x=0; x < tm.width; ++x) {
 		for (int y=0; y < tm.height; ++y) {
+			protected_tiles[x+y*tm.width] = false;
 			if (x < 2 && y > tm.layers.at(0).height/2-6 && y < tm.layers.at(0).height/2+5) {
 				protected_tiles[x+y*tm.width] = true;
 			}

@@ -61,7 +61,6 @@ public:
 	void SpawnMonster(const MonsterDef& def, float destX, float destY) ;
 	void SpawnItem(const ItemDef& def, float destX, float destY) ;
 	void SpawnPrefab(const Prefab& prefab, int destX, int destY);
-	std::string GetRegionType(int x, int y) const;
 	void ProcessRegionEnter(World& world);
 private:
 	int region_x = 0;

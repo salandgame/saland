@@ -83,6 +83,7 @@ void GameRegion::SpawnPrefab(const Prefab& prefab, int destX, int destY) {
 		}
 	}
 	ApplyPrefab(world.tm, destX, destY, prefab);
+	this->world.init_physics(this->physicsBox);
 }
 
 void GameRegion::SpawnItem(const ItemDef& def, float destX, float destY) {
@@ -138,8 +139,8 @@ void GameRegion::SpawnItem(const ItemDef& def, float destX, float destY) {
 	}
 }
 
-std::string GameRegion::GetRegionType(int region_x, int region_y) const {
-	if (region_x == -1 && region_y == 0) {
+static std::string GetRegionType(int region_x, int region_y) {
+	if (region_x < 0 && region_y == 0) {
 		return "forrest";
 	}
 	if (region_x == 0 && region_y == 0) {
@@ -164,25 +165,32 @@ void GameRegion::ProcessRegionEnter(World& world) {
 }
 
 
+static std::string RegionChooseMapTemplate(int region_x, int region_y) {
+	std::string loadMap = "maps/sample1.tmx";
+	if (GetRegionType(region_x, region_y) == "forrest") {
+		loadMap = "maps/template_forrest.tmx";
+	}
+	if (GetRegionType(region_x, region_y) == "start") {
+		loadMap = "maps/template_start.tmx";
+	}
+	if (region_x == 0 && region_y == -2) {
+		loadMap = "maps/city_0x-2.tmx";
+	}
+	if (region_x == 3 && region_y == 3) {
+		loadMap = "maps/template_forrest2.tmx";
+	}
+	return loadMap;
+}
+
+
+
 void GameRegion::Init(int x, int y, const std::string& worldName, bool forceResetWorld) {
 	region_x = x;
 	region_y = y;
 	mapFileName = createFileName(region_x, region_y, worldName);
 	std::string loadMap = mapFileName;
 	if (!sago::FileExists(loadMap.c_str()) || forceResetWorld) {
-		loadMap = "maps/sample1.tmx";
-		if (GetRegionType(region_x, region_y) == "forrest") {
-			loadMap = "maps/template_forrest.tmx";
-		}
-		if (GetRegionType(region_x, region_y) == "start") {
-			loadMap = "maps/template_start.tmx";
-		}
-		if (region_x == 0 && region_y == -2) {
-			loadMap = "maps/city_0x-2.tmx";
-		}
-		if (region_x == 3 && region_y == 3) {
-			loadMap = "maps/template_forrest2.tmx";
-		}
+		loadMap = RegionChooseMapTemplate(region_x, region_y);
 	}
 	b2Vec2 gravity(0.0f, 0.0f);
 	placeables.clear();
