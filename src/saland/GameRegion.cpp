@@ -166,7 +166,7 @@ void GameRegion::ProcessRegionEnter(World& world) {
 
 
 static std::string RegionChooseMapTemplate(int region_x, int region_y) {
-	std::string loadMap = "maps/sample1.tmx";
+	std::string loadMap = "maps/desert.tmx";
 	if (GetRegionType(region_x, region_y) == "forrest") {
 		loadMap = "maps/template_forrest.tmx";
 	}

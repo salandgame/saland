@@ -36,7 +36,7 @@ public:
 	float health = 10.0;
 	float X = 20.0;
 	float Y = 20.0;
-	float Radius = 16.0;
+	float Radius = 14.0;
 	bool removeMe = false;
 	bool destructible = true;
 	b2Body* body = nullptr;

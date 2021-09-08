@@ -210,7 +210,7 @@ void Game::ResetWorldNoSave(int x, int y, bool forceResetWorld) {
 	data->human->body = data->gameRegion.physicsBox->CreateBody(&myBodyDef);
 	b2CircleShape circleShape;
 	circleShape.m_p.Set(0, 0); //position, relative to body position
-	circleShape.m_radius = 0.5f; //radius 16 pixel (32 pixel = 1)
+	circleShape.m_radius = data->human->Radius/pixel2unit; // 0.48f; //radius 16 pixel (32 pixel = 1)
 	b2FixtureDef myFixtureDef;
 	myFixtureDef.shape = &circleShape; //this is a pointer to the shape above
 	myFixtureDef.density = 10.0f;
