@@ -30,8 +30,9 @@ https://github.com/sago007/saland
 struct Player {
 	Player() {};
 	std::string save_name="player1";
+	std::string race = "female";
 	std::string get_visible_race() {
-		return "female";
+		return this->race;
 	}
 	std::string get_visible_hair() {
 		return "standard_hair";
@@ -40,6 +41,9 @@ struct Player {
 		return "pants_1";
 	}
 	std::string get_visible_top() {
+		if (race == "male") {
+			return "";
+		}
 		return "pirate_shirt_sky";
 	}
 	std::string get_visibla_hat() {

@@ -260,6 +260,10 @@ void RunGameState(sago::GameStateInterface& state ) {
 
 
 void runStartGame() {
+	std::string playername = Config::getInstance()->getString("player");
+	if (playername == "player2") {
+		globalData.player.race = "male";
+	}
 	Game g;
 	RunGameState(g);
 }
