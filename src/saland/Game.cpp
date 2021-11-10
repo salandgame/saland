@@ -124,6 +124,22 @@ struct ResetRegionConsoleCommand : public ConsoleCommand {
 	}
 };
 
+static bool killPlayer = false;  //Set to true to emulate killing the player
+
+struct ConsoleCommandKillPlayer : public ConsoleCommand {
+	virtual std::string getCommand() const override {
+		return "killplayer";
+	}
+	virtual std::string run(const std::vector<std::string>&) override {
+		killPlayer = true;
+		return "Killing player";
+	}
+
+	virtual std::string helpMessage() const override {
+		return "Kills the player";
+	}
+};
+
 
 void RunGameState(sago::GameStateInterface& state );
 
@@ -161,6 +177,7 @@ static GotoConsoleCommand gcc;
 static ResetRegionConsoleCommand rrcc;
 static ShopCommand sc;
 static ConcoleCommandTiled cct;
+static ConsoleCommandKillPlayer cc_kill_player;
 
 struct Game::GameImpl {
 	GameRegion gameRegion;
@@ -229,6 +246,7 @@ Game::Game() {
 	RegisterCommand(&rrcc);
 	RegisterCommand(&sc);
 	RegisterCommand(&cct);
+	RegisterCommand(&cc_kill_player);
 	GameConsoleCommandRegister();
 	data.reset(new Game::GameImpl());
 	data->human.reset(new Human());
@@ -500,17 +518,19 @@ void Game::Update() {
 	float deltaX = 0.0f;
 	float deltaY = 0.0f;
 	if (!data->consoleActive) {
-		if (state[globalData.playerControls.move_down]) {
-			deltaY += 1.0f;
-		}
-		if (state[globalData.playerControls.move_up]) {
-			deltaY -= 1.0f;
-		}
-		if (state[globalData.playerControls.move_right]) {
-			deltaX += 1.0f;
-		}
-		if (state[globalData.playerControls.move_left]) {
-			deltaX -= 1.0f;
+		if (!data->human->diedAt) {
+			if (state[globalData.playerControls.move_down]) {
+				deltaY += 1.0f;
+			}
+			if (state[globalData.playerControls.move_up]) {
+				deltaY -= 1.0f;
+			}
+			if (state[globalData.playerControls.move_right]) {
+				deltaX += 1.0f;
+			}
+			if (state[globalData.playerControls.move_left]) {
+				deltaX -= 1.0f;
+			}
 		}
 	}
 	data->human->moveX = deltaX;
@@ -612,6 +632,12 @@ void Game::Update() {
 	if (teleport) {
 		ResetWorld(teleportX, teleportY, false);
 		teleport = false;
+	}
+	if ( (killPlayer || data->human->health <= 0) && !data->human->diedAt) {
+		data->human->health = 0;
+		data->human->diedAt = SDL_GetTicks();
+		killPlayer = false;
+		data->human->direction = 'S';
 	}
 	if (openTiled) {
 		openTiled = false;

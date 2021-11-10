@@ -63,6 +63,7 @@ public:
 	bool moving = false;
 	float moveX = 0.0;
 	float moveY = 0.0;
+	float diedAt = 0.0;  // Time the creature died. 0.0 means still alive.
 	virtual bool isStatic() override {
 		return false;
 	}

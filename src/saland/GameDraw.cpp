@@ -166,6 +166,11 @@ void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, cons
 		relativeAnimation = true;
 		relativeAnimationState = 1.0f - (entity->castTimeRemaining / entity->castTime);
 	}
+	if (entity->diedAt) {
+		animation = "hurt";
+		relativeAnimation = true;
+		relativeAnimationState = 0.9f;
+	}
 	DrawCollision(target, entity, offsetX, offsetY, drawCollision);
 	const sago::SagoSprite& mySprite = sHolder->GetSprite(entity->race + "_" + animation + "_" + std::string(1, entity->direction));
 	if (relativeAnimation) {
@@ -198,7 +203,12 @@ void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, cons
 			hairAnimation = "standing";
 		}
 		const sago::SagoSprite& myHair = sHolder->GetSprite(entity->race + "_"+hairAnimation+"_"+entity->hair+"_"+std::string(1,entity->direction));
-		myHair.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
+		if (relativeAnimation) {
+			myHair.DrawProgressive(target, relativeAnimationState, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
+		}
+		else {
+			myHair.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
+		}
 	}
 }
 

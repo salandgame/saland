@@ -143,6 +143,18 @@
 	"frame_time" : 100,
     "originx" : 32,
     "originy" : 50
+},
+
+"male_hurt_pants_1_S" :  {
+	"texture" : "male_hurt_pants",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 6,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
 }
 
 }

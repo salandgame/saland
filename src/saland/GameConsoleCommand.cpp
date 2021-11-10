@@ -108,6 +108,8 @@ struct ConsoleCommandQuit : public ConsoleCommand {
 	}
 };
 
+
+
 struct ConsoleCommandConfig : public ConsoleCommand {
 	virtual std::string getCommand() const override {
 		return "config";

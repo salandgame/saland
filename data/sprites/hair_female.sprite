@@ -94,6 +94,18 @@
 	"frame_time" : 100,
     "originx" : 32,
     "originy" : 50
+},
+
+"female_hurt_hair_1_S" :  {
+	"texture" : "male_hair_single_blue",
+	"topx" : 0,
+	"topy" : 1280,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 6,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
 }
 
 }
