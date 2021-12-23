@@ -308,6 +308,16 @@ bool Game::IsActive() {
 	return data->isActive;
 }
 
+void Game::RespawnPlayer() {
+	data->human->health = 100;
+	data->human->diedAt = 0;
+	ResetWorld(0, 0, false);
+}
+
+void Game::ActionPostDeath() {
+	RespawnPlayer();
+}
+
 static void SetLengthToOne(float& x, float& y) {
 	float currentLength = std::sqrt(x*x + y*y);
 	x = x/currentLength;
@@ -638,6 +648,9 @@ void Game::Update() {
 		data->human->diedAt = SDL_GetTicks();
 		killPlayer = false;
 		data->human->direction = 'S';
+	}
+	if (data->human->diedAt && data->human->diedAt + 10000 < SDL_GetTicks()) {
+		ActionPostDeath();
 	}
 	if (openTiled) {
 		openTiled = false;
