@@ -10,6 +10,8 @@ set(INSTALL_ICONS_DIR "share/icons/hicolor" CACHE STRING "Install the icon in a 
 set(INSTALL_LOCALE_DIR "${INSTALL_DATA_DIR}/locale/" CACHE STRING "Install translation to this dir")
 set(INSTALL_METAINFO_DIR "share/metainfo" CACHE STRING "Install appstream matedata to this directory")
 
+option(SALAND_USE_EMBEDDED_FMT "Use the embedded version of {fmt}" ON)
+
 if (NOT WIN32 AND NOT STANDALONE)
 	#The path to the data dir must be compiled into the binary
 	if (IS_ABSOLUTE ${INSTALL_DATA_DIR})
@@ -39,7 +41,14 @@ endif()
 
 find_package(Boost COMPONENTS program_options REQUIRED)
 
+# box2d is not API compatible between versions (not even minor versions), so this explicit version must always be used.
 add_subdirectory("embedded_libs/box2d-2.4.1" EXCLUDE_FROM_ALL)
+
+if (SALAND_USE_EMBEDDED_FMT)
+	message("Using embedded {fmt}")
+	add_subdirectory("embedded_libs/fmt-8.1.1" EXCLUDE_FROM_ALL)
+	message("Done processing {fmt}")
+endif()
 
 #Setup SDL2
 find_package(SDL2 REQUIRED CONFIG)
@@ -64,5 +73,5 @@ file(GLOB SOURCES "src/*.cpp" "src/*/*.cpp" "src/*/*/*.cpp" "src/Libs/*.c")
 add_executable(saland ${SOURCES})
 TARGET_LINK_LIBRARIES( saland ${Boost_LIBRARIES} )
 target_link_libraries( saland ${SDL2_LIBRARIES})
-target_link_libraries( saland physfs z box2d)
+target_link_libraries( saland physfs z box2d fmt)
 target_link_libraries( saland ${SDL2MIXER_LIBRARIES} ${SDL2IMAGE_LIBRARIES} ${SDL2TTF_LIBRARIES} ${SDL2GFX_LIBRARIES})

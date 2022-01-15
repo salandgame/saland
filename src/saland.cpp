@@ -52,6 +52,8 @@ https://github.com/salandgame/saland
 #include "os.hpp"
 #include "version.h"
 
+#include "fmt/core.h"
+
 //if SHAREDIR is not used we look in current directory
 #ifndef SHAREDIR
 #define SHAREDIR "."
@@ -359,7 +361,7 @@ static void runHelpAbout() {
 class WorldSelectButton : public Button {
 private:
 	void UpdateLabel() {
-		this->setLabel(SPrintStringF("World: %s", Config::getInstance()->getString("world").c_str()));
+		this->setLabel(fmt::format("World: {}", Config::getInstance()->getString("world") ));
 	}
 public:
 	WorldSelectButton() {
@@ -375,7 +377,7 @@ public:
 class PlayerSelectButton : public Button {
 private:
 	void UpdateLabel() {
-		this->setLabel(SPrintStringF("Player: %s", Config::getInstance()->getString("player").c_str() ));
+		this->setLabel(fmt::format("Player: {}", Config::getInstance()->getString("player") ));
 	}
 public:
 	PlayerSelectButton() {

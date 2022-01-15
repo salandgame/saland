@@ -47,6 +47,7 @@ https://github.com/sago007/saland
 #include <sstream>
 #include "console/Console.hpp"
 #include "GameConsoleCommand.hpp"
+#include "fmt/core.h"
 
 int32 velocityIterations = 6;
 int32 positionIterations = 2;
@@ -405,12 +406,9 @@ void Game::Draw(SDL_Renderer* target) {
 		}
 	}
 	if (data->world_mouse_x >= 0 && data->world_mouse_y >= 0) {
-		char buffer[200];
-		snprintf(buffer, sizeof(buffer), "world_x = %d, world_y = %d, layer_info:%s",
-		         data->world_mouse_x/32, data->world_mouse_y/32,
-		         GetLayerInfoForTile(data->gameRegion.world, data->world_mouse_x/32, data->world_mouse_y/32).c_str()
-		        );
-		data->bottomField.SetText(buffer);
+		std::string s = fmt::format("world_x = {}, world_y = {}, layer_info:{}", data->world_mouse_x/32, data->world_mouse_y/32,
+		         GetLayerInfoForTile(data->gameRegion.world, data->world_mouse_x/32, data->world_mouse_y/32));
+		data->bottomField.SetText(s);
 	}
 	else {
 		data->bottomField.SetText("outside world");
