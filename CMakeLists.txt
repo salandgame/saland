@@ -11,6 +11,7 @@ set(INSTALL_LOCALE_DIR "${INSTALL_DATA_DIR}/locale/" CACHE STRING "Install trans
 set(INSTALL_METAINFO_DIR "share/metainfo" CACHE STRING "Install appstream matedata to this directory")
 
 option(SALAND_USE_EMBEDDED_FMT "Use the embedded version of {fmt}" ON)
+option(SALAND_USE_EMBEDDED_PLATFORM_FOLDERS "Use the embedded version of PlatformFolders" ON)
 
 if (NOT WIN32 AND NOT STANDALONE)
 	#The path to the data dir must be compiled into the binary
@@ -50,6 +51,12 @@ if (SALAND_USE_EMBEDDED_FMT)
 	message("Done processing {fmt}")
 endif()
 
+if (SALAND_USE_EMBEDDED_PLATFORM_FOLDERS)
+	message("Using embedded PlatformFolders")
+	add_subdirectory("embedded_libs/PlatformFolders-4.1.0" EXCLUDE_FROM_ALL)
+	message("Done processing PlatformFolders")
+endif()
+
 #Setup SDL2
 find_package(SDL2 REQUIRED CONFIG)
 include_directories(${SDL2_INCLUDE_DIRS})
@@ -73,5 +80,5 @@ file(GLOB SOURCES "src/*.cpp" "src/*/*.cpp" "src/*/*/*.cpp" "src/Libs/*.c")
 add_executable(saland ${SOURCES})
 TARGET_LINK_LIBRARIES( saland ${Boost_LIBRARIES} )
 target_link_libraries( saland ${SDL2_LIBRARIES})
-target_link_libraries( saland physfs z box2d fmt)
+target_link_libraries( saland physfs z box2d fmt platform_folders)
 target_link_libraries( saland ${SDL2MIXER_LIBRARIES} ${SDL2IMAGE_LIBRARIES} ${SDL2TTF_LIBRARIES} ${SDL2GFX_LIBRARIES})

@@ -41,7 +41,7 @@ https://github.com/salandgame/saland
 #include "saland/Game.hpp"
 
 #include "sago/SagoMisc.hpp"
-#include "sago/platform_folders.h"
+#include "platform_folders.h"
 #include "sagotmx/tmx_struct.h"
 #include "sago/SagoTextBox.hpp"
 
