@@ -272,6 +272,9 @@ Game::Game() {
 	Spell& slot0 = data->slot_spell.at(0);
 	slot0.icon = "effect_fireball";
 	slot0.name = "spell_fireball";
+	Spell& slot1 = data->slot_spell.at(1);
+	slot1.icon = "item_weapon_long_knife";
+	slot1.name = "weapon_slash_long_knife";
 	Spell& slot2 = data->slot_spell.at(2);
 	slot2.icon = "";
 	slot2.name = "spell_create_block";

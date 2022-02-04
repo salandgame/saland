@@ -75,6 +75,7 @@ public:
 	std::string hair = "";
 	std::string pants = "";
 	std::string top = "";
+	std::string weapon = "";
 	float castTimeRemaining = 0;  //If non-zero then we are casting a spell
 	float castTime = 400;    //Number of milliseconds it will take to complete the cast
 };
