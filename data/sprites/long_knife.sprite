@@ -1,0 +1,15 @@
+{
+"item_weapon_long_knife" :  {
+	"texture" : "weapons/long_knife",
+	"topx" : 0,
+	"topy" : 608,
+	"height" : 32,
+	"width" : 32,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+    "originx" : 16,
+    "originy" : 16
+}
+
+
+}
