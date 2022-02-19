@@ -690,6 +690,7 @@ void Game::Update() {
 		if (data->slot_spell.at(data->slot_selected).name == "spell_fireball") {
 			if (data->human->castTimeRemaining == 0) {
 				data->human->castTimeRemaining = data->human->castTime;
+				data->human->animation = "spellcast";
 				std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>();
 				projectile->X = data->human->X;
 				projectile->Y = data->human->Y;
@@ -705,14 +706,22 @@ void Game::Update() {
 		if (data->slot_spell.at(data->slot_selected).name == "spell_spawn_item") {
 			if (data->human->castTimeRemaining == 0) {
 				data->human->castTimeRemaining = data->human->castTime;
+				data->human->animation = "spellcast";
 				const ItemDef& potatoDef = getItem(selectedSpell.item_name);
 				data->gameRegion.SpawnItem(potatoDef, data->world_mouse_x, data->world_mouse_y);
 				//spawn item
 			}
 		}
+		if (data->slot_spell.at(data->slot_selected).name == "weapon_slash_long_knife") {
+			if (data->human->castTimeRemaining == 0) {
+				data->human->castTimeRemaining = data->human->castTime;
+				data->human->animation = "slash";
+			}
+		}
 		if (data->slot_spell.at(data->slot_selected).name == "spell_create_block") {
 			if (data->human->castTimeRemaining == 0) {
 				data->human->castTimeRemaining = data->human->castTime;
+				data->human->animation = "spellcast";
 				int tile_x = data->world_mouse_x/32;
 				int tile_y = data->world_mouse_y/32;
 				int tile = data->slot_spell.at(data->slot_selected).tile;
@@ -729,6 +738,7 @@ void Game::Update() {
 		if (data->slot_spell.at(data->slot_selected).name == "spell_clear_block") {
 			if (data->human->castTimeRemaining == 0) {
 				data->human->castTimeRemaining = data->human->castTime;
+				data->human->animation = "spellcast";
 				int tile_x = data->world_mouse_x/32;
 				int tile_y = data->world_mouse_y/32;
 				if (sago::tiled::tileInBound(data->gameRegion.world.tm, tile_x, tile_y)

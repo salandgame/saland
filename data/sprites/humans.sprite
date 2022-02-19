@@ -155,6 +155,56 @@
     "originy" : 50
 },
 
+"male_slash_N" :  {
+	"texture" : "male_slash",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 6,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"male_slash_W" :  {
+	"texture" : "male_slash",
+	"topx" : 0,
+	"topy" : 64,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 6,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"male_slash_S" :  {
+	"texture" : "male_slash",
+	"topx" : 0,
+	"topy" : 128,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 6,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"male_slash_E" :  {
+	"texture" : "male_slash",
+	"topx" : 0,
+	"topy" : 192,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 6,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+}
+
+,
+
 "male_hurt_S" :  {
 	"texture" : "male_hurt",
 	"topx" : 0,
@@ -306,6 +356,56 @@
 	"height" : 64,
 	"width" : 64,
 	"number_of_frames" : 7,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+}
+
+,
+
+"female_slash_N" :  {
+	"texture" : "female_slash",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 6,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"female_slash_W" :  {
+	"texture" : "female_slash",
+	"topx" : 0,
+	"topy" : 64,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 6,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"female_slash_S" :  {
+	"texture" : "female_slash",
+	"topx" : 0,
+	"topy" : 128,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 6,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"female_slash_E" :  {
+	"texture" : "female_slash",
+	"topx" : 0,
+	"topy" : 192,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 6,
 	"frame_time" : 100,
     "originx" : 32,
     "originy" : 50

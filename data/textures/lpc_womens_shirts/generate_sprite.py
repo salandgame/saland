@@ -56,6 +56,20 @@ def printArmor(name):
                 print("\"originy\" : 50")
                 print("},")
                 topY += 64
+            topY=0
+            for direction in DIRECTIONS:
+                print("\""+RACE+"_slash_"+name+"_"+c+"_"+direction+"\" : {")
+                print("\"texture\" : \"lpc_womens_shirts/"+name+"/"+c+"/swing\",")
+                print("\"topx\" : 0,")
+                print("\"topy\" : "+str(topY)+",")
+                print("\"height\" : 64,")
+                print("\"width\" : 64,")
+                print("\"number_of_frames\" : 6,")
+                print("\"frame_time\" : 100,")
+                print("\"originx\" : 32,")
+                print("\"originy\" : 50")
+                print("},")
+                topY += 64
             # hurt is only south facing
             topY=0
             if True:

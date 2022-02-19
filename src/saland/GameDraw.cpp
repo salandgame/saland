@@ -162,7 +162,7 @@ void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, cons
 		animation = "walkcycle";
 	}
 	if (entity->castTimeRemaining) {
-		animation = "spellcast";
+		animation = entity->animation;
 		relativeAnimation = true;
 		relativeAnimationState = 1.0f - (entity->castTimeRemaining / entity->castTime);
 	}

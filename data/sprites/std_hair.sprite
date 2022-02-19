@@ -96,6 +96,54 @@
     "originy" : 50
 },
 
+"male_slash_standard_hair_N" :  {
+	"texture" : "std_hair/plain-male/redhead",
+	"topx" : 0,
+	"topy" : 768,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 6,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"male_slash_standard_hair_W" :  {
+	"texture" : "std_hair/plain-male/redhead",
+	"topx" : 0,
+	"topy" : 832,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 6,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"male_slash_standard_hair_S" :  {
+	"texture" : "std_hair/plain-male/redhead",
+	"topx" : 0,
+	"topy" : 896,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 6,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"male_slash_standard_hair_E" :  {
+	"texture" : "std_hair/plain-male/redhead",
+	"topx" : 0,
+	"topy" : 960,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 6,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
 "male_hurt_standard_hair_S" :  {
 	"texture" : "std_hair/plain-male/redhead",
 	"topx" : 0,

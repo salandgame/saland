@@ -145,6 +145,54 @@
     "originy" : 50
 },
 
+"female_slash_pants_1_N" :  {
+	"texture" : "male_slash_pants",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 6,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"female_slash_pants_1_W" :  {
+	"texture" : "male_slash_pants",
+	"topx" : 0,
+	"topy" : 64,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 6,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"female_slash_pants_1_S" :  {
+	"texture" : "male_slash_pants",
+	"topx" : 0,
+	"topy" : 128,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 6,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
+"female_slash_pants_1_E" :  {
+	"texture" : "male_slash_pants",
+	"topx" : 0,
+	"topy" : 192,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 6,
+	"frame_time" : 100,
+    "originx" : 32,
+    "originy" : 50
+},
+
 "female_hurt_pants_1_S" :  {
 	"texture" : "male_hurt_pants",
 	"topx" : 0,
