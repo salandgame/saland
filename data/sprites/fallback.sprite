@@ -1,0 +1,14 @@
+{
+
+"fallback" : {
+	"_comment" : "This is the fallback sprite that are used if the game request a sprite not in any file",
+	"texture" : "fallback",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 1,
+	"frame_time" : 1
+}
+
+}
