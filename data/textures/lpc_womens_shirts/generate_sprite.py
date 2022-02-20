@@ -7,13 +7,17 @@ clothes = sys.argv[1:]
 RACE = "female"
 DIRECTIONS = ['N','W','S','E']
 
-# Call like: python3 generate_sprite.py blouse  corset  long-sleeve_blouse  long-sleeve_shirt  pirate_shirt scoop_neck  sleeveless_shirt > female_shirts.sprite
-# Remove last comma in the file
+# Call like: python3 generate_sprite.py blouse  corset  long-sleeve_blouse  long-sleeve_shirt  pirate_shirt scoop_neck  sleeveless_shirt > ../../sprites/female_shirts.sprite
 
 def printArmor(name):
     colors = os.listdir(name)
+    first = True
     for c in colors:
         if not c.startswith("_"):
+            if first:
+                first = False
+            else:
+                print(",")
             topY=0
             for direction in DIRECTIONS:
                 print("\""+RACE+"_walkcycle_"+name+"_"+c+"_"+direction+"\" : {")
@@ -84,11 +88,16 @@ def printArmor(name):
                 print("\"frame_time\" : 100,")
                 print("\"originx\" : 32,")
                 print("\"originy\" : 50")
-                print("},")
+                print("}")
 
 
 
 print("{")
+first = True
 for a in clothes:
+    if first:
+        first = False
+    else:
+        print(",")
     printArmor(a)
 print("}")

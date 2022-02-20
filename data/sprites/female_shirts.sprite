@@ -185,7 +185,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_blouse_orange_N" : {
 "texture" : "lpc_womens_shirts/blouse/orange/walk",
 "topx" : 0,
@@ -372,7 +373,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_blouse_yellow_N" : {
 "texture" : "lpc_womens_shirts/blouse/yellow/walk",
 "topx" : 0,
@@ -559,7 +561,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_blouse_sky_N" : {
 "texture" : "lpc_womens_shirts/blouse/sky/walk",
 "topx" : 0,
@@ -746,7 +749,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_blouse_maroon_N" : {
 "texture" : "lpc_womens_shirts/blouse/maroon/walk",
 "topx" : 0,
@@ -933,7 +937,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_blouse_red_N" : {
 "texture" : "lpc_womens_shirts/blouse/red/walk",
 "topx" : 0,
@@ -1120,7 +1125,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_blouse_walnut_N" : {
 "texture" : "lpc_womens_shirts/blouse/walnut/walk",
 "topx" : 0,
@@ -1307,7 +1313,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_blouse_forest_N" : {
 "texture" : "lpc_womens_shirts/blouse/forest/walk",
 "topx" : 0,
@@ -1494,7 +1501,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_blouse_lavender_N" : {
 "texture" : "lpc_womens_shirts/blouse/lavender/walk",
 "topx" : 0,
@@ -1681,7 +1689,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_blouse_blue_N" : {
 "texture" : "lpc_womens_shirts/blouse/blue/walk",
 "topx" : 0,
@@ -1868,7 +1877,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_blouse_navy_N" : {
 "texture" : "lpc_womens_shirts/blouse/navy/walk",
 "topx" : 0,
@@ -2055,7 +2065,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_blouse_black_N" : {
 "texture" : "lpc_womens_shirts/blouse/black/walk",
 "topx" : 0,
@@ -2242,7 +2253,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_blouse_gray_N" : {
 "texture" : "lpc_womens_shirts/blouse/gray/walk",
 "topx" : 0,
@@ -2429,7 +2441,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_blouse_pink_N" : {
 "texture" : "lpc_womens_shirts/blouse/pink/walk",
 "topx" : 0,
@@ -2616,7 +2629,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_blouse_purple_N" : {
 "texture" : "lpc_womens_shirts/blouse/purple/walk",
 "topx" : 0,
@@ -2803,7 +2817,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_blouse_teal_N" : {
 "texture" : "lpc_womens_shirts/blouse/teal/walk",
 "topx" : 0,
@@ -2990,7 +3005,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_blouse_leather_N" : {
 "texture" : "lpc_womens_shirts/blouse/leather/walk",
 "topx" : 0,
@@ -3177,7 +3193,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_blouse_tan_N" : {
 "texture" : "lpc_womens_shirts/blouse/tan/walk",
 "topx" : 0,
@@ -3364,7 +3381,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_blouse_white_N" : {
 "texture" : "lpc_womens_shirts/blouse/white/walk",
 "topx" : 0,
@@ -3551,7 +3569,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_blouse_green_N" : {
 "texture" : "lpc_womens_shirts/blouse/green/walk",
 "topx" : 0,
@@ -3738,7 +3757,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_corset_blue_gray_N" : {
 "texture" : "lpc_womens_shirts/corset/blue_gray/walk",
 "topx" : 0,
@@ -3925,7 +3945,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_corset_orange_N" : {
 "texture" : "lpc_womens_shirts/corset/orange/walk",
 "topx" : 0,
@@ -4112,7 +4133,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_corset_yellow_N" : {
 "texture" : "lpc_womens_shirts/corset/yellow/walk",
 "topx" : 0,
@@ -4299,7 +4321,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_corset_sky_N" : {
 "texture" : "lpc_womens_shirts/corset/sky/walk",
 "topx" : 0,
@@ -4486,7 +4509,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_corset_maroon_N" : {
 "texture" : "lpc_womens_shirts/corset/maroon/walk",
 "topx" : 0,
@@ -4673,7 +4697,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_corset_red_N" : {
 "texture" : "lpc_womens_shirts/corset/red/walk",
 "topx" : 0,
@@ -4860,7 +4885,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_corset_walnut_N" : {
 "texture" : "lpc_womens_shirts/corset/walnut/walk",
 "topx" : 0,
@@ -5047,7 +5073,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_corset_forest_N" : {
 "texture" : "lpc_womens_shirts/corset/forest/walk",
 "topx" : 0,
@@ -5234,7 +5261,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_corset_lavender_N" : {
 "texture" : "lpc_womens_shirts/corset/lavender/walk",
 "topx" : 0,
@@ -5421,7 +5449,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_corset_blue_N" : {
 "texture" : "lpc_womens_shirts/corset/blue/walk",
 "topx" : 0,
@@ -5608,7 +5637,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_corset_navy_N" : {
 "texture" : "lpc_womens_shirts/corset/navy/walk",
 "topx" : 0,
@@ -5795,7 +5825,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_corset_black_N" : {
 "texture" : "lpc_womens_shirts/corset/black/walk",
 "topx" : 0,
@@ -5982,7 +6013,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_corset_gray_N" : {
 "texture" : "lpc_womens_shirts/corset/gray/walk",
 "topx" : 0,
@@ -6169,7 +6201,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_corset_pink_N" : {
 "texture" : "lpc_womens_shirts/corset/pink/walk",
 "topx" : 0,
@@ -6356,7 +6389,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_corset_purple_N" : {
 "texture" : "lpc_womens_shirts/corset/purple/walk",
 "topx" : 0,
@@ -6543,7 +6577,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_corset_teal_N" : {
 "texture" : "lpc_womens_shirts/corset/teal/walk",
 "topx" : 0,
@@ -6730,7 +6765,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_corset_leather_N" : {
 "texture" : "lpc_womens_shirts/corset/leather/walk",
 "topx" : 0,
@@ -6917,7 +6953,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_corset_tan_N" : {
 "texture" : "lpc_womens_shirts/corset/tan/walk",
 "topx" : 0,
@@ -7104,7 +7141,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_corset_white_N" : {
 "texture" : "lpc_womens_shirts/corset/white/walk",
 "topx" : 0,
@@ -7291,7 +7329,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_corset_green_N" : {
 "texture" : "lpc_womens_shirts/corset/green/walk",
 "topx" : 0,
@@ -7478,7 +7517,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_blouse_blue_gray_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_blouse/blue_gray/walk",
 "topx" : 0,
@@ -7665,7 +7705,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_blouse_orange_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_blouse/orange/walk",
 "topx" : 0,
@@ -7852,7 +7893,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_blouse_yellow_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_blouse/yellow/walk",
 "topx" : 0,
@@ -8039,7 +8081,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_blouse_sky_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_blouse/sky/walk",
 "topx" : 0,
@@ -8226,7 +8269,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_blouse_maroon_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_blouse/maroon/walk",
 "topx" : 0,
@@ -8413,7 +8457,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_blouse_red_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_blouse/red/walk",
 "topx" : 0,
@@ -8600,7 +8645,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_blouse_walnut_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_blouse/walnut/walk",
 "topx" : 0,
@@ -8787,7 +8833,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_blouse_forest_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_blouse/forest/walk",
 "topx" : 0,
@@ -8974,7 +9021,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_blouse_lavender_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_blouse/lavender/walk",
 "topx" : 0,
@@ -9161,7 +9209,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_blouse_blue_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_blouse/blue/walk",
 "topx" : 0,
@@ -9348,7 +9397,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_blouse_navy_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_blouse/navy/walk",
 "topx" : 0,
@@ -9535,7 +9585,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_blouse_black_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_blouse/black/walk",
 "topx" : 0,
@@ -9722,7 +9773,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_blouse_gray_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_blouse/gray/walk",
 "topx" : 0,
@@ -9909,7 +9961,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_blouse_pink_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_blouse/pink/walk",
 "topx" : 0,
@@ -10096,7 +10149,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_blouse_purple_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_blouse/purple/walk",
 "topx" : 0,
@@ -10283,7 +10337,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_blouse_teal_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_blouse/teal/walk",
 "topx" : 0,
@@ -10470,7 +10525,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_blouse_leather_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_blouse/leather/walk",
 "topx" : 0,
@@ -10657,7 +10713,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_blouse_tan_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_blouse/tan/walk",
 "topx" : 0,
@@ -10844,7 +10901,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_blouse_white_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_blouse/white/walk",
 "topx" : 0,
@@ -11031,7 +11089,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_blouse_green_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_blouse/green/walk",
 "topx" : 0,
@@ -11218,7 +11277,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_shirt_blue_gray_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_shirt/blue_gray/walk",
 "topx" : 0,
@@ -11405,7 +11465,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_shirt_orange_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_shirt/orange/walk",
 "topx" : 0,
@@ -11592,7 +11653,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_shirt_yellow_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_shirt/yellow/walk",
 "topx" : 0,
@@ -11779,7 +11841,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_shirt_sky_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_shirt/sky/walk",
 "topx" : 0,
@@ -11966,7 +12029,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_shirt_maroon_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_shirt/maroon/walk",
 "topx" : 0,
@@ -12153,7 +12217,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_shirt_red_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_shirt/red/walk",
 "topx" : 0,
@@ -12340,7 +12405,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_shirt_walnut_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_shirt/walnut/walk",
 "topx" : 0,
@@ -12527,7 +12593,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_shirt_forest_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_shirt/forest/walk",
 "topx" : 0,
@@ -12714,7 +12781,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_shirt_lavender_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_shirt/lavender/walk",
 "topx" : 0,
@@ -12901,7 +12969,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_shirt_blue_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_shirt/blue/walk",
 "topx" : 0,
@@ -13088,7 +13157,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_shirt_navy_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_shirt/navy/walk",
 "topx" : 0,
@@ -13275,7 +13345,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_shirt_black_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_shirt/black/walk",
 "topx" : 0,
@@ -13462,7 +13533,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_shirt_gray_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_shirt/gray/walk",
 "topx" : 0,
@@ -13649,7 +13721,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_shirt_pink_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_shirt/pink/walk",
 "topx" : 0,
@@ -13836,7 +13909,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_shirt_purple_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_shirt/purple/walk",
 "topx" : 0,
@@ -14023,7 +14097,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_shirt_teal_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_shirt/teal/walk",
 "topx" : 0,
@@ -14210,7 +14285,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_shirt_leather_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_shirt/leather/walk",
 "topx" : 0,
@@ -14397,7 +14473,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_shirt_tan_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_shirt/tan/walk",
 "topx" : 0,
@@ -14584,7 +14661,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_shirt_white_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_shirt/white/walk",
 "topx" : 0,
@@ -14771,7 +14849,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_long-sleeve_shirt_green_N" : {
 "texture" : "lpc_womens_shirts/long-sleeve_shirt/green/walk",
 "topx" : 0,
@@ -14958,7 +15037,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_pirate_shirt_blue_gray_N" : {
 "texture" : "lpc_womens_shirts/pirate_shirt/blue_gray/walk",
 "topx" : 0,
@@ -15145,7 +15225,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_pirate_shirt_orange_N" : {
 "texture" : "lpc_womens_shirts/pirate_shirt/orange/walk",
 "topx" : 0,
@@ -15332,7 +15413,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_pirate_shirt_yellow_N" : {
 "texture" : "lpc_womens_shirts/pirate_shirt/yellow/walk",
 "topx" : 0,
@@ -15519,7 +15601,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_pirate_shirt_sky_N" : {
 "texture" : "lpc_womens_shirts/pirate_shirt/sky/walk",
 "topx" : 0,
@@ -15706,7 +15789,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_pirate_shirt_maroon_N" : {
 "texture" : "lpc_womens_shirts/pirate_shirt/maroon/walk",
 "topx" : 0,
@@ -15893,7 +15977,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_pirate_shirt_red_N" : {
 "texture" : "lpc_womens_shirts/pirate_shirt/red/walk",
 "topx" : 0,
@@ -16080,7 +16165,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_pirate_shirt_walnut_N" : {
 "texture" : "lpc_womens_shirts/pirate_shirt/walnut/walk",
 "topx" : 0,
@@ -16267,7 +16353,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_pirate_shirt_forest_N" : {
 "texture" : "lpc_womens_shirts/pirate_shirt/forest/walk",
 "topx" : 0,
@@ -16454,7 +16541,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_pirate_shirt_lavender_N" : {
 "texture" : "lpc_womens_shirts/pirate_shirt/lavender/walk",
 "topx" : 0,
@@ -16641,7 +16729,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_pirate_shirt_blue_N" : {
 "texture" : "lpc_womens_shirts/pirate_shirt/blue/walk",
 "topx" : 0,
@@ -16828,7 +16917,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_pirate_shirt_navy_N" : {
 "texture" : "lpc_womens_shirts/pirate_shirt/navy/walk",
 "topx" : 0,
@@ -17015,7 +17105,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_pirate_shirt_black_N" : {
 "texture" : "lpc_womens_shirts/pirate_shirt/black/walk",
 "topx" : 0,
@@ -17202,7 +17293,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_pirate_shirt_gray_N" : {
 "texture" : "lpc_womens_shirts/pirate_shirt/gray/walk",
 "topx" : 0,
@@ -17389,7 +17481,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_pirate_shirt_pink_N" : {
 "texture" : "lpc_womens_shirts/pirate_shirt/pink/walk",
 "topx" : 0,
@@ -17576,7 +17669,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_pirate_shirt_purple_N" : {
 "texture" : "lpc_womens_shirts/pirate_shirt/purple/walk",
 "topx" : 0,
@@ -17763,7 +17857,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_pirate_shirt_teal_N" : {
 "texture" : "lpc_womens_shirts/pirate_shirt/teal/walk",
 "topx" : 0,
@@ -17950,7 +18045,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_pirate_shirt_leather_N" : {
 "texture" : "lpc_womens_shirts/pirate_shirt/leather/walk",
 "topx" : 0,
@@ -18137,7 +18233,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_pirate_shirt_tan_N" : {
 "texture" : "lpc_womens_shirts/pirate_shirt/tan/walk",
 "topx" : 0,
@@ -18324,7 +18421,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_pirate_shirt_white_N" : {
 "texture" : "lpc_womens_shirts/pirate_shirt/white/walk",
 "topx" : 0,
@@ -18511,7 +18609,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_pirate_shirt_green_N" : {
 "texture" : "lpc_womens_shirts/pirate_shirt/green/walk",
 "topx" : 0,
@@ -18698,7 +18797,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_scoop_neck_blue_gray_N" : {
 "texture" : "lpc_womens_shirts/scoop_neck/blue_gray/walk",
 "topx" : 0,
@@ -18885,7 +18985,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_scoop_neck_orange_N" : {
 "texture" : "lpc_womens_shirts/scoop_neck/orange/walk",
 "topx" : 0,
@@ -19072,7 +19173,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_scoop_neck_yellow_N" : {
 "texture" : "lpc_womens_shirts/scoop_neck/yellow/walk",
 "topx" : 0,
@@ -19259,7 +19361,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_scoop_neck_sky_N" : {
 "texture" : "lpc_womens_shirts/scoop_neck/sky/walk",
 "topx" : 0,
@@ -19446,7 +19549,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_scoop_neck_maroon_N" : {
 "texture" : "lpc_womens_shirts/scoop_neck/maroon/walk",
 "topx" : 0,
@@ -19633,7 +19737,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_scoop_neck_red_N" : {
 "texture" : "lpc_womens_shirts/scoop_neck/red/walk",
 "topx" : 0,
@@ -19820,7 +19925,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_scoop_neck_walnut_N" : {
 "texture" : "lpc_womens_shirts/scoop_neck/walnut/walk",
 "topx" : 0,
@@ -20007,7 +20113,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_scoop_neck_forest_N" : {
 "texture" : "lpc_womens_shirts/scoop_neck/forest/walk",
 "topx" : 0,
@@ -20194,7 +20301,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_scoop_neck_lavender_N" : {
 "texture" : "lpc_womens_shirts/scoop_neck/lavender/walk",
 "topx" : 0,
@@ -20381,7 +20489,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_scoop_neck_blue_N" : {
 "texture" : "lpc_womens_shirts/scoop_neck/blue/walk",
 "topx" : 0,
@@ -20568,7 +20677,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_scoop_neck_navy_N" : {
 "texture" : "lpc_womens_shirts/scoop_neck/navy/walk",
 "topx" : 0,
@@ -20755,7 +20865,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_scoop_neck_black_N" : {
 "texture" : "lpc_womens_shirts/scoop_neck/black/walk",
 "topx" : 0,
@@ -20942,7 +21053,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_scoop_neck_gray_N" : {
 "texture" : "lpc_womens_shirts/scoop_neck/gray/walk",
 "topx" : 0,
@@ -21129,7 +21241,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_scoop_neck_pink_N" : {
 "texture" : "lpc_womens_shirts/scoop_neck/pink/walk",
 "topx" : 0,
@@ -21316,7 +21429,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_scoop_neck_purple_N" : {
 "texture" : "lpc_womens_shirts/scoop_neck/purple/walk",
 "topx" : 0,
@@ -21503,7 +21617,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_scoop_neck_teal_N" : {
 "texture" : "lpc_womens_shirts/scoop_neck/teal/walk",
 "topx" : 0,
@@ -21690,7 +21805,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_scoop_neck_leather_N" : {
 "texture" : "lpc_womens_shirts/scoop_neck/leather/walk",
 "topx" : 0,
@@ -21877,7 +21993,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_scoop_neck_tan_N" : {
 "texture" : "lpc_womens_shirts/scoop_neck/tan/walk",
 "topx" : 0,
@@ -22064,7 +22181,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_scoop_neck_white_N" : {
 "texture" : "lpc_womens_shirts/scoop_neck/white/walk",
 "topx" : 0,
@@ -22251,7 +22369,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_scoop_neck_green_N" : {
 "texture" : "lpc_womens_shirts/scoop_neck/green/walk",
 "topx" : 0,
@@ -22438,7 +22557,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_sleeveless_shirt_blue_gray_N" : {
 "texture" : "lpc_womens_shirts/sleeveless_shirt/blue_gray/walk",
 "topx" : 0,
@@ -22625,7 +22745,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_sleeveless_shirt_orange_N" : {
 "texture" : "lpc_womens_shirts/sleeveless_shirt/orange/walk",
 "topx" : 0,
@@ -22812,7 +22933,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_sleeveless_shirt_yellow_N" : {
 "texture" : "lpc_womens_shirts/sleeveless_shirt/yellow/walk",
 "topx" : 0,
@@ -22999,7 +23121,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_sleeveless_shirt_sky_N" : {
 "texture" : "lpc_womens_shirts/sleeveless_shirt/sky/walk",
 "topx" : 0,
@@ -23186,7 +23309,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_sleeveless_shirt_maroon_N" : {
 "texture" : "lpc_womens_shirts/sleeveless_shirt/maroon/walk",
 "topx" : 0,
@@ -23373,7 +23497,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_sleeveless_shirt_red_N" : {
 "texture" : "lpc_womens_shirts/sleeveless_shirt/red/walk",
 "topx" : 0,
@@ -23560,7 +23685,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_sleeveless_shirt_walnut_N" : {
 "texture" : "lpc_womens_shirts/sleeveless_shirt/walnut/walk",
 "topx" : 0,
@@ -23747,7 +23873,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_sleeveless_shirt_forest_N" : {
 "texture" : "lpc_womens_shirts/sleeveless_shirt/forest/walk",
 "topx" : 0,
@@ -23934,7 +24061,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_sleeveless_shirt_lavender_N" : {
 "texture" : "lpc_womens_shirts/sleeveless_shirt/lavender/walk",
 "topx" : 0,
@@ -24121,7 +24249,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_sleeveless_shirt_blue_N" : {
 "texture" : "lpc_womens_shirts/sleeveless_shirt/blue/walk",
 "topx" : 0,
@@ -24308,7 +24437,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_sleeveless_shirt_navy_N" : {
 "texture" : "lpc_womens_shirts/sleeveless_shirt/navy/walk",
 "topx" : 0,
@@ -24495,7 +24625,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_sleeveless_shirt_black_N" : {
 "texture" : "lpc_womens_shirts/sleeveless_shirt/black/walk",
 "topx" : 0,
@@ -24682,7 +24813,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_sleeveless_shirt_gray_N" : {
 "texture" : "lpc_womens_shirts/sleeveless_shirt/gray/walk",
 "topx" : 0,
@@ -24869,7 +25001,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_sleeveless_shirt_pink_N" : {
 "texture" : "lpc_womens_shirts/sleeveless_shirt/pink/walk",
 "topx" : 0,
@@ -25056,7 +25189,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_sleeveless_shirt_purple_N" : {
 "texture" : "lpc_womens_shirts/sleeveless_shirt/purple/walk",
 "topx" : 0,
@@ -25243,7 +25377,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_sleeveless_shirt_teal_N" : {
 "texture" : "lpc_womens_shirts/sleeveless_shirt/teal/walk",
 "topx" : 0,
@@ -25430,7 +25565,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_sleeveless_shirt_leather_N" : {
 "texture" : "lpc_womens_shirts/sleeveless_shirt/leather/walk",
 "topx" : 0,
@@ -25617,7 +25753,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_sleeveless_shirt_tan_N" : {
 "texture" : "lpc_womens_shirts/sleeveless_shirt/tan/walk",
 "topx" : 0,
@@ -25804,7 +25941,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_sleeveless_shirt_white_N" : {
 "texture" : "lpc_womens_shirts/sleeveless_shirt/white/walk",
 "topx" : 0,
@@ -25991,7 +26129,8 @@
 "frame_time" : 100,
 "originx" : 32,
 "originy" : 50
-},
+}
+,
 "female_walkcycle_sleeveless_shirt_green_N" : {
 "texture" : "lpc_womens_shirts/sleeveless_shirt/green/walk",
 "topx" : 0,
