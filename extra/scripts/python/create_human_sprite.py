@@ -18,6 +18,8 @@ def print_male(race="male", file=sys.stdout):
 def main():
     with open('../../../data/sprites/humans.sprite', 'w') as file:
         print("{", file=file)
+        print("\"_comment\" : \"This file is generated with extra/scripts/build_sprites.sh. Do not edit.\"", file=file)
+        print(",", file=file)
         print_male(file=file)
         print(",", file=file)
         print_male("female", file=file)

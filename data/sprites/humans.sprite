@@ -1,4 +1,6 @@
 {
+"_comment" : "This file is generated with extra/scripts/build_sprites.sh. Do not edit."
+,
 "male_walkcycle_N" : {
 "texture" : "male_walkcycle",
 "topx" : 64,

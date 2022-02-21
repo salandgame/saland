@@ -94,11 +94,8 @@ def printArmor(name):
 
 
 print("{")
-first = True
+print("\"_comment\" : \"This file is generated with extra/scripts/build_sprites.sh. Do not edit.\"")
 for a in clothes:
-    if first:
-        first = False
-    else:
-        print(",")
+    print(",")
     printArmor(a)
 print("}")

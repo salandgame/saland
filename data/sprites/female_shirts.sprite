@@ -1,4 +1,6 @@
 {
+"_comment" : "This file is generated with extra/scripts/build_sprites.sh. Do not edit."
+,
 "female_walkcycle_blouse_black_N" : {
 "texture" : "lpc_womens_shirts/blouse/black/walk",
 "topx" : 0,
