@@ -11,6 +11,7 @@ DIRECTIONS = ['N','W','S','E']
 
 def printArmor(name):
     colors = os.listdir(name)
+    colors.sort()
     first = True
     for c in colors:
         if not c.startswith("_"):
