@@ -211,7 +211,7 @@ void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, cons
 		}
 	}
 	if (entity->weapon.length() > 0) {
-		const sago::SagoSprite& myWeapon = sHolder->GetSprite(entity->race + "_"+animation+"_"+entity->weapon+"_"+std::string(1,entity->direction));
+		const sago::SagoSprite& myWeapon = sHolder->GetSprite("human_"+animation+"_"+entity->weapon+"_"+std::string(1,entity->direction));
 		if (relativeAnimation) {
 			myWeapon.DrawProgressive(target, relativeAnimationState, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
 		}

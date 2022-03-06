@@ -518,6 +518,23 @@ static bool Intersect(const Placeable& p1, const Placeable& p2) {
 	return false;
 }
 
+static std::pair<float,float> PairInFrontOfEntity(float entityX, float entityY, char direction) {
+	std::pair<float, float> ret(entityX, entityY+32.0f);
+	if (direction == 'N') {
+		ret.first = entityX;
+		ret.second = entityY-32.0f;
+	}
+	else if (direction == 'E') {
+		ret.first = entityX+32.0f;
+		ret.second = entityY;
+	}
+	else if (direction == 'W') {
+		ret.first = entityX-32.0f;
+		ret.second = entityY;
+	}
+	return ret;
+}
+
 void Game::Update() {
 	std::string middleText = "";
 	if (data->consoleActive && data->console) {
@@ -686,6 +703,11 @@ void Game::Update() {
 	if (data->consoleActive && data->console && !data->console->IsActive()) {
 		data->consoleActive = false;
 	}
+	const Spell& selectedSpell = data->slot_spell.at(data->slot_selected);
+	data->human->weapon = "";
+	if (selectedSpell.name == "weapon_slash_long_knife") {
+		data->human->weapon = "long_knife";
+	}
 	if (SDL_GetMouseState(nullptr,nullptr) & 1 && !data->consoleActive) {
 		if (data->slot_spell.at(data->slot_selected).name == "spell_fireball") {
 			if (data->human->castTimeRemaining == 0) {
@@ -702,7 +724,6 @@ void Game::Update() {
 				data->gameRegion.placeables.push_back(projectile);
 			}
 		}
-		const Spell& selectedSpell = data->slot_spell.at(data->slot_selected);
 		if (data->slot_spell.at(data->slot_selected).name == "spell_spawn_item") {
 			if (data->human->castTimeRemaining == 0) {
 				data->human->castTimeRemaining = data->human->castTime;
@@ -716,6 +737,18 @@ void Game::Update() {
 			if (data->human->castTimeRemaining == 0) {
 				data->human->castTimeRemaining = data->human->castTime;
 				data->human->animation = "slash";
+				// Now do the damage. We are currectly just creating a short lived projectile
+				const auto& target = PairInFrontOfEntity(data->human->X, data->human->Y, data->human->direction);
+				std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>();
+				projectile->X = target.first;
+				projectile->Y = target.second;
+				projectile->Radius = 8.0f;
+				projectile->directionX = projectile->X - data->world_mouse_x;
+				projectile->directionY = projectile->Y - data->world_mouse_y;
+				SetLengthToOne(projectile->directionX, projectile->directionY);
+				projectile->fired_by = data->human;
+				data->gameRegion.placeables.push_back(projectile);
+				projectile->timeToLive = 10.0f;
 			}
 		}
 		if (data->slot_spell.at(data->slot_selected).name == "spell_create_block") {
