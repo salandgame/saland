@@ -1,0 +1,207 @@
+{
+"_comment" : "This file is generated with extra/scripts/build_sprites.sh. Do not edit."
+,
+"human_spellcast_long_knife_N" : {
+"texture" : "weapons/long_knife",
+"topx" : 0,
+"topy" : 0,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 8,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"human_spellcast_long_knife_W" : {
+"texture" : "weapons/long_knife",
+"topx" : 0,
+"topy" : 64,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 8,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"human_spellcast_long_knife_S" : {
+"texture" : "weapons/long_knife",
+"topx" : 0,
+"topy" : 128,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 8,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"human_spellcast_long_knife_E" : {
+"texture" : "weapons/long_knife",
+"topx" : 0,
+"topy" : 192,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 8,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"human_standing_long_knife_N" : {
+"texture" : "weapons/long_knife",
+"topx" : 0,
+"topy" : 512,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 1,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"human_standing_long_knife_W" : {
+"texture" : "weapons/long_knife",
+"topx" : 0,
+"topy" : 576,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 1,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"human_standing_long_knife_S" : {
+"texture" : "weapons/long_knife",
+"topx" : 0,
+"topy" : 640,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 1,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"human_standing_long_knife_E" : {
+"texture" : "weapons/long_knife",
+"topx" : 0,
+"topy" : 704,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 1,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"human_walkcycle_long_knife_N" : {
+"texture" : "weapons/long_knife",
+"topx" : 64,
+"topy" : 512,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 8,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"human_walkcycle_long_knife_W" : {
+"texture" : "weapons/long_knife",
+"topx" : 64,
+"topy" : 576,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 8,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"human_walkcycle_long_knife_S" : {
+"texture" : "weapons/long_knife",
+"topx" : 64,
+"topy" : 640,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 8,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"human_walkcycle_long_knife_E" : {
+"texture" : "weapons/long_knife",
+"topx" : 64,
+"topy" : 704,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 8,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"human_slash_long_knife_N" : {
+"texture" : "weapons/long_knife",
+"topx" : 0,
+"topy" : 768,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 6,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"human_slash_long_knife_W" : {
+"texture" : "weapons/long_knife",
+"topx" : 0,
+"topy" : 832,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 6,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"human_slash_long_knife_S" : {
+"texture" : "weapons/long_knife",
+"topx" : 0,
+"topy" : 896,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 6,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"human_slash_long_knife_E" : {
+"texture" : "weapons/long_knife",
+"topx" : 0,
+"topy" : 960,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 6,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"human_hurt_long_knife_S" : {
+"texture" : "weapons/long_knife",
+"topx" : 0,
+"topy" : 1024,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 6,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+}
