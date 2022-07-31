@@ -97,6 +97,7 @@ public:
 	float velocity = 1.0f;
 	float timeToLive = 2000.0;
 	std::shared_ptr<Placeable> fired_by;
+	std::string sprite = "effect_fireball";
 };
 
 #endif /* PLACEABLES_HPP */

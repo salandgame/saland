@@ -231,13 +231,15 @@ void DrawMonster(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Mo
 void DrawProjectile(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Projectile* entity, float time, int offsetX, int offsetY, bool drawCollision) {
 	(void)sHolder;
 	(void)time;
-	const sago::SagoSprite& mySprite = sHolder->GetSprite("effect_fireball");
-	double angleRadian = 0.0;
-	if (entity->directionY || entity->directionX) {
-		//atan2 is defined if either of directionY or directionX is not zero
-		angleRadian = atan2(entity->directionY, entity->directionX)-M_PI/2.0;
+	if (entity->sprite.length()) {
+		const sago::SagoSprite& mySprite = sHolder->GetSprite(entity->sprite);
+		double angleRadian = 0.0;
+		if (entity->directionY || entity->directionX) {
+			//atan2 is defined if either of directionY or directionX is not zero
+			angleRadian = atan2(entity->directionY, entity->directionX)-M_PI/2.0;
+		}
+		mySprite.DrawRotated(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY, angleRadian);
 	}
-	mySprite.DrawRotated(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY, angleRadian);
 	DrawCollision(target, entity, offsetX, offsetY, drawCollision);
 }
 

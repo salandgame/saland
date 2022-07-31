@@ -743,12 +743,14 @@ void Game::Update() {
 				projectile->X = target.first;
 				projectile->Y = target.second;
 				projectile->Radius = 8.0f;
+				projectile->velocity = 0.0f;
+				projectile->sprite = "";
 				projectile->directionX = projectile->X - data->world_mouse_x;
 				projectile->directionY = projectile->Y - data->world_mouse_y;
 				SetLengthToOne(projectile->directionX, projectile->directionY);
 				projectile->fired_by = data->human;
 				data->gameRegion.placeables.push_back(projectile);
-				projectile->timeToLive = 10.0f;
+				projectile->timeToLive = 100.0f;
 			}
 		}
 		if (data->slot_spell.at(data->slot_selected).name == "spell_create_block") {
