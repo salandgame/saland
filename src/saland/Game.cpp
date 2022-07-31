@@ -719,6 +719,7 @@ void Game::Update() {
 				projectile->Radius = 8.0f;
 				projectile->directionX = projectile->X - data->world_mouse_x;
 				projectile->directionY = projectile->Y - data->world_mouse_y;
+				projectile->damage.fire = 10.0f;
 				SetLengthToOne(projectile->directionX, projectile->directionY);
 				projectile->fired_by = data->human;
 				data->gameRegion.placeables.push_back(projectile);
@@ -745,6 +746,8 @@ void Game::Update() {
 				projectile->Radius = 8.0f;
 				projectile->velocity = 0.0f;
 				projectile->sprite = "";
+				projectile->damage.slash = 15.0f;
+				projectile->damage.piercing = 5.0f;
 				projectile->directionX = projectile->X - data->world_mouse_x;
 				projectile->directionY = projectile->Y - data->world_mouse_y;
 				SetLengthToOne(projectile->directionX, projectile->directionY);

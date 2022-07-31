@@ -30,6 +30,19 @@ https://github.com/sago007/saland
 
 const float pixel2unit = 32.0f;
 
+
+class Damage {
+public:
+	float slash = 0.0f;
+	float piercing = 0.0f;
+	float fire = 0.0f;
+	float water = 0.0f;
+	float lightning = 0.0f;
+	float getDamage() {
+		return slash + piercing + fire + water + lightning;
+	}
+};
+
 class Placeable {
 public:
 	std::string id = "noid";
@@ -89,6 +102,7 @@ public:
 	float aiNextThink = 0.0;
 };
 
+
 class Projectile : public Placeable {
 public:
 	bool active = true;
@@ -96,6 +110,7 @@ public:
 	float directionY = 1;
 	float velocity = 1.0f;
 	float timeToLive = 2000.0;
+	Damage damage;
 	std::shared_ptr<Placeable> fired_by;
 	std::string sprite = "effect_fireball";
 };
