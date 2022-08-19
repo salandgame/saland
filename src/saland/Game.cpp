@@ -708,7 +708,7 @@ void Game::Update() {
 	if (selectedSpell.name == "weapon_slash_long_knife") {
 		data->human->weapon = "long_knife";
 	}
-	if (SDL_GetMouseState(nullptr,nullptr) & 1 && !data->consoleActive) {
+	if (SDL_GetMouseState(nullptr,nullptr) & 1 && !data->consoleActive && data->human->diedAt == 0) {
 		if (data->slot_spell.at(data->slot_selected).name == "spell_fireball") {
 			if (data->human->castTimeRemaining == 0) {
 				data->human->castTimeRemaining = data->human->castTime;

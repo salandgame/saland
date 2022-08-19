@@ -194,7 +194,7 @@
 }
 ,
 "male_hurt_S" : {
-"texture" : "male_slash",
+"texture" : "male_hurt",
 "topx" : 0,
 "topy" : 0,
 "height" : 64,
@@ -398,7 +398,7 @@
 }
 ,
 "female_hurt_S" : {
-"texture" : "female_slash",
+"texture" : "female_hurt",
 "topx" : 0,
 "topy" : 0,
 "height" : 64,

@@ -12,7 +12,7 @@ def print_male(race="male", file=sys.stdout):
     print(",", file=file)
     common.directional_sprite.print_sprite(race=race, animation="slash", name=None, texture=race+"_slash", topY=0, number_of_frames=6, file=file)
     print(",", file=file)
-    common.directional_sprite.print_sprite_direction(race=race, animation="hurt", name=None, texture=race+"_slash", topY=0, number_of_frames=6, file=file)
+    common.directional_sprite.print_sprite_direction(race=race, animation="hurt", name=None, texture=race+"_hurt", topY=0, number_of_frames=6, file=file)
 
 
 def print_weapon(texture, weapon_name, file=sys.stdout):
