@@ -15,10 +15,10 @@ WASD = Move
 
 Click = Use magic
 
-# Building
+## Building
 The only supported build method is using the CMake<br/>
 To build do:
-```
+```bash
 ./packdata.sh
 cmake .
 # or
@@ -28,7 +28,7 @@ cmake .
 make
 ```
 The result should be in the build-folder. To run
-```
+```bash
 ./saland
 ```
 
@@ -37,11 +37,11 @@ The result should be in the build-folder. To run
 As getting a C++ project with many dependencies to compile can be a daunting task then I have provided a couple of Docker images that can perform a build. Both for Windows and Linux.
 
 On a fresh checkout you can use:
-```
+```bash
 docker build . -f extra/docker/Dockerfile -t saland_test
 ```
 and
-```
+```bash
 docker build . -f extra/docker/Dockerfile.WindowsBuild -t saland_test
 ```
 

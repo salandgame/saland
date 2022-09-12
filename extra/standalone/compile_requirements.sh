@@ -1,10 +1,6 @@
 #! /bin/bash
 set -euo pipefail
 
-#https://github.com/erincatto/box2d/archive/v2.4.1.tar.gz
-mkdir -p /staging/deps && cd /staging/deps && curl https://files.poulsander.com/~poul19/public_files/box2d-2.4.1.tar.gz | tar -zx && cd box2d-2.4.1 && ls -lrt
-cd /staging/deps/box2d-2.4.1 && cmake . && make && make install
-
 mkdir -p /staging/deps && cd /staging/deps && curl https://libsdl.org/release/SDL2-2.0.12.tar.gz | tar -zx && cd SDL2-2.0.12 && ls -lrt
 cd /staging/deps/SDL2-2.0.12 && ./configure --enable-shared --enable-static && make && make install
 

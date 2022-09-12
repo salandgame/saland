@@ -62,7 +62,6 @@ class MiscItem : public Placeable {
 public:
 	std::string sprite;
 	std::string sprite2;
-	std::string id = "unknown";
 	std::string name = "Unknamed item";
 	double base_value = 1.0;
 	bool pickup = false;
