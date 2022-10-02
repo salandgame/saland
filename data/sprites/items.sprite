@@ -34,6 +34,18 @@
 	"frame_time" : 100,
 	"originx" : 48,
 	"originy" : 128
+},
+
+"tree_palm" : {
+	"texture" : "plant_repack",
+	"topx" : 320,
+	"topy" : 288,
+	"height" : 128,
+	"width" : 96,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+	"originx" : 48,
+	"originy" : 112
 }
 
 }
