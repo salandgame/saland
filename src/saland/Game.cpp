@@ -302,6 +302,10 @@ Game::Game() {
 	slot7.icon = "tree_palm";  //Quite big. As this has no icon
 	slot7.name = "spell_spawn_item";
 	slot7.item_name = "tree_palm";
+	Spell& slot8 = data->slot_spell.at(8);
+	slot8.icon = "cactus_one";
+	slot8.name = "spell_spawn_item";
+	slot8.item_name = "cactus_full";
 	Spell& slot9 = data->slot_spell.at(9);
 	slot9.icon = "icon_trash_can";
 	slot9.name = "spell_clear_block";

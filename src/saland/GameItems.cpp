@@ -54,5 +54,10 @@ const ItemDef& getItem(const std::string& itemName) {
 		itemDef.sprite = "tree_palm";
 		itemDef.isStatic = true;
 	}
+	if (itemName == "cactus_full") {
+		itemDef.radius = 20.0f;
+		itemDef.sprite = "cactus_full";
+		itemDef.isStatic = true;
+	}
 	return itemDef;
 }
