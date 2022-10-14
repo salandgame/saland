@@ -47,6 +47,7 @@ https://github.com/sago007/saland
 #include <sstream>
 #include "console/Console.hpp"
 #include "GameConsoleCommand.hpp"
+#include "GameSpellState.hpp"
 #include "fmt/core.h"
 
 int32 velocityIterations = 6;
@@ -199,7 +200,9 @@ struct Game::GameImpl {
 	size_t slot_selected = 0;
 	std::array<Spell, 10> slot_spell;
 	std::shared_ptr<Console> console;
+	std::shared_ptr<GameSpellState> spellSelect;
 	bool consoleActive = false;
+	bool spellSelectActive = false;
 };
 
 static SpawnPoint GetSpawnpoint(const sago::tiled::TileMap& tm) {
@@ -443,6 +446,9 @@ void Game::Draw(SDL_Renderer* target) {
 			DrawTile(target, globalData.spriteHolder.get(), data->gameRegion.world.tm, current_spell.tile, 20+i*56, 20);
 		}
 	}
+	if (data->spellSelectActive && data->spellSelect) {
+		data->spellSelect->Draw(target);
+	}
 	if (data->consoleActive && data->console) {
 		data->console->Draw(target);
 	}
@@ -474,7 +480,23 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 			return;
 		}
 	}
+	if (data->spellSelectActive && data->spellSelect) {
+		data->spellSelect->ProcessInput(event, processed);
+		if (processed) {
+			return;
+		}
+	}
 	if (event.type == SDL_KEYDOWN) {
+		// Console activation is the first thing we check and we stop if it is activated.
+		if (event.key.keysym.sym == SDLK_ESCAPE && event.key.keysym.mod & KMOD_LSHIFT) {
+			if (!data->console) {
+				data->console = std::make_shared<Console>();
+			}
+			data->console->Activate();
+			data->consoleActive = true;
+			processed = true;
+			return;
+		}
 		if (event.key.keysym.sym == SDLK_1 || event.key.keysym.sym == SDLK_KP_1) {
 			data->slot_selected = 0;
 		}
@@ -505,12 +527,9 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 		if (event.key.keysym.sym == SDLK_0 || event.key.keysym.sym == SDLK_KP_0) {
 			data->slot_selected = 9;
 		}
-		if (event.key.keysym.sym == SDLK_ESCAPE && event.key.keysym.mod & KMOD_LSHIFT) {
-			if (!data->console) {
-				data->console = std::make_shared<Console>();
-			}
-			data->console->Activate();
-			data->consoleActive = true;
+		if (event.key.keysym.sym == SDLK_ESCAPE) {
+			data->spellSelect = std::make_shared<GameSpellState>();
+			data->spellSelectActive = true;
 		}
 		if (event.key.keysym.sym == SDLK_F12) {
 			data->isActive = false;
@@ -547,6 +566,9 @@ void Game::Update() {
 	std::string middleText = "";
 	if (data->consoleActive && data->console) {
 		data->console->Update();
+	}
+	if (data->spellSelectActive && data->spellSelect) {
+		data->spellSelect->Update();
 	}
 	Uint32 nowTime = SDL_GetTicks();
 	Uint32 deltaTime = nowTime - data->lastUpdate;
@@ -710,6 +732,9 @@ void Game::Update() {
 	}
 	if (data->consoleActive && data->console && !data->console->IsActive()) {
 		data->consoleActive = false;
+	}
+	if (data->spellSelectActive && data->spellSelect && !data->spellSelect->IsActive()) {
+		data->spellSelectActive = false;
 	}
 	const Spell& selectedSpell = data->slot_spell.at(data->slot_selected);
 	data->human->weapon = "";
