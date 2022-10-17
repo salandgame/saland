@@ -36,4 +36,12 @@ struct Spell {
 	SpellCursorType type = SpellCursorType::dot;
 };
 
+class SpellHolder {
+	std::vector<Spell> spells;
+	public:
+	size_t get_spell_count() const;
+	const Spell& get_spell(int index) const;
+	const Spell& get_spell_by_name(const std::string&) const;
+};
+
 #endif  //MODEL_SPELLS_HPP
