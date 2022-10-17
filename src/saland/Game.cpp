@@ -199,6 +199,7 @@ struct Game::GameImpl {
 	std::array<sago::SagoTextField,10> number_labels;  //Label: 0,1...10
 	size_t slot_selected = 0;
 	std::array<Spell, 10> slot_spell;
+	SpellHolder spell_holder;
 	std::shared_ptr<Console> console;
 	std::shared_ptr<GameSpellState> spellSelect;
 	bool consoleActive = false;
@@ -272,47 +273,17 @@ Game::Game() {
 		data->number_labels.at(i).SetFontSize(20);
 		data->number_labels.at(i).SetText(std::to_string(i));
 	}
-	Spell& slot0 = data->slot_spell.at(0);
-	slot0.icon = "effect_fireball";
-	slot0.name = "spell_fireball";
-	Spell& slot1 = data->slot_spell.at(1);
-	slot1.icon = "item_weapon_long_knife";
-	slot1.name = "weapon_slash_long_knife";
-	Spell& slot2 = data->slot_spell.at(2);
-	slot2.icon = "";
-	slot2.name = "spell_create_block";
-	slot2.tile = 607;
-	slot2.type = SpellCursorType::tile;
-	Spell& slot3 = data->slot_spell.at(3);
-	slot3.icon = "";
-	slot3.name = "spell_create_block";
-	slot3.tile = 28;
-	slot3.type = SpellCursorType::tile;
-	Spell& slot4 = data->slot_spell.at(4);
-	slot4.icon = "";
-	slot4.name = "spell_create_block";
-	slot4.tile = 16;
-	slot4.type = SpellCursorType::tile;
-	Spell& slot5 = data->slot_spell.at(5);
-	slot5.icon = "item_food_potato";
-	slot5.name = "spell_spawn_item";
-	slot5.item_name = "food_potato";
-	Spell& slot6 = data->slot_spell.at(6);
-	slot6.icon = "item_barrel";
-	slot6.name = "spell_spawn_item";
-	slot6.item_name = "barrel";
-	Spell& slot7 = data->slot_spell.at(7);
-	slot7.icon = "tree_palm";  //Quite big. As this has no icon
-	slot7.name = "spell_spawn_item";
-	slot7.item_name = "tree_palm";
-	Spell& slot8 = data->slot_spell.at(8);
-	slot8.icon = "cactus_one";
-	slot8.name = "spell_spawn_item";
-	slot8.item_name = "cactus_full";
-	Spell& slot9 = data->slot_spell.at(9);
-	slot9.icon = "icon_trash_can";
-	slot9.name = "spell_clear_block";
-	slot9.type = SpellCursorType::tile;
+	data->spell_holder.init();
+	data->slot_spell.at(0) = data->spell_holder.get_spell_by_name("spell_fireball");
+	data->slot_spell.at(1) = data->spell_holder.get_spell_by_name("weapon_slash_long_knife");
+	data->slot_spell.at(2) = data->spell_holder.get_spell_by_name("spell_create_block:607");
+	data->slot_spell.at(3) = data->spell_holder.get_spell_by_name("spell_create_block:28");
+	data->slot_spell.at(4) = data->spell_holder.get_spell_by_name("spell_create_block:16");
+	data->slot_spell.at(5) = data->spell_holder.get_spell_by_name("spell_spawn_item:food_potato");
+	data->slot_spell.at(6) = data->spell_holder.get_spell_by_name("spell_spawn_item:barrel");
+	data->slot_spell.at(7) = data->spell_holder.get_spell_by_name("spell_spawn_item:tree_palm");
+	data->slot_spell.at(8) = data->spell_holder.get_spell_by_name("spell_spawn_item:cactus_full");
+	data->slot_spell.at(9) = data->spell_holder.get_spell_by_name("spell_clear_block");
 }
 
 Game::~Game() {

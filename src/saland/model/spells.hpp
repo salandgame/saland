@@ -25,6 +25,8 @@ https://github.com/sago007/saland
 #define MODEL_SPELLS_HPP
 
 #include <string>
+#include <vector>
+#include <map>
 
 enum class SpellCursorType { dot = 0, tile=1, shpere = 2 };
 
@@ -38,9 +40,14 @@ struct Spell {
 
 class SpellHolder {
 	std::vector<Spell> spells;
-	public:
+	std::map<std::string, size_t> spellIndex;
+	Spell blankSpell;
+	bool initialized = false;
+public:
+	void init();
+	void add_spell(const Spell& spell);
 	size_t get_spell_count() const;
-	const Spell& get_spell(int index) const;
+	const Spell& get_spell(size_t index) const;
 	const Spell& get_spell_by_name(const std::string&) const;
 };
 
