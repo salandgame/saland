@@ -44,6 +44,9 @@ class SpellHolder {
 	Spell blankSpell;
 	bool initialized = false;
 public:
+	size_t slot_selected = 0;
+	std::array<Spell, 10> slot_spell;
+	// methods starts here
 	void init();
 	void add_spell(const Spell& spell);
 	size_t get_spell_count() const;
