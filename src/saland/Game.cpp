@@ -196,12 +196,10 @@ struct Game::GameImpl {
 	std::string worldName = "world1";
 	sago::SagoTextField bottomField;
 	sago::SagoTextField middleField;
-	std::array<sago::SagoTextField,10> number_labels;  //Label: 0,1...10
-	SpellHolder spell_holder;
+	std::shared_ptr<SpellHolder> spell_holder;
 	std::shared_ptr<Console> console;
 	std::shared_ptr<GameSpellState> spellSelect;
 	bool consoleActive = false;
-	bool spellSelectActive = false;
 };
 
 static SpawnPoint GetSpawnpoint(const sago::tiled::TileMap& tm) {
@@ -266,22 +264,21 @@ Game::Game() {
 	data->bottomField.SetFontSize(20);
 	data->middleField.SetHolder(globalData.dataHolder);
 	data->middleField.SetFontSize(20);
-	for (size_t i = 0; i < data->number_labels.size(); ++i) {
-		data->number_labels.at(i).SetHolder(globalData.dataHolder);
-		data->number_labels.at(i).SetFontSize(20);
-		data->number_labels.at(i).SetText(std::to_string(i));
-	}
-	data->spell_holder.init();
-	data->spell_holder.slot_spell.at(0) = data->spell_holder.get_spell_by_name("spell_fireball");
-	data->spell_holder.slot_spell.at(1) = data->spell_holder.get_spell_by_name("weapon_slash_long_knife");
-	data->spell_holder.slot_spell.at(2) = data->spell_holder.get_spell_by_name("spell_create_block:607");
-	data->spell_holder.slot_spell.at(3) = data->spell_holder.get_spell_by_name("spell_create_block:28");
-	data->spell_holder.slot_spell.at(4) = data->spell_holder.get_spell_by_name("spell_create_block:16");
-	data->spell_holder.slot_spell.at(5) = data->spell_holder.get_spell_by_name("spell_spawn_item:food_potato");
-	data->spell_holder.slot_spell.at(6) = data->spell_holder.get_spell_by_name("spell_spawn_item:barrel");
-	data->spell_holder.slot_spell.at(7) = data->spell_holder.get_spell_by_name("spell_spawn_item:tree_palm");
-	data->spell_holder.slot_spell.at(8) = data->spell_holder.get_spell_by_name("spell_spawn_item:cactus_full");
-	data->spell_holder.slot_spell.at(9) = data->spell_holder.get_spell_by_name("spell_clear_block");
+	data->spellSelect = std::make_shared<GameSpellState>();
+	data->spell_holder = std::make_shared<SpellHolder>();
+	data->spellSelect->spell_holder = data->spell_holder;
+	data->spellSelect->tm = &data->gameRegion.world.tm;
+	data->spell_holder->init();
+	data->spell_holder->slot_spell.at(0) = data->spell_holder->get_spell_by_name("spell_fireball");
+	data->spell_holder->slot_spell.at(1) = data->spell_holder->get_spell_by_name("weapon_slash_long_knife");
+	data->spell_holder->slot_spell.at(2) = data->spell_holder->get_spell_by_name("spell_create_block:607");
+	data->spell_holder->slot_spell.at(3) = data->spell_holder->get_spell_by_name("spell_create_block:28");
+	data->spell_holder->slot_spell.at(4) = data->spell_holder->get_spell_by_name("spell_create_block:16");
+	data->spell_holder->slot_spell.at(5) = data->spell_holder->get_spell_by_name("spell_spawn_item:food_potato");
+	data->spell_holder->slot_spell.at(6) = data->spell_holder->get_spell_by_name("spell_spawn_item:barrel");
+	data->spell_holder->slot_spell.at(7) = data->spell_holder->get_spell_by_name("spell_spawn_item:tree_palm");
+	data->spell_holder->slot_spell.at(8) = data->spell_holder->get_spell_by_name("spell_spawn_item:cactus_full");
+	data->spell_holder->slot_spell.at(9) = data->spell_holder->get_spell_by_name("spell_clear_block");
 }
 
 Game::~Game() {
@@ -359,7 +356,7 @@ void Game::Draw(SDL_Renderer* target) {
 	if (data->world_mouse_x >= 0 && data->world_mouse_y >= 0) {
 		int mousebox_x = data->world_mouse_x - data->world_mouse_x % 32 - data->topx;
 		int mousebox_y = data->world_mouse_y - data->world_mouse_y % 32 - data->topy;
-		if (data->spell_holder.slot_spell.at(data->spell_holder.slot_selected).type == SpellCursorType::tile) {
+		if (data->spell_holder->slot_spell.at(data->spell_holder->slot_selected).type == SpellCursorType::tile) {
 			rectangleRGBA(globalData.screen, mousebox_x, mousebox_y,
 			              mousebox_x + 32, mousebox_y + 32, 255, 255, 0, 255);
 		}
@@ -398,26 +395,8 @@ void Game::Draw(SDL_Renderer* target) {
 	}
 	data->bottomField.Draw(target, 2, screen_height, sago::SagoTextField::Alignment::left, sago::SagoTextField::VerticalAlignment::bottom);
 	data->middleField.Draw(target, screen_width/2, screen_height/4, sago::SagoTextField::Alignment::center, sago::SagoTextField::VerticalAlignment::bottom);
-	for (size_t i = 0; i < 10; ++i) {
-		if (data->spell_holder.slot_selected == i) {
-			DrawRectWhite(target, 10+i*56, 10, 52, 52);
-		}
-		else {
-			DrawRectYellow(target, 10+i*56, 10, 52, 52);
-		}
-		int key_number = (i+1)%10;
-		data->number_labels.at(key_number).Draw(target, 10+i*56, 10);
-		const Spell& current_spell = data->spell_holder.slot_spell.at(i);
-		if (current_spell.icon.length() > 0) {
-			globalData.spriteHolder.get()->GetSprite(current_spell.icon).Draw(target, SDL_GetTicks(), 36+i*56, 36);
-		}
-		if (current_spell.tile > 0) {
-			DrawTile(target, globalData.spriteHolder.get(), data->gameRegion.world.tm, current_spell.tile, 20+i*56, 20);
-		}
-	}
-	if (data->spellSelectActive && data->spellSelect) {
-		data->spellSelect->Draw(target);
-	}
+	
+	data->spellSelect->Draw(target);
 	if (data->consoleActive && data->console) {
 		data->console->Draw(target);
 	}
@@ -449,11 +428,9 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 			return;
 		}
 	}
-	if (data->spellSelectActive && data->spellSelect) {
-		data->spellSelect->ProcessInput(event, processed);
-		if (processed) {
-			return;
-		}
+	data->spellSelect->ProcessInput(event, processed);
+	if (processed) {
+		return;
 	}
 	if (event.type == SDL_KEYDOWN) {
 		// Console activation is the first thing we check and we stop if it is activated.
@@ -467,38 +444,34 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 			return;
 		}
 		if (event.key.keysym.sym == SDLK_1 || event.key.keysym.sym == SDLK_KP_1) {
-			data->spell_holder.slot_selected = 0;
+			data->spell_holder->slot_selected = 0;
 		}
 		if (event.key.keysym.sym == SDLK_2 || event.key.keysym.sym == SDLK_KP_2) {
-			data->spell_holder.slot_selected = 1;
+			data->spell_holder->slot_selected = 1;
 		}
 		if (event.key.keysym.sym == SDLK_3 || event.key.keysym.sym == SDLK_KP_3) {
-			data->spell_holder.slot_selected = 2;
+			data->spell_holder->slot_selected = 2;
 		}
 		if (event.key.keysym.sym == SDLK_4 || event.key.keysym.sym == SDLK_KP_4) {
-			data->spell_holder.slot_selected = 3;
+			data->spell_holder->slot_selected = 3;
 		}
 		if (event.key.keysym.sym == SDLK_5 || event.key.keysym.sym == SDLK_KP_5) {
-			data->spell_holder.slot_selected = 4;
+			data->spell_holder->slot_selected = 4;
 		}
 		if (event.key.keysym.sym == SDLK_6 || event.key.keysym.sym == SDLK_KP_6) {
-			data->spell_holder.slot_selected = 5;
+			data->spell_holder->slot_selected = 5;
 		}
 		if (event.key.keysym.sym == SDLK_7 || event.key.keysym.sym == SDLK_KP_7) {
-			data->spell_holder.slot_selected = 6;
+			data->spell_holder->slot_selected = 6;
 		}
 		if (event.key.keysym.sym == SDLK_8 || event.key.keysym.sym == SDLK_KP_8) {
-			data->spell_holder.slot_selected = 7;
+			data->spell_holder->slot_selected = 7;
 		}
 		if (event.key.keysym.sym == SDLK_9 || event.key.keysym.sym == SDLK_KP_9) {
-			data->spell_holder.slot_selected = 8;
+			data->spell_holder->slot_selected = 8;
 		}
 		if (event.key.keysym.sym == SDLK_0 || event.key.keysym.sym == SDLK_KP_0) {
-			data->spell_holder.slot_selected = 9;
-		}
-		if (event.key.keysym.sym == SDLK_ESCAPE) {
-			data->spellSelect = std::make_shared<GameSpellState>();
-			data->spellSelectActive = true;
+			data->spell_holder->slot_selected = 9;
 		}
 		if (event.key.keysym.sym == SDLK_F12) {
 			data->isActive = false;
@@ -536,9 +509,7 @@ void Game::Update() {
 	if (data->consoleActive && data->console) {
 		data->console->Update();
 	}
-	if (data->spellSelectActive && data->spellSelect) {
-		data->spellSelect->Update();
-	}
+	data->spellSelect->Update();
 	Uint32 nowTime = SDL_GetTicks();
 	Uint32 deltaTime = nowTime - data->lastUpdate;
 	const Uint8* state = SDL_GetKeyboardState(NULL);
@@ -702,16 +673,13 @@ void Game::Update() {
 	if (data->consoleActive && data->console && !data->console->IsActive()) {
 		data->consoleActive = false;
 	}
-	if (data->spellSelectActive && data->spellSelect && !data->spellSelect->IsActive()) {
-		data->spellSelectActive = false;
-	}
-	const Spell& selectedSpell = data->spell_holder.slot_spell.at(data->spell_holder.slot_selected);
+	const Spell& selectedSpell = data->spell_holder->slot_spell.at(data->spell_holder->slot_selected);
 	data->human->weapon = "";
 	if (selectedSpell.name == "weapon_slash_long_knife") {
 		data->human->weapon = "long_knife";
 	}
 	if (SDL_GetMouseState(nullptr,nullptr) & 1 && !data->consoleActive && data->human->diedAt == 0) {
-		if (data->spell_holder.slot_spell.at(data->spell_holder.slot_selected).name == "spell_fireball") {
+		if (data->spell_holder->slot_spell.at(data->spell_holder->slot_selected).name == "spell_fireball") {
 			if (data->human->castTimeRemaining == 0) {
 				data->human->castTimeRemaining = data->human->castTime;
 				data->human->animation = "spellcast";
@@ -727,7 +695,7 @@ void Game::Update() {
 				data->gameRegion.placeables.push_back(projectile);
 			}
 		}
-		if (data->spell_holder.slot_spell.at(data->spell_holder.slot_selected).name == "spell_spawn_item") {
+		if (data->spell_holder->slot_spell.at(data->spell_holder->slot_selected).name == "spell_spawn_item") {
 			if (data->human->castTimeRemaining == 0) {
 				data->human->castTimeRemaining = data->human->castTime;
 				data->human->animation = "spellcast";
@@ -736,7 +704,7 @@ void Game::Update() {
 				//spawn item
 			}
 		}
-		if (data->spell_holder.slot_spell.at(data->spell_holder.slot_selected).name == "weapon_slash_long_knife") {
+		if (data->spell_holder->slot_spell.at(data->spell_holder->slot_selected).name == "weapon_slash_long_knife") {
 			if (data->human->castTimeRemaining == 0) {
 				data->human->castTimeRemaining = data->human->castTime;
 				data->human->animation = "slash";
@@ -758,13 +726,13 @@ void Game::Update() {
 				projectile->timeToLive = 100.0f;
 			}
 		}
-		if (data->spell_holder.slot_spell.at(data->spell_holder.slot_selected).name == "spell_create_block") {
+		if (data->spell_holder->slot_spell.at(data->spell_holder->slot_selected).name == "spell_create_block") {
 			if (data->human->castTimeRemaining == 0) {
 				data->human->castTimeRemaining = data->human->castTime;
 				data->human->animation = "spellcast";
 				int tile_x = data->world_mouse_x/32;
 				int tile_y = data->world_mouse_y/32;
-				int tile = data->spell_holder.slot_spell.at(data->spell_holder.slot_selected).tile;
+				int tile = data->spell_holder->slot_spell.at(data->spell_holder->slot_selected).tile;
 				if (sago::tiled::tileInBound(data->gameRegion.world.tm, tile_x, tile_y)
 				        && !(data->gameRegion.world.tile_protected(tile_x, tile_y)) ) {
 					int layer_number = data->gameRegion.world.blockingLayer;
@@ -775,7 +743,7 @@ void Game::Update() {
 				}
 			}
 		}
-		if (data->spell_holder.slot_spell.at(data->spell_holder.slot_selected).name == "spell_clear_block") {
+		if (data->spell_holder->slot_spell.at(data->spell_holder->slot_selected).name == "spell_clear_block") {
 			if (data->human->castTimeRemaining == 0) {
 				data->human->castTimeRemaining = data->human->castTime;
 				data->human->animation = "spellcast";

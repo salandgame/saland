@@ -25,6 +25,8 @@ https://github.com/sago007/saland
 #define GAME_SPELL_STATE_HPP
 
 #include <memory>
+#include "model/spells.hpp"
+#include "GameRegion.hpp"
 
 #include "../sago/GameStateInterface.hpp"
 
@@ -36,6 +38,9 @@ public:
 	virtual void ProcessInput(const SDL_Event& event, bool& processed) override;
 	virtual void Update() override;
 	virtual ~GameSpellState();
+	bool IsSpellSelectActive();
+	std::shared_ptr<SpellHolder> spell_holder;
+	sago::tiled::TileMap* tm = nullptr;
 private:
 	struct GameSpellStateImpl;
 	std::unique_ptr<GameSpellStateImpl> data;

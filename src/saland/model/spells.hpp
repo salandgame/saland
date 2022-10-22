@@ -26,6 +26,7 @@ https://github.com/sago007/saland
 
 #include <string>
 #include <vector>
+#include <array>
 #include <map>
 
 enum class SpellCursorType { dot = 0, tile=1, shpere = 2 };
