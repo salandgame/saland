@@ -55,6 +55,7 @@ public:
 	const Spell& get_spell(size_t index) const;
 	const Spell& get_spell_by_name(const std::string&) const;
 	const Spell& get_spell_clear_tile() const;
+	void ReadSpellFile(const std::string& filename);
 };
 
 #endif  //MODEL_SPELLS_HPP

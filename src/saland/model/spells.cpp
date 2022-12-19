@@ -22,6 +22,9 @@ https://github.com/sago007/saland
 */
 
 #include "spells.hpp"
+#include "../../sago/SagoMisc.hpp"
+#include "rapidjson/document.h"
+#include <iostream>
 
 void SpellHolder::add_spell(const Spell &spell)
 {
@@ -38,62 +41,70 @@ void SpellHolder::add_spell(const Spell &spell)
 	spellIndex[name] = spells.size() - 1;
 }
 
+void SpellHolder::ReadSpellFile(const std::string& filename) {
+	std::string fullfile = filename;
+	std::string content = sago::GetFileContent(fullfile.c_str());
+	rapidjson::Document document;
+	document.Parse(content.c_str());
+	if ( !document.IsObject() ) {
+		std::cerr << "Failed to parse: " << fullfile << "\n";
+		return;
+	}
+	for (auto& m : document.GetObject()) {
+		const std::string& itemHeader = m.name.GetString();
+		if (itemHeader == "items") {
+			const auto& items = m.value;
+			if (!items.IsArray()) {
+				std::cerr << "Failure reading " << filename <<  ": 'items' must be an array" << "\n";
+			}
+			for (const auto& item : items.GetArray()) {
+				if (item.IsObject()) {
+					Spell spell = blankSpell;
+					for (const auto& member : item.GetObject()) {
+						if (member.name == "name") {
+							spell.name = member.value.GetString();
+						}
+						if (member.name == "icon") {
+							spell.icon = member.value.GetString();
+						}
+						if (member.name == "item_name") {
+							spell.item_name = member.value.GetString();
+						}
+						if (member.name == "tile") {
+							spell.tile = member.value.GetInt64();
+						}
+						if (member.name == "type") {
+							std::string type_value = member.value.GetString();
+							if (type_value == "dot") {
+								spell.type = SpellCursorType::dot;
+							}
+							else if (type_value == "tile") {
+								spell.type = SpellCursorType::tile;
+							}
+							else {
+								std::cerr << filename << ": unsupported tile type: " << type_value << "\n";
+							}
+						}
+					}
+					add_spell(spell);
+				}
+			}
+		}
+		if (!m.value.IsArray()) {
+			if (itemHeader[0] != '_') {
+				std::cerr << "Missing top array: " << itemHeader << "\n";
+			}
+			continue;
+		}
+	}
+}
+
 void SpellHolder::init()
 {
-	Spell slot0;
-	slot0.icon = "effect_fireball";
-	slot0.name = "spell_fireball";
-	Spell slot1;
-	slot1.icon = "item_weapon_long_knife";
-	slot1.name = "weapon_slash_long_knife";
-	Spell slot2;
-	slot2.icon = "";
-	slot2.name = "spell_create_block";
-	slot2.tile = 607;
-	slot2.type = SpellCursorType::tile;
-	Spell slot3;
-	slot3.icon = "";
-	slot3.name = "spell_create_block";
-	slot3.tile = 28;
-	slot3.type = SpellCursorType::tile;
-	Spell slot4;
-	slot4.icon = "";
-	slot4.name = "spell_create_block";
-	slot4.tile = 16;
-	slot4.type = SpellCursorType::tile;
-	Spell slot5;
-	slot5.icon = "item_food_potato";
-	slot5.name = "spell_spawn_item";
-	slot5.item_name = "food_potato";
-	Spell slot6;
-	slot6.icon = "item_barrel";
-	slot6.name = "spell_spawn_item";
-	slot6.item_name = "barrel";
-	Spell slot7;
-	slot7.icon = "tree_palm_icon";
-	slot7.name = "spell_spawn_item";
-	slot7.item_name = "tree_palm";
-	Spell slot8;
-	slot8.icon = "cactus_one";
-	slot8.name = "spell_spawn_item";
-	slot8.item_name = "cactus_full";
-	Spell slot9;
-	slot9.icon = "tree_pine_icon";
-	slot9.name = "spell_spawn_item";
-	slot9.item_name = "tree_pine";
 	clearTileSpell.icon = "icon_trash_can";
 	clearTileSpell.name = "spell_clear_block";
 	clearTileSpell.type = SpellCursorType::tile;
-	add_spell(slot0);
-	add_spell(slot1);
-	add_spell(slot2);
-	add_spell(slot3);
-	add_spell(slot4);
-	add_spell(slot5);
-	add_spell(slot6);
-	add_spell(slot7);
-	add_spell(slot8);
-	add_spell(slot9);
+	ReadSpellFile("saland/items/base_items.json");
 }
 
 size_t SpellHolder::get_spell_count() const
