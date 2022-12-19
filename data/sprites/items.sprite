@@ -36,6 +36,18 @@
 	"originy" : 128
 },
 
+"tree_pine_icon" : {
+	"texture" : "treetop",
+	"topx" : 128,
+	"topy" : 128,
+	"height" : 32,
+	"width" : 32,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+	"originx" : 16,
+	"originy" : 16
+},
+
 "tree_palm" : {
 	"texture" : "plant_repack",
 	"topx" : 320,
@@ -46,6 +58,18 @@
 	"frame_time" : 100,
 	"originx" : 48,
 	"originy" : 112
+},
+
+"tree_palm_icon" : {
+	"texture" : "plant_repack",
+	"topx" : 352,
+	"topy" : 320,
+	"height" : 32,
+	"width" : 32,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+	"originx" : 16,
+	"originy" : 16
 },
 
 "cactus_one" : {

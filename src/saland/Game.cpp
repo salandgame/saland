@@ -278,7 +278,7 @@ Game::Game() {
 	data->spell_holder->slot_spell.at(6) = data->spell_holder->get_spell_by_name("spell_spawn_item:barrel");
 	data->spell_holder->slot_spell.at(7) = data->spell_holder->get_spell_by_name("spell_spawn_item:tree_palm");
 	data->spell_holder->slot_spell.at(8) = data->spell_holder->get_spell_by_name("spell_spawn_item:cactus_full");
-	data->spell_holder->slot_spell.at(9) = data->spell_holder->get_spell_by_name("spell_clear_block");
+	data->spell_holder->slot_spell.at(9) = data->spell_holder->get_spell_clear_tile();
 }
 
 Game::~Game() {

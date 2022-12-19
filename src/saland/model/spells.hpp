@@ -43,6 +43,7 @@ class SpellHolder {
 	std::vector<Spell> spells;
 	std::map<std::string, size_t> spellIndex;
 	Spell blankSpell;
+	Spell clearTileSpell;
 	bool initialized = false;
 public:
 	size_t slot_selected = 0;
@@ -53,6 +54,7 @@ public:
 	size_t get_spell_count() const;
 	const Spell& get_spell(size_t index) const;
 	const Spell& get_spell_by_name(const std::string&) const;
+	const Spell& get_spell_clear_tile() const;
 };
 
 #endif  //MODEL_SPELLS_HPP

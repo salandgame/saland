@@ -70,7 +70,7 @@ void SpellHolder::init()
 	slot6.name = "spell_spawn_item";
 	slot6.item_name = "barrel";
 	Spell slot7;
-	slot7.icon = "tree_palm"; // Quite big. As this has no icon
+	slot7.icon = "tree_palm_icon";
 	slot7.name = "spell_spawn_item";
 	slot7.item_name = "tree_palm";
 	Spell slot8;
@@ -78,9 +78,12 @@ void SpellHolder::init()
 	slot8.name = "spell_spawn_item";
 	slot8.item_name = "cactus_full";
 	Spell slot9;
-	slot9.icon = "icon_trash_can";
-	slot9.name = "spell_clear_block";
-	slot9.type = SpellCursorType::tile;
+	slot9.icon = "tree_pine_icon";
+	slot9.name = "spell_spawn_item";
+	slot9.item_name = "tree_pine";
+	clearTileSpell.icon = "icon_trash_can";
+	clearTileSpell.name = "spell_clear_block";
+	clearTileSpell.type = SpellCursorType::tile;
 	add_spell(slot0);
 	add_spell(slot1);
 	add_spell(slot2);
@@ -115,4 +118,9 @@ const Spell &SpellHolder::get_spell_by_name(const std::string &spell_name) const
 		return blankSpell;
 	}
 	return get_spell(it->second);
+}
+
+const Spell &SpellHolder::get_spell_clear_tile() const
+{
+	return clearTileSpell;
 }
