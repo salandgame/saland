@@ -2,5 +2,5 @@
 set -e
 mkdir -p packages
 pushd data
-zip -9oX ../packages/saland-0001.data "$(find * | sort)"
+find * | sort | xargs zip -9oX ../packages/saland-0001.data
 popd
