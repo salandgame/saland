@@ -116,9 +116,9 @@ void World::init_physics(std::shared_ptr<b2World>& world) {
 		destroyBodyWithFixtures(world.get(), b);
 		/*b2Fixture* f = b->GetFixtureList();
 		while (f) {
-			b2Fixture* next_f = f->GetNext();
-			b->DestroyFixture(f);
-			f = next_f;
+		    b2Fixture* next_f = f->GetNext();
+		    b->DestroyFixture(f);
+		    f = next_f;
 		}
 		world->DestroyBody(b);*/
 	}
@@ -277,7 +277,7 @@ void World::init(std::shared_ptr<b2World>& world, const std::string& mapFileName
 	init_tilemap(tm, blockingLayer, blockingLayer_overlay_1);
 	init_physics(world);
 	protected_tiles.resize(tm.height*tm.width);
-	
+
 	for (int x=0; x < tm.width; ++x) {
 		for (int y=0; y < tm.height; ++y) {
 			protected_tiles[x+y*tm.width] = false;

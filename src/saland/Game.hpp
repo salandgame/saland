@@ -44,7 +44,7 @@ private:
 	void RespawnPlayer();
 	/**
 	 * @brief Respawns the player or any other dead action.
-	 * 
+	 *
 	 */
 	void ActionPostDeath();
 };

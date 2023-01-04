@@ -354,8 +354,8 @@ void runMenuOptions() {
 }
 
 static void runHelpAbout() {
-        HelpAboutState helpAbout;
-        RunGameState(helpAbout);
+	HelpAboutState helpAbout;
+	RunGameState(helpAbout);
 }
 
 class WorldSelectButton : public Button {
@@ -401,7 +401,7 @@ void runGame() {
 		//If sound has not been disabled, then load the sound system
 		if (Mix_OpenAudio(44100, AUDIO_S16SYS, 2, 2048) < 0) {
 			std::cerr << "Warning: Couldn't set 44100 Hz 16-bit audio - Reason: " << SDL_GetError() << "\n"
-						<< "Sound will be disabled!" << "\n";
+			          << "Sound will be disabled!" << "\n";
 			globalData.NoSound = true; //Tries to stop all sound from playing/loading
 		}
 	}

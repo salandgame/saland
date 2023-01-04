@@ -387,7 +387,7 @@ void Game::Draw(SDL_Renderer* target) {
 	}
 	if (data->world_mouse_x >= 0 && data->world_mouse_y >= 0) {
 		std::string s = fmt::format("world_x = {}, world_y = {}, layer_info:{}", data->world_mouse_x/32, data->world_mouse_y/32,
-		         GetLayerInfoForTile(data->gameRegion.world, data->world_mouse_x/32, data->world_mouse_y/32));
+		                            GetLayerInfoForTile(data->gameRegion.world, data->world_mouse_x/32, data->world_mouse_y/32));
 		data->bottomField.SetText(s);
 	}
 	else {
@@ -395,7 +395,7 @@ void Game::Draw(SDL_Renderer* target) {
 	}
 	data->bottomField.Draw(target, 2, screen_height, sago::SagoTextField::Alignment::left, sago::SagoTextField::VerticalAlignment::bottom);
 	data->middleField.Draw(target, screen_width/2, screen_height/4, sago::SagoTextField::Alignment::center, sago::SagoTextField::VerticalAlignment::bottom);
-	
+
 	data->spellSelect->Draw(target);
 	if (data->consoleActive && data->console) {
 		data->console->Draw(target);
@@ -428,10 +428,6 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 			return;
 		}
 	}
-	data->spellSelect->ProcessInput(event, processed);
-	if (processed) {
-		return;
-	}
 	if (event.type == SDL_KEYDOWN) {
 		// Console activation is the first thing we check and we stop if it is activated.
 		if (event.key.keysym.sym == SDLK_ESCAPE && event.key.keysym.mod & KMOD_LSHIFT) {
@@ -443,6 +439,12 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 			processed = true;
 			return;
 		}
+	}
+	data->spellSelect->ProcessInput(event, processed);
+	if (processed) {
+		return;
+	}
+	if (event.type == SDL_KEYDOWN) {
 		if (event.key.keysym.sym == SDLK_1 || event.key.keysym.sym == SDLK_KP_1) {
 			data->spell_holder->slot_selected = 0;
 		}

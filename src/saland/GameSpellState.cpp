@@ -102,11 +102,11 @@ void GameSpellState::ProcessInput(const SDL_Event& event, bool& processed) {
 			std::cout << "Left click " << globalData.mousex << "," << globalData.mousey << "\n";
 			for (size_t i = 0; i < spell_holder->get_spell_count(); ++i) {
 				if (globalData.mousex >= BOX_OFFSET+(int)i*BOX_SPACING && globalData.mousex <= BOX_OFFSET+(int)i*BOX_SPACING+BOX_SIZE &&
-					globalData.mousey >= BOX_OFFSET+70 && globalData.mousey <= BOX_OFFSET+70+BOX_SIZE) {
+				        globalData.mousey >= BOX_OFFSET+70 && globalData.mousey <= BOX_OFFSET+70+BOX_SIZE) {
 					std::cout << "Clicked: " << i << "\n";
 					if (spell_holder->slot_selected < 9) {
 						//We do not update slot 9.
-						spell_holder->slot_spell.at(spell_holder->slot_selected) = spell_holder->get_spell(i); 
+						spell_holder->slot_spell.at(spell_holder->slot_selected) = spell_holder->get_spell(i);
 					}
 				}
 			}

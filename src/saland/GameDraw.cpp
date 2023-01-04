@@ -26,8 +26,7 @@ https://github.com/sago007/saland
 #include <cmath>
 #include "../sago/SagoTextField.hpp"
 
-struct TextCache
-{
+struct TextCache {
 	sago::SagoTextField* getLabel(const std::string& text);
 private:
 	std::map<std::string, std::shared_ptr<sago::SagoTextField> > labels;
@@ -137,7 +136,7 @@ void DrawOjbectGroup(SDL_Renderer* renderer, const sago::tiled::TileMap& tm, siz
 		else {
 			if (globalData.debugDrawProtectedAreas) {
 				rectangleRGBA(renderer, o.x - topx, o.y - topy,
-							o.x + o.width - topx, o.y + o.height - topy, 255, 255, 0, 255);
+				              o.x + o.width - topx, o.y + o.height - topy, 255, 255, 0, 255);
 			}
 		}
 	}

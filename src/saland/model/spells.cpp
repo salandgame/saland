@@ -26,16 +26,13 @@ https://github.com/sago007/saland
 #include "rapidjson/document.h"
 #include <iostream>
 
-void SpellHolder::add_spell(const Spell &spell)
-{
+void SpellHolder::add_spell(const Spell& spell) {
 	spells.push_back(spell);
 	std::string name = spell.name;
-	if (spell.item_name[0])
-	{
+	if (spell.item_name[0]) {
 		name = name + ":" + spell.item_name;
 	}
-	if (spell.tile)
-	{
+	if (spell.tile) {
 		name = name + ":" + std::to_string(spell.tile);
 	}
 	spellIndex[name] = spells.size() - 1;
@@ -99,39 +96,32 @@ void SpellHolder::ReadSpellFile(const std::string& filename) {
 	}
 }
 
-void SpellHolder::init()
-{
+void SpellHolder::init() {
 	clearTileSpell.icon = "icon_trash_can";
 	clearTileSpell.name = "spell_clear_block";
 	clearTileSpell.type = SpellCursorType::tile;
 	ReadSpellFile("saland/items/base_items.json");
 }
 
-size_t SpellHolder::get_spell_count() const
-{
+size_t SpellHolder::get_spell_count() const {
 	return spells.size();
 }
 
-const Spell &SpellHolder::get_spell(size_t index) const
-{
-	if (index >= spells.size())
-	{
+const Spell& SpellHolder::get_spell(size_t index) const {
+	if (index >= spells.size()) {
 		return blankSpell;
 	}
 	return spells.at(index);
 }
 
-const Spell &SpellHolder::get_spell_by_name(const std::string &spell_name) const
-{
+const Spell& SpellHolder::get_spell_by_name(const std::string& spell_name) const {
 	auto it = spellIndex.find(spell_name);
-	if (it == spellIndex.end())
-	{
+	if (it == spellIndex.end()) {
 		return blankSpell;
 	}
 	return get_spell(it->second);
 }
 
-const Spell &SpellHolder::get_spell_clear_tile() const
-{
+const Spell& SpellHolder::get_spell_clear_tile() const {
 	return clearTileSpell;
 }

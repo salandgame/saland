@@ -56,7 +56,7 @@ static int32_t translate_tile(const sago::tiled::TileMap& dest, const sago::tile
 				}
 			}
 			break;
-		} 
+		}
 	}
 	return 1;
 }

@@ -33,10 +33,10 @@ public:
 	HelpAboutState();
 	HelpAboutState(const HelpAboutState& orig) = delete;
 	virtual ~HelpAboutState();
-	
+
 	bool IsActive() override;
 	void Draw(SDL_Renderer* target) override;
-	void ProcessInput(const SDL_Event& event, bool &processed) override;
+	void ProcessInput(const SDL_Event& event, bool& processed) override;
 	void Update() override;
 
 private:

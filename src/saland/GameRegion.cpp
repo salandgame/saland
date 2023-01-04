@@ -24,6 +24,7 @@ https://github.com/sago007/saland
 #include "GameRegion.hpp"
 #include "GameItems.hpp"
 #include <cmath>
+#include <random>
 
 GameRegion::GameRegion() {
 	Init(0, 0, "world1", false);
@@ -149,12 +150,112 @@ static std::string GetRegionType(int region_x, int region_y) {
 	return "default";
 }
 
+const int LAKE_WIDTH = 20; // width of the lake pattern
+const int LAKE_HEIGHT = 20; // height of the lake pattern
+const int LAKE_SIZE = 40; // maximum size of the lake
+const int LAKE_MIN_SIZE = 8;
+
+static // function to generate a random lake pattern
+std::vector<std::vector<int>> generateLakePattern() {
+	std::vector<std::vector<int>> pattern(LAKE_WIDTH, std::vector<int>(LAKE_HEIGHT, 0));
+
+	// choose a random point in the pattern as the center of the lake
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<int> dist_x(0, LAKE_WIDTH - 1);
+	std::uniform_int_distribution<int> dist_y(0, LAKE_HEIGHT - 1);
+	int center_x = LAKE_WIDTH/2;
+	int center_y = LAKE_HEIGHT/2;
+
+	// set the center point of the lake to be a lake tile
+	pattern[center_x][center_y] = 1;
+
+	// choose a random size for the lake (up to the maximum size)
+	std::uniform_int_distribution<int> dist_size(LAKE_MIN_SIZE, LAKE_SIZE);
+	int size = dist_size(gen);
+
+	// randomly expand the lake outwards from the center point
+	for (int i = 0; i < size; ++i) {
+		// choose a random direction to expand the lake in
+		std::uniform_int_distribution<int> dist_dir(0, 3);
+		int dir = dist_dir(gen);
+
+		// expand the lake in the chosen direction
+		if (dir == 0) {
+			if (center_x > 0) {
+				--center_x;
+				pattern[center_x][center_y] = 1;
+			}
+		}
+		else if (dir == 1) {
+			if (center_x < LAKE_WIDTH - 1) {
+				++center_x;
+				pattern[center_x][center_y] = 1;
+			}
+		}
+		else if (dir == 2) {
+			if (center_y > 0) {
+				--center_y;
+				pattern[center_x][center_y] = 1;
+			}
+		}
+		else {
+			if (center_y < LAKE_HEIGHT - 1) {
+				++center_y;
+				pattern[center_x][center_y] = 1;
+			}
+		}
+	}
+	for (int i = 0; i < pattern.size(); ++i) {
+		int lastTile = 0;
+		for (int j = 0; j < pattern.at(0).size(); ++j) {
+			if (lastTile == 1 && pattern[i][j] == 0 ) {
+				lastTile = 0;
+				pattern[i][j] = 1;
+			}
+			else {
+				lastTile = pattern[i][j];
+			}
+		}
+	}
+	for (int j = 0; j < pattern.at(0).size(); ++j) {
+		int lastTile = 0;
+		for (int i = 0; i < pattern.size(); ++i) {
+			if (lastTile == 1 && pattern[i][j] == 0) {
+				lastTile = 0;
+				pattern[i][j] = 1;
+			}
+			else {
+				lastTile = pattern[i][j];
+			}
+		}
+	}
+
+	return pattern;
+}
 
 void GameRegion::ProcessRegionEnter(World& world) {
 	if (world.tm.properties["type"].value == "forrest") {
 		std::cout << "Forrest (or start) region\n";
 		ItemDef pineDef = getItem("tree_pine");
 
+		{
+			// Add a small lake
+			int x = (rand()%(world.tm.width-LAKE_WIDTH));
+			int y = (rand()%(world.tm.height-LAKE_HEIGHT));
+			const auto& pattern = generateLakePattern();
+			for (size_t i=0; i < LAKE_WIDTH; ++i) {
+				for (size_t j=0; j < LAKE_HEIGHT; ++j) {
+					if (pattern[i][j] == 0) {
+						continue;
+					}
+					int layer_number = world.blockingLayer;
+					uint32_t tile = 28;
+					sago::tiled::setTileOnLayerNumber(world.tm, layer_number, x+i, y+j, tile);
+					liqudHandler["water"].updateFirstTile(world.tm, x+i, y+j);
+				}
+			}
+		}
 		for (int i=0; i<10; ++i) {
 			int x = (rand()%(world.tm.width-3)+1)*32+rand()%32;
 			int y = (rand()%(world.tm.height-3)+1)*32+rand()%32;
