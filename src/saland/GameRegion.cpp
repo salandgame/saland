@@ -206,9 +206,9 @@ std::vector<std::vector<int>> generateLakePattern() {
 			}
 		}
 	}
-	for (int i = 0; i < pattern.size(); ++i) {
+	for (size_t i = 0; i < pattern.size(); ++i) {
 		int lastTile = 0;
-		for (int j = 0; j < pattern.at(0).size(); ++j) {
+		for (size_t j = 0; j < pattern.at(0).size(); ++j) {
 			if (lastTile == 1 && pattern[i][j] == 0 ) {
 				lastTile = 0;
 				pattern[i][j] = 1;
@@ -218,9 +218,9 @@ std::vector<std::vector<int>> generateLakePattern() {
 			}
 		}
 	}
-	for (int j = 0; j < pattern.at(0).size(); ++j) {
+	for (size_t j = 0; j < pattern.at(0).size(); ++j) {
 		int lastTile = 0;
-		for (int i = 0; i < pattern.size(); ++i) {
+		for (size_t i = 0; i < pattern.size(); ++i) {
 			if (lastTile == 1 && pattern[i][j] == 0) {
 				lastTile = 0;
 				pattern[i][j] = 1;
@@ -234,11 +234,8 @@ std::vector<std::vector<int>> generateLakePattern() {
 	return pattern;
 }
 
-void GameRegion::ProcessRegionEnter(World& world) {
+void GameRegion::ProcessRegionFirstTimeEnter(World& world) {
 	if (world.tm.properties["type"].value == "forrest") {
-		std::cout << "Forrest (or start) region\n";
-		ItemDef pineDef = getItem("tree_pine");
-
 		{
 			// Add a small lake
 			int x = (rand()%(world.tm.width-LAKE_WIDTH));
@@ -256,6 +253,13 @@ void GameRegion::ProcessRegionEnter(World& world) {
 				}
 			}
 		}
+	}
+}
+
+void GameRegion::ProcessRegionEnter(World& world) {
+	if (world.tm.properties["type"].value == "forrest") {
+		std::cout << "Forrest (or start) region\n";
+		ItemDef pineDef = getItem("tree_pine");
 		for (int i=0; i<10; ++i) {
 			int x = (rand()%(world.tm.width-3)+1)*32+rand()%32;
 			int y = (rand()%(world.tm.height-3)+1)*32+rand()%32;
@@ -286,12 +290,14 @@ static std::string RegionChooseMapTemplate(int region_x, int region_y) {
 
 
 void GameRegion::Init(int x, int y, const std::string& worldName, bool forceResetWorld) {
+	bool newRegion = false;  //If this is a new region to be generated
 	region_x = x;
 	region_y = y;
 	mapFileName = createFileName(region_x, region_y, worldName);
 	std::string loadMap = mapFileName;
 	if (!sago::FileExists(loadMap.c_str()) || forceResetWorld) {
 		loadMap = RegionChooseMapTemplate(region_x, region_y);
+		newRegion = true;
 	}
 	b2Vec2 gravity(0.0f, 0.0f);
 	placeables.clear();
@@ -343,6 +349,9 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 	std::string regionType = GetRegionType(region_x, region_y);
 	if (regionType == "forrest" || regionType == "start" ) {
 		world.tm.properties["type"].value = "forrest";
+	}
+	if (newRegion) {
+		ProcessRegionFirstTimeEnter(world);
 	}
 	ProcessRegionEnter(world);
 
