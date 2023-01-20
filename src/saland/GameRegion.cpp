@@ -141,7 +141,7 @@ void GameRegion::SpawnItem(const ItemDef& def, float destX, float destY) {
 }
 
 static std::string GetRegionType(int region_x, int region_y) {
-	if (region_x < 0 && region_y == 0) {
+	if (region_x < 1) {
 		return "forrest";
 	}
 	if (region_x == 0 && region_y == 0) {
