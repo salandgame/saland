@@ -155,8 +155,10 @@ const int LAKE_HEIGHT = 20; // height of the lake pattern
 const int LAKE_SIZE = 40; // maximum size of the lake
 const int LAKE_MIN_SIZE = 8;
 
-static // function to generate a random lake pattern
-std::vector<std::vector<int>> generateLakePattern() {
+/**
+ * function to generate a random lake pattern
+ */
+static std::vector<std::vector<int>> generateLakePattern() {
 	std::vector<std::vector<int>> pattern(LAKE_WIDTH, std::vector<int>(LAKE_HEIGHT, 0));
 
 	// choose a random point in the pattern as the center of the lake
