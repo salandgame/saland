@@ -100,7 +100,7 @@ void SpellHolder::init() {
 	clearTileSpell.icon = "icon_trash_can";
 	clearTileSpell.name = "spell_clear_block";
 	clearTileSpell.type = SpellCursorType::tile;
-	ReadSpellFile("saland/items/base_items.json");
+	ReadSpellFile("saland/spells/base_spells.json");
 }
 
 size_t SpellHolder::get_spell_count() const {
