@@ -1,35 +1,6 @@
 {
 	"items": [
 		{
-			"name": "spell_fireball",
-			"icon": "effect_fireball",
-			"item_name": "",
-			"tile": 0,
-			"_comment_tile": "Number reference to a tile, we might also need a tileset at some point",
-			"type": "dot"
-		}
-		,{
-			"icon": "item_weapon_long_knife",
-			"name": "weapon_slash_long_knife"
-		}
-		,{
-			"name": "spell_create_block",
-			"tile": 607,
-			"type": "tile"
-		}
-		,{
-			"icon": "",
-			"name" : "spell_create_block",
-			"tile" : 28,
-			"type" : "tile"
-		}
-		,{
-			"icon" : "",
-			"name" : "spell_create_block",
-			"tile" : 16,
-			"type" : "tile"
-		}
-		,{
 			"icon" : "item_food_potato",
 			"name" : "spell_spawn_item",
 			"item_name" : "food_potato"
