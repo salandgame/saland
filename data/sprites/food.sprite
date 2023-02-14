@@ -1,13 +1,128 @@
 {
-
-"item_food_potato" : {
-	"texture" : "food",
-	"topx" : 0,
-	"topy" : 0,
-	"height" : 32,
-	"width" : 32,
-	"originx" : 16,
-	"originy" : 16
-}
-
+    "item_food_potato": {
+        "texture": "food",
+        "topx": 0,
+        "topy": 0,
+        "height": 32,
+        "width": 32,
+        "originx": 16,
+        "originy": 16
+    },
+    "item_food_carrot": {
+        "texture": "food",
+        "topx": 192,
+        "topy": 0,
+        "height": 32,
+        "width": 32,
+        "originx": 16,
+        "originy": 16
+    },
+    "item_food_onion": {
+        "texture": "food",
+        "topx": 416,
+        "topy": 0,
+        "height": 32,
+        "width": 32,
+        "originx": 16,
+        "originy": 16
+    },
+    "item_food_onion_red": {
+        "texture": "food",
+        "topx": 448,
+        "topy": 0,
+        "height": 32,
+        "width": 32,
+        "originx": 16,
+        "originy": 16
+    },
+    "item_food_pepper_green": {
+        "texture": "food",
+        "topx": 576,
+        "topy": 0,
+        "height": 32,
+        "width": 32,
+        "originx": 16,
+        "originy": 16
+    },
+    "item_food_pepper_red": {
+        "texture": "food",
+        "topx": 608,
+        "topy": 0,
+        "height": 32,
+        "width": 32,
+        "originx": 16,
+        "originy": 16
+    },
+    "item_food_pepper_orange": {
+        "texture": "food",
+        "topx": 640,
+        "topy": 0,
+        "height": 32,
+        "width": 32,
+        "originx": 16,
+        "originy": 16
+    },
+    "item_food_pepper_yellow": {
+        "texture": "food",
+        "topx": 672,
+        "topy": 0,
+        "height": 32,
+        "width": 32,
+        "originx": 16,
+        "originy": 16
+    },
+    "item_food_water_mellon": {
+        "texture": "food",
+        "topx": 736,
+        "topy": 0,
+        "height": 32,
+        "width": 32,
+        "originx": 16,
+        "originy": 16
+    },
+    "item_food_mellon": {
+        "texture": "food",
+        "topx": 800,
+        "topy": 0,
+        "height": 32,
+        "width": 32,
+        "originx": 16,
+        "originy": 16
+    },
+    "item_food_pumpkin": {
+        "texture": "food",
+        "topx": 864,
+        "topy": 0,
+        "height": 32,
+        "width": 32,
+        "originx": 16,
+        "originy": 16
+    },
+    "item_food_apple_green": {
+        "texture": "food",
+        "topx": 32,
+        "topy": 320,
+        "height": 32,
+        "width": 32,
+        "originx": 16,
+        "originy": 16
+    },
+    "item_food_apple_yellow": {
+        "texture": "food",
+        "topx": 96,
+        "topy": 320,
+        "height": 32,
+        "width": 32,
+        "originx": 16,
+        "originy": 16
+    },
+    "item_food_apple_red": {
+        "texture": "food",
+        "topx": 128,
+        "topy": 320,
+        "height": 32,
+        "width": 32,
+        "originx": 16,
+        "originy": 16
+    }
 }
