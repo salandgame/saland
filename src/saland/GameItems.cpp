@@ -22,42 +22,136 @@ https://github.com/sago007/saland
 */
 
 #include "GameItems.hpp"
+#include <unordered_map>
+#include "../sago/SagoMisc.hpp"
+#include "rapidjson/document.h"
+#include "iostream"
+#include "fmt/core.h"
+
+const char* const item_dir = "saland/items/";
 
 static ItemDef itemDef;
 
-const ItemDef& getItem(const std::string& itemName) {
+static std::unordered_map<std::string,ItemDef> all_items;
+
+static void ReadItemFile(const std::string& filename) {
+	std::string fullfile = filename;
+	std::string content = sago::GetFileContent(fullfile.c_str());
+	rapidjson::Document document;
+	document.Parse(content.c_str());
+	if ( !document.IsObject() ) {
+		std::cerr << "Failed to parse: " << fullfile << "\n";
+		return;
+	}
+	for (auto& m : document.GetObject()) {
+		const std::string& itemHeader = m.name.GetString();
+		if (itemHeader == "items") {
+			const auto& items = m.value;
+			if (!items.IsArray()) {
+				std::cerr << "Failure reading " << filename <<  ": 'items' must be an array" << "\n";
+			}
+			for (const auto& item : items.GetArray()) {
+				if (item.IsObject()) {
+					ItemDef new_item = itemDef;
+					for (const auto& member : item.GetObject()) {
+						if (member.name == "itemid") {
+							new_item.itemid = member.value.GetString();
+						}
+						if (member.name == "sprite") {
+							new_item.sprite = member.value.GetString();
+						}
+						if (member.name == "radius") {
+							new_item.radius = member.value.GetDouble();
+						}
+						if (member.name == "sprite2") {
+							new_item.sprite2 = member.value.GetString();
+						}
+						if (member.name == "isStatic") {
+							new_item.isStatic = member.value.GetBool();
+						}
+						if (member.name == "isDestructible") {
+							new_item.isDestructible = member.value.GetBool();
+						}
+						if (member.name == "health") {
+							new_item.health = member.value.GetDouble();
+						}
+						if (member.name == "pickup") {
+							new_item.pickup = member.value.GetBool();
+						}
+					}
+					all_items[new_item.itemid] = new_item;
+				}
+			}
+		}
+		if (!m.value.IsArray()) {
+			if (itemHeader[0] != '_') {
+				std::cerr << "Missing top array: " << itemHeader << "\n";
+			}
+			continue;
+		}
+	}
+}
+
+static void initItems() {
 	itemDef.sprite2 = "";
 	itemDef.isDestructible = true;
 	itemDef.health = 100.0f;
-	itemDef.itemid = itemName;
+	itemDef.itemid = "";
 	itemDef.pickup = false;
-	if (itemName == "barrel") {
-		itemDef.radius = 16.0f;
-		itemDef.sprite = "item_barrel";
-		itemDef.isStatic = true;
+	{
+		ItemDef barrel = itemDef;
+		barrel.itemid = "barrel";
+		barrel.radius = 16.0f;
+		barrel.sprite = "item_barrel";
+		barrel.isStatic = true;
+		all_items[barrel.itemid] = barrel;
 	}
-	if (itemName == "food_potato") {
-		itemDef.isDestructible = false;
-		itemDef.radius = 9.0f;
-		itemDef.sprite = "item_food_potato";
-		itemDef.isStatic = false;
-		itemDef.pickup = true;
+	{
+		ItemDef potato = itemDef;
+		potato.itemid = "food_potato";
+		potato.isDestructible = false;
+		potato.radius = 9.0f;
+		potato.sprite = "item_food_potato";
+		potato.isStatic = false;
+		potato.pickup = true;
+		all_items[potato.itemid] = potato;
 	}
-	if (itemName == "tree_pine") {
-		itemDef.radius = 20.0f;
-		itemDef.sprite = "tree_pine_trunk";
-		itemDef.sprite2 = "tree_pine_top";
-		itemDef.isStatic = true;
+	{
+		ItemDef pine = itemDef;
+		pine.itemid = "tree_pine";
+		pine.radius = 20.0f;
+		pine.sprite = "tree_pine_trunk";
+		pine.sprite2 = "tree_pine_top";
+		pine.isStatic = true;
+		all_items[pine.itemid] = pine;
 	}
-	if (itemName == "tree_palm") {
-		itemDef.radius = 20.0f;
-		itemDef.sprite = "tree_palm";
-		itemDef.isStatic = true;
+	{
+		ItemDef palm = itemDef;
+		palm.itemid = "tree_palm";
+		palm.radius = 20.0f;
+		palm.sprite = "tree_palm";
+		palm.isStatic = true;
+		all_items[palm.itemid] = palm;
 	}
-	if (itemName == "cactus_full") {
-		itemDef.radius = 20.0f;
-		itemDef.sprite = "cactus_full";
-		itemDef.isStatic = true;
+	{
+		ItemDef cactus = itemDef;
+		cactus.itemid = "cactus_full";
+		cactus.radius = 20.0f;
+		cactus.sprite = "cactus_full";
+		cactus.isStatic = true;
+		all_items[cactus.itemid] = cactus;
 	}
-	return itemDef;
+	std::vector<std::string> file_list = sago::GetFileList(item_dir);
+	for(const std::string& file : file_list) {
+		std::string filename = fmt::format("{}{}", item_dir, file);
+		printf("Item file: %s\n",filename.c_str());
+		ReadItemFile(filename);
+	}
+}
+
+const ItemDef& getItem(const std::string& itemName) {
+	if (all_items.size() == 0) {
+		initItems();
+	}
+	return all_items[itemName];
 }
