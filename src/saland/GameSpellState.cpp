@@ -90,6 +90,9 @@ bool GameSpellState::IsSpellSelectActive() {
 }
 
 void GameSpellState::ProcessInput(const SDL_Event& event, bool& processed) {
+	if (!data->spellSelectActive) {
+		return;
+	}
 	UpdateMouseCoordinates(event, globalData.mousex, globalData.mousey);
 	if (event.type == SDL_KEYDOWN) {
 		if (event.key.keysym.sym == SDLK_ESCAPE) {
