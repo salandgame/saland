@@ -107,16 +107,6 @@ static void initItems() {
 		all_items[barrel.itemid] = barrel;
 	}
 	{
-		ItemDef potato = itemDef;
-		potato.itemid = "food_potato";
-		potato.isDestructible = false;
-		potato.radius = 9.0f;
-		potato.sprite = "item_food_potato";
-		potato.isStatic = false;
-		potato.pickup = true;
-		all_items[potato.itemid] = potato;
-	}
-	{
 		ItemDef pine = itemDef;
 		pine.itemid = "tree_pine";
 		pine.radius = 20.0f;

@@ -1,0 +1,130 @@
+{
+    "items": [
+        {
+            "itemid": "food_potato",
+            "sprite": "item_food_potato",
+            "description": "Potato",
+            "radius": 5.0,
+            "isStatic": false,
+            "pickup": true,
+            "isDestructible": false
+        },
+        {
+            "itemid": "food_carrot",
+            "sprite": "item_food_carrot",
+            "description": "Carrot",
+            "radius": 5.0,
+            "isStatic": false,
+            "pickup": true,
+            "isDestructible": false
+        },
+        {
+            "itemid": "food_onion",
+            "sprite": "item_food_onion",
+            "description": "Onion",
+            "radius": 5.0,
+            "isStatic": false,
+            "pickup": true,
+            "isDestructible": false
+        },
+        {
+            "itemid": "food_onion_red",
+            "sprite": "item_food_onion_red",
+            "description": "Red onion",
+            "radius": 5.0,
+            "isStatic": false,
+            "pickup": true,
+            "isDestructible": false
+        },
+        {
+            "itemid": "food_pepper_green",
+            "sprite": "item_food_pepper_green",
+            "description": "Green pepper",
+            "radius": 5.0,
+            "isStatic": false,
+            "pickup": true,
+            "isDestructible": false
+        },
+        {
+            "itemid": "food_pepper_red",
+            "sprite": "item_food_pepper_red",
+            "description": "Red pepper",
+            "radius": 5.0,
+            "isStatic": false,
+            "pickup": true,
+            "isDestructible": false
+        },
+        {
+            "itemid": "food_pepper_orange",
+            "sprite": "item_food_pepper_orange",
+            "description": "Orange pepper",
+            "radius": 5.0,
+            "isStatic": false,
+            "pickup": true,
+            "isDestructible": false
+        },
+        {
+            "itemid": "food_pepper_yellow",
+            "sprite": "item_food_pepper_yellow",
+            "description": "Yellow pepper",
+            "radius": 5.0,
+            "isStatic": false,
+            "pickup": true,
+            "isDestructible": false
+        },
+        {
+            "itemid": "food_water_mellon",
+            "sprite": "item_food_water_mellon",
+            "description": "Water mellon",
+            "radius": 15.0,
+            "isStatic": false,
+            "pickup": true,
+            "isDestructible": false
+        },
+        {
+            "itemid": "food_mellon",
+            "sprite": "item_food_mellon",
+            "description": "Mellon",
+            "radius": 14.0,
+            "isStatic": false,
+            "pickup": true,
+            "isDestructible": false
+        },
+        {
+            "itemid": "food_pumpkin",
+            "sprite": "item_food_pumpkin",
+            "description": "Pumpkin",
+            "radius": 15.0,
+            "isStatic": false,
+            "pickup": true,
+            "isDestructible": false
+        },
+        {
+            "itemid": "food_apple_green",
+            "sprite": "item_food_apple_green",
+            "description": "Green apple",
+            "radius": 5.0,
+            "isStatic": false,
+            "pickup": true,
+            "isDestructible": false
+        },
+        {
+            "itemid": "food_apple_yellow",
+            "sprite": "item_food_apple_yellow",
+            "description": "Yellow apple",
+            "radius": 5.0,
+            "isStatic": false,
+            "pickup": true,
+            "isDestructible": false
+        },
+        {
+            "itemid": "food_apple_red",
+            "sprite": "item_food_apple_red",
+            "description": "Red apple",
+            "radius": 5.0,
+            "isStatic": false,
+            "pickup": true,
+            "isDestructible": false
+        }
+    ]
+}
