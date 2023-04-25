@@ -1,29 +1,44 @@
 {
 	"items": [
 		{
-			"icon" : "item_food_potato",
-			"name" : "spell_spawn_item",
-			"item_name" : "food_potato"
+			"itemid" : "barrel",
+			"sprite" : "item_barrel",
+			"sprite2" : "",
+			"radius" : 16.0,
+			"isStatic" : true,
+			"isDestructible" : true,
+			"health" : 20,
+			"pickup" : false
 		}
 		,{
-			"icon" : "item_barrel",
-			"name" : "spell_spawn_item",
-			"item_name" : "barrel"
+			"itemid" : "tree_pine",
+			"sprite" : "tree_pine_trunk",
+			"sprite2" : "tree_pine_top",
+			"radius" : 20.0,
+			"isStatic" : true,
+			"isDestructible" : true,
+			"health" : 100,
+			"pickup" : false
 		}
 		,{
-			"icon" : "tree_palm_icon",
-			"name" : "spell_spawn_item",
-			"item_name" : "tree_palm"
+			"itemid" : "tree_palm",
+			"sprite" : "tree_palm",
+			"sprite2" : "",
+			"radius" : 20.0,
+			"isStatic" : true,
+			"isDestructible" : true,
+			"health" : 100,
+			"pickup" : false
 		}
 		,{
-			"icon" : "cactus_one",
-			"name" : "spell_spawn_item",
-			"item_name" : "cactus_full"
-		}
-		,{
-			"icon" : "tree_pine_icon",
-			"name" : "spell_spawn_item",
-			"item_name" : "tree_pine"
+			"itemid" : "cactus_full",
+			"sprite" : "cactus_full",
+			"sprite2" : "",
+			"radius" : 20.0,
+			"isStatic" : true,
+			"isDestructible" : true,
+			"health" : 100,
+			"pickup" : false
 		}
 	]
 }

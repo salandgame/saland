@@ -52,7 +52,7 @@ static void ReadItemFile(const std::string& filename) {
 			}
 			for (const auto& item : items.GetArray()) {
 				if (item.IsObject()) {
-					ItemDef new_item = itemDef;
+                    ItemDef new_item = itemDef;
 					for (const auto& member : item.GetObject()) {
 						if (member.name == "itemid") {
 							new_item.itemid = member.value.GetString();
@@ -93,44 +93,6 @@ static void ReadItemFile(const std::string& filename) {
 }
 
 static void initItems() {
-	itemDef.sprite2 = "";
-	itemDef.isDestructible = true;
-	itemDef.health = 100.0f;
-	itemDef.itemid = "";
-	itemDef.pickup = false;
-	{
-		ItemDef barrel = itemDef;
-		barrel.itemid = "barrel";
-		barrel.radius = 16.0f;
-		barrel.sprite = "item_barrel";
-		barrel.isStatic = true;
-		all_items[barrel.itemid] = barrel;
-	}
-	{
-		ItemDef pine = itemDef;
-		pine.itemid = "tree_pine";
-		pine.radius = 20.0f;
-		pine.sprite = "tree_pine_trunk";
-		pine.sprite2 = "tree_pine_top";
-		pine.isStatic = true;
-		all_items[pine.itemid] = pine;
-	}
-	{
-		ItemDef palm = itemDef;
-		palm.itemid = "tree_palm";
-		palm.radius = 20.0f;
-		palm.sprite = "tree_palm";
-		palm.isStatic = true;
-		all_items[palm.itemid] = palm;
-	}
-	{
-		ItemDef cactus = itemDef;
-		cactus.itemid = "cactus_full";
-		cactus.radius = 20.0f;
-		cactus.sprite = "cactus_full";
-		cactus.isStatic = true;
-		all_items[cactus.itemid] = cactus;
-	}
 	std::vector<std::string> file_list = sago::GetFileList(item_dir);
 	for(const std::string& file : file_list) {
 		std::string filename = fmt::format("{}{}", item_dir, file);
