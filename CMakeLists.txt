@@ -27,9 +27,7 @@ if (NOT WIN32 AND NOT STANDALONE)
 	endif()
 endif()
 
-# -Wno-deprecated-declarations is needed until all supported platforms are using PhysFS 3.0.1+.
-# This will happen once Debian 10 is realeased
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wsuggest-override -Wno-deprecated-declarations -std=c++11 -g")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wsuggest-override -std=c++11 -g")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -g")
 
 if (WIN32)
