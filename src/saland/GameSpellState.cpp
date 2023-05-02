@@ -90,16 +90,16 @@ bool GameSpellState::IsSpellSelectActive() {
 }
 
 void GameSpellState::ProcessInput(const SDL_Event& event, bool& processed) {
+    UpdateMouseCoordinates(event, globalData.mousex, globalData.mousey);
+    if (event.type == SDL_KEYDOWN) {
+        if (event.key.keysym.sym == SDLK_ESCAPE) {
+            data->spellSelectActive = !data->spellSelectActive;
+            processed = true;
+        }
+    }
 	if (!data->spellSelectActive) {
 		return;
-	}
-	UpdateMouseCoordinates(event, globalData.mousex, globalData.mousey);
-	if (event.type == SDL_KEYDOWN) {
-		if (event.key.keysym.sym == SDLK_ESCAPE) {
-			data->spellSelectActive = !data->spellSelectActive;
-			processed = true;
-		}
-	}
+    }
 	if (event.type == SDL_MOUSEBUTTONDOWN) {
 		if (event.button.button == SDL_BUTTON_LEFT) {
 			std::cout << "Left click " << globalData.mousex << "," << globalData.mousey << "\n";
