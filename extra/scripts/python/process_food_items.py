@@ -61,7 +61,7 @@ def produce_spell_file():
         item = {
             "icon": name,
             "name": "spell_spawn_item",
-            "item_name": row["food_name"]
+            "item_name": "food_"+row["food_name"]
         }
         items_arrays.append(item)
     items["spells"] = items_arrays

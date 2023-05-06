@@ -1,5 +1,5 @@
 {
-	"items": [
+	"spells": [
 		{
 			"name": "spell_fireball",
 			"icon": "effect_fireball",

@@ -25,6 +25,7 @@ https://github.com/sago007/saland
 #include "../../sago/SagoMisc.hpp"
 #include "rapidjson/document.h"
 #include <iostream>
+#include "fmt/core.h"
 
 void SpellHolder::add_spell(const Spell& spell) {
 	spells.push_back(spell);
@@ -49,15 +50,15 @@ void SpellHolder::ReadSpellFile(const std::string& filename) {
 	}
 	for (auto& m : document.GetObject()) {
 		const std::string& itemHeader = m.name.GetString();
-		if (itemHeader == "items") {
-			const auto& items = m.value;
-			if (!items.IsArray()) {
+		if (itemHeader == "spells") {
+			const auto& spells = m.value;
+			if (!spells.IsArray()) {
 				std::cerr << "Failure reading " << filename <<  ": 'items' must be an array" << "\n";
 			}
-			for (const auto& item : items.GetArray()) {
-				if (item.IsObject()) {
+			for (const auto& spell_data : spells.GetArray()) {
+				if (spell_data.IsObject()) {
 					Spell spell = blankSpell;
-					for (const auto& member : item.GetObject()) {
+					for (const auto& member : spell_data.GetObject()) {
 						if (member.name == "name") {
 							spell.name = member.value.GetString();
 						}
@@ -100,7 +101,13 @@ void SpellHolder::init() {
 	clearTileSpell.icon = "icon_trash_can";
 	clearTileSpell.name = "spell_clear_block";
 	clearTileSpell.type = SpellCursorType::tile;
-	ReadSpellFile("saland/spells/base_spells.json");
+	const char* spellDir = "saland/spells/";
+	std::vector<std::string> file_list = sago::GetFileList(spellDir);
+	for(const std::string& file : file_list) {
+		std::string filename = fmt::format("{}{}", spellDir, file);
+		printf("Spells: file: %s\n",filename.c_str());
+		ReadSpellFile(filename);
+	}
 }
 
 size_t SpellHolder::get_spell_count() const {
