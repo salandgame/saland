@@ -1,0 +1,74 @@
+{
+    "spells": [
+        {
+            "icon": "item_food_potato",
+            "name": "spell_spawn_item",
+            "item_name": "food_potato"
+        },
+        {
+            "icon": "item_food_carrot",
+            "name": "spell_spawn_item",
+            "item_name": "food_carrot"
+        },
+        {
+            "icon": "item_food_onion",
+            "name": "spell_spawn_item",
+            "item_name": "food_onion"
+        },
+        {
+            "icon": "item_food_onion_red",
+            "name": "spell_spawn_item",
+            "item_name": "food_onion_red"
+        },
+        {
+            "icon": "item_food_pepper_green",
+            "name": "spell_spawn_item",
+            "item_name": "food_pepper_green"
+        },
+        {
+            "icon": "item_food_pepper_red",
+            "name": "spell_spawn_item",
+            "item_name": "food_pepper_red"
+        },
+        {
+            "icon": "item_food_pepper_orange",
+            "name": "spell_spawn_item",
+            "item_name": "food_pepper_orange"
+        },
+        {
+            "icon": "item_food_pepper_yellow",
+            "name": "spell_spawn_item",
+            "item_name": "food_pepper_yellow"
+        },
+        {
+            "icon": "item_food_water_mellon",
+            "name": "spell_spawn_item",
+            "item_name": "food_water_mellon"
+        },
+        {
+            "icon": "item_food_mellon",
+            "name": "spell_spawn_item",
+            "item_name": "food_mellon"
+        },
+        {
+            "icon": "item_food_pumpkin",
+            "name": "spell_spawn_item",
+            "item_name": "food_pumpkin"
+        },
+        {
+            "icon": "item_food_apple_green",
+            "name": "spell_spawn_item",
+            "item_name": "food_apple_green"
+        },
+        {
+            "icon": "item_food_apple_yellow",
+            "name": "spell_spawn_item",
+            "item_name": "food_apple_yellow"
+        },
+        {
+            "icon": "item_food_apple_red",
+            "name": "spell_spawn_item",
+            "item_name": "food_apple_red"
+        }
+    ]
+}
