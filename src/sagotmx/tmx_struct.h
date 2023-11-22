@@ -47,6 +47,7 @@ SOFTWARE.
 #include <string>
 #include <sstream>
 #include <cstring>
+#include <cstdint>
 #include <vector>
 #include <map>
 #include <zlib.h>
