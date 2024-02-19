@@ -43,6 +43,7 @@ class GameRegion {
 public:
 	GameRegion();
 	void Init(int x, int y, const std::string& worldName, bool forceResetWorld);
+	void InitDungeon(const std::string& dungeonName, const std::string& dungeonType, bool forceResetWorld);
 	std::vector<std::shared_ptr<Placeable> > placeables;
 	std::shared_ptr<b2World> physicsBox;
 	void SaveRegion();
@@ -67,6 +68,7 @@ private:
 	int region_x = 0;
 	int region_y = 0;
 	std::string mapFileName = "maps/sample1.tmx";
+	void InitCommon();
 };
 
 #endif /* GAMEREGION_HPP */

@@ -289,6 +289,24 @@ static std::string RegionChooseMapTemplate(int region_x, int region_y) {
 	return loadMap;
 }
 
+void GameRegion::InitCommon() {
+	placeables.clear();
+	physicsBox.reset(new b2World(b2Vec2(0.0f, 0.0f)));
+	world.managed_bodies.clear();
+
+	liqudHandler["water"].blockingLayer = world.blockingLayer;
+	liqudHandler["water"].blockingLayer_overlay_1 = world.blockingLayer_overlay_1;
+	liqudHandler["water"].setupTiles(16);
+	liqudHandler["lava"].blockingLayer = world.blockingLayer;
+	liqudHandler["lava"].blockingLayer_overlay_1 = world.blockingLayer_overlay_1;
+	liqudHandler["lava"].setupTiles(16);
+
+}
+
+void GameRegion::InitDungeon(const std::string& dungeonName, const std::string& dungeonType, bool forceResetWorld) {
+	InitCommon();
+	world.init(physicsBox, "maps/"+dungeonName+".tmx");
+}
 
 
 void GameRegion::Init(int x, int y, const std::string& worldName, bool forceResetWorld) {
@@ -301,19 +319,10 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 		loadMap = RegionChooseMapTemplate(region_x, region_y);
 		newRegion = true;
 	}
-	b2Vec2 gravity(0.0f, 0.0f);
-	placeables.clear();
-	physicsBox.reset(new b2World(gravity));
-	world.managed_bodies.clear();
-	world.init(physicsBox, loadMap);
+
+	InitCommon();
 	ScanPrefabs("prefabs01");
-
-	liqudHandler["water"].blockingLayer = world.blockingLayer;
-	liqudHandler["water"].blockingLayer_overlay_1 = world.blockingLayer_overlay_1;
-	liqudHandler["lava"].blockingLayer = world.blockingLayer;
-	liqudHandler["lava"].blockingLayer_overlay_1 = world.blockingLayer_overlay_1;
-	liqudHandler["lava"].setupTiles(16);
-
+	world.init(physicsBox, loadMap);
 
 
 	const std::vector<sago::tiled::TileObjectGroup>& object_groups = world.tm.object_groups;
