@@ -296,7 +296,7 @@ void GameRegion::InitCommon() {
 
 	liqudHandler["water"].blockingLayer = world.blockingLayer;
 	liqudHandler["water"].blockingLayer_overlay_1 = world.blockingLayer_overlay_1;
-	liqudHandler["water"].setupTiles(16);
+	liqudHandler["water"].setupTiles(28);
 	liqudHandler["lava"].blockingLayer = world.blockingLayer;
 	liqudHandler["lava"].blockingLayer_overlay_1 = world.blockingLayer_overlay_1;
 	liqudHandler["lava"].setupTiles(16);
@@ -335,14 +335,14 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 					itemname = itr->second.value;
 				}
 				if (itemname[0]) {
-					const ItemDef& itemDef = getItem(itemname);
+					ItemDef itemDef = getItem(itemname);
 					SpawnItem(itemDef, item.x, item.y);
 				}
 			}
 		}
 	}
 
-	const ItemDef& barrelDef = getItem("barrel");
+	ItemDef barrelDef = getItem("barrel");
 	SpawnItem(barrelDef, 100.0f, 100.0f);
 	SpawnItem(barrelDef, 100.0f, 100.0f+32.0f);
 	SpawnItem(barrelDef, 100.0f, 100.0f+64.0f);
@@ -352,7 +352,7 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 	SpawnItem(pineDef, 200.0f, 400.0f);
 
 
-	const ItemDef& potatoDef = getItem("food_potato");
+	ItemDef potatoDef = getItem("food_potato");
 	SpawnItem(potatoDef, 600.0f, 20.0f);
 
 
