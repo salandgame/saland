@@ -9,9 +9,6 @@ from tree_frame import *
 BASEDIR = '../..'
 
 import os
-#textures_filenames = os.listdir(BASEDIR+"/data/textures")
-#textures = list(filter(lambda x: x.endswith('.png'), textures_filenames))
-#textures.sort()
 
 
 def addLinesToCanvas(canvas, image_file, xstep = 32, ystep = 32, xoffset=0, yoffset=0):
@@ -40,9 +37,6 @@ def populateTree(filter2 = None):
     textures = []
     addFolderToList("", textures, filter2)
     return textures
-#folders = list(filter(lambda x: os.path.isdir(BASEDIR+"/data/textures/"+x), textures_filenames))
-#addFolderToList()
-#print(folders)
 
 
 
@@ -70,7 +64,6 @@ def callback_canvas_motion(event):
     if not imageFrame or not imageFrame.image_file:
         return
     status_mouse_over['text'] = "Top: "+str(x-(x%32))+","+str(y-(y%32))+", tile: "+ str( (y//32)*imageFrame.image_file.width()//32+x//32+1 )
-    #print('{}, {}'.format(x, y))
 
 
 if __name__ == "__main__":
