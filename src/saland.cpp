@@ -40,6 +40,8 @@ https://github.com/salandgame/saland
 #include "saland/globals.hpp"
 #include "saland/Game.hpp"
 
+#include "SagoImGui.hpp"
+
 #include "sago/SagoMisc.hpp"
 #include "platform_folders.h"
 #include "sagotmx/tmx_struct.h"
@@ -212,7 +214,21 @@ void RunGameState(sago::GameStateInterface& state ) {
 		}
 		SDL_SetRenderDrawColor(globalData.screen, 0, 0, 0, 0);
 		SDL_RenderClear(globalData.screen);
+		ImGui_ImplSDLRenderer2_NewFrame();
+		ImGui_ImplSDL2_NewFrame();
+		ImGui::NewFrame();
 		state.Draw(globalData.screen);
+		ImGui::Render();
+		ImGuiIO& io = ImGui::GetIO();
+		io.IniFilename = NULL;
+		float x, y;
+		SDL_RenderGetScale(globalData.screen, &x, &y);
+		SDL_RenderSetScale(globalData.screen, io.DisplayFramebufferScale.x, io.DisplayFramebufferScale.y);
+		ImGui_ImplSDLRenderer2_RenderDrawData( ImGui::GetDrawData(), globalData.screen );
+		SDL_RenderSetScale(globalData.screen, x, y);
+
+		//While using Dear ImGui we do not draw the mouse ourself. This is gone: globalData.mouse.Draw(globalData.screen, SDL_GetTicks(), globalData.mousex, globalData.mousey);
+		SDL_RenderPresent(globalData.screen);
 
 		SDL_Delay(1);
 		SDL_Event event;
@@ -245,13 +261,15 @@ void RunGameState(sago::GameStateInterface& state ) {
 				writeScreenShot();
 			}
 			bool processed = false;
+			ImGui_ImplSDL2_ProcessEvent(&event);
 			state.ProcessInput(event, processed);
 
 		}
 
+
 		state.Update();
 
-		SDL_RenderPresent(globalData.screen);
+		//SDL_RenderPresent(globalData.screen);
 
 
 		if (!state.IsActive()) {
@@ -413,8 +431,13 @@ void runGame() {
 		rendererFlags |= SDL_RENDERER_SOFTWARE;
 	}
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
+	SDL_SetHint(SDL_HINT_MOUSE_RELATIVE_SCALING, "1");
 	win = SDL_CreateWindow("Saland Adventures", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_RESIZABLE);
 	globalData.screen = SDL_CreateRenderer(win, -1, rendererFlags);
+
+	SDL_RenderSetLogicalSize(globalData.screen, width, height);
+	InitImGui(win, globalData.screen, width, height);
+
 	sago::SagoDataHolder holder(globalData.screen);
 	globalData.spriteHolder.reset(new sago::SagoSpriteHolder(holder));
 	globalData.dataHolder = &holder;

@@ -49,6 +49,7 @@ https://github.com/sago007/saland
 #include "GameConsoleCommand.hpp"
 #include "GameSpellState.hpp"
 #include "fmt/core.h"
+#include "../SagoImGui.hpp"
 
 int32 velocityIterations = 6;
 int32 positionIterations = 2;
@@ -200,6 +201,7 @@ struct Game::GameImpl {
 	std::shared_ptr<Console> console;
 	std::shared_ptr<GameSpellState> spellSelect;
 	bool consoleActive = false;
+	bool debugMenuActive = false;
 };
 
 static SpawnPoint GetSpawnpoint(const sago::tiled::TileMap& tm) {
@@ -324,6 +326,15 @@ static std::string GetLayerInfoForTile(const World& w, int x, int y) {
 	return ret.str();
 }
 
+static void DrawDebugMenu(SDL_Renderer* target) {
+	ImGui::Begin("Debug menu");
+	//ImGui::Text("Hello, world!");
+	if (ImGui::Button("Toggle overlay")) {
+		globalData.debugDrawCollision = !globalData.debugDrawCollision;
+	}
+	ImGui::End();
+}
+
 void Game::Draw(SDL_Renderer* target) {
 	double screen_width = globalData.xsize;
 	double screen_height = globalData.ysize;
@@ -400,6 +411,9 @@ void Game::Draw(SDL_Renderer* target) {
 	if (data->consoleActive && data->console) {
 		data->console->Draw(target);
 	}
+	if (data->debugMenuActive) {
+		DrawDebugMenu(target);
+	}
 //#if DEBUG
 	static unsigned long int Frames;
 	static unsigned long int Ticks;
@@ -474,6 +488,9 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 		}
 		if (event.key.keysym.sym == SDLK_0 || event.key.keysym.sym == SDLK_KP_0) {
 			data->spell_holder->slot_selected = 9;
+		}
+		if (event.key.keysym.sym == SDLK_F11) {
+			data->debugMenuActive = !data->debugMenuActive;
 		}
 		if (event.key.keysym.sym == SDLK_F12) {
 			data->isActive = false;

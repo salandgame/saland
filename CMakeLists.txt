@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5.0)
+cmake_minimum_required(VERSION 3.10.2)
 project (saland)
 
 # Define install paths
@@ -73,7 +73,9 @@ include_directories(${SDL2GFX_INCLUDE_DIRS})
 
 include_directories(SYSTEM "src/Libs/include")
 
-file(GLOB SOURCES "src/*.cpp" "src/*.h*" "src/*/*.cpp" "src/*/*.h*" "src/*/*/*.cpp" "src/*/*/*.h*" "src/Libs/*.c*" "src/Libs/*.h")
+include_directories(SYSTEM "src/Libs/imgui")
+
+file(GLOB SOURCES "src/*.cpp" "src/*.h*" "src/*/*.cpp" "src/*/*.h*" "src/*/*/*.cpp" "src/*/*/*.h*" "src/*/*/*/*.cpp" "src/Libs/*.c*" "src/Libs/*.h")
 
 add_executable(saland ${SOURCES})
 TARGET_LINK_LIBRARIES( saland ${Boost_LIBRARIES} )
