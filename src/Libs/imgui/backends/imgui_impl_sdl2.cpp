@@ -125,6 +125,14 @@ struct ImGui_ImplSDL2_Data
     ImGui_ImplSDL2_Data()   { memset((void*)this, 0, sizeof(*this)); }
 };
 
+static ImVec2 RenderScale(SDL_Renderer* Renderer) {
+    ImVec2 res;
+    res.x = 1.0f;
+    res.y = 1.0f;
+    SDL_RenderGetScale(Renderer, &res.x, &res.y);
+    return res;
+}
+
 // Backend data stored in io.BackendPlatformUserData to allow support for multiple Dear ImGui contexts
 // It is STRONGLY preferred that you use docking branch with multi-viewports (== single Dear ImGui context + multiple windows) instead of multiple Dear ImGui contexts.
 // FIXME: multi-context support is not well tested and probably dysfunctional in this backend.
@@ -568,7 +576,8 @@ static void ImGui_ImplSDL2_UpdateMouseData()
             int window_x, window_y, mouse_x_global, mouse_y_global;
             SDL_GetGlobalMouseState(&mouse_x_global, &mouse_y_global);
             SDL_GetWindowPosition(bd->Window, &window_x, &window_y);
-            io.AddMousePosEvent((float)(mouse_x_global - window_x), (float)(mouse_y_global - window_y));
+            ImVec2 scale = RenderScale(bd->Renderer);
+            io.AddMousePosEvent((float)(mouse_x_global - window_x)/scale.x, (float)(mouse_y_global - window_y)/scale.y);
         }
     }
 }

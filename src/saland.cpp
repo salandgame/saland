@@ -221,11 +221,11 @@ void RunGameState(sago::GameStateInterface& state ) {
 		ImGui::Render();
 		ImGuiIO& io = ImGui::GetIO();
 		io.IniFilename = NULL;
-		float x, y;
-		SDL_RenderGetScale(globalData.screen, &x, &y);
-		SDL_RenderSetScale(globalData.screen, io.DisplayFramebufferScale.x, io.DisplayFramebufferScale.y);
+		//float x, y;
+		//SDL_RenderGetScale(globalData.screen, &x, &y);
+		//SDL_RenderSetScale(globalData.screen, io.DisplayFramebufferScale.x, io.DisplayFramebufferScale.y);
 		ImGui_ImplSDLRenderer2_RenderDrawData( ImGui::GetDrawData(), globalData.screen );
-		SDL_RenderSetScale(globalData.screen, x, y);
+		//SDL_RenderSetScale(globalData.screen, x, y);
 
 		//While using Dear ImGui we do not draw the mouse ourself. This is gone: globalData.mouse.Draw(globalData.screen, SDL_GetTicks(), globalData.mousex, globalData.mousey);
 		SDL_RenderPresent(globalData.screen);
@@ -243,7 +243,7 @@ void RunGameState(sago::GameStateInterface& state ) {
 			if (event.type == SDL_WINDOWEVENT) {
 				if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
 					std::cout << event.window.data1 << ", " << event.window.data2 << "\n";
-					SDL_GetRendererOutputSize(globalData.screen, &globalData.xsize, &globalData.ysize);
+					//SDL_GetRendererOutputSize(globalData.screen, &globalData.xsize, &globalData.ysize);
 				}
 			}
 
@@ -354,7 +354,7 @@ void ResetFullscreen() {
 	dataHolder.invalidateAll(globalData.screen);
 	globalData.spriteHolder.reset(new sago::SagoSpriteHolder( dataHolder ) );
 	SDL_ShowCursor(SDL_ENABLE);
-	SDL_GetRendererOutputSize(globalData.screen, &globalData.xsize, &globalData.ysize);
+	//SDL_GetRendererOutputSize(globalData.screen, &globalData.xsize, &globalData.ysize);
 }
 
 void toggleFullscreen() {
@@ -410,7 +410,8 @@ public:
 
 
 void runGame() {
-	int width = 1280, height = 800;
+	globalData.xsize = 1280;
+	globalData.ysize = 800;
 	SDL_Init(SDL_INIT_VIDEO);
 	IMG_Init(IMG_INIT_PNG);
 	TTF_Init();
@@ -432,11 +433,12 @@ void runGame() {
 	}
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
 	SDL_SetHint(SDL_HINT_MOUSE_RELATIVE_SCALING, "1");
-	win = SDL_CreateWindow("Saland Adventures", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_RESIZABLE);
+	win = SDL_CreateWindow("Saland Adventures", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, globalData.xsize, globalData.ysize, SDL_WINDOW_RESIZABLE);
 	globalData.screen = SDL_CreateRenderer(win, -1, rendererFlags);
 
-	SDL_RenderSetLogicalSize(globalData.screen, width, height);
-	InitImGui(win, globalData.screen, width, height);
+	SDL_RenderSetLogicalSize(globalData.screen, globalData.xsize, globalData.ysize);
+	InitImGui(win, globalData.screen, globalData.xsize, globalData.ysize);
+	globalData.ysize = globalData.ysize;
 
 	sago::SagoDataHolder holder(globalData.screen);
 	globalData.spriteHolder.reset(new sago::SagoSpriteHolder(holder));
