@@ -333,6 +333,11 @@ static void DrawDebugMenu(SDL_Renderer* target) {
 		globalData.debugDrawCollision = !globalData.debugDrawCollision;
 	}
 	ImGui::End();
+	ImGui::Begin("Items");
+	for (const auto& item: globalData.player.item_inventory) {
+		ImGui::Text("%s %d", item.first.c_str(), item.second);
+	}
+	ImGui::End();
 }
 
 void Game::Draw(SDL_Renderer* target) {
