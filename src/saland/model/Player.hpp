@@ -26,6 +26,7 @@ https://github.com/sago007/saland
 
 #include <string>
 #include <map>
+#include "nlohmann/json.hpp"
 
 struct Player {
 	Player() {};
@@ -54,5 +55,8 @@ struct Player {
 	}
 	std::map<std::string, int> item_inventory;
 };
+
+void to_json(nlohmann::json& j, const Player& p);
+void from_json(const nlohmann::json& j, Player& p);
 
 #endif  //PLAYER_HPP

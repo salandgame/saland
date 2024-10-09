@@ -220,6 +220,22 @@ static SpawnPoint GetSpawnpoint(const sago::tiled::TileMap& tm) {
 	return ret;
 }
 
+static void PlayerSave() {
+	std::string playername = Config::getInstance()->getString("player");
+	nlohmann::json j = globalData.player;
+	sago::WriteFileContent(fmt::format("players/{}.json", playername).c_str(), j.dump());
+}
+
+static void PlayerLoad() {
+	std::string playername = Config::getInstance()->getString("player");
+	nlohmann::json j;
+	std::string filename = fmt::format("players/{}.json", playername);
+	if (sago::FileExists(filename.c_str())) {
+		j = nlohmann::json::parse(sago::GetFileContent(filename.c_str()));
+		globalData.player = j;
+	}
+}
+
 void Game::ResetWorldNoSave(int x, int y, bool forceResetWorld) {
 	data->gameRegion.Init(x, y, data->worldName, forceResetWorld);
 	data->gameRegion.placeables.push_back(data->human);
@@ -240,6 +256,7 @@ void Game::ResetWorldNoSave(int x, int y, bool forceResetWorld) {
 }
 
 void Game::ResetWorld(int x, int y, bool forceResetWorld) {
+	PlayerSave();
 	data->gameRegion.SaveRegion();
 	this->ResetWorldNoSave(x, y, forceResetWorld);
 }
@@ -252,6 +269,7 @@ Game::Game() {
 	RegisterCommand(&cc_kill_player);
 	GameConsoleCommandRegister();
 	data.reset(new Game::GameImpl());
+	PlayerLoad();
 	data->human.reset(new Human());
 	data->lastUpdate = SDL_GetTicks();
 	data->worldName = Config::getInstance()->getString("world");
@@ -285,6 +303,7 @@ Game::Game() {
 
 Game::~Game() {
 	data->gameRegion.SaveRegion();
+	PlayerSave();
 }
 
 bool Game::IsActive() {
