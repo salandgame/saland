@@ -46,6 +46,7 @@ GameSpellState::GameSpellState() {
 #define BOX_SPACING 56
 #define BOX_OFFSET 10
 #define BOX_SIZE 52
+#define BOX_LINE_LIMIT 16
 
 void GameSpellState::GameSpellState::Draw(SDL_Renderer* target) {
 	int sideBoarder = 20;
@@ -70,13 +71,14 @@ void GameSpellState::GameSpellState::Draw(SDL_Renderer* target) {
 		return;
 	}
 	for (size_t i = 0; i < spell_holder->get_spell_count(); ++i) {
-		DrawRectYellow(target, BOX_OFFSET+(int)i*BOX_SPACING, BOX_OFFSET+70, BOX_SIZE, BOX_SIZE);
+
+		DrawRectYellow(target, BOX_OFFSET+(int)(i%BOX_LINE_LIMIT)*BOX_SPACING, BOX_OFFSET+70+(int)(i/BOX_LINE_LIMIT)*BOX_SPACING, BOX_SIZE, BOX_SIZE);
 		const Spell& current_spell = spell_holder->get_spell(i);
 		if (current_spell.icon.length() > 0) {
-			globalData.spriteHolder.get()->GetSprite(current_spell.icon).Draw(target, SDL_GetTicks(), 36+(int)i*BOX_SPACING, 36+70);
+			globalData.spriteHolder.get()->GetSprite(current_spell.icon).Draw(target, SDL_GetTicks(), 36+(int)(i%BOX_LINE_LIMIT)*BOX_SPACING, 36+70+(int)(i/BOX_LINE_LIMIT)*BOX_SPACING);
 		}
 		if (current_spell.tile > 0) {
-			DrawTile(target, globalData.spriteHolder.get(), *tm, current_spell.tile, 20+(int)i*BOX_SPACING, 20+70);
+			DrawTile(target, globalData.spriteHolder.get(), *tm, current_spell.tile, 20+(int)(i%BOX_LINE_LIMIT)*BOX_SPACING, 20+70+(int)(i/BOX_LINE_LIMIT)*BOX_SPACING);
 		}
 	}
 }
@@ -104,8 +106,8 @@ void GameSpellState::ProcessInput(const SDL_Event& event, bool& processed) {
 		if (event.button.button == SDL_BUTTON_LEFT) {
 			std::cout << "Left click " << globalData.mousex << "," << globalData.mousey << "\n";
 			for (size_t i = 0; i < spell_holder->get_spell_count(); ++i) {
-				if (globalData.mousex >= BOX_OFFSET+(int)i*BOX_SPACING && globalData.mousex <= BOX_OFFSET+(int)i*BOX_SPACING+BOX_SIZE &&
-				        globalData.mousey >= BOX_OFFSET+70 && globalData.mousey <= BOX_OFFSET+70+BOX_SIZE) {
+				if (globalData.mousex >= BOX_OFFSET+(int)(i%BOX_LINE_LIMIT)*BOX_SPACING && globalData.mousex <= BOX_OFFSET+(int)(i%BOX_LINE_LIMIT)*BOX_SPACING+BOX_SIZE &&
+				        globalData.mousey >= BOX_OFFSET+70+(int)(i/BOX_LINE_LIMIT)*BOX_SPACING && globalData.mousey <= BOX_OFFSET+70+BOX_SIZE+(int)(i/BOX_LINE_LIMIT)*BOX_SPACING) {
 					std::cout << "Clicked: " << i << "\n";
 					if (spell_holder->slot_selected < 9) {
 						//We do not update slot 9.
