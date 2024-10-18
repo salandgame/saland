@@ -50,22 +50,33 @@ sago::SagoTextField* TextCache::getLabel(const std::string& text) {
 
 TextCache textCache;
 
+static float scale = 1.0f;
+
+static int getScaledX(int x) {
+	return x * scale;
+}
+static int getScaledY(int y) {
+	return y * scale;
+}
 
 static void Draw(SDL_Renderer* target, SDL_Texture* t, int x, int y, const SDL_Rect& part) {
 	SDL_Rect pos = {};
-	pos.x = x;
-	pos.y = y;
-	pos.w = 32;
-	pos.h = 32;
+	pos.x = getScaledX(x);
+	pos.y = getScaledY(y);
+	pos.w = getScaledX(32+x)-pos.x;
+	pos.h = getScaledY(32+y)-pos.y;
 	SDL_RenderCopy(target, t, &part, &pos);
 }
 
 static void DrawCollision(SDL_Renderer* target, const Placeable* entity, int offsetX, int offsetY, bool drawCollision) {
 	if (drawCollision) {
+		int x = getScaledX(entity->X - offsetX);
+		int y = getScaledY(entity->Y - offsetY);
+		int r = getScaledX(entity->Radius);
 		circleRGBA(target,
-		           entity->X - offsetX, entity->Y - offsetY, entity->Radius,
+		           x, y, r,
 		           255, 255, 0, 255);
-		textCache.getLabel(entity->id)->Draw(target, entity->X - offsetX + entity->Radius + 4, entity->Y - offsetY, sago::SagoTextField::Alignment::left, sago::SagoTextField::VerticalAlignment::center);
+		textCache.getLabel(entity->id)->Draw(target, x + r + 4, y, sago::SagoTextField::Alignment::left, sago::SagoTextField::VerticalAlignment::center);
 	}
 }
 
@@ -170,30 +181,32 @@ void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, cons
 		relativeAnimation = true;
 		relativeAnimationState = 0.9f;
 	}
+	int x = getScaledX(std::round(entity->X) - offsetX);
+	int y = getScaledY(std::round(entity->Y) - offsetY);
 	DrawCollision(target, entity, offsetX, offsetY, drawCollision);
 	const sago::SagoSprite& mySprite = sHolder->GetSprite(entity->race + "_" + animation + "_" + std::string(1, entity->direction));
 	if (relativeAnimation) {
-		mySprite.DrawProgressive(target, relativeAnimationState, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
+		mySprite.DrawProgressive(target, relativeAnimationState, x, y);
 	}
 	else {
-		mySprite.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
+		mySprite.Draw(target, time, x, y);
 	}
 	if (entity->pants.length() > 0) {
 		const sago::SagoSprite& myPants = sHolder->GetSprite(entity->race + "_"+animation+"_"+entity->pants+"_"+std::string(1,entity->direction));
 		if (relativeAnimation) {
-			myPants.DrawProgressive(target, relativeAnimationState, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
+			myPants.DrawProgressive(target, relativeAnimationState, x, y);
 		}
 		else {
-			myPants.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
+			myPants.Draw(target, time, x, y);
 		}
 	}
 	if (entity->top.length() > 0) {
 		const sago::SagoSprite& myTop = sHolder->GetSprite(entity->race + "_"+animation+"_"+entity->top+"_"+std::string(1,entity->direction));
 		if (relativeAnimation) {
-			myTop.DrawProgressive(target, relativeAnimationState, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
+			myTop.DrawProgressive(target, relativeAnimationState, x, y);
 		}
 		else {
-			myTop.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
+			myTop.Draw(target, time, x, y);
 		}
 	}
 	if (entity->hair.length() > 0) {
@@ -203,19 +216,19 @@ void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, cons
 		}
 		const sago::SagoSprite& myHair = sHolder->GetSprite(entity->race + "_"+hairAnimation+"_"+entity->hair+"_"+std::string(1,entity->direction));
 		if (relativeAnimation) {
-			myHair.DrawProgressive(target, relativeAnimationState, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
+			myHair.DrawProgressive(target, relativeAnimationState, x, y);
 		}
 		else {
-			myHair.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
+			myHair.Draw(target, time, x, y);
 		}
 	}
 	if (entity->weapon.length() > 0) {
 		const sago::SagoSprite& myWeapon = sHolder->GetSprite("human_"+animation+"_"+entity->weapon+"_"+std::string(1,entity->direction));
 		if (relativeAnimation) {
-			myWeapon.DrawProgressive(target, relativeAnimationState, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
+			myWeapon.DrawProgressive(target, relativeAnimationState, x, y);
 		}
 		else {
-			myWeapon.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY);
+			myWeapon.Draw(target, time, x, y);
 		}
 	}
 }
