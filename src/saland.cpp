@@ -219,8 +219,6 @@ void RunGameState(sago::GameStateInterface& state ) {
 		ImGui::NewFrame();
 		state.Draw(globalData.screen);
 		ImGui::Render();
-		ImGuiIO& io = ImGui::GetIO();
-		io.IniFilename = NULL;
 		ImGui_ImplSDLRenderer2_RenderDrawData( ImGui::GetDrawData(), globalData.screen );
 
 		//While using Dear ImGui we do not draw the mouse ourself. This is gone: globalData.mouse.Draw(globalData.screen, SDL_GetTicks(), globalData.mousex, globalData.mousey);
@@ -434,6 +432,11 @@ void runGame() {
 
 	//SDL_RenderSetLogicalSize(globalData.screen, globalData.xsize, globalData.ysize);
 	InitImGui(win, globalData.screen, globalData.xsize, globalData.ysize);
+	ImGuiIO& io = ImGui::GetIO();
+	io.IniFilename = nullptr;
+	std::string imgui_inifile = getPathToSaveFiles() + "/imgui.ini";
+	ImGui::LoadIniSettingsFromDisk(imgui_inifile.c_str());
+
 	globalData.ysize = globalData.ysize;
 
 	sago::SagoDataHolder holder(globalData.screen);
@@ -465,6 +468,8 @@ void runGame() {
 	if (!globalData.isShuttingDown) {
 		RunGameState(m);
 	}
+
+	ImGui::SaveIniSettingsToDisk(imgui_inifile.c_str());
 
 	SDL_DestroyRenderer(globalData.screen);
 	SDL_DestroyWindow(win);
