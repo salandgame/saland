@@ -35,6 +35,8 @@ void InitImGui(SDL_Window* window, SDL_Renderer* renderer, int width, int height
 	io.DisplaySize.x = static_cast<float>(width);
 	io.DisplaySize.y = static_cast<float>(height);
 
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+
 	// Setup Dear ImGui style
 	ImGui::StyleColorsDark();
 	//ImGui::StyleColorsLight();
