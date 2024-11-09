@@ -114,7 +114,8 @@ SDL_Texture* SagoDataHolder::getTexturePtr(const std::string& textureName) const
 		printFileWeLoad(path);
 	}
 	if (!PHYSFS_exists(path.c_str())) {
-		sago::SagoFatalErrorF("getTextureFailed - Texture does not exist: %s", path.c_str());
+		std::cerr << "getTextureFailed - Texture does not exist: " << path << "\n";
+		return getTexturePtr("fallback");
 	}
 	unsigned int m_size = 0;
 	std::unique_ptr<char[]> m_data;

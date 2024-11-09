@@ -24,6 +24,7 @@ https://github.com/salandgame/saland
 #include <iostream>
 #include <boost/program_options.hpp>
 #include <SDL_mixer.h>
+#include "editor/SagoTextureSelector.hpp"
 #include "sago/SagoDataHolder.hpp"
 #include "sago/SagoSpriteHolder.hpp"
 #include "sago/GameStateInterface.hpp"
@@ -282,6 +283,12 @@ void runStartGame() {
 	RunGameState(g);
 }
 
+void runEditor() {
+	SagoTextureSelector sts;
+	sts.Init();
+	RunGameState(sts);
+}
+
 class ButtonConfigValue : public Button {
 private:
 	std::string config_key;
@@ -444,6 +451,11 @@ void runGame() {
 	globalData.dataHolder = &holder;
 	ResetFullscreen();
 
+	if (globalData.editor) {
+		runEditor();
+		globalData.isShuttingDown = true;
+	}
+
 	TitleScreen ts;
 	RunGameState(ts);
 
@@ -491,6 +503,7 @@ int main(int argc, char* argv[]) {
 	desc.add_options()
 	("version", "Print version information and quit")
 	("help,h", "Print basic usage information to stdout and quit")
+	("editor", "Start the editor")
 	("fullscreen", "Run in fullscreen")
 	("no-fullscreen", "Run in window")
 	("software-renderer", boost::program_options::value<int>(), "Asks SDL2 to use software renderer")
@@ -505,6 +518,9 @@ int main(int argc, char* argv[]) {
 	if (vm.count("version")) {
 		std::cout << "saland " << VERSION_NUMBER << "\n";
 		return 0;
+	}
+	if (vm.count("editor")) {
+		globalData.editor = true;
 	}
 	if (vm.count("fullscreen")) {
 		Config::getInstance()->setInt("fullscreen", 1);

@@ -57,6 +57,8 @@ struct GlobalData {
 
 	bool debugDrawCollision = false;
 	bool debugDrawProtectedAreas = false;
+
+	bool editor = false;
 };
 
 extern GlobalData globalData;
