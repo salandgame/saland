@@ -84,6 +84,19 @@ std::string remove_file_extension(const std::string& filename) {
 	return filename.substr(0, lastindex);
 }
 
+
+static void ImGuiWritePartOfImage(SDL_Texture* texture, int topx, int topy, int w, int h) {
+	int tex_w, tex_h;
+	SDL_QueryTexture(texture, nullptr, nullptr, &tex_w, &tex_h);
+	float sprite_w = w;
+	float sprite_h = h;
+	float topxf = topx;
+	float topyf = topy;
+	ImVec2 uv0 = ImVec2(topxf / tex_w, topyf / tex_h);
+	ImVec2 uv1 = ImVec2((topxf + sprite_w) / tex_w, (topyf + sprite_h) / tex_h);
+	ImGui::Image((ImTextureID)(intptr_t)texture, ImVec2((float)w, (float)h), uv0, uv1);
+}
+
 void SagoTextureSelector::runSpriteSelectorFrame(SDL_Renderer* target) {
 	ImGui::Begin("SpriteList", nullptr, ImGuiWindowFlags_NoCollapse);
 	static char filter[256] = "";
@@ -102,26 +115,11 @@ void SagoTextureSelector::runSpriteSelectorFrame(SDL_Renderer* target) {
 
 	ImGui::Begin("SpriteViewer");
 	if (selected_sprite.length()) {
-		int tex_w, tex_h;
 		const SagoSprite& current_sprite = sprites[selected_sprite];
 		SDL_Texture* current_texture = globalData.dataHolder->getTexturePtr(current_sprite.texture);
-		SDL_QueryTexture(current_texture, nullptr, nullptr, &tex_w, &tex_h);
-		float sprite_w = current_sprite.width;
-		float sprite_h = current_sprite.height;
-		float topx = current_sprite.topx;
-		float topy = current_sprite.topy;
-		ImGui::Text("Size: %d x %d", tex_w, tex_h);
+		ImGui::Text("Size: %d x %d", current_sprite.width, current_sprite.height);
 		ImGui::BeginChild("Test");
-		ImVec2 p = ImGui::GetCursorScreenPos();
-
-		// Normalized coordinates of pixel (10,10) in a 256x256 texture.
-		ImVec2 uv0 = ImVec2(topx / tex_h, topy / tex_w);
-
-		// Normalized coordinates of pixel (110,210) in a 256x256 texture.
-		ImVec2 uv1 = ImVec2( (topx+sprite_h) / tex_h, (topy+sprite_w) / tex_w);
-
-
-		ImGui::Image((ImTextureID)(intptr_t)current_texture, ImVec2((float)sprite_w, (float)sprite_h), uv0, uv1);
+		ImGuiWritePartOfImage(current_texture, current_sprite.topx, current_sprite.topy, current_sprite.width, current_sprite.height);
 		ImGui::EndChild();
 	}
 	ImGui::End();
