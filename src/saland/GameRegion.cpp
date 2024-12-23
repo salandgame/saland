@@ -43,6 +43,9 @@ void GameRegion::SpawnMonster(const MonsterDef& def, float destX, float destY) {
 	bat.get()->race = def.race;
 	bat.get()->X = destX;
 	bat.get()->Y = destY;
+	if (def.race == "bat") {
+		bat.get()->health = 30;
+	}
 	placeables.push_back(bat);
 
 	b2BodyDef batBodyDef;
@@ -373,6 +376,9 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 	batDef.race = "bat";
 	SpawnMonster(batDef, 200.0f, 200.0f);
 	SpawnMonster(batDef, 1200.0f, 1400.0f);
+	MonsterDef beeDef = batDef;
+	beeDef.race = "bee";
+	SpawnMonster(beeDef, 220.0f, 220.0f);
 }
 
 void GameRegion::SaveRegion() {
