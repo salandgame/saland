@@ -31,33 +31,67 @@ https://github.com/sago007/saland
 #include "../global.hpp"
 
 
+class ChangeSDLColor
+{
+public:
+	ChangeSDLColor(SDL_Renderer* renderer, Uint8 r, Uint8 g, Uint8 b, Uint8 a) : renderer(renderer) {
+		SDL_GetRenderDrawColor(renderer, &oldr, &oldg, &oldb, &olda);
+		SDL_SetRenderDrawColor(renderer, r, g, b, a);
+	}
+
+	ChangeSDLColor(SDL_Renderer* renderer) : renderer(renderer) {
+		SDL_GetRenderDrawColor(renderer, &oldr, &oldg, &oldb, &olda);
+	}
+
+	void setRed() {
+		SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
+	}
+
+	void setYellow() {
+		SDL_SetRenderDrawColor(renderer, 255, 255, 0, SDL_ALPHA_OPAQUE);
+	}
+
+	void reset() {
+		SDL_SetRenderDrawColor(renderer, oldr, oldg, oldb, olda);
+	}
+
+	~ChangeSDLColor() {
+		SDL_SetRenderDrawColor(renderer, oldr, oldg, oldb, olda);
+	}
+
+private:
+	SDL_Renderer* renderer;
+	Uint8 oldr, oldg, oldb, olda;
+};
+
+
 static void addLinesToCanvas(SDL_Renderer* renderer, SDL_Texture* texture, int xstep = 32, int ystep = 32, int xoffset = 0, int yoffset = 0) {
 	int width, height;
 	SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
+	Uint8 r, g, b, a;
+	SDL_GetRenderDrawColor(renderer, &r, &g, &b, &a);
 
-	SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
 	if (xstep > 0) {
 		for (int i = 0; i < width+1; i += xstep) {
-			ImGui::GetWindowDrawList()->AddLine(ImVec2(i+xoffset, yoffset), ImVec2(i+xoffset, height+yoffset), IM_COL32(255, 0, 0, 255));
+			ImGui::GetWindowDrawList()->AddLine(ImVec2(i+xoffset, yoffset), ImVec2(i+xoffset, height+yoffset), IM_COL32(r, g, b, a));
 		}
 	}
 	if (ystep > 0) {
 		for (int i = 0; i < height+1; i += ystep) {
-			ImGui::GetWindowDrawList()->AddLine(ImVec2(xoffset, i+yoffset), ImVec2(width+xoffset, i+yoffset), IM_COL32(255, 0, 0, 255));
+			ImGui::GetWindowDrawList()->AddLine(ImVec2(xoffset, i+yoffset), ImVec2(width+xoffset, i+yoffset), IM_COL32(r, g, b, a));
 		}
 	}
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
 }
 
 static void addRectableToCanvas(SDL_Renderer* renderer, int topx = 0, int topy = 0, int height = 100, int width = 100, int xoffset = 0, int yoffset = 0) {
-	SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
+	Uint8 r, g, b, a;
+	SDL_GetRenderDrawColor(renderer, &r, &g, &b, &a);
 	topx += xoffset;
 	topy += yoffset;
-	ImGui::GetWindowDrawList()->AddLine(ImVec2(topx, topy), ImVec2(topx+width, topy), IM_COL32(255, 0, 0, 255));
-	ImGui::GetWindowDrawList()->AddLine(ImVec2(topx+width, topy), ImVec2(topx+width, topy+height), IM_COL32(255, 0, 0, 255));
-	ImGui::GetWindowDrawList()->AddLine(ImVec2(topx+width, topy+height), ImVec2(topx, topy+height), IM_COL32(255, 0, 0, 255));
-	ImGui::GetWindowDrawList()->AddLine(ImVec2(topx, topy+height), ImVec2(topx, topy), IM_COL32(255, 0, 0, 255));
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+	ImGui::GetWindowDrawList()->AddLine(ImVec2(topx, topy), ImVec2(topx+width, topy), IM_COL32(r, g, b, a));
+	ImGui::GetWindowDrawList()->AddLine(ImVec2(topx+width, topy), ImVec2(topx+width, topy+height), IM_COL32(r, g, b, a));
+	ImGui::GetWindowDrawList()->AddLine(ImVec2(topx+width, topy+height), ImVec2(topx, topy+height), IM_COL32(r, g, b, a));
+	ImGui::GetWindowDrawList()->AddLine(ImVec2(topx, topy+height), ImVec2(topx, topy), IM_COL32(r, g, b, a));
 }
 
 static void addFolderToList(const std::string& folder, std::vector<std::string>& list, const std::string& filter = "") {
@@ -119,7 +153,8 @@ void SagoTextureSelector::runSpriteSelectorFrame(SDL_Renderer* target) {
 		SDL_Texture* current_texture = globalData.dataHolder->getTexturePtr(current_sprite.texture);
 		ImGui::Text("Size: %d x %d", current_sprite.width, current_sprite.height);
 		ImGui::BeginChild("Test");
-		ImGuiWritePartOfImage(current_texture, current_sprite.topx, current_sprite.topy, current_sprite.width, current_sprite.height);
+		int offset = current_sprite.width * (SDL_GetTicks()/current_sprite.frame_time % current_sprite.number_of_frames);
+		ImGuiWritePartOfImage(current_texture, current_sprite.topx+offset, current_sprite.topy, current_sprite.width, current_sprite.height);
 		ImGui::EndChild();
 	}
 	ImGui::End();
@@ -134,6 +169,12 @@ void SagoTextureSelector::runSpriteSelectorFrame(SDL_Renderer* target) {
 		ImGui::BeginChild("Test");
 		ImVec2 p = ImGui::GetCursorScreenPos();
 		ImGui::Image((ImTextureID)(intptr_t)current_texture, ImVec2((float)tex_w, (float)tex_h));
+		ChangeSDLColor color(target);
+		color.setYellow();
+		for (int i = 1; i < current_sprite.number_of_frames; i++) {
+			addRectableToCanvas(target, current_sprite.topx+i*current_sprite.width, current_sprite.topy, current_sprite.height, current_sprite.width,  p.x, p.y);
+		}
+		color.setRed();
 		addRectableToCanvas(target, current_sprite.topx, current_sprite.topy, current_sprite.height, current_sprite.width,  p.x, p.y);
 		ImGui::EndChild();
 	}
@@ -164,6 +205,8 @@ void SagoTextureSelector::runTextureSelectorFrame(SDL_Renderer* target) {
 		ImGui::BeginChild("Test");
 		ImVec2 p = ImGui::GetCursorScreenPos();
 		ImGui::Image((ImTextureID)(intptr_t)current_texture, ImVec2((float)tex_w, (float)tex_h));
+		ChangeSDLColor color(target);
+		color.setRed();
 		addLinesToCanvas(target, current_texture, 32, 32, p.x, p.y);
 		ImGui::EndChild();
 	}
