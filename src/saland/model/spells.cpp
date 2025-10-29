@@ -25,7 +25,7 @@ https://github.com/sago007/saland
 #include "../../sago/SagoMisc.hpp"
 #include "rapidjson/document.h"
 #include <iostream>
-#include "fmt/core.h"
+#include <format>
 
 void SpellHolder::add_spell(const Spell& spell) {
 	spells.push_back(spell);
@@ -104,7 +104,7 @@ void SpellHolder::init() {
 	const char* spellDir = "saland/spells/";
 	std::vector<std::string> file_list = sago::GetFileList(spellDir);
 	for(const std::string& file : file_list) {
-		std::string filename = fmt::format("{}{}", spellDir, file);
+		std::string filename = std::format("{}{}", spellDir, file);
 		printf("Spells: file: %s\n",filename.c_str());
 		ReadSpellFile(filename);
 	}

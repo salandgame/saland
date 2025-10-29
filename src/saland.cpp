@@ -54,8 +54,7 @@ https://github.com/salandgame/saland
 #include "common.h"
 #include "os.hpp"
 #include "version.h"
-
-#include "fmt/core.h"
+#include <format>
 
 //if SHAREDIR is not used we look in current directory
 #ifndef SHAREDIR
@@ -380,7 +379,7 @@ static void runHelpAbout() {
 class WorldSelectButton : public Button {
 private:
 	void UpdateLabel() {
-		this->setLabel(fmt::format("World: {}", Config::getInstance()->getString("world") ));
+		this->setLabel(std::format("World: {}", Config::getInstance()->getString("world") ));
 	}
 public:
 	WorldSelectButton() {
@@ -396,7 +395,7 @@ public:
 class PlayerSelectButton : public Button {
 private:
 	void UpdateLabel() {
-		this->setLabel(fmt::format("Player: {}", Config::getInstance()->getString("player") ));
+		this->setLabel(std::format("Player: {}", Config::getInstance()->getString("player") ));
 	}
 public:
 	PlayerSelectButton() {

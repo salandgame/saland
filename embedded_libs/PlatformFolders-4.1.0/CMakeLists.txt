@@ -1,5 +1,5 @@
 # For target_compile_features
-cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.28.0..4.1.0 )
 project(platform_folders VERSION 4.1.0 LANGUAGES CXX)
 
 # Since it's off, the library will be static by default

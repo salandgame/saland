@@ -48,7 +48,7 @@ https://github.com/sago007/saland
 #include "console/Console.hpp"
 #include "GameConsoleCommand.hpp"
 #include "GameSpellState.hpp"
-#include "fmt/core.h"
+#include <format>
 #include "../SagoImGui.hpp"
 
 int32 velocityIterations = 6;
@@ -223,13 +223,13 @@ static SpawnPoint GetSpawnpoint(const sago::tiled::TileMap& tm) {
 static void PlayerSave() {
 	std::string playername = Config::getInstance()->getString("player");
 	nlohmann::json j = globalData.player;
-	sago::WriteFileContent(fmt::format("players/{}.json", playername).c_str(), j.dump());
+	sago::WriteFileContent(std::format("players/{}.json", playername).c_str(), j.dump());
 }
 
 static void PlayerLoad() {
 	std::string playername = Config::getInstance()->getString("player");
 	nlohmann::json j;
-	std::string filename = fmt::format("players/{}.json", playername);
+	std::string filename = std::format("players/{}.json", playername);
 	if (sago::FileExists(filename.c_str())) {
 		j = nlohmann::json::parse(sago::GetFileContent(filename.c_str()));
 		globalData.player = j;
@@ -421,7 +421,7 @@ void Game::Draw(SDL_Renderer* target) {
 		}
 	}
 	if (data->world_mouse_x >= 0 && data->world_mouse_y >= 0) {
-		std::string s = fmt::format("world_x = {}, world_y = {}, layer_info:{}", data->world_mouse_x/32, data->world_mouse_y/32,
+		std::string s = std::format("world_x = {}, world_y = {}, layer_info:{}", data->world_mouse_x/32, data->world_mouse_y/32,
 		                            GetLayerInfoForTile(data->gameRegion.world, data->world_mouse_x/32, data->world_mouse_y/32));
 		data->bottomField.SetText(s);
 	}

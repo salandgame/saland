@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 # Set timezone to UTC. This prevents apt-get install SOME-PACKAGES from asking for timezone during setup
 ENV TZ=UTC

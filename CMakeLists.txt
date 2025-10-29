@@ -10,7 +10,6 @@ set(INSTALL_ICONS_DIR "share/icons/hicolor" CACHE STRING "Install the icon in a 
 set(INSTALL_LOCALE_DIR "${INSTALL_DATA_DIR}/locale/" CACHE STRING "Install translation to this dir")
 set(INSTALL_METAINFO_DIR "share/metainfo" CACHE STRING "Install appstream matedata to this directory")
 
-option(SALAND_USE_EMBEDDED_FMT "Use the embedded version of {fmt}" ON)
 option(SALAND_USE_EMBEDDED_PLATFORM_FOLDERS "Use the embedded version of PlatformFolders" ON)
 
 if (NOT WIN32 AND NOT STANDALONE)
@@ -27,7 +26,7 @@ if (NOT WIN32 AND NOT STANDALONE)
 	endif()
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wsuggest-override -std=c++17 -g")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wsuggest-override -std=c++20 -g")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -g")
 
 if (WIN32)
@@ -43,11 +42,6 @@ find_package(Boost COMPONENTS program_options REQUIRED)
 # box2d is not API compatible between versions (not even minor versions), so this explicit version must always be used.
 add_subdirectory("embedded_libs/box2d-2.4.1" EXCLUDE_FROM_ALL)
 
-if (SALAND_USE_EMBEDDED_FMT)
-	message("Using embedded {fmt}")
-	add_subdirectory("embedded_libs/fmt-8.1.1" EXCLUDE_FROM_ALL)
-	message("Done processing {fmt}")
-endif()
 
 if (SALAND_USE_EMBEDDED_PLATFORM_FOLDERS)
 	message("Using embedded PlatformFolders")
@@ -80,5 +74,5 @@ file(GLOB SOURCES "src/*.cpp" "src/*.h*" "src/*/*.cpp" "src/*/*.h*" "src/*/*/*.c
 add_executable(saland ${SOURCES})
 TARGET_LINK_LIBRARIES( saland ${Boost_LIBRARIES} )
 target_link_libraries( saland ${SDL2_LIBRARIES})
-target_link_libraries( saland physfs z box2d fmt platform_folders)
+target_link_libraries( saland physfs z box2d platform_folders)
 target_link_libraries( saland ${SDL2MIXER_LIBRARIES} ${SDL2IMAGE_LIBRARIES} ${SDL2TTF_LIBRARIES} ${SDL2GFX_LIBRARIES})

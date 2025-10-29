@@ -26,7 +26,8 @@ https://github.com/sago007/saland
 #include "../sago/SagoMisc.hpp"
 #include "rapidjson/document.h"
 #include "iostream"
-#include "fmt/core.h"
+#include <format>
+//#include "fmt/core.h"
 
 const char* const item_dir = "saland/items/";
 
@@ -95,7 +96,7 @@ static void ReadItemFile(const std::string& filename) {
 static void initItems() {
 	std::vector<std::string> file_list = sago::GetFileList(item_dir);
 	for(const std::string& file : file_list) {
-		std::string filename = fmt::format("{}{}", item_dir, file);
+		std::string filename = std::format("{}{}", item_dir, file);
 		printf("Item file: %s\n",filename.c_str());
 		ReadItemFile(filename);
 	}
