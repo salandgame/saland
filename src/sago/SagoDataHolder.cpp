@@ -24,7 +24,6 @@ SOFTWARE.
 
 #include "SagoDataHolder.hpp"
 #include <iostream>
-#include <mutex>
 #include <map>
 #include <vector>
 #include <physfs.h>
@@ -114,8 +113,12 @@ SDL_Texture* SagoDataHolder::getTexturePtr(const std::string& textureName) const
 		printFileWeLoad(path);
 	}
 	if (!PHYSFS_exists(path.c_str())) {
-		std::cerr << "getTextureFailed - Texture does not exist: " << path << "\n";
-		return getTexturePtr("fallback");
+		// We did not find the png file. Try to see if there are a jpg file.
+		std::string jpg_path = "textures/"+textureName+".jpg";
+		if (!PHYSFS_exists(jpg_path.c_str())) {
+			sago::SagoFatalErrorF("getTextureFailed - Texture does not exist: %s", path.c_str());
+		}
+		path = jpg_path;
 	}
 	unsigned int m_size = 0;
 	std::unique_ptr<char[]> m_data;
@@ -253,7 +256,7 @@ TextureHandler::TextureHandler(const SagoDataHolder* holder, const std::string& 
 	this->data = nullptr;
 }
 
-SDL_Texture* TextureHandler::get() {
+SDL_Texture* TextureHandler::get() const {
 	if (version != holder->getVersion()) {
 		//The holder has been invalidated
 		this->data = this->holder->getTexturePtr(textureName);
