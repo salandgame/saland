@@ -214,6 +214,10 @@ void RunGameState(sago::GameStateInterface& state ) {
 		}
 		SDL_SetRenderDrawColor(globalData.screen, 0, 0, 0, 0);
 		SDL_RenderClear(globalData.screen);
+		int w=1;
+		int h=1;
+		SDL_GetRendererOutputSize(globalData.screen, &w, &h);
+		globalData.logicalResize.SetPhysicalSize(w, h);
 		ImGui_ImplSDLRenderer2_NewFrame();
 		ImGui_ImplSDL2_NewFrame();
 		ImGui::NewFrame();
@@ -443,7 +447,7 @@ void runGame() {
 	std::string imgui_inifile = getPathToSaveFiles() + "/imgui.ini";
 	ImGui::LoadIniSettingsFromDisk(imgui_inifile.c_str());
 
-	globalData.ysize = globalData.ysize;
+	globalData.logicalResize = sago::SagoLogicalResize(1280, 720);
 
 	sago::SagoDataHolder holder(globalData.screen);
 	globalData.spriteHolder.reset(new sago::SagoSpriteHolder(holder));

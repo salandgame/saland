@@ -25,6 +25,7 @@ https://github.com/sago007/saland
 #define GLOBALS_HPP
 
 #include "../sago/SagoSpriteHolder.hpp"
+#include "../sago/SagoLogicalResize.hpp"
 #include <memory>
 #include "model/Player.hpp"
 
@@ -59,6 +60,7 @@ struct GlobalData {
 	bool debugDrawProtectedAreas = false;
 
 	bool editor = false;
+	sago::SagoLogicalResize logicalResize;
 };
 
 extern GlobalData globalData;

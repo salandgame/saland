@@ -360,8 +360,9 @@ static void DrawDebugMenu(SDL_Renderer* target) {
 }
 
 void Game::Draw(SDL_Renderer* target) {
-	double screen_width = globalData.xsize;
-	double screen_height = globalData.ysize;
+	// Use logical coordinates for game rendering (1920x1080 as set in main)
+	double screen_width = 1280;
+	double screen_height = 720;
 	int screen_boarder = 64;
 	data->topx = std::round(data->center_x - screen_width / 2.0);
 	data->topy = std::round(data->center_y - screen_height / 2.0);
@@ -379,45 +380,48 @@ void Game::Draw(SDL_Renderer* target) {
 	}
 	std::sort(data->gameRegion.placeables.begin(), data->gameRegion.placeables.end(),sort_placeable);
 	SDL_Texture* texture = globalData.spriteHolder->GetDataHolder().getTexturePtr("terrain");
-	DrawOuterBorder(target, texture, data->gameRegion.world.tm, data->topx, data->topy, data->gameRegion.outerTile);
+	DrawOuterBorder(target, texture, data->gameRegion.world.tm, data->topx, data->topy, data->gameRegion.outerTile, &globalData.logicalResize);
 	for (size_t i = 0; i < data->gameRegion.world.tm.layers.size(); ++i) {
 		if (std::string(data->gameRegion.world.tm.layers.at(i).name).find("overlay",0) == std::string::npos ) {
-			DrawLayer(target, globalData.spriteHolder.get(), data->gameRegion.world.tm, i, data->topx, data->topy);
+			DrawLayer(target, globalData.spriteHolder.get(), data->gameRegion.world.tm, i, data->topx, data->topy, &globalData.logicalResize);
 		}
 	}
 	for (size_t i = 0; i < data->gameRegion.world.tm.object_groups.size(); ++i) {
-		DrawOjbectGroup(target, data->gameRegion.world.tm, i, data->topx, data->topy);
+		DrawOjbectGroup(target, data->gameRegion.world.tm, i, data->topx, data->topy, &globalData.logicalResize);
 	}
 	if (data->world_mouse_x >= 0 && data->world_mouse_y >= 0) {
 		int mousebox_x = data->world_mouse_x - data->world_mouse_x % 32 - data->topx;
 		int mousebox_y = data->world_mouse_y - data->world_mouse_y % 32 - data->topy;
 		if (data->spell_holder->slot_spell.at(data->spell_holder->slot_selected).type == SpellCursorType::tile) {
-			rectangleRGBA(globalData.screen, mousebox_x, mousebox_y,
-			              mousebox_x + 32, mousebox_y + 32, 255, 255, 0, 255);
+			int phys_x1 = mousebox_x, phys_y1 = mousebox_y;
+			int phys_x2 = mousebox_x + 32, phys_y2 = mousebox_y + 32;
+			globalData.logicalResize.LogicalToPhysical(&phys_x1, &phys_y1);
+			globalData.logicalResize.LogicalToPhysical(&phys_x2, &phys_y2);
+			rectangleRGBA(globalData.screen, phys_x1, phys_y1, phys_x2, phys_y2, 255, 255, 0, 255);
 		}
 	}
 	//Draw
 	for (const auto& p : data->gameRegion.placeables) {
 		MiscItem* m = dynamic_cast<MiscItem*> (p.get());
 		if (m) {
-			DrawMiscEntity(target, globalData.spriteHolder.get(), m, SDL_GetTicks(), data->topx, data->topy, globalData.debugDrawCollision);
+			DrawMiscEntity(target, globalData.spriteHolder.get(), m, SDL_GetTicks(), data->topx, data->topy, globalData.debugDrawCollision, &globalData.logicalResize);
 		}
 		Human* h = dynamic_cast<Human*> (p.get());
 		if (h) {
-			DrawHumanEntity(target, globalData.spriteHolder.get(), h, SDL_GetTicks(), data->topx, data->topy, globalData.debugDrawCollision);
+			DrawHumanEntity(target, globalData.spriteHolder.get(), h, SDL_GetTicks(), data->topx, data->topy, globalData.debugDrawCollision, &globalData.logicalResize);
 		}
 		Monster* monster = dynamic_cast<Monster*> (p.get());
 		if (monster) {
-			DrawMonster(target, globalData.spriteHolder.get(), monster, SDL_GetTicks(), data->topx, data->topy, globalData.debugDrawCollision);
+			DrawMonster(target, globalData.spriteHolder.get(), monster, SDL_GetTicks(), data->topx, data->topy, globalData.debugDrawCollision, &globalData.logicalResize);
 		}
 		Projectile* projectile = dynamic_cast<Projectile*> (p.get());
 		if (projectile) {
-			DrawProjectile(target, globalData.spriteHolder.get(), projectile, SDL_GetTicks(), data->topx, data->topy, globalData.debugDrawCollision);
+			DrawProjectile(target, globalData.spriteHolder.get(), projectile, SDL_GetTicks(), data->topx, data->topy, globalData.debugDrawCollision, &globalData.logicalResize);
 		}
 	}
 	for (size_t i = 0; i < data->gameRegion.world.tm.layers.size(); ++i) {
 		if (std::string(data->gameRegion.world.tm.layers.at(i).name).find("overlay",0) != std::string::npos ) {
-			DrawLayer(target, globalData.spriteHolder.get(), data->gameRegion.world.tm, i, data->topx, data->topy);
+			DrawLayer(target, globalData.spriteHolder.get(), data->gameRegion.world.tm, i, data->topx, data->topy, &globalData.logicalResize);
 		}
 	}
 	if (data->world_mouse_x >= 0 && data->world_mouse_y >= 0) {
@@ -428,8 +432,8 @@ void Game::Draw(SDL_Renderer* target) {
 	else {
 		data->bottomField.SetText("outside world");
 	}
-	data->bottomField.Draw(target, 2, screen_height, sago::SagoTextField::Alignment::left, sago::SagoTextField::VerticalAlignment::bottom);
-	data->middleField.Draw(target, screen_width/2, screen_height/4, sago::SagoTextField::Alignment::center, sago::SagoTextField::VerticalAlignment::bottom);
+	data->bottomField.Draw(target, 2, screen_height, sago::SagoTextField::Alignment::left, sago::SagoTextField::VerticalAlignment::bottom, &globalData.logicalResize);
+	data->middleField.Draw(target, screen_width/2, screen_height/4, sago::SagoTextField::Alignment::center, sago::SagoTextField::VerticalAlignment::bottom, &globalData.logicalResize);
 
 	data->spellSelect->Draw(target);
 	if (data->consoleActive && data->console) {
@@ -454,7 +458,7 @@ void Game::Draw(SDL_Renderer* target) {
 		Ticks = SDL_GetTicks();
 	}
 	fpsField.SetText(FPS);
-	fpsField.Draw(globalData.screen, globalData.xsize-4, 4, sago::SagoTextField::Alignment::right);
+	fpsField.Draw(globalData.screen, 1920-4, 4, sago::SagoTextField::Alignment::right, sago::SagoTextField::VerticalAlignment::top, &globalData.logicalResize);
 //#endif
 }
 
@@ -633,8 +637,11 @@ void Game::Update() {
 	int mousex;
 	int mousey;
 	SDL_GetMouseState(&mousex, &mousey);
-	data->world_mouse_x = data->topx + mousex;
-	data->world_mouse_y = data->topy + mousey;
+	// Convert physical mouse coordinates to logical coordinates
+	int logical_mousex, logical_mousey;
+	globalData.logicalResize.PhysicalToLogical(mousex, mousey, logical_mousex, logical_mousey);
+	data->world_mouse_x = data->topx + logical_mousex;
+	data->world_mouse_y = data->topy + logical_mousey;
 	//std::cout << "world x: " << data->world_mouse_x << ", y: " << data->world_mouse_y << "             \r";
 	data->lastUpdate = nowTime;
 	data->gameRegion.physicsBox->Step(deltaTime / 1000.0f / 60.0f, velocityIterations, positionIterations);
