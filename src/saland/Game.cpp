@@ -442,6 +442,32 @@ void Game::Draw(SDL_Renderer* target) {
 	if (data->debugMenuActive) {
 		DrawDebugMenu(target);
 	}
+	// Draw black bars where globalData.logicalResize suggests that the physical area ends.
+	// This covers the letterboxing/pillarboxing margins to ensure only the game area is visible.
+	int topMargin = globalData.logicalResize.GetTopMargin();
+	int leftMargin = globalData.logicalResize.GetLeftMargin();
+
+	// Top bar
+	if (topMargin > 0) {
+		SDL_Rect topBar = {0, 0, globalData.xsize, topMargin};
+		SDL_SetRenderDrawColor(target, 0, 0, 0, 255);
+		SDL_RenderFillRect(target, &topBar);
+		// Bottom bar
+		SDL_Rect bottomBar = {0, globalData.ysize - topMargin, globalData.xsize, topMargin};
+		SDL_SetRenderDrawColor(target, 0, 0, 0, 255);
+		SDL_RenderFillRect(target, &bottomBar);
+	}
+
+	// Left bar
+	if (leftMargin > 0) {
+		SDL_Rect leftBar = {0, 0, leftMargin, globalData.ysize};
+		SDL_SetRenderDrawColor(target, 0, 0, 0, 255);
+		SDL_RenderFillRect(target, &leftBar);
+		// Right bar
+		SDL_Rect rightBar = {globalData.xsize - leftMargin, 0, leftMargin, globalData.ysize};
+		SDL_SetRenderDrawColor(target, 0, 0, 0, 255);
+		SDL_RenderFillRect(target, &rightBar);
+	}
 //#if DEBUG
 	static unsigned long int Frames;
 	static unsigned long int Ticks;
