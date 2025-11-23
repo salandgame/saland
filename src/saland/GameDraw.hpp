@@ -38,8 +38,8 @@ void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, cons
 void DrawMonster(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Monster* entity, float time, int offsetX, int offsetY, bool drawCollision, sago::SagoLogicalResize* resize = nullptr);
 void DrawProjectile(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Projectile* entity, float time, int offsetX, int offsetY, bool drawCollision, sago::SagoLogicalResize* resize = nullptr);
 
-void DrawRectWhite(SDL_Renderer* target, int topx, int topy, int height, int width);
-void DrawRectYellow(SDL_Renderer* target, int topx, int topy, int height, int width);
+void DrawRectWhite(SDL_Renderer* target, int topx, int topy, int height, int width, sago::SagoLogicalResize* resize = nullptr);
+void DrawRectYellow(SDL_Renderer* target, int topx, int topy, int height, int width, sago::SagoLogicalResize* resize = nullptr);
 void DrawTile(SDL_Renderer* renderer, sago::SagoSpriteHolder* sHolder, const sago::tiled::TileMap& tm, uint32_t gid, int x, int y, sago::SagoLogicalResize* resize = nullptr);
 
 #endif /* GAMEDRAW_HPP */

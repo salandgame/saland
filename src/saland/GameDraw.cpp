@@ -285,7 +285,7 @@ void DrawProjectile(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const
 	DrawCollision(target, entity, offsetX, offsetY, drawCollision, resize);
 }
 
-static void DrawRect(SDL_Renderer* target, int topx, int topy, int height, int width, const std::string& name) {
+static void DrawRect(SDL_Renderer* target, int topx, int topy, int height, int width, const std::string& name, sago::SagoLogicalResize* resize = nullptr) {
 	const int size = 32;
 	SDL_Rect bounds_ns = {topx, topy+size, width, height-2*size};  //bounds for south
 	SDL_Rect bounds_e = {topx, topy, width-size, height};
@@ -295,31 +295,31 @@ static void DrawRect(SDL_Renderer* target, int topx, int topy, int height, int w
 	const sago::SagoSprite& w = globalData.spriteHolder->GetSprite(name+"w");
 	const sago::SagoSprite& fill = globalData.spriteHolder->GetSprite(name+"fill");
 	for (int i = 1; i < width/size; ++i) {
-		n.DrawBounded(target, SDL_GetTicks(), topx+i*size, topy, bounds_e);
+		n.DrawBounded(target, SDL_GetTicks(), topx+i*size, topy, bounds_e, resize);
 		for (int j = 1; j < height/size; ++j) {
-			w.DrawBounded(target, SDL_GetTicks(), topx, topy+j*size, bounds_ns);
-			fill.Draw(target, SDL_GetTicks(),topx+i*size, topy+j*size);
-			e.DrawBounded(target, SDL_GetTicks(), topx+width-size, topy+j*size, bounds_ns);
+			w.DrawBounded(target, SDL_GetTicks(), topx, topy+j*size, bounds_ns, resize);
+			fill.Draw(target, SDL_GetTicks(),topx+i*size, topy+j*size, resize);
+			e.DrawBounded(target, SDL_GetTicks(), topx+width-size, topy+j*size, bounds_ns, resize);
 		}
-		s.DrawBounded(target, SDL_GetTicks(), topx+i*size, topy+height-size, bounds_e);
+		s.DrawBounded(target, SDL_GetTicks(), topx+i*size, topy+height-size, bounds_e, resize);
 	}
 	//Corners
 	const sago::SagoSprite& nw = globalData.spriteHolder->GetSprite(name+"nw");
 	const sago::SagoSprite& ne = globalData.spriteHolder->GetSprite(name+"ne");
 	const sago::SagoSprite& se = globalData.spriteHolder->GetSprite(name+"se");
 	const sago::SagoSprite& sw = globalData.spriteHolder->GetSprite(name+"sw");
-	nw.Draw(target, SDL_GetTicks(), topx, topy);
-	ne.Draw(target, SDL_GetTicks(), topx+width-size, topy);
-	se.Draw(target, SDL_GetTicks(), topx+width-size, topy+height-size);
-	sw.Draw(target, SDL_GetTicks(), topx, topy+height-size);
+	nw.Draw(target, SDL_GetTicks(), topx, topy, resize);
+	ne.Draw(target, SDL_GetTicks(), topx+width-size, topy, resize);
+	se.Draw(target, SDL_GetTicks(), topx+width-size, topy+height-size, resize);
+	sw.Draw(target, SDL_GetTicks(), topx, topy+height-size, resize);
 }
 
-void DrawRectWhite(SDL_Renderer* target, int topx, int topy, int height, int width) {
+void DrawRectWhite(SDL_Renderer* target, int topx, int topy, int height, int width, sago::SagoLogicalResize* resize) {
 	std::string name = "ui_rect_white_";
-	DrawRect(target, topx, topy, height, width, name);
+	DrawRect(target, topx, topy, height, width, name, resize);
 }
 
-void DrawRectYellow(SDL_Renderer* target, int topx, int topy, int height, int width) {
+void DrawRectYellow(SDL_Renderer* target, int topx, int topy, int height, int width, sago::SagoLogicalResize* resize) {
 	std::string name = "ui_rect_yellow_";
-	DrawRect(target, topx, topy, height, width, name);
+	DrawRect(target, topx, topy, height, width, name, resize);
 }

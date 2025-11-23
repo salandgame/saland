@@ -58,21 +58,22 @@ static int spell_slot_y(int slot) {
 
 void GameSpellState::GameSpellState::Draw(SDL_Renderer* target) {
 	int sideBoarder = 20;
+	sago::SagoLogicalResize* resize = &globalData.logicalResize;
 	for (size_t i = 0; i < 10; ++i) {
 		if (spell_holder->slot_selected == i) {
-			DrawRectWhite(target, BOX_OFFSET+i*BOX_SPACING, BOX_OFFSET, BOX_SIZE, BOX_SIZE);
+			DrawRectWhite(target, BOX_OFFSET+i*BOX_SPACING, BOX_OFFSET, BOX_SIZE, BOX_SIZE, resize);
 		}
 		else {
-			DrawRectYellow(target, BOX_OFFSET+i*BOX_SPACING, BOX_OFFSET, BOX_SIZE, BOX_SIZE);
+			DrawRectYellow(target, BOX_OFFSET+i*BOX_SPACING, BOX_OFFSET, BOX_SIZE, BOX_SIZE, resize);
 		}
 		int key_number = (i+1)%10;
-		data->number_labels.at(key_number).Draw(target, 10+i*BOX_SPACING, 10);
+		data->number_labels.at(key_number).Draw(target, 10+i*BOX_SPACING, 10, sago::SagoTextField::Alignment::left, sago::SagoTextField::VerticalAlignment::top, resize);
 		const Spell& current_spell = spell_holder->slot_spell.at(i);
 		if (current_spell.icon.length() > 0) {
-			globalData.spriteHolder.get()->GetSprite(current_spell.icon).Draw(target, SDL_GetTicks(), 36+i*56, 36);
+			globalData.spriteHolder.get()->GetSprite(current_spell.icon).Draw(target, SDL_GetTicks(), 36+i*56, 36, resize);
 		}
 		if (current_spell.tile > 0) {
-			DrawTile(target, globalData.spriteHolder.get(), *tm, current_spell.tile, 20+i*BOX_SPACING, 20);
+			DrawTile(target, globalData.spriteHolder.get(), *tm, current_spell.tile, 20+i*BOX_SPACING, 20, resize);
 		}
 	}
 	if (!data->spellSelectActive) {
@@ -81,13 +82,13 @@ void GameSpellState::GameSpellState::Draw(SDL_Renderer* target) {
 	for (size_t i = 0; i < spell_holder->get_spell_count(); ++i) {
 		int x = spell_slot_x(i);
 		int y = spell_slot_y(i);
-		DrawRectYellow(target, x, y, BOX_SIZE, BOX_SIZE);
+		DrawRectYellow(target, x, y, BOX_SIZE, BOX_SIZE, resize);
 		const Spell& current_spell = spell_holder->get_spell(i);
 		if (current_spell.icon.length() > 0) {
-			globalData.spriteHolder.get()->GetSprite(current_spell.icon).Draw(target, SDL_GetTicks(), x+BOX_SIZE/2, y+BOX_SIZE/2);
+			globalData.spriteHolder.get()->GetSprite(current_spell.icon).Draw(target, SDL_GetTicks(), x+BOX_SIZE/2, y+BOX_SIZE/2, resize);
 		}
 		if (current_spell.tile > 0) {
-			DrawTile(target, globalData.spriteHolder.get(), *tm, current_spell.tile, x+10, y+10);
+			DrawTile(target, globalData.spriteHolder.get(), *tm, current_spell.tile, x+10, y+10, resize);
 		}
 	}
 }
@@ -113,12 +114,15 @@ void GameSpellState::ProcessInput(const SDL_Event& event, bool& processed) {
     }
 	if (event.type == SDL_MOUSEBUTTONDOWN) {
 		if (event.button.button == SDL_BUTTON_LEFT) {
-			std::cout << "Left click " << globalData.mousex << "," << globalData.mousey << "\n";
+			// Convert physical mouse coordinates to logical coordinates
+			int logical_mousex, logical_mousey;
+			globalData.logicalResize.PhysicalToLogical(globalData.mousex, globalData.mousey, logical_mousex, logical_mousey);
+			std::cout << "Left click " << logical_mousex << "," << logical_mousey << "\n";
 			for (size_t i = 0; i < spell_holder->get_spell_count(); ++i) {
 				int x = spell_slot_x(i);
 				int y = spell_slot_y(i);
-				if (globalData.mousex >= x && globalData.mousex <= x + BOX_SIZE &&
-				        globalData.mousey >= y && globalData.mousey <= y + BOX_SIZE) {
+				if (logical_mousex >= x && logical_mousex <= x + BOX_SIZE &&
+				        logical_mousey >= y && logical_mousey <= y + BOX_SIZE) {
 					std::cout << "Clicked: " << i << "\n";
 					if (spell_holder->slot_selected < 9) {
 						//We do not update slot 9.
