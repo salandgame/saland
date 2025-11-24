@@ -136,6 +136,8 @@ SDL_Texture* SagoDataHolder::getTexturePtr(const std::string& textureName) const
 	if (!ret) {
 		std::cerr << "getTextureFailed to load " << path << "\n";
 	}
+	// Nearest ensure that we do not have gab between tiles
+	SDL_SetTextureScaleMode(ret, SDL_ScaleModeNearest);
 	SDL_FreeSurface(surface);
 	data->textures[textureName] = ret;
 	return ret;

@@ -24,6 +24,7 @@ SOFTWARE.
 
 #pragma once
 #include <algorithm>
+#include <cmath>
 #include "SDL.h"
 
 
@@ -123,10 +124,10 @@ public:
 	 */
 	void LogicalToPhysical(int* x, int* y) const {
 		if (x) {
-			*x = *x * scale_factor_ + left_margin_;
+			*x = std::round(*x * scale_factor_ + left_margin_);
 		}
 		if (y) {
-			*y = *y * scale_factor_ + top_margin_;
+			*y = std::round(*y * scale_factor_ + top_margin_);
 		}
 	}
 
