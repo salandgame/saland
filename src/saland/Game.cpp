@@ -440,6 +440,7 @@ void Game::Draw(SDL_Renderer* target) {
 
 	// Draw black bars where globalData.logicalResize suggests that the physical area ends.
 	// This covers the letterboxing/pillarboxing margins to ensure only the game area is visible.
+	#if 1
 	int topMargin = globalData.logicalResize.GetTopMargin();
 	int leftMargin = globalData.logicalResize.GetLeftMargin();
 
@@ -464,6 +465,7 @@ void Game::Draw(SDL_Renderer* target) {
 		SDL_SetRenderDrawColor(target, 0, 0, 0, 255);
 		SDL_RenderFillRect(target, &rightBar);
 	}
+	#endif
 
 	if (data->consoleActive && data->console) {
 		data->console->Draw(target);

@@ -122,8 +122,8 @@ void DrawLayer(SDL_Renderer* renderer, sago::SagoSpriteHolder* sHolder, const sa
 		startY = 0;
 	}
 	// Use logical size for drawing range
-	int viewWidth = resize ? 1920 : globalData.xsize;
-	int viewHeight = resize ? 1080 : globalData.ysize;
+	int viewWidth = 1280;
+	int viewHeight = 720;
 	for (int i = startX; i < tm.width && i < (topx+viewWidth)/32+1; ++i) {
 		for (int j = startY; j < tm.height && j < (topy+viewHeight)/32+1; ++j) {
 			uint32_t gid = sago::tiled::getTileFromLayer(tm, tm.layers.at(layer), i, j);
