@@ -40,7 +40,7 @@ sago::SagoTextField* TextCache::getLabel(const std::string& text) {
 	std::shared_ptr<sago::SagoTextField> newField = std::make_shared<sago::SagoTextField>();
 	newField->SetHolder(&globalData.spriteHolder->GetDataHolder());
 	newField->SetFont("freeserif");
-	newField->SetFontSize(12);
+	newField->SetFontSize(20);
 	newField->SetOutline(0, {255,255,0,255});
 	newField->SetText(text);
 	labels[text] = newField;
@@ -69,15 +69,15 @@ static void DrawCollision(SDL_Renderer* target, const Placeable* entity, int off
 		int y = entity->Y - offsetY;
 		int r = entity->Radius;
 		if (resize) {
+			int temp_r = r+x;
 			resize->LogicalToPhysical(&x, &y);
-			int temp_r = r;
 			resize->LogicalToPhysical(&temp_r, nullptr);
-			r = temp_r;
+			r = temp_r - x;
 		}
 		circleRGBA(target,
 		           x, y, r,
 		           255, 255, 0, 255);
-		textCache.getLabel(entity->id)->Draw(target, x + r + 4, y, sago::SagoTextField::Alignment::left, sago::SagoTextField::VerticalAlignment::center, resize);
+		textCache.getLabel(entity->id)->Draw(target, x + r + 4, y, sago::SagoTextField::Alignment::left, sago::SagoTextField::VerticalAlignment::center);
 	}
 }
 
