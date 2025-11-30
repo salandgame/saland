@@ -10,4 +10,16 @@
 "originx" : 16,
 "originy" : 16
 }
+,
+"effect_watershot" : {
+"texture" : "effects/water_projectile",
+"topx" : 0,
+"topy" : 0,
+"height" : 150,
+"width" : 150,
+"number_of_frames" : 1,
+"frame_time" : 50,
+"originx" : 75,
+"originy" : 75
+}
 }

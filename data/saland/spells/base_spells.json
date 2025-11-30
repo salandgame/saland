@@ -9,6 +9,13 @@
 			"type": "dot"
 		}
 		,{
+			"name": "spell_watershot",
+			"icon": "effect_watershot",
+			"item_name": "",
+			"tile": 0,
+			"type": "dot"
+		}
+		,{
 			"icon": "item_weapon_long_knife",
 			"name": "weapon_slash_long_knife"
 		}

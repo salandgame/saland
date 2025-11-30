@@ -777,6 +777,23 @@ void Game::Update() {
 				data->gameRegion.placeables.push_back(projectile);
 			}
 		}
+		if (data->spell_holder->slot_spell.at(data->spell_holder->slot_selected).name == "spell_watershot") {
+			if (data->human->castTimeRemaining == 0) {
+				data->human->castTimeRemaining = data->human->castTime;
+				data->human->animation = "spellcast";
+				std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>();
+				projectile->sprite = "effect_watershot";
+				projectile->X = data->human->X;
+				projectile->Y = data->human->Y;
+				projectile->Radius = 8.0f;
+				projectile->directionX = projectile->X - data->world_mouse_x;
+				projectile->directionY = projectile->Y - data->world_mouse_y;
+				projectile->damage.fire = 10.0f;
+				SetLengthToOne(projectile->directionX, projectile->directionY);
+				projectile->fired_by = data->human;
+				data->gameRegion.placeables.push_back(projectile);
+			}
+		}
 		if (data->spell_holder->slot_spell.at(data->spell_holder->slot_selected).name == "spell_spawn_item") {
 			if (data->human->castTimeRemaining == 0) {
 				data->human->castTimeRemaining = data->human->castTime;
