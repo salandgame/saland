@@ -74,6 +74,8 @@ private:
 	char inputBuffer[256];
 	int historyPos;
 	bool scrollToBottom;
+	std::vector<std::string> completionCandidates;
+	int completionIndex;
 };
 
 #endif /* CONSOLE_HPP */

@@ -64,6 +64,7 @@ Console::Console() {
 	inputBuffer[0] = '\0';
 	historyPos = -1;
 	scrollToBottom = false;
+	completionIndex = -1;
 }
 
 Console::~Console() {
@@ -108,7 +109,11 @@ void Console::Draw(SDL_Renderer* target) {
 	// Command input
 	ImGui::Separator();
 	bool reclaim_focus = false;
-	ImGuiInputTextFlags input_flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackHistory;
+	ImGuiInputTextFlags input_flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackHistory | ImGuiInputTextFlags_CallbackCompletion;
+
+	// Store previous buffer to detect changes
+	static std::string previousBuffer;
+	std::string currentBuffer(inputBuffer);
 
 	if (ImGui::InputText("Input", inputBuffer, IM_ARRAYSIZE(inputBuffer), input_flags, &TextEditCallbackStub, (void*)this)) {
 		std::string command(inputBuffer);
@@ -118,6 +123,14 @@ void Console::Draw(SDL_Renderer* target) {
 			reclaim_focus = true;
 		}
 	}
+
+	// Clear completion state if buffer was modified (not by history/completion)
+	std::string newBuffer(inputBuffer);
+	if (newBuffer != currentBuffer && newBuffer != previousBuffer) {
+		completionCandidates.clear();
+		completionIndex = -1;
+	}
+	previousBuffer = newBuffer;
 
 	// Auto-focus on input field
 	ImGui::SetItemDefaultFocus();
@@ -181,6 +194,10 @@ int Console::TextEditCallbackStub(ImGuiInputTextCallbackData* data) {
 int Console::TextEditCallback(ImGuiInputTextCallbackData* data) {
 	switch (data->EventFlag) {
 		case ImGuiInputTextFlags_CallbackHistory: {
+			// Clear completion state when using history
+			completionCandidates.clear();
+			completionIndex = -1;
+			
 			const int prev_history_pos = historyPos;
 			if (data->EventKey == ImGuiKey_UpArrow) {
 				if (historyPos == -1) {
@@ -204,10 +221,41 @@ int Console::TextEditCallback(ImGuiInputTextCallbackData* data) {
 				const char* history_str = (historyPos >= 0) ? commandHistory[historyPos].c_str() : "";
 				data->DeleteChars(0, data->BufTextLen);
 				data->InsertChars(0, history_str);
+				data->BufDirty = true;
+				data->CursorPos = data->BufTextLen;
+				data->SelectionStart = data->SelectionEnd = data->CursorPos;
+			}
+			break;
+		}
+		case ImGuiInputTextFlags_CallbackCompletion: {
+			// Tab completion
+			std::string currentInput(data->Buf, data->BufTextLen);
+			
+			// Build completion candidates on first tab press
+			if (completionCandidates.empty()) {
+				for (const auto& cmd : commands) {
+					if (cmd.first.find(currentInput) == 0) {
+						completionCandidates.push_back(cmd.first);
+					}
+				}
+				completionIndex = 0;
+			} else {
+				// Cycle through candidates
+				completionIndex = (completionIndex + 1) % completionCandidates.size();
+			}
+			
+			if (!completionCandidates.empty()) {
+				data->DeleteChars(0, data->BufTextLen);
+				data->InsertChars(0, completionCandidates[completionIndex].c_str());
+				data->BufDirty = true;  // Tell ImGui the buffer was modified
+				// Move cursor to end of inserted text
+				data->CursorPos = data->BufTextLen;
+				data->SelectionStart = data->SelectionEnd = data->CursorPos;
 			}
 			break;
 		}
 	}
+	
 	return 0;
 }
 

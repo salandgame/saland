@@ -128,7 +128,7 @@ static void ImGuiWritePartOfImage(SDL_Texture* texture, int topx, int topy, int 
 	float topyf = topy;
 	ImVec2 uv0 = ImVec2(topxf / tex_w, topyf / tex_h);
 	ImVec2 uv1 = ImVec2((topxf + sprite_w) / tex_w, (topyf + sprite_h) / tex_h);
-	ImGui::Image((ImTextureID)(intptr_t)texture, ImVec2((float)w, (float)h), uv0, uv1);
+	ImGui::Image(ImTextureRef((void*)texture), ImVec2((float)w, (float)h), uv0, uv1);
 }
 
 void SagoTextureSelector::runSpriteSelectorFrame(SDL_Renderer* target) {
@@ -168,7 +168,7 @@ void SagoTextureSelector::runSpriteSelectorFrame(SDL_Renderer* target) {
 		ImGui::Text("Size: %d x %d", tex_w, tex_h);
 		ImGui::BeginChild("Test");
 		ImVec2 p = ImGui::GetCursorScreenPos();
-		ImGui::Image((ImTextureID)(intptr_t)current_texture, ImVec2((float)tex_w, (float)tex_h));
+		ImGui::Image(ImTextureRef((void*)current_texture), ImVec2((float)tex_w, (float)tex_h));
 		ChangeSDLColor color(target);
 		color.setYellow();
 		for (int i = 1; i < current_sprite.number_of_frames; i++) {
@@ -204,7 +204,7 @@ void SagoTextureSelector::runTextureSelectorFrame(SDL_Renderer* target) {
 		ImGui::Text("Size: %d x %d", tex_w, tex_h);
 		ImGui::BeginChild("Test");
 		ImVec2 p = ImGui::GetCursorScreenPos();
-		ImGui::Image((ImTextureID)(intptr_t)current_texture, ImVec2((float)tex_w, (float)tex_h));
+		ImGui::Image(ImTextureRef((void*)current_texture), ImVec2((float)tex_w, (float)tex_h));
 		ChangeSDLColor color(target);
 		color.setRed();
 		addLinesToCanvas(target, current_texture, 32, 32, p.x, p.y);
