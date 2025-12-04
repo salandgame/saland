@@ -25,10 +25,10 @@ https://github.com/sago007/saland
 #define CONSOLE_HPP
 
 #include "../../sago/GameStateInterface.hpp"
-#include "../../sago/SagoTextField.hpp"
 #include <string>
 #include <vector>
-#include "utf8.h"
+
+struct ImGuiInputTextCallbackData;
 
 struct ConsoleCommand {
 	virtual std::string getCommand() const {
@@ -59,17 +59,21 @@ public:
 	Console& operator=(const Console&) = delete;
 	virtual ~Console();
 private:
-	void putchar(const std::string& thing);
-	bool ReadKey(SDL_Keycode keyPressed);
-	void removeChar();
+	struct HistoryItem {
+		std::string text;
+		bool isError;
+	};
+
 	void ProcessCommand(const std::string& command);
+	static int TextEditCallbackStub(ImGuiInputTextCallbackData* data);
+	int TextEditCallback(ImGuiInputTextCallbackData* data);
+
 	bool active = true;
 	std::vector<std::string> commandHistory;
-	std::string editLine;
-	std::string::iterator editPosition;
-	sago::SagoTextField editField;
-	sago::SagoTextField editFieldMarker;
-	std::vector<sago::SagoTextField> historyField;
+	std::vector<HistoryItem> history;
+	char inputBuffer[256];
+	int historyPos;
+	bool scrollToBottom;
 };
 
 #endif /* CONSOLE_HPP */

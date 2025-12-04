@@ -22,19 +22,11 @@ https://github.com/sago007/saland
  */
 
 #include "Console.hpp"
-#include "../GameDraw.hpp"
 #include "../globals.hpp"
 #include <boost/tokenizer.hpp>
+#include "../../Libs/imgui/imgui.h"
 
 
-const SDL_Color error_color = { 255, 64, 64, 255 };
-
-static void SetFieldValues(sago::SagoTextField& field) {
-	field.SetHolder(&globalData.spriteHolder->GetDataHolder());
-	field.SetFont("freeserif");
-	field.SetFontSize(20);
-	field.SetOutline(1, {64,64,64,255});
-}
 
 static std::map<std::string, ConsoleCommand*> commands;
 
@@ -69,21 +61,12 @@ static HelpConsoleCommand hcc;
 
 Console::Console() {
 	RegisterCommand(&hcc);
-	editPosition = editLine.begin();
-	SDL_StartTextInput();
-	editField.SetHolder(&globalData.spriteHolder->GetDataHolder());
-	editField.SetFont("freeserif");
-	editField.SetFontSize(20);
-	editField.SetOutline(1, {64,64,64,255});
-	editFieldMarker.SetHolder(&globalData.spriteHolder->GetDataHolder());
-	editFieldMarker.SetFont("freeserif");
-	editFieldMarker.SetFontSize(20);
-	editFieldMarker.SetOutline(1, {64,64,64,255});
-	editFieldMarker.SetText(">");
+	inputBuffer[0] = '\0';
+	historyPos = -1;
+	scrollToBottom = false;
 }
 
 Console::~Console() {
-	SDL_StopTextInput();
 }
 
 bool Console::IsActive() {
@@ -95,35 +78,56 @@ void Console::Activate() {
 }
 
 void Console::Draw(SDL_Renderer* target) {
-	int sideBoarder = 20;
-	DrawRectYellow(target, sideBoarder, 10, globalData.ysize/2, globalData.xsize - sideBoarder*2);
-	editField.SetText(editLine);
-	editFieldMarker.Draw(target, sideBoarder+10, globalData.ysize/2-16);
-	editField.Draw(target, sideBoarder+24, globalData.ysize/2-16);
-	int j = 1;
-	for (int i = (int)historyField.size()-1; i > -1; --i, ++j) {
-		historyField.at(i).Draw(target, sideBoarder+10, globalData.ysize/2-16-j*22);
-	}
-}
+	ImGui::SetNextWindowSize(ImVec2(static_cast<float>(globalData.xsize) - 40, static_cast<float>(globalData.ysize) / 2), ImGuiCond_FirstUseEver);
+	ImGui::SetNextWindowPos(ImVec2(20, 10), ImGuiCond_FirstUseEver);
 
-void Console::putchar(const std::string& thing) {
-	if (thing == "" || thing == "\n") {
+	if (!ImGui::Begin("Console", &active, ImGuiWindowFlags_NoCollapse)) {
+		ImGui::End();
 		return;
 	}
-	int oldPostition = utf8::distance(editLine.begin(), editPosition);
-	int lengthOfInsertString = utf8::distance(thing.begin(), thing.end());
-	editLine.insert(editPosition, thing.begin(), thing.end());
-	editPosition = editLine.begin();  //Inserting may destroy our old iterator
-	utf8::advance(editPosition, oldPostition + lengthOfInsertString, editLine.end());
+
+	// Reserve space for input at the bottom
+	const float footer_height_to_reserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing();
+	if (ImGui::BeginChild("ScrollingRegion", ImVec2(0, -footer_height_to_reserve), false, ImGuiWindowFlags_HorizontalScrollbar)) {
+		// Display command history
+		for (const auto& item : history) {
+			ImVec4 color = item.isError ? ImVec4(1.0f, 0.25f, 0.25f, 1.0f) : ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+			ImGui::PushStyleColor(ImGuiCol_Text, color);
+			ImGui::TextUnformatted(item.text.c_str());
+			ImGui::PopStyleColor();
+		}
+
+		// Auto-scroll to bottom when new content is added
+		if (scrollToBottom) {
+			ImGui::SetScrollHereY(1.0f);
+			scrollToBottom = false;
+		}
+	}
+	ImGui::EndChild();
+
+	// Command input
+	ImGui::Separator();
+	bool reclaim_focus = false;
+	ImGuiInputTextFlags input_flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackHistory;
+
+	if (ImGui::InputText("Input", inputBuffer, IM_ARRAYSIZE(inputBuffer), input_flags, &TextEditCallbackStub, (void*)this)) {
+		std::string command(inputBuffer);
+		if (!command.empty()) {
+			ProcessCommand(command);
+			inputBuffer[0] = '\0';
+			reclaim_focus = true;
+		}
+	}
+
+	// Auto-focus on input field
+	ImGui::SetItemDefaultFocus();
+	if (reclaim_focus) {
+		ImGui::SetKeyboardFocusHere(-1);
+	}
+
+	ImGui::End();
 }
 
-void Console::removeChar() {
-	if (editPosition < editLine.end()) {
-		std::string::iterator endChar= editPosition;
-		utf8::advance(endChar, 1, editLine.end());
-		editLine.erase(editPosition, endChar);
-	}
-}
 
 static std::vector<std::string> splitByWhitespace(std::string const& line) {
 	std::vector<std::string> arg;
@@ -136,85 +140,75 @@ static std::vector<std::string> splitByWhitespace(std::string const& line) {
 }
 
 void Console::ProcessCommand(const std::string& command) {
-	sago::SagoTextField f;
-	SetFieldValues(f);
-	f.SetText(command);
-	historyField.push_back(std::move(f));
+	// Add command to history
+	history.push_back({"> " + command, false});
+	commandHistory.push_back(command);
+	historyPos = -1;
+
 	std::vector<std::string> commandVector = splitByWhitespace(command);
-	sago::SagoTextField response;
-	SetFieldValues(response);
-	if (commandVector.size() && commands.find(commandVector[0]) != commands.end() ) {
+
+	if (commandVector.size() && commands.find(commandVector[0]) != commands.end()) {
 		try {
 			std::string ret = commands[commandVector[0]]->run(commandVector);
-			response.SetText(ret);
+			history.push_back({ret, false});
 		}
 		catch (std::exception& e) {
-			response.SetText(e.what());
-			response.SetColor(error_color);
+			history.push_back({std::string(e.what()), true});
 		}
 	}
 	else {
-		response.SetText(std::string("   \"")+command+"\" not recognized");
+		history.push_back({"   \"" + command + "\" not recognized", false});
 	}
-	historyField.push_back(std::move(response));
-}
 
-bool Console::ReadKey(SDL_Keycode keyPressed) {
-	if (keyPressed == SDLK_DELETE) {
-		if ((editLine.length()>0)&& (editPosition<editLine.end())) {
-			removeChar();
-		}
-		return true;
-	}
-	if (keyPressed == SDLK_BACKSPACE) {
-		if (editPosition>editLine.begin()) {
-			utf8::prior(editPosition, editLine.begin());
-			removeChar();
-			return true;
-		}
-		return false;
-	}
-	if (keyPressed == SDLK_HOME) {
-		editPosition = editLine.begin();
-		return true;
-	}
-	if (keyPressed == SDLK_END) {
-		editPosition=editLine.end();
-		return true;
-	}
-	if ((keyPressed == SDLK_LEFT) && (editPosition>editLine.begin())) {
-		utf8::prior(editPosition, editLine.begin());
-		return true;
-	}
-	if ((keyPressed == SDLK_RIGHT) && (editPosition<editLine.end())) {
-		utf8::next(editPosition, editLine.end());
-		return true;
-	}
-	if (keyPressed == SDLK_RETURN || keyPressed == SDLK_RETURN2) {
-		if (editLine.length() > 0) {
-			commandHistory.push_back(editLine);
-			ProcessCommand(editLine);
-		}
-		editLine.clear();
-		editPosition = editLine.begin();
-		return true;
-	}
-	return false;
+	scrollToBottom = true;
 }
 
 void Console::ProcessInput(const SDL_Event& event, bool& processed) {
+	// ImGui handles all input internally, we just need to handle console close
 	if (event.type == SDL_KEYDOWN) {
 		if (event.key.keysym.sym == SDLK_ESCAPE && event.key.keysym.mod & KMOD_LSHIFT) {
 			active = false;
 			processed = true;
 		}
-		else {
-			processed = ReadKey(event.key.keysym.sym);
+	}
+}
+
+int Console::TextEditCallbackStub(ImGuiInputTextCallbackData* data) {
+	Console* console = (Console*)data->UserData;
+	return console->TextEditCallback(data);
+}
+
+int Console::TextEditCallback(ImGuiInputTextCallbackData* data) {
+	switch (data->EventFlag) {
+		case ImGuiInputTextFlags_CallbackHistory: {
+			const int prev_history_pos = historyPos;
+			if (data->EventKey == ImGuiKey_UpArrow) {
+				if (historyPos == -1) {
+					historyPos = commandHistory.size() - 1;
+				}
+				else if (historyPos > 0) {
+					historyPos--;
+				}
+			}
+			else if (data->EventKey == ImGuiKey_DownArrow) {
+				if (historyPos != -1) {
+					historyPos++;
+					if (historyPos >= (int)commandHistory.size()) {
+						historyPos = -1;
+					}
+				}
+			}
+
+			// Apply history
+			if (prev_history_pos != historyPos) {
+				const char* history_str = (historyPos >= 0) ? commandHistory[historyPos].c_str() : "";
+				data->DeleteChars(0, data->BufTextLen);
+				data->InsertChars(0, history_str);
+			}
+			break;
 		}
 	}
-	if (event.type == SDL_TEXTINPUT) {
-		putchar(event.text.text);
-	}
+	return 0;
 }
 
 void Console::Update() {
