@@ -118,7 +118,7 @@ void Console::Draw(SDL_Renderer* target) {
 	if (ImGui::InputText("Input", inputBuffer, IM_ARRAYSIZE(inputBuffer), input_flags, &TextEditCallbackStub, (void*)this)) {
 		std::string command(inputBuffer);
 		if (!command.empty()) {
-			ProcessCommand(command);
+			pendingCommand = command;
 			inputBuffer[0] = '\0';
 			reclaim_focus = true;
 		}
@@ -286,5 +286,8 @@ int Console::TextEditCallback(ImGuiInputTextCallbackData* data) {
 }
 
 void Console::Update() {
-	return;
+	if (pendingCommand.length()) {
+		ProcessCommand(pendingCommand);
+		pendingCommand.clear();
+	}
 }

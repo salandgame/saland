@@ -76,6 +76,7 @@ private:
 	bool scrollToBottom;
 	std::vector<std::string> completionCandidates;
 	int completionIndex;
+	std::string pendingCommand;
 };
 
 #endif /* CONSOLE_HPP */
