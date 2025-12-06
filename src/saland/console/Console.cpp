@@ -87,8 +87,8 @@ void Console::Draw(SDL_Renderer* target) {
 		return;
 	}
 
-	// Reserve space for input at the bottom
-	const float footer_height_to_reserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing();
+	// Reserve space for input at the bottom (including help text)
+	const float footer_height_to_reserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing() * 2.5f;
 	if (ImGui::BeginChild("ScrollingRegion", ImVec2(0, -footer_height_to_reserve), false, ImGuiWindowFlags_HorizontalScrollbar)) {
 		// Display command history
 		for (const auto& item : history) {
@@ -131,6 +131,32 @@ void Console::Draw(SDL_Renderer* target) {
 		completionIndex = -1;
 	}
 	previousBuffer = newBuffer;
+
+	// Display help information
+	std::string currentInput(inputBuffer);
+	if (currentInput.length()) {
+		// Check if it's a complete command
+		if (commands.find(currentInput) != commands.end()) {
+			// Show help message for the complete command
+			ImGui::TextColored(ImVec4(0.5f, 1.0f, 0.5f, 1.0f), "Help: %s", commands[currentInput]->helpMessage().c_str());
+		} else {
+			// Show matching commands
+			std::vector<std::string> matches;
+			for (const auto& cmd : commands) {
+				if (cmd.first.find(currentInput) == 0) {
+					matches.push_back(cmd.first);
+				}
+			}
+			if (matches.size()) {
+				std::string matchText = "Matches: ";
+				for (size_t i = 0; i < matches.size(); ++i) {
+					if (i > 0) matchText += ", ";
+					matchText += matches[i];
+				}
+				ImGui::TextColored(ImVec4(0.7f, 0.7f, 1.0f, 1.0f), "%s", matchText.c_str());
+			}
+		}
+	}
 
 	// Auto-focus on input field
 	ImGui::SetItemDefaultFocus();
