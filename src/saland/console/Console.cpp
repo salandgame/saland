@@ -139,7 +139,8 @@ void Console::Draw(SDL_Renderer* target) {
 		if (commands.find(currentInput) != commands.end()) {
 			// Show help message for the complete command
 			ImGui::TextColored(ImVec4(0.5f, 1.0f, 0.5f, 1.0f), "Help: %s", commands[currentInput]->helpMessage().c_str());
-		} else {
+		}
+		else {
 			// Show matching commands
 			std::vector<std::string> matches;
 			for (const auto& cmd : commands) {
@@ -150,7 +151,9 @@ void Console::Draw(SDL_Renderer* target) {
 			if (matches.size()) {
 				std::string matchText = "Matches: ";
 				for (size_t i = 0; i < matches.size(); ++i) {
-					if (i > 0) matchText += ", ";
+					if (i > 0) {
+						matchText += ", ";
+					}
 					matchText += matches[i];
 				}
 				ImGui::TextColored(ImVec4(0.7f, 0.7f, 1.0f, 1.0f), "%s", matchText.c_str());
@@ -219,69 +222,70 @@ int Console::TextEditCallbackStub(ImGuiInputTextCallbackData* data) {
 
 int Console::TextEditCallback(ImGuiInputTextCallbackData* data) {
 	switch (data->EventFlag) {
-		case ImGuiInputTextFlags_CallbackHistory: {
-			// Clear completion state when using history
-			completionCandidates.clear();
-			completionIndex = -1;
-			
-			const int prev_history_pos = historyPos;
-			if (data->EventKey == ImGuiKey_UpArrow) {
-				if (historyPos == -1) {
-					historyPos = commandHistory.size() - 1;
-				}
-				else if (historyPos > 0) {
-					historyPos--;
-				}
-			}
-			else if (data->EventKey == ImGuiKey_DownArrow) {
-				if (historyPos != -1) {
-					historyPos++;
-					if (historyPos >= (int)commandHistory.size()) {
-						historyPos = -1;
-					}
-				}
-			}
+	case ImGuiInputTextFlags_CallbackHistory: {
+		// Clear completion state when using history
+		completionCandidates.clear();
+		completionIndex = -1;
 
-			// Apply history
-			if (prev_history_pos != historyPos) {
-				const char* history_str = (historyPos >= 0) ? commandHistory[historyPos].c_str() : "";
-				data->DeleteChars(0, data->BufTextLen);
-				data->InsertChars(0, history_str);
-				data->BufDirty = true;
-				data->CursorPos = data->BufTextLen;
-				data->SelectionStart = data->SelectionEnd = data->CursorPos;
+		const int prev_history_pos = historyPos;
+		if (data->EventKey == ImGuiKey_UpArrow) {
+			if (historyPos == -1) {
+				historyPos = commandHistory.size() - 1;
 			}
-			break;
+			else if (historyPos > 0) {
+				historyPos--;
+			}
 		}
-		case ImGuiInputTextFlags_CallbackCompletion: {
-			// Tab completion
-			std::string currentInput(data->Buf, data->BufTextLen);
-			
-			// Build completion candidates on first tab press
-			if (completionCandidates.empty()) {
-				for (const auto& cmd : commands) {
-					if (cmd.first.find(currentInput) == 0) {
-						completionCandidates.push_back(cmd.first);
-					}
+		else if (data->EventKey == ImGuiKey_DownArrow) {
+			if (historyPos != -1) {
+				historyPos++;
+				if (historyPos >= (int)commandHistory.size()) {
+					historyPos = -1;
 				}
-				completionIndex = 0;
-			} else {
-				// Cycle through candidates
-				completionIndex = (completionIndex + 1) % completionCandidates.size();
 			}
-			
-			if (!completionCandidates.empty()) {
-				data->DeleteChars(0, data->BufTextLen);
-				data->InsertChars(0, completionCandidates[completionIndex].c_str());
-				data->BufDirty = true;  // Tell ImGui the buffer was modified
-				// Move cursor to end of inserted text
-				data->CursorPos = data->BufTextLen;
-				data->SelectionStart = data->SelectionEnd = data->CursorPos;
-			}
-			break;
 		}
+
+		// Apply history
+		if (prev_history_pos != historyPos) {
+			const char* history_str = (historyPos >= 0) ? commandHistory[historyPos].c_str() : "";
+			data->DeleteChars(0, data->BufTextLen);
+			data->InsertChars(0, history_str);
+			data->BufDirty = true;
+			data->CursorPos = data->BufTextLen;
+			data->SelectionStart = data->SelectionEnd = data->CursorPos;
+		}
+		break;
 	}
-	
+	case ImGuiInputTextFlags_CallbackCompletion: {
+		// Tab completion
+		std::string currentInput(data->Buf, data->BufTextLen);
+
+		// Build completion candidates on first tab press
+		if (completionCandidates.empty()) {
+			for (const auto& cmd : commands) {
+				if (cmd.first.find(currentInput) == 0) {
+					completionCandidates.push_back(cmd.first);
+				}
+			}
+			completionIndex = 0;
+		}
+		else {
+			// Cycle through candidates
+			completionIndex = (completionIndex + 1) % completionCandidates.size();
+		}
+
+		if (!completionCandidates.empty()) {
+			data->DeleteChars(0, data->BufTextLen);
+			data->InsertChars(0, completionCandidates[completionIndex].c_str());
+			data->BufDirty = true;  // Tell ImGui the buffer was modified
+			// Move cursor to end of inserted text
+			data->CursorPos = data->BufTextLen;
+			data->SelectionStart = data->SelectionEnd = data->CursorPos;
+		}
+		break;
+	}
+	}
+
 	return 0;
 }
 

@@ -267,6 +267,47 @@ void DrawMonster(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Mo
 	DrawCollision(target, entity, offsetX, offsetY, drawCollision, resize);
 	const sago::SagoSprite& mySprite = sHolder->GetSprite(entity->race + "_" + std::string(1, entity->direction));
 	mySprite.Draw(target, time, std::round(entity->X) - offsetX, std::round(entity->Y) - offsetY, resize);
+
+	// Draw attack animation if active
+	if (entity->attack.animationTime > 0.0f) {
+		// Draw a slash effect in front of the monster
+		int slashOffsetX = 0;
+		int slashOffsetY = 0;
+
+		// Position slash based on monster direction
+		switch (entity->direction) {
+		case 'N':
+			slashOffsetY = -20;
+			break;
+		case 'S':
+			slashOffsetY = 20;
+			break;
+		case 'E':
+			slashOffsetX = 20;
+			break;
+		case 'W':
+			slashOffsetX = -20;
+			break;
+		}
+
+		int slashX = std::round(entity->X) + slashOffsetX - offsetX;
+		int slashY = std::round(entity->Y) + slashOffsetY - offsetY;
+
+		// Draw the slash sprite (reuse male_slash animation)
+		{
+			// If slash sprite doesn't exist, draw a simple rectangle
+			SDL_Rect slashRect;
+			slashRect.x = slashX;
+			slashRect.y = slashY;
+			slashRect.w = 16;
+			slashRect.h = 16;
+			if (resize) {
+				resize->LogicalToPhysical(slashRect);
+			}
+			SDL_SetRenderDrawColor(target, 255, 100, 100, 200);
+			SDL_RenderFillRect(target, &slashRect);
+		}
+	}
 }
 
 
@@ -367,10 +408,10 @@ void UpdateDamageNumbers(Placeable* entity) {
 
 	// Remove expired damage numbers
 	entity->damageNumbers.erase(
-		std::remove_if(entity->damageNumbers.begin(), entity->damageNumbers.end(),
-			[currentTime](const DamageNumber& dmg) {
-				return (currentTime - dmg.createdAt) >= dmg.duration;
-			}),
-		entity->damageNumbers.end()
+	    std::remove_if(entity->damageNumbers.begin(), entity->damageNumbers.end(),
+	[currentTime](const DamageNumber& dmg) {
+		return (currentTime - dmg.createdAt) >= dmg.duration;
+	}),
+	entity->damageNumbers.end()
 	);
 }

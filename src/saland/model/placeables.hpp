@@ -104,6 +104,16 @@ public:
 	float castTime = 400;    //Number of milliseconds it will take to complete the cast
 };
 
+struct MonsterAttack {
+	float cooldown = 0.0f;
+	float cooldownDuration = 1500.0f; // milliseconds between attacks
+	float range = 40.0f; // pixels
+	float damage = 5.0f;
+	std::string animation = "slash"; // Animation to show when attacking
+	float animationTime = 0.0f; // Time remaining for attack animation
+	float animationDuration = 300.0f; // milliseconds
+};
+
 class Monster : public Creature {
 public:
 	enum class State {
@@ -118,6 +128,8 @@ public:
 	State aiState = State::Roaming;
 	float targetX = 0.0f; // Used for fleeing direction
 	float targetY = 0.0f;
+	// Attack logic:
+	MonsterAttack attack;
 };
 
 

@@ -43,10 +43,10 @@ void from_json(const nlohmann::json& j, SagoSprite& p) {
 	if (j.contains("frame_time")) {
 		j.at("frame_time").get_to(p.frame_time);
 	}
-	if(j.contains("originx")) {
+	if (j.contains("originx")) {
 		j.at("originx").get_to(p.originx);
 	}
-	if(j.contains("originy")) {
+	if (j.contains("originy")) {
 		j.at("originy").get_to(p.originy);
 	}
 }

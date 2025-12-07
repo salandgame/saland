@@ -82,65 +82,102 @@ void UpdateHuman(Human* entity, float fDeltaTime) {
 	entity->Y = place.y*pixel2unit;
 }
 
-static void MonsterThink(Monster* entity, float playerX, float playerY) {
+static void MonsterThink(Monster* entity, Human* player) {
+	if (!player) {
+		return;
+	}
+	float playerX = player->X;
+	float playerY = player->Y;
+
 	switch (entity->aiState) {
-		case Monster::State::Roaming:
-			// Random wandering behavior
+	case Monster::State::Roaming:
+		// Random wandering behavior
+		if (rand()%2==0) {
+			//1 in 2 chance of changing direction
 			if (rand()%2==0) {
-				//1 in 2 chance of changing direction
-				if (rand()%2==0) {
-					entity->moveX = 0.1f;
-				}
-				else {
-					entity->moveX = -0.1f;
-				}
-				if (rand()%2 == 0) {
-					entity->moveY = 0.1f;
-				}
-				else {
-					entity->moveY = -0.1f;
-				}
+				entity->moveX = 0.1f;
 			}
-			break;
-		case Monster::State::Aggressive:
-			// Move towards player
-			{
-				float dirX = playerX - entity->X;
-				float dirY = playerY - entity->Y;
-				float length = std::sqrt(dirX * dirX + dirY * dirY);
-				if (length > 0.01f) {
-					entity->moveX = (dirX / length) * entity->speed;
-					entity->moveY = (dirY / length) * entity->speed;
-				}
+			else {
+				entity->moveX = -0.1f;
 			}
-			break;
-		case Monster::State::Fleeing:
-			// Move away from player
-			{
-				float dirX = entity->X - playerX;
-				float dirY = entity->Y - playerY;
-				float length = std::sqrt(dirX * dirX + dirY * dirY);
-				if (length > 0.01f) {
-					entity->moveX = (dirX / length) * entity->speed * 1.2f; // Flee slightly faster
-					entity->moveY = (dirY / length) * entity->speed * 1.2f;
-				}
+			if (rand()%2 == 0) {
+				entity->moveY = 0.1f;
 			}
-			break;
+			else {
+				entity->moveY = -0.1f;
+			}
+		}
+		break;
+	case Monster::State::Aggressive:
+		// Move towards player
+	{
+		float dirX = playerX - entity->X;
+		float dirY = playerY - entity->Y;
+		float length = std::sqrt(dirX * dirX + dirY * dirY);
+		if (length > 0.01f) {
+			entity->moveX = (dirX / length) * entity->speed;
+			entity->moveY = (dirY / length) * entity->speed;
+		}
+	}
+	break;
+	case Monster::State::Fleeing:
+		// Move away from player
+	{
+		float dirX = entity->X - playerX;
+		float dirY = entity->Y - playerY;
+		float length = std::sqrt(dirX * dirX + dirY * dirY);
+		if (length > 0.01f) {
+			entity->moveX = (dirX / length) * entity->speed * 1.2f; // Flee slightly faster
+			entity->moveY = (dirY / length) * entity->speed * 1.2f;
+		}
+	}
+	break;
 	}
 }
 
-void UpdateMonster(Monster* entity, float fDeltaTime, float playerX, float playerY) {
+void UpdateMonster(Monster* entity, float fDeltaTime, Human* player) {
 	SetCreatureMovementEntity(entity, entity->moveX, entity->moveY);
 	b2Vec2 place = entity->body->GetPosition();
 	entity->X = place.x*pixel2unit;
 	entity->Y = place.y*pixel2unit;
-	if (entity->aiNextThink > 0.0) {
-		entity->aiNextThink -= fDeltaTime;
+
+	// Update attack cooldown
+	if (entity->attack.cooldown > 0.0f) {
+		entity->attack.cooldown -= fDeltaTime;
 	}
-	else {
-		entity->aiNextThink = 2000.0f;
-		MonsterThink(entity, playerX, playerY);
+
+	// Update attack animation timer
+	if (entity->attack.animationTime > 0.0f) {
+		entity->attack.animationTime -= fDeltaTime;
 	}
+
+	// Check if player is alive before attacking
+	if (player && player->diedAt == 0.0f) {
+		float playerX = player->X;
+		float playerY = player->Y;
+
+		// Check if in aggressive state and within attack range
+		if (entity->aiState == Monster::State::Aggressive && entity->attack.cooldown <= 0.0f) {
+			float distX = playerX - entity->X;
+			float distY = playerY - entity->Y;
+			float distance = std::sqrt(distX * distX + distY * distY);
+
+			if (distance <= entity->attack.range) {
+				// Attack the player
+				entity->attack.cooldown = entity->attack.cooldownDuration;
+				entity->attack.animationTime = entity->attack.animationDuration;
+			}
+		}
+
+		if (entity->aiNextThink > 0.0) {
+			entity->aiNextThink -= fDeltaTime;
+		}
+		else {
+			entity->aiNextThink = 2000.0f;
+			MonsterThink(entity, player);
+		}
+	}
+
 	if (entity->health <= 0.0) {
 		entity->removeMe = true;
 	}
@@ -175,4 +212,21 @@ void ProjectileHit(Projectile* p, Placeable* target) {
 		// Potentially change monster state to aggressive
 		monster->aiState = Monster::State::Aggressive;
 	}
+}
+
+void MonsterAttackPlayer(Monster* monster, Human* player) {
+	if (!player || !monster) {
+		return;
+	}
+
+	// Apply damage to player
+	player->health -= monster->attack.damage;
+
+	// Create damage number on player
+	DamageNumber dmg;
+	dmg.X = player->X;
+	dmg.Y = player->Y - player->Radius;
+	dmg.damage = monster->attack.damage;
+	dmg.createdAt = SDL_GetTicks();
+	player->damageNumbers.push_back(dmg);
 }

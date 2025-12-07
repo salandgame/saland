@@ -53,7 +53,7 @@ static void ReadItemFile(const std::string& filename) {
 			}
 			for (const auto& item : items.GetArray()) {
 				if (item.IsObject()) {
-                    ItemDef new_item = itemDef;
+					ItemDef new_item = itemDef;
 					for (const auto& member : item.GetObject()) {
 						if (member.name == "itemid") {
 							new_item.itemid = member.value.GetString();
@@ -95,7 +95,7 @@ static void ReadItemFile(const std::string& filename) {
 
 static void initItems() {
 	std::vector<std::string> file_list = sago::GetFileList(item_dir);
-	for(const std::string& file : file_list) {
+	for (const std::string& file : file_list) {
 		std::string filename = std::format("{}{}", item_dir, file);
 		printf("Item file: %s\n",filename.c_str());
 		ReadItemFile(filename);

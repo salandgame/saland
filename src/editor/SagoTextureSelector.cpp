@@ -31,8 +31,7 @@ https://github.com/sago007/saland
 #include "../global.hpp"
 
 
-class ChangeSDLColor
-{
+class ChangeSDLColor {
 public:
 	ChangeSDLColor(SDL_Renderer* renderer, Uint8 r, Uint8 g, Uint8 b, Uint8 a) : renderer(renderer) {
 		SDL_GetRenderDrawColor(renderer, &oldr, &oldg, &oldb, &olda);
@@ -226,7 +225,7 @@ bool SagoTextureSelector::IsActive() {
 	return isActive;
 }
 
-void SagoTextureSelector::ProcessInput(const SDL_Event& event, bool &processed) {
+void SagoTextureSelector::ProcessInput(const SDL_Event& event, bool& processed) {
 	ImGui_ImplSDL2_ProcessEvent(&event);
 }
 

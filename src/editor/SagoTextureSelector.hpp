@@ -36,9 +36,9 @@ public:
 	SagoTextureSelector();
 	SagoTextureSelector(const SagoTextureSelector& orig) = delete;
 	virtual ~SagoTextureSelector();
-	
+
 	bool IsActive() override;
-	void ProcessInput(const SDL_Event& event, bool &processed) override;
+	void ProcessInput(const SDL_Event& event, bool& processed) override;
 	void Draw(SDL_Renderer* target) override;
 	void Update() override;
 	void Init();

@@ -103,7 +103,7 @@ void SpellHolder::init() {
 	clearTileSpell.type = SpellCursorType::tile;
 	const char* spellDir = "saland/spells/";
 	std::vector<std::string> file_list = sago::GetFileList(spellDir);
-	for(const std::string& file : file_list) {
+	for (const std::string& file : file_list) {
 		std::string filename = std::format("{}{}", spellDir, file);
 		printf("Spells: file: %s\n",filename.c_str());
 		ReadSpellFile(filename);
