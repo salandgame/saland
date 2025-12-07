@@ -22,6 +22,8 @@ https://github.com/sago007/saland
 */
 
 #include "GameUpdates.hpp"
+#include <cmath>
+#include <cstdlib>
 
 static void SetDesiredVelocity(b2Body* body, float x, float y) {
 	b2Vec2 vel = body->GetLinearVelocity();
@@ -80,25 +82,54 @@ void UpdateHuman(Human* entity, float fDeltaTime) {
 	entity->Y = place.y*pixel2unit;
 }
 
-static void MonsterThink(Monster* entity) {
-	if (rand()%2==0) {
-		//1 in 2 chance of changing direction
-		if (rand()%2==0) {
-			entity->moveX = 0.1f;
-		}
-		else {
-			entity->moveX = -0.1f;
-		}
-		if (rand()%2 == 0) {
-			entity->moveY = 0.1f;
-		}
-		else {
-			entity->moveY = -0.1f;
-		}
+static void MonsterThink(Monster* entity, float playerX, float playerY) {
+	switch (entity->aiState) {
+		case Monster::State::Roaming:
+			// Random wandering behavior
+			if (rand()%2==0) {
+				//1 in 2 chance of changing direction
+				if (rand()%2==0) {
+					entity->moveX = 0.1f;
+				}
+				else {
+					entity->moveX = -0.1f;
+				}
+				if (rand()%2 == 0) {
+					entity->moveY = 0.1f;
+				}
+				else {
+					entity->moveY = -0.1f;
+				}
+			}
+			break;
+		case Monster::State::Aggressive:
+			// Move towards player
+			{
+				float dirX = playerX - entity->X;
+				float dirY = playerY - entity->Y;
+				float length = std::sqrt(dirX * dirX + dirY * dirY);
+				if (length > 0.01f) {
+					entity->moveX = (dirX / length) * entity->speed;
+					entity->moveY = (dirY / length) * entity->speed;
+				}
+			}
+			break;
+		case Monster::State::Fleeing:
+			// Move away from player
+			{
+				float dirX = entity->X - playerX;
+				float dirY = entity->Y - playerY;
+				float length = std::sqrt(dirX * dirX + dirY * dirY);
+				if (length > 0.01f) {
+					entity->moveX = (dirX / length) * entity->speed * 1.2f; // Flee slightly faster
+					entity->moveY = (dirY / length) * entity->speed * 1.2f;
+				}
+			}
+			break;
 	}
 }
 
-void UpdateMonster(Monster* entity, float fDeltaTime) {
+void UpdateMonster(Monster* entity, float fDeltaTime, float playerX, float playerY) {
 	SetCreatureMovementEntity(entity, entity->moveX, entity->moveY);
 	b2Vec2 place = entity->body->GetPosition();
 	entity->X = place.x*pixel2unit;
@@ -108,7 +139,7 @@ void UpdateMonster(Monster* entity, float fDeltaTime) {
 	}
 	else {
 		entity->aiNextThink = 2000.0f;
-		MonsterThink(entity);
+		MonsterThink(entity, playerX, playerY);
 	}
 	if (entity->health <= 0.0) {
 		entity->removeMe = true;
@@ -126,7 +157,7 @@ void UpdateProjectile(Projectile* entity, float fDeltaTime) {
 }
 
 void ProjectileHit(Projectile* p, Placeable* target) {
-	//Monster* monster = dynamic_cast<Monster*> (target);
+	Monster* monster = dynamic_cast<Monster*> (target);
 	if (target->destructible) {
 		float damageAmount = p->damage.getDamage();
 		target->health -= damageAmount;
@@ -139,5 +170,9 @@ void ProjectileHit(Projectile* p, Placeable* target) {
 		dmg.damage = damageAmount;
 		dmg.createdAt = SDL_GetTicks();
 		target->damageNumbers.push_back(dmg);
+	}
+	if (monster) {
+		// Potentially change monster state to aggressive
+		monster->aiState = Monster::State::Aggressive;
 	}
 }

@@ -106,10 +106,18 @@ public:
 
 class Monster : public Creature {
 public:
+	enum class State {
+		Roaming,
+		Aggressive,
+		Fleeing
+	};
 	std::string race = "bat";
 	float speed = 1.0f;
 	// AI logic:
 	float aiNextThink = 0.0;
+	State aiState = State::Roaming;
+	float targetX = 0.0f; // Used for fleeing direction
+	float targetY = 0.0f;
 };
 
 
