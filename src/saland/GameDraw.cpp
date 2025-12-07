@@ -323,3 +323,54 @@ void DrawRectYellow(SDL_Renderer* target, int topx, int topy, int height, int wi
 	std::string name = "ui_rect_yellow_";
 	DrawRect(target, topx, topy, height, width, name, resize);
 }
+
+void DrawDamageNumbers(SDL_Renderer* target, Placeable* entity, int offsetX, int offsetY, sago::SagoLogicalResize* resize) {
+	Uint32 currentTime = SDL_GetTicks();
+
+	for (const auto& dmg : entity->damageNumbers) {
+		Uint32 age = currentTime - dmg.createdAt;
+		if (age >= dmg.duration) {
+			continue; // Skip expired damage numbers
+		}
+
+		// Calculate position (move upward over time)
+		float progress = static_cast<float>(age) / dmg.duration;
+		float yOffset = progress * 30.0f; // Move up 30 pixels over lifetime
+		int drawX = static_cast<int>(dmg.X) - offsetX;
+		int drawY = static_cast<int>(dmg.Y - yOffset) - offsetY;
+
+		// Calculate alpha (fade out)
+		Uint8 alpha = static_cast<Uint8>(255 * (1.0f - progress));
+
+		// Draw the damage number
+		sago::SagoTextField textField;
+		textField.SetHolder(globalData.dataHolder);
+		textField.SetFont("freeserif");
+		textField.SetFontSize(20);
+
+		// Red color with fading alpha
+		SDL_Color textColor = {255, 50, 50, alpha};
+		SDL_Color outlineColor = {0, 0, 0, alpha};
+		textField.SetColor(textColor);
+		textField.SetOutline(2, outlineColor);
+
+		// Format damage as integer
+		int damageInt = static_cast<int>(dmg.damage + 0.5f);
+		textField.SetText(std::to_string(damageInt));
+
+		textField.Draw(target, drawX, drawY, sago::SagoTextField::Alignment::center, sago::SagoTextField::VerticalAlignment::center, resize);
+	}
+}
+
+void UpdateDamageNumbers(Placeable* entity) {
+	Uint32 currentTime = SDL_GetTicks();
+
+	// Remove expired damage numbers
+	entity->damageNumbers.erase(
+		std::remove_if(entity->damageNumbers.begin(), entity->damageNumbers.end(),
+			[currentTime](const DamageNumber& dmg) {
+				return (currentTime - dmg.createdAt) >= dmg.duration;
+			}),
+		entity->damageNumbers.end()
+	);
+}

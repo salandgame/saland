@@ -41,6 +41,8 @@ void DrawProjectile(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const
 void DrawRectWhite(SDL_Renderer* target, int topx, int topy, int height, int width, sago::SagoLogicalResize* resize = nullptr);
 void DrawRectYellow(SDL_Renderer* target, int topx, int topy, int height, int width, sago::SagoLogicalResize* resize = nullptr);
 void DrawTile(SDL_Renderer* renderer, sago::SagoSpriteHolder* sHolder, const sago::tiled::TileMap& tm, uint32_t gid, int x, int y, sago::SagoLogicalResize* resize = nullptr);
+void DrawDamageNumbers(SDL_Renderer* target, Placeable* entity, int offsetX, int offsetY, sago::SagoLogicalResize* resize = nullptr);
+void UpdateDamageNumbers(Placeable* entity);
 
 #endif /* GAMEDRAW_HPP */
 

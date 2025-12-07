@@ -27,8 +27,18 @@ https://github.com/sago007/saland
 #include <box2d/box2d.h>
 #include <string>
 #include <memory>
+#include <vector>
+#include <cstdint>
 
 const float pixel2unit = 32.0f;
+
+struct DamageNumber {
+	float X = 0.0f;
+	float Y = 0.0f;
+	float damage = 0.0f;
+	uint32_t createdAt = 0;
+	uint32_t duration = 1000; // milliseconds
+};
 
 
 class Damage {
@@ -53,6 +63,7 @@ public:
 	bool removeMe = false;
 	bool destructible = true;
 	b2Body* body = nullptr;
+	std::vector<DamageNumber> damageNumbers;
 	virtual bool isStatic() {
 		return true;
 	}

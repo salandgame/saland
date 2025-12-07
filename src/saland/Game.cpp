@@ -405,14 +405,17 @@ void Game::Draw(SDL_Renderer* target) {
 		MiscItem* m = dynamic_cast<MiscItem*> (p.get());
 		if (m) {
 			DrawMiscEntity(target, globalData.spriteHolder.get(), m, SDL_GetTicks(), data->topx, data->topy, globalData.debugDrawCollision, &globalData.logicalResize);
+			DrawDamageNumbers(target, m, data->topx, data->topy, &globalData.logicalResize);
 		}
 		Human* h = dynamic_cast<Human*> (p.get());
 		if (h) {
 			DrawHumanEntity(target, globalData.spriteHolder.get(), h, SDL_GetTicks(), data->topx, data->topy, globalData.debugDrawCollision, &globalData.logicalResize);
+			DrawDamageNumbers(target, h, data->topx, data->topy, &globalData.logicalResize);
 		}
 		Monster* monster = dynamic_cast<Monster*> (p.get());
 		if (monster) {
 			DrawMonster(target, globalData.spriteHolder.get(), monster, SDL_GetTicks(), data->topx, data->topy, globalData.debugDrawCollision, &globalData.logicalResize);
+			DrawDamageNumbers(target, monster, data->topx, data->topy, &globalData.logicalResize);
 		}
 		Projectile* projectile = dynamic_cast<Projectile*> (p.get());
 		if (projectile) {
@@ -613,10 +616,13 @@ void Game::Update() {
 	data->human->moveX = deltaX;
 	data->human->moveY = deltaY;
 	UpdateHuman(data->human.get(), deltaTime);
+	UpdateDamageNumbers(data->human.get());
 	for (std::shared_ptr<Placeable>& entity : data->gameRegion.placeables) {
 		if (entity->removeMe) {
 			continue;
 		}
+		// Update damage numbers for all entities
+		UpdateDamageNumbers(entity.get());
 		Projectile* projectile = dynamic_cast<Projectile*> (entity.get());
 		if (projectile) {
 			UpdateProjectile(projectile, deltaTime);
