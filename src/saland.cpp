@@ -50,6 +50,10 @@ https://github.com/salandgame/saland
 
 #include "MenuSystem.h"
 #include "help/HelpAboutState.hpp"
+#include "ImGuiMainMenu.hpp"
+#include "ImGuiWorldSelect.hpp"
+#include "ImGuiPlayerSelect.hpp"
+#include "ImGuiOptions.hpp"
 
 #include "common.h"
 #include "os.hpp"
@@ -312,36 +316,12 @@ public:
 };
 
 void runWorldSelect() {
-	Menu m(globalData.screen, true);
-	ButtonConfigValue bWorld1;
-	bWorld1.setLabel("World 1");
-	bWorld1.setConfigValues("world", "world1");
-	m.addButton(&bWorld1);
-	ButtonConfigValue bWorld2;
-	bWorld2.setLabel("World 2");
-	bWorld1.setConfigValues("world", "world2");
-	m.addButton(&bWorld2);
-	ButtonConfigValue bWorld3;
-	bWorld3.setLabel("World 3");
-	bWorld1.setConfigValues("world", "world3");
-	m.addButton(&bWorld3);
-	ButtonConfigValue bWorld4;
-	bWorld4.setLabel("World 4");
-	bWorld1.setConfigValues("world", "world4");
-	m.addButton(&bWorld4);
+	ImGuiWorldSelect m;
 	RunGameState(m);
 }
 
 void runPlayerSelect() {
-	Menu m(globalData.screen, true);
-	ButtonConfigValue bPlayer1;
-	bPlayer1.setLabel("Player 1");
-	bPlayer1.setConfigValues("player", "player1");
-	m.addButton(&bPlayer1);
-	ButtonConfigValue bPlayer2;
-	bPlayer2.setLabel("Player 2");
-	bPlayer2.setConfigValues("player", "player2");
-	m.addButton(&bPlayer2);
+	ImGuiPlayerSelect m;
 	RunGameState(m);
 }
 
@@ -367,15 +347,11 @@ void toggleFullscreen() {
 }
 
 void runMenuOptions() {
-	Menu m(globalData.screen, true);
-	Button bFullscreen;
-	bFullscreen.setLabel("Fullscreen");
-	bFullscreen.setAction(toggleFullscreen);
-	m.addButton(&bFullscreen);
+	ImGuiOptions m;
 	RunGameState(m);
 }
 
-static void runHelpAbout() {
+void runHelpAbout() {
 	HelpAboutState helpAbout;
 	RunGameState(helpAbout);
 }
@@ -463,23 +439,7 @@ void runGame() {
 	RunGameState(ts);
 
 	standardButton.setSurfaces();
-	Menu m(globalData.screen, false);
-	Button bStart;
-	bStart.setLabel("Start");
-	bStart.setAction(runStartGame);
-	m.addButton(&bStart);
-	WorldSelectButton bWorldSelect;
-	m.addButton(&bWorldSelect);
-	PlayerSelectButton bPlayerSelect;
-	m.addButton(&bPlayerSelect);
-	Button bOptions;
-	bOptions.setLabel("Options");
-	bOptions.setAction(runMenuOptions);
-	m.addButton(&bOptions);
-	Button bAbout;
-	bAbout.setLabel(_("About"));
-	bAbout.setAction(runHelpAbout);
-	m.addButton(&bAbout);
+	ImGuiMainMenu m;
 	if (!globalData.isShuttingDown) {
 		RunGameState(m);
 	}
