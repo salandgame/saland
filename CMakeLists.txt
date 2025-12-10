@@ -69,7 +69,7 @@ include_directories(SYSTEM "src/Libs/include")
 
 include_directories(SYSTEM "src/Libs/imgui")
 
-file(GLOB SOURCES "src/*.cpp" "src/*.h*" "src/*/*.cpp" "src/*/*.h*" "src/*/*/*.cpp" "src/*/*/*.h*" "src/*/*/*/*.cpp" "src/Libs/*.c*" "src/Libs/*.h")
+file(GLOB SOURCES CONFIGURE_DEPENDS "src/*.cpp" "src/*.h*" "src/*/*.cpp" "src/*/*.h*" "src/*/*/*.cpp" "src/*/*/*.h*" "src/*/*/*/*.cpp" "src/Libs/*.c*" "src/Libs/*.h")
 
 add_executable(saland ${SOURCES})
 TARGET_LINK_LIBRARIES( saland ${Boost_LIBRARIES} )
