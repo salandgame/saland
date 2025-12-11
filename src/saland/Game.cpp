@@ -312,6 +312,7 @@ bool Game::IsActive() {
 
 void Game::RespawnPlayer() {
 	data->human->health = 100;
+	data->human->mana = 20;
 	data->human->diedAt = 0;
 	ResetWorld(0, 0, false);
 }
@@ -503,6 +504,14 @@ void Game::Draw(SDL_Renderer* target) {
 	snprintf(healthText, sizeof(healthText), "Health: %d/100", static_cast<int>(data->human->health));
 	healthField.SetText(healthText);
 	healthField.Draw(globalData.screen, 1024-4, 30, sago::SagoTextField::Alignment::right, sago::SagoTextField::VerticalAlignment::top, &globalData.logicalResize);
+
+	// Mana display
+	static char manaText[32];
+	static sago::SagoTextField manaField;
+	manaField.SetHolder(globalData.dataHolder);
+	snprintf(manaText, sizeof(manaText), "Mana: %d/%d", static_cast<int>(data->human->mana), static_cast<int>(data->human->maxMana));
+	manaField.SetText(manaText);
+	manaField.Draw(globalData.screen, 1024-4, 56, sago::SagoTextField::Alignment::right, sago::SagoTextField::VerticalAlignment::top, &globalData.logicalResize);
 }
 
 
@@ -625,6 +634,13 @@ void Game::Update() {
 	data->human->moveY = deltaY;
 	UpdateHuman(data->human.get(), deltaTime);
 	UpdateDamageNumbers(data->human.get());
+	// Mana regeneration: 5% per second = 1 mana per second
+	if (data->human->mana < data->human->maxMana) {
+		data->human->mana += (deltaTime / 1000.0f) * 1.0f;
+		if (data->human->mana > data->human->maxMana) {
+			data->human->mana = data->human->maxMana;
+		}
+	}
 	for (std::shared_ptr<Placeable>& entity : data->gameRegion.placeables) {
 		if (entity->removeMe) {
 			continue;
@@ -781,7 +797,8 @@ void Game::Update() {
 	}
 	if (SDL_GetMouseState(nullptr,nullptr) & 1 && !data->consoleActive && data->human->diedAt == 0 && !data->spellSelect->IsSpellSelectActive()) {
 		if (data->spell_holder->slot_spell.at(data->spell_holder->slot_selected).name == "spell_fireball") {
-			if (data->human->castTimeRemaining == 0) {
+			if (data->human->castTimeRemaining == 0 && data->human->mana >= 5) {
+				data->human->mana -= 5;
 				data->human->castTimeRemaining = data->human->castTime;
 				data->human->animation = "spellcast";
 				std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>();

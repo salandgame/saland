@@ -81,7 +81,8 @@ public:
 class Creature : public Placeable {
 public:
 	float stinema = 10.0;
-	float mana = 10.0;
+	float mana = 20.0;
+	float maxMana = 20.0;
 	char direction = 'S';
 	bool moving = false;
 	float moveX = 0.0;
