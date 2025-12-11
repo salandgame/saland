@@ -495,6 +495,14 @@ void Game::Draw(SDL_Renderer* target) {
 	fpsField.SetText(FPS);
 	fpsField.Draw(globalData.screen, 1920-4, 4, sago::SagoTextField::Alignment::right, sago::SagoTextField::VerticalAlignment::top, &globalData.logicalResize);
 //#endif
+
+	// Health display
+	static char healthText[32];
+	static sago::SagoTextField healthField;
+	healthField.SetHolder(globalData.dataHolder);
+	snprintf(healthText, sizeof(healthText), "Health: %d/100", static_cast<int>(data->human->health));
+	healthField.SetText(healthText);
+	healthField.Draw(globalData.screen, 1024-4, 30, sago::SagoTextField::Alignment::right, sago::SagoTextField::VerticalAlignment::top, &globalData.logicalResize);
 }
 
 
