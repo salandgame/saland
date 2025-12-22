@@ -49,12 +49,12 @@ private:
 	bool active = true;
 	std::string pendingHair;
 	std::string currentHair;
-	
+
 	struct HairOption {
 		std::string id;
 		std::string displayName;
 	};
-	
+
 	std::vector<HairOption> hairOptions;
 };
 

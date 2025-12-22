@@ -25,7 +25,9 @@ https://github.com/sago007/saland
 #define IMGUI_PLAYER_SELECT_HPP
 
 #include "sago/GameStateInterface.hpp"
+#include "saland/model/Player.hpp"
 #include <string>
+#include <vector>
 
 struct SDL_Renderer;
 union SDL_Event;
@@ -43,11 +45,28 @@ public:
 	virtual ~ImGuiPlayerSelect() = default;
 
 private:
-	void SelectPlayer(const std::string& playerName);
+	void LoadPlayerList();
+	void LoadSelectedPlayer();
+	void SaveCurrentPlayer();
+	void CreateNewPlayer();
+	void DeleteCurrentPlayer();
 
 	bool active = true;
-	std::string pendingPlayer;
-	std::string currentPlayer;
+	std::vector<std::string> playerNames;
+	int selectedPlayerIndex = 0;
+	Player editingPlayer;
+	char nameBuffer[64] = "";
+	int selectedRaceIndex = 0;
+	int selectedHairIndex = 0;
+
+	struct HairOption {
+		std::string id;
+		std::string displayName;
+	};
+	std::vector<HairOption> hairOptions;
+
+	bool needsSave = false;
+	bool needsRefresh = false;
 };
 
 #endif /* IMGUI_PLAYER_SELECT_HPP */

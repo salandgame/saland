@@ -29,7 +29,7 @@ https://github.com/sago007/saland
 
 ImGuiHairSelect::ImGuiHairSelect() {
 	currentHair = globalData.player.hair;
-	
+
 	// Define available hair options
 	hairOptions = {
 		{"standard_hair", "Redhead"},
@@ -77,22 +77,22 @@ void ImGuiHairSelect::Draw(SDL_Renderer* target) {
 	// Display hair options as buttons
 	for (const auto& option : hairOptions) {
 		ImGui::SetCursorPosX(button_x);
-		
+
 		// Highlight current selection
 		if (option.id == currentHair) {
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.3f, 0.6f, 0.3f, 1.0f));
 			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.4f, 0.7f, 0.4f, 1.0f));
 			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.2f, 0.5f, 0.2f, 1.0f));
 		}
-		
+
 		if (ImGui::Button(option.displayName.c_str(), ImVec2(button_width, button_height))) {
 			pendingHair = option.id;
 		}
-		
+
 		if (option.id == currentHair) {
 			ImGui::PopStyleColor(3);
 		}
-		
+
 		ImGui::Dummy(ImVec2(0.0f, 5.0f));
 	}
 

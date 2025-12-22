@@ -24,10 +24,132 @@ https://github.com/sago007/saland
 #include "ImGuiPlayerSelect.hpp"
 #include "Libs/imgui/imgui.h"
 #include "common.h"
+#include "saland/globals.hpp"
+#include "sago/SagoMisc.hpp"
 #include <SDL.h>
+#include <algorithm>
+#include <cstring>
+#include <format>
 
 ImGuiPlayerSelect::ImGuiPlayerSelect() {
-	currentPlayer = Config::getInstance()->getString("player");
+	// Define available hair options
+	hairOptions = {
+		{"standard_hair", "Redhead"},
+		{"hair_blonde", "Blonde"},
+		{"hair_brunette", "Brunette"},
+		{"hair_raven", "Black"},
+		{"hair_blue", "Blue"},
+		{"hair_1", "Short Blue"}
+	};
+
+	LoadPlayerList();
+	LoadSelectedPlayer();
+}
+
+void ImGuiPlayerSelect::LoadPlayerList() {
+	playerNames.clear();
+	auto files = sago::GetFileList("players");
+	for (const auto& file : files) {
+		if (file.size() > 5 && file.substr(file.size() - 5) == ".json") {
+			std::string playerName = file.substr(0, file.size() - 5);
+			playerNames.push_back(playerName);
+		}
+	}
+	std::sort(playerNames.begin(), playerNames.end());
+
+	// Find current player in list
+	std::string currentPlayer = Config::getInstance()->getString("player");
+	selectedPlayerIndex = 0;
+	for (size_t i = 0; i < playerNames.size(); i++) {
+		if (playerNames[i] == currentPlayer) {
+			selectedPlayerIndex = i;
+			break;
+		}
+	}
+}
+
+void ImGuiPlayerSelect::LoadSelectedPlayer() {
+	if (selectedPlayerIndex >= 0 && selectedPlayerIndex < static_cast<int>(playerNames.size())) {
+		std::string filename = std::format("players/{}.json", playerNames[selectedPlayerIndex]);
+		if (sago::FileExists(filename.c_str())) {
+			nlohmann::json j = nlohmann::json::parse(sago::GetFileContent(filename.c_str()));
+			editingPlayer = j;
+			editingPlayer.save_name = playerNames[selectedPlayerIndex];
+		} else {
+			editingPlayer = Player();
+			editingPlayer.save_name = playerNames[selectedPlayerIndex];
+		}
+	} else {
+		editingPlayer = Player();
+		editingPlayer.save_name = "player1";
+	}
+
+	// Update UI buffers
+	strncpy(nameBuffer, editingPlayer.save_name.c_str(), sizeof(nameBuffer) - 1);
+	nameBuffer[sizeof(nameBuffer) - 1] = '\0';
+
+	// Set race index
+	selectedRaceIndex = (editingPlayer.race == "male") ? 0 : 1;
+
+	// Set hair index
+	selectedHairIndex = 0;
+	for (size_t i = 0; i < hairOptions.size(); i++) {
+		if (hairOptions[i].id == editingPlayer.hair) {
+			selectedHairIndex = i;
+			break;
+		}
+	}
+
+	needsSave = false;
+}
+
+void ImGuiPlayerSelect::SaveCurrentPlayer() {
+	editingPlayer.save_name = std::string(nameBuffer);
+	nlohmann::json j = editingPlayer;
+	sago::WriteFileContent(std::format("players/{}.json", editingPlayer.save_name).c_str(), j.dump());
+	needsSave = false;
+}
+
+void ImGuiPlayerSelect::CreateNewPlayer() {
+	int newPlayerNum = 1;
+	std::string newName;
+	do {
+		newName = std::format("player{}", newPlayerNum);
+		newPlayerNum++;
+	} while (std::find(playerNames.begin(), playerNames.end(), newName) != playerNames.end());
+
+	playerNames.push_back(newName);
+	std::sort(playerNames.begin(), playerNames.end());
+
+	// Find the new player index
+	for (size_t i = 0; i < playerNames.size(); i++) {
+		if (playerNames[i] == newName) {
+			selectedPlayerIndex = i;
+			break;
+		}
+	}
+
+	editingPlayer = Player();
+	editingPlayer.save_name = newName;
+	strncpy(nameBuffer, newName.c_str(), sizeof(nameBuffer) - 1);
+	nameBuffer[sizeof(nameBuffer) - 1] = '\0';
+
+	SaveCurrentPlayer();
+}
+
+void ImGuiPlayerSelect::DeleteCurrentPlayer() {
+	if (playerNames.size() <= 1) {
+		return; // Don't delete the last player
+	}
+
+	std::string toDelete = playerNames[selectedPlayerIndex];
+	playerNames.erase(playerNames.begin() + selectedPlayerIndex);
+
+	if (selectedPlayerIndex >= static_cast<int>(playerNames.size())) {
+		selectedPlayerIndex = playerNames.size() - 1;
+	}
+
+	needsRefresh = true;
 }
 
 bool ImGuiPlayerSelect::IsActive() {
@@ -37,7 +159,7 @@ bool ImGuiPlayerSelect::IsActive() {
 void ImGuiPlayerSelect::Draw(SDL_Renderer* target) {
 	// Center the menu window
 	ImGuiIO& io = ImGui::GetIO();
-	ImVec2 window_size(400, 300);
+	ImVec2 window_size(600, 500);
 	ImVec2 window_pos(
 		(io.DisplaySize.x - window_size.x) * 0.5f,
 		(io.DisplaySize.y - window_size.y) * 0.5f
@@ -46,7 +168,7 @@ void ImGuiPlayerSelect::Draw(SDL_Renderer* target) {
 	ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always);
 	ImGui::SetNextWindowSize(window_size, ImGuiCond_Always);
 
-	if (!ImGui::Begin("Player Select", &active,
+	if (!ImGui::Begin("Player Management", &active,
 		ImGuiWindowFlags_NoResize |
 		ImGuiWindowFlags_NoMove |
 		ImGuiWindowFlags_NoCollapse)) {
@@ -54,27 +176,100 @@ void ImGuiPlayerSelect::Draw(SDL_Renderer* target) {
 		return;
 	}
 
-	// Center buttons horizontally
-	float button_width = 300.0f;
-	float button_height = 60.0f;
-	float window_width = ImGui::GetWindowSize().x;
-	float button_x = (window_width - button_width) * 0.5f;
+	// Left panel - Player list
+	ImGui::BeginChild("PlayerList", ImVec2(200, 0), true);
+	ImGui::Text("Players");
+	ImGui::Separator();
 
-	// Add some top spacing
-	ImGui::SetCursorPosY(50);
-
-	// Player 1 button
-	ImGui::SetCursorPosX(button_x);
-	if (ImGui::Button("Player 1", ImVec2(button_width, button_height))) {
-		pendingPlayer = "player1";
+	for (size_t i = 0; i < playerNames.size(); i++) {
+		if (ImGui::Selectable(playerNames[i].c_str(), selectedPlayerIndex == static_cast<int>(i))) {
+			if (needsSave) {
+				SaveCurrentPlayer();
+			}
+			selectedPlayerIndex = i;
+			LoadSelectedPlayer();
+		}
 	}
 
-	// Player 2 button
-	ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 10);
-	ImGui::SetCursorPosX(button_x);
-	if (ImGui::Button("Player 2", ImVec2(button_width, button_height))) {
-		pendingPlayer = "player2";
+	ImGui::Dummy(ImVec2(0.0f, 10.0f));
+
+	if (ImGui::Button("New Player", ImVec2(-1, 30))) {
+		if (needsSave) {
+			SaveCurrentPlayer();
+		}
+		CreateNewPlayer();
 	}
+
+	if (playerNames.size() > 1) {
+		if (ImGui::Button("Delete", ImVec2(-1, 30))) {
+			DeleteCurrentPlayer();
+		}
+	}
+
+	ImGui::EndChild();
+
+	ImGui::SameLine();
+
+	// Right panel - Player details
+	ImGui::BeginChild("PlayerDetails", ImVec2(0, 0), true);
+	ImGui::Text("Player Details");
+	ImGui::Separator();
+
+	ImGui::Dummy(ImVec2(0.0f, 10.0f));
+
+	// Name input
+	ImGui::Text("Name:");
+	ImGui::PushItemWidth(-1);
+	if (ImGui::InputText("##name", nameBuffer, sizeof(nameBuffer))) {
+		needsSave = true;
+	}
+	ImGui::PopItemWidth();
+
+	ImGui::Dummy(ImVec2(0.0f, 10.0f));
+
+	// Gender/Race selection
+	ImGui::Text("Gender:");
+	const char* races[] = { "Male", "Female" };
+	if (ImGui::Combo("##race", &selectedRaceIndex, races, 2)) {
+		editingPlayer.race = (selectedRaceIndex == 0) ? "male" : "female";
+		needsSave = true;
+	}
+
+	ImGui::Dummy(ImVec2(0.0f, 10.0f));
+
+	// Hair selection
+	ImGui::Text("Hair Style:");
+	std::vector<const char*> hairNames;
+	for (const auto& option : hairOptions) {
+		hairNames.push_back(option.displayName.c_str());
+	}
+	if (ImGui::Combo("##hair", &selectedHairIndex, hairNames.data(), hairNames.size())) {
+		editingPlayer.hair = hairOptions[selectedHairIndex].id;
+		needsSave = true;
+	}
+
+	ImGui::Dummy(ImVec2(0.0f, 20.0f));
+
+	// Action buttons
+	ImGui::Separator();
+	ImGui::Dummy(ImVec2(0.0f, 10.0f));
+
+	float button_width = (ImGui::GetContentRegionAvail().x - 10) / 2;
+
+	if (ImGui::Button("Save & Select", ImVec2(button_width, 40))) {
+		SaveCurrentPlayer();
+		Config::getInstance()->setString("player", editingPlayer.save_name);
+		globalData.player = editingPlayer;
+		active = false;
+	}
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("Cancel", ImVec2(button_width, 40))) {
+		active = false;
+	}
+
+	ImGui::EndChild();
 
 	ImGui::End();
 }
@@ -89,14 +284,10 @@ void ImGuiPlayerSelect::ProcessInput(const SDL_Event& event, bool& processed) {
 	}
 }
 
-void ImGuiPlayerSelect::SelectPlayer(const std::string& playerName) {
-	Config::getInstance()->setString("player", playerName);
-	active = false;
-}
-
 void ImGuiPlayerSelect::Update() {
-	if (!pendingPlayer.empty()) {
-		SelectPlayer(pendingPlayer);
-		pendingPlayer.clear();
+	if (needsRefresh) {
+		LoadPlayerList();
+		LoadSelectedPlayer();
+		needsRefresh = false;
 	}
 }
