@@ -8,8 +8,8 @@
 	"width" : 64,
 	"number_of_frames" : 8,
 	"frame_time" : 100,
-    "originx" : 32,
-    "originy" : 50
+	"originx" : 32,
+	"originy" : 50
 },
 
 "male_walkcycle_hair_1_W" :  {
@@ -20,8 +20,8 @@
 	"width" : 64,
 	"number_of_frames" : 8,
 	"frame_time" : 100,
-    "originx" : 32,
-    "originy" : 50
+	"originx" : 32,
+	"originy" : 50
 },
 
 "male_walkcycle_hair_1_S" :  {
@@ -32,8 +32,8 @@
 	"width" : 64,
 	"number_of_frames" : 8,
 	"frame_time" : 100,
-    "originx" : 32,
-    "originy" : 50
+	"originx" : 32,
+	"originy" : 50
 },
 
 "male_walkcycle_hair_1_E" :  {
@@ -44,8 +44,8 @@
 	"width" : 64,
 	"number_of_frames" : 8,
 	"frame_time" : 100,
-    "originx" : 32,
-    "originy" : 50
+	"originx" : 32,
+	"originy" : 50
 },
 
 "male_standing_hair_1_N" :  {
@@ -56,8 +56,8 @@
 	"width" : 64,
 	"number_of_frames" : 1,
 	"frame_time" : 100,
-    "originx" : 32,
-    "originy" : 50
+	"originx" : 32,
+	"originy" : 50
 },
 
 "male_standing_hair_1_W" :  {
@@ -68,8 +68,8 @@
 	"width" : 64,
 	"number_of_frames" : 1,
 	"frame_time" : 100,
-    "originx" : 32,
-    "originy" : 50
+	"originx" : 32,
+	"originy" : 50
 },
 
 "male_standing_hair_1_S" :  {
@@ -80,8 +80,8 @@
 	"width" : 64,
 	"number_of_frames" : 1,
 	"frame_time" : 100,
-    "originx" : 32,
-    "originy" : 50
+	"originx" : 32,
+	"originy" : 50
 },
 
 "male_standing_hair_1_E" :  {
@@ -92,8 +92,8 @@
 	"width" : 64,
 	"number_of_frames" : 1,
 	"frame_time" : 100,
-    "originx" : 32,
-    "originy" : 50
+	"originx" : 32,
+	"originy" : 50
 },
 
 "male_hurt_hair_1_S" :  {
@@ -104,8 +104,8 @@
 	"width" : 64,
 	"number_of_frames" : 6,
 	"frame_time" : 100,
-    "originx" : 32,
-    "originy" : 50
+	"originx" : 32,
+	"originy" : 50
 }
 
 }

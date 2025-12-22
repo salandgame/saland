@@ -56,8 +56,8 @@
 	"width" : 64,
 	"number_of_frames" : 1,
 	"frame_time" : 100,
-    "originx" : 32,
-    "originy" : 50
+	"originx" : 32,
+	"originy" : 50
 },
 
 "female_standing_hair_1_W" :  {
@@ -68,8 +68,8 @@
 	"width" : 64,
 	"number_of_frames" : 1,
 	"frame_time" : 100,
-    "originx" : 32,
-    "originy" : 50
+	"originx" : 32,
+	"originy" : 50
 },
 
 "female_standing_hair_1_S" :  {
@@ -80,8 +80,8 @@
 	"width" : 64,
 	"number_of_frames" : 1,
 	"frame_time" : 100,
-    "originx" : 32,
-    "originy" : 50
+	"originx" : 32,
+	"originy" : 50
 },
 
 "female_standing_hair_1_E" :  {
@@ -92,8 +92,8 @@
 	"width" : 64,
 	"number_of_frames" : 1,
 	"frame_time" : 100,
-    "originx" : 32,
-    "originy" : 50
+	"originx" : 32,
+	"originy" : 50
 },
 
 "female_hurt_hair_1_S" :  {
@@ -104,8 +104,5 @@
 	"width" : 64,
 	"number_of_frames" : 6,
 	"frame_time" : 100,
-    "originx" : 32,
-    "originy" : 50
-}
-
-}
+	"originx" : 32,
+	"originy" : 50
