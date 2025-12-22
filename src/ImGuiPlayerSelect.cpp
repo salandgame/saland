@@ -26,6 +26,7 @@ https://github.com/sago007/saland
 #include "common.h"
 #include "saland/globals.hpp"
 #include "sago/SagoMisc.hpp"
+#include "sago/SagoSpriteHolder.hpp"
 #include <SDL.h>
 #include <algorithm>
 #include <cstring>
@@ -272,6 +273,46 @@ void ImGuiPlayerSelect::Draw(SDL_Renderer* target) {
 	ImGui::EndChild();
 
 	ImGui::End();
+
+	// Update animation time for character preview
+	Uint32 animationTime = SDL_GetTicks();
+	// Draw character preview to the right of the menu
+	if (globalData.spriteHolder) {
+		// Calculate position to the right of the menu window
+		float previewX = window_pos.x + window_size.x + 50;
+		float previewY = window_pos.y + window_size.y / 2;
+
+		// Get the sprite for the character walking west
+		std::string spriteName = editingPlayer.get_visible_race() + "_walkcycle_W";
+		const sago::SagoSprite& baseSprite = globalData.spriteHolder->GetSprite(spriteName);
+
+		// Draw base character
+		baseSprite.Draw(target, animationTime, static_cast<int>(previewX), static_cast<int>(previewY), nullptr);
+
+		// Draw pants if available
+		std::string bottom = editingPlayer.get_visible_bottom();
+		if (bottom.length()) {
+			std::string pantsSpriteName = editingPlayer.get_visible_race() + "_walkcycle_" + bottom + "_W";
+			const sago::SagoSprite& pantsSprite = globalData.spriteHolder->GetSprite(pantsSpriteName);
+			pantsSprite.Draw(target, animationTime, static_cast<int>(previewX), static_cast<int>(previewY), nullptr);
+		}
+
+		// Draw top if available
+		std::string top = editingPlayer.get_visible_top();
+		if (top.length()) {
+			std::string topSpriteName = editingPlayer.get_visible_race() + "_walkcycle_" + top + "_W";
+			const sago::SagoSprite& topSprite = globalData.spriteHolder->GetSprite(topSpriteName);
+			topSprite.Draw(target, animationTime, static_cast<int>(previewX), static_cast<int>(previewY), nullptr);
+		}
+
+		// Draw hair if available
+		std::string hair = editingPlayer.get_visible_hair();
+		if (hair.length()) {
+			std::string hairSpriteName = editingPlayer.get_visible_race() + "_walkcycle_" + hair + "_W";
+			const sago::SagoSprite& hairSprite = globalData.spriteHolder->GetSprite(hairSpriteName);
+			hairSprite.Draw(target, animationTime, static_cast<int>(previewX), static_cast<int>(previewY), nullptr);
+		}
+	}
 }
 
 void ImGuiPlayerSelect::ProcessInput(const SDL_Event& event, bool& processed) {
