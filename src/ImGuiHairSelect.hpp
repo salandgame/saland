@@ -19,18 +19,43 @@ along with this program.  If not, see http://www.gnu.org/licenses/
 Source information and contacts persons can be found at
 https://github.com/sago007/saland
 ===========================================================================
-*/
+ */
 
-#include "Player.hpp"
+#ifndef IMGUI_HAIR_SELECT_HPP
+#define IMGUI_HAIR_SELECT_HPP
 
-void to_json(nlohmann::json& j, const Player& p) {
-	j = nlohmann::json{ {"race", p.race}, {"hair", p.hair}, {"item_inventory", p.item_inventory} };
-}
+#include "sago/GameStateInterface.hpp"
+#include <string>
+#include <vector>
 
-void from_json(const nlohmann::json& j, Player& p) {
-	j.at("race").get_to(p.race);
-	if (j.contains("hair")) {
-		j.at("hair").get_to(p.hair);
-	}
-	j.at("item_inventory").get_to(p.item_inventory);
-}
+struct SDL_Renderer;
+union SDL_Event;
+
+class ImGuiHairSelect : public sago::GameStateInterface {
+public:
+	ImGuiHairSelect();
+	virtual bool IsActive() override;
+	virtual void Draw(SDL_Renderer* target) override;
+	virtual void ProcessInput(const SDL_Event& event, bool& processed) override;
+	virtual void Update() override;
+
+	ImGuiHairSelect(const ImGuiHairSelect&) = delete;
+	ImGuiHairSelect& operator=(const ImGuiHairSelect&) = delete;
+	virtual ~ImGuiHairSelect() = default;
+
+private:
+	void SelectHair(const std::string& hairName);
+
+	bool active = true;
+	std::string pendingHair;
+	std::string currentHair;
+	
+	struct HairOption {
+		std::string id;
+		std::string displayName;
+	};
+	
+	std::vector<HairOption> hairOptions;
+};
+
+#endif  // IMGUI_HAIR_SELECT_HPP

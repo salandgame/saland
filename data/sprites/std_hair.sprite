@@ -8,8 +8,8 @@
 	"width" : 64,
 	"number_of_frames" : 8,
 	"frame_time" : 100,
-    "originx" : 32,
-    "originy" : 50
+	"originx" : 32,
+	"originy" : 50
 },
 
 "male_walkcycle_standard_hair_W" :  {
@@ -20,8 +20,8 @@
 	"width" : 64,
 	"number_of_frames" : 8,
 	"frame_time" : 100,
-    "originx" : 32,
-    "originy" : 50
+	"originx" : 32,
+	"originy" : 50
 },
 
 "male_walkcycle_standard_hair_S" :  {
@@ -32,8 +32,8 @@
 	"width" : 64,
 	"number_of_frames" : 8,
 	"frame_time" : 100,
-    "originx" : 32,
-    "originy" : 50
+	"originx" : 32,
+	"originy" : 50
 },
 
 "male_walkcycle_standard_hair_E" :  {
@@ -44,8 +44,8 @@
 	"width" : 64,
 	"number_of_frames" : 8,
 	"frame_time" : 100,
-    "originx" : 32,
-    "originy" : 50
+	"originx" : 32,
+	"originy" : 50
 },
 
 "male_standing_standard_hair_N" :  {
@@ -56,8 +56,8 @@
 	"width" : 64,
 	"number_of_frames" : 1,
 	"frame_time" : 100,
-    "originx" : 32,
-    "originy" : 50
+	"originx" : 32,
+	"originy" : 50
 },
 
 "male_standing_standard_hair_W" :  {
@@ -68,8 +68,8 @@
 	"width" : 64,
 	"number_of_frames" : 1,
 	"frame_time" : 100,
-    "originx" : 32,
-    "originy" : 50
+	"originx" : 32,
+	"originy" : 50
 },
 
 "male_standing_standard_hair_S" :  {
@@ -80,8 +80,8 @@
 	"width" : 64,
 	"number_of_frames" : 1,
 	"frame_time" : 100,
-    "originx" : 32,
-    "originy" : 50
+	"originx" : 32,
+	"originy" : 50
 },
 
 "male_standing_standard_hair_E" :  {
@@ -92,8 +92,8 @@
 	"width" : 64,
 	"number_of_frames" : 1,
 	"frame_time" : 100,
-    "originx" : 32,
-    "originy" : 50
+	"originx" : 32,
+	"originy" : 50
 },
 
 "male_slash_standard_hair_N" :  {
@@ -104,8 +104,8 @@
 	"width" : 64,
 	"number_of_frames" : 6,
 	"frame_time" : 100,
-    "originx" : 32,
-    "originy" : 50
+	"originx" : 32,
+	"originy" : 50
 },
 
 "male_slash_standard_hair_W" :  {
@@ -116,8 +116,8 @@
 	"width" : 64,
 	"number_of_frames" : 6,
 	"frame_time" : 100,
-    "originx" : 32,
-    "originy" : 50
+	"originx" : 32,
+	"originy" : 50
 },
 
 "male_slash_standard_hair_S" :  {
@@ -128,8 +128,8 @@
 	"width" : 64,
 	"number_of_frames" : 6,
 	"frame_time" : 100,
-    "originx" : 32,
-    "originy" : 50
+	"originx" : 32,
+	"originy" : 50
 },
 
 "male_slash_standard_hair_E" :  {
@@ -140,8 +140,8 @@
 	"width" : 64,
 	"number_of_frames" : 6,
 	"frame_time" : 100,
-    "originx" : 32,
-    "originy" : 50
+	"originx" : 32,
+	"originy" : 50
 },
 
 "male_hurt_standard_hair_S" :  {
@@ -152,8 +152,8 @@
 	"width" : 64,
 	"number_of_frames" : 6,
 	"frame_time" : 100,
-    "originx" : 32,
-    "originy" : 50
+	"originx" : 32,
+	"originy" : 50
 }
 
 }

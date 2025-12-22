@@ -32,11 +32,12 @@ struct Player {
 	Player() {};
 	std::string save_name="player1";
 	std::string race = "female";
+	std::string hair = "standard_hair";
 	std::string get_visible_race() {
 		return this->race;
 	}
 	std::string get_visible_hair() {
-		return "standard_hair";
+		return this->hair;
 	}
 	std::string get_visible_bottom() {
 		return "pants_1";

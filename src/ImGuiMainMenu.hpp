@@ -34,6 +34,7 @@ union SDL_Event;
 void runStartGame();
 void runWorldSelect();
 void runPlayerSelect();
+void runHairSelect();
 void runMenuOptions();
 void runHelpAbout();
 
@@ -55,6 +56,7 @@ private:
 		StartGame,
 		WorldSelect,
 		PlayerSelect,
+		HairSelect,
 		Options,
 		About
 	};

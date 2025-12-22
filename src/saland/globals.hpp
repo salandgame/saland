@@ -65,5 +65,9 @@ struct GlobalData {
 
 extern GlobalData globalData;
 
+// Player save/load functions
+void PlayerSave();
+void PlayerLoad();
+
 #endif /* GLOBALS_HPP */
 

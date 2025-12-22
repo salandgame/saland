@@ -220,13 +220,13 @@ static SpawnPoint GetSpawnpoint(const sago::tiled::TileMap& tm) {
 	return ret;
 }
 
-static void PlayerSave() {
+void PlayerSave() {
 	std::string playername = Config::getInstance()->getString("player");
 	nlohmann::json j = globalData.player;
 	sago::WriteFileContent(std::format("players/{}.json", playername).c_str(), j.dump());
 }
 
-static void PlayerLoad() {
+void PlayerLoad() {
 	std::string playername = Config::getInstance()->getString("player");
 	nlohmann::json j;
 	std::string filename = std::format("players/{}.json", playername);

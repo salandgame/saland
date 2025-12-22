@@ -1,0 +1,219 @@
+{
+
+"male_walkcycle_hair_blue_N" :  {
+	"texture" : "std_hair/plain-male/blue",
+	"topx" : 64,
+	"topy" : 512,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 8,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 50
+},
+
+"male_walkcycle_hair_blue_W" :  {
+	"texture" : "std_hair/plain-male/blue",
+	"topx" : 64,
+	"topy" : 576,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 8,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 50
+},
+
+"male_walkcycle_hair_blue_S" :  {
+	"texture" : "std_hair/plain-male/blue",
+	"topx" : 64,
+	"topy" : 640,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 8,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 50
+},
+
+"male_walkcycle_hair_blue_E" :  {
+	"texture" : "std_hair/plain-male/blue",
+	"topx" : 64,
+	"topy" : 704,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 8,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 50
+},
+
+"male_standing_hair_blue_N" :  {
+	"texture" : "std_hair/plain-male/blue",
+	"topx" : 0,
+	"topy" : 512,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 50
+},
+
+"male_standing_hair_blue_W" :  {
+	"texture" : "std_hair/plain-male/blue",
+	"topx" : 0,
+	"topy" : 576,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 50
+},
+
+"male_standing_hair_blue_S" :  {
+	"texture" : "std_hair/plain-male/blue",
+	"topx" : 0,
+	"topy" : 640,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 50
+},
+
+"male_standing_hair_blue_E" :  {
+	"texture" : "std_hair/plain-male/blue",
+	"topx" : 0,
+	"topy" : 704,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 50
+},
+
+"male_hurt_hair_blue_S" :  {
+	"texture" : "std_hair/plain-male/blue",
+	"topx" : 0,
+	"topy" : 1280,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 6,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 50
+},
+
+"female_walkcycle_hair_blue_N" :  {
+	"texture" : "std_hair/ponytail2-female/blue",
+	"topx" : 64,
+	"topy" : 512,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 8,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 50
+},
+
+"female_walkcycle_hair_blue_W" :  {
+	"texture" : "std_hair/ponytail2-female/blue",
+	"topx" : 64,
+	"topy" : 576,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 8,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 50
+},
+
+"female_walkcycle_hair_blue_S" :  {
+	"texture" : "std_hair/ponytail2-female/blue",
+	"topx" : 64,
+	"topy" : 640,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 8,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 50
+},
+
+"female_walkcycle_hair_blue_E" :  {
+	"texture" : "std_hair/ponytail2-female/blue",
+	"topx" : 64,
+	"topy" : 704,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 8,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 50
+},
+
+"female_standing_hair_blue_N" :  {
+	"texture" : "std_hair/ponytail2-female/blue",
+	"topx" : 0,
+	"topy" : 512,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 50
+},
+
+"female_standing_hair_blue_W" :  {
+	"texture" : "std_hair/ponytail2-female/blue",
+	"topx" : 0,
+	"topy" : 576,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 50
+},
+
+"female_standing_hair_blue_S" :  {
+	"texture" : "std_hair/ponytail2-female/blue",
+	"topx" : 0,
+	"topy" : 640,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 50
+},
+
+"female_standing_hair_blue_E" :  {
+	"texture" : "std_hair/ponytail2-female/blue",
+	"topx" : 0,
+	"topy" : 704,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 50
+},
+
+"female_hurt_hair_blue_S" :  {
+	"texture" : "std_hair/ponytail2-female/blue",
+	"topx" : 0,
+	"topy" : 1280,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 6,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 50
+}
+
+}

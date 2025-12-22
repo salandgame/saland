@@ -53,6 +53,7 @@ https://github.com/salandgame/saland
 #include "ImGuiMainMenu.hpp"
 #include "ImGuiWorldSelect.hpp"
 #include "ImGuiPlayerSelect.hpp"
+#include "ImGuiHairSelect.hpp"
 #include "ImGuiOptions.hpp"
 
 #include "common.h"
@@ -322,6 +323,11 @@ void runWorldSelect() {
 
 void runPlayerSelect() {
 	ImGuiPlayerSelect m;
+	RunGameState(m);
+}
+
+void runHairSelect() {
+	ImGuiHairSelect m;
 	RunGameState(m);
 }
 

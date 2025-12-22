@@ -44,7 +44,7 @@ void ImGuiMainMenu::UpdateLabels() {
 void ImGuiMainMenu::Draw(SDL_Renderer* target) {
 	// Center the menu window
 	ImGuiIO& io = ImGui::GetIO();
-	ImVec2 window_size(400, 500);
+	ImVec2 window_size(400, 570);
 	ImVec2 window_pos(
 		(io.DisplaySize.x - window_size.x) * 0.5f,
 		(io.DisplaySize.y - window_size.y) * 0.5f
@@ -68,7 +68,7 @@ void ImGuiMainMenu::Draw(SDL_Renderer* target) {
 	float button_x = (window_width - button_width) * 0.5f;
 
 	// Add some top spacing
-	ImGui::SetCursorPosY(50);
+	ImGui::Dummy(ImVec2(0.0f, 30.0f));
 
 	// Start button
 	ImGui::SetCursorPosX(button_x);
@@ -88,6 +88,13 @@ void ImGuiMainMenu::Draw(SDL_Renderer* target) {
 	ImGui::SetCursorPosX(button_x);
 	if (ImGui::Button(playerLabel.c_str(), ImVec2(button_width, button_height))) {
 		pendingAction = PendingAction::PlayerSelect;
+	}
+
+	// Hair Select button
+	ImGui::SetCursorPosY(ImGui::GetCursorPosY() + 10);
+	ImGui::SetCursorPosX(button_x);
+	if (ImGui::Button("Hair Style", ImVec2(button_width, button_height))) {
+		pendingAction = PendingAction::HairSelect;
 	}
 
 	// Options button
@@ -130,6 +137,9 @@ void ImGuiMainMenu::ExecutePendingAction() {
 		case PendingAction::PlayerSelect:
 			runPlayerSelect();
 			UpdateLabels();
+			break;
+		case PendingAction::HairSelect:
+			runHairSelect();
 			break;
 		case PendingAction::Options:
 			runMenuOptions();
