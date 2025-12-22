@@ -118,7 +118,12 @@ Prefab getPrefab(const char* name) {
 	return p;
 }
 
-
+void TestApplyPrefab(sago::tiled::TileMap& dest, int destX, int destY) {
+	if (prefabs.size() == 0) {
+		return;
+	}
+	ApplyPrefab(dest, destX, destY, prefabs.front());
+}
 
 void ScanPrefabs(const std::string& filename) {
 	std::string mapFileName = "maps/"+filename+".tmx";

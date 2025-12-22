@@ -886,7 +886,7 @@ void Game::Update() {
 				int tile_y = data->world_mouse_y/32;
 				if (sago::tiled::tileInBound(data->gameRegion.world.tm, tile_x, tile_y)
 				        && !(data->gameRegion.world.tile_protected(tile_x, tile_y)) ) {
-					int layer_number = 2; //  Do not hardcode
+					int layer_number = data->gameRegion.world.blockingLayer;
 					uint32_t tile = 0;
 					sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
 					data->gameRegion.liqudHandler["water"].updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
