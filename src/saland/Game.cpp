@@ -44,6 +44,7 @@ https://github.com/sago007/saland
 #include <cmath>
 #include <condition_variable>
 #include <memory>
+#include <random>
 #include <sstream>
 #include "console/Console.hpp"
 #include "GameConsoleCommand.hpp"
@@ -811,6 +812,25 @@ void Game::Update() {
 				SetLengthToOne(projectile->directionX, projectile->directionY);
 				projectile->fired_by = data->human;
 				data->gameRegion.placeables.push_back(projectile);
+
+				// Make nearby enemies aggressive with 60% probability
+				static std::random_device rd;
+				static std::mt19937 gen(rd());
+				static std::uniform_real_distribution<> dis(0.0, 1.0);
+				const float aggroRadius = 200.0f;
+				const float aggroChance = 0.6f;
+
+				for (auto& placeable : data->gameRegion.placeables) {
+					std::shared_ptr<Monster> monster = std::dynamic_pointer_cast<Monster>(placeable);
+					if (monster) {
+						float dx = monster->X - data->human->X;
+						float dy = monster->Y - data->human->Y;
+						float distance = std::sqrt(dx * dx + dy * dy);
+						if (distance <= aggroRadius && dis(gen) < aggroChance) {
+							monster->aiState = Monster::State::Aggressive;
+						}
+					}
+				}
 			}
 		}
 		if (data->spell_holder->slot_spell.at(data->spell_holder->slot_selected).name == "spell_watershot") {
