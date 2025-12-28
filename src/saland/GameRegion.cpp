@@ -23,6 +23,7 @@ https://github.com/sago007/saland
 
 #include "GameRegion.hpp"
 #include "GameItems.hpp"
+#include "GameMonsters.hpp"
 #include <cmath>
 #include <random>
 
@@ -38,31 +39,31 @@ static std::string createFileName(int x, int y,const std::string& worldName) {
 
 
 void GameRegion::SpawnMonster(const MonsterDef& def, float destX, float destY) {
-	std::shared_ptr<Monster> bat = std::make_shared<Monster>();
-	bat.get()->Radius = def.radius;
-	bat.get()->race = def.race;
-	bat.get()->X = destX;
-	bat.get()->Y = destY;
-	if (def.race == "bat") {
-		bat.get()->health = 30;
-	}
-	placeables.push_back(bat);
+	std::shared_ptr<Monster> monster = std::make_shared<Monster>();
+	monster.get()->Radius = def.radius;
+	monster.get()->race = def.race;
+	monster.get()->X = destX;
+	monster.get()->Y = destY;
+	monster.get()->health = def.health;
+	monster.get()->speed = def.speed;
+	monster.get()->attack = def.attack;
+	placeables.push_back(monster);
 
-	b2BodyDef batBodyDef;
-	batBodyDef.type = b2_dynamicBody;
-	batBodyDef.position.Set(0, 0);
-	batBodyDef.linearDamping = 1.0f;
-	bat->body = physicsBox->CreateBody(&batBodyDef);
+	b2BodyDef monsterBodyDef;
+	monsterBodyDef.type = b2_dynamicBody;
+	monsterBodyDef.position.Set(0, 0);
+	monsterBodyDef.linearDamping = 1.0f;
+	monster->body = physicsBox->CreateBody(&monsterBodyDef);
 
 	b2CircleShape circleShape;
 	circleShape.m_p.Set(0, 0); //position, relative to body position
 	circleShape.m_radius = def.radius/32.0f; //32 pixel = 1 unit
 
-	b2FixtureDef batDef;
-	batDef.shape = &circleShape;
-	batDef.density = 10.0f;
-	bat->body->CreateFixture(&batDef);
-	bat->body->SetTransform(b2Vec2(bat.get()->X / 32.0f, bat.get()->Y / 32.0f),bat->body->GetAngle());
+	b2FixtureDef monsterFixtureDef;
+	monsterFixtureDef.shape = &circleShape;
+	monsterFixtureDef.density = 10.0f;
+	monster->body->CreateFixture(&monsterFixtureDef);
+	monster->body->SetTransform(b2Vec2(monster.get()->X / 32.0f, monster.get()->Y / 32.0f),monster->body->GetAngle());
 }
 
 static bool Intersect(const Placeable& p1, const Placeable& p2) {
@@ -371,13 +372,10 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 
 	SpawnPrefab(getPrefab("basic_house"), 32, 32);
 
-	MonsterDef batDef;
-	batDef.radius = 16.0f;
-	batDef.race = "bat";
+	MonsterDef batDef = GetMonsterDefByRace("bat");
 	SpawnMonster(batDef, 200.0f, 200.0f);
 	SpawnMonster(batDef, 1200.0f, 1400.0f);
-	MonsterDef beeDef = batDef;
-	beeDef.race = "bee";
+	MonsterDef beeDef = GetMonsterDefByRace("bee");
 	SpawnMonster(beeDef, 220.0f, 220.0f);
 }
 

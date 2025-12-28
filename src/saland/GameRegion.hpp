@@ -35,6 +35,9 @@ https://github.com/sago007/saland
 struct MonsterDef {
 	float radius = 1.0f;
 	std::string race = "";
+	float health = 30.0f;
+	float speed = 1.0f;
+	MonsterAttack attack;
 };
 
 
