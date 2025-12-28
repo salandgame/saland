@@ -96,6 +96,54 @@
 	"originy" : 50
 },
 
+"male_slash_hair_blonde_N" :  {
+	"texture" : "std_hair/plain-male/blonde",
+	"topx" : 0,
+	"topy" : 768,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 6,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 50
+},
+
+"male_slash_hair_blonde_W" :  {
+	"texture" : "std_hair/plain-male/blonde",
+	"topx" : 0,
+	"topy" : 832,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 6,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 50
+},
+
+"male_slash_hair_blonde_S" :  {
+	"texture" : "std_hair/plain-male/blonde",
+	"topx" : 0,
+	"topy" : 896,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 6,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 50
+},
+
+"male_slash_hair_blonde_E" :  {
+	"texture" : "std_hair/plain-male/blonde",
+	"topx" : 0,
+	"topy" : 960,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 6,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 50
+},
+
 "male_hurt_hair_blonde_S" :  {
 	"texture" : "std_hair/plain-male/blonde",
 	"topx" : 0,
@@ -199,6 +247,54 @@
 	"height" : 64,
 	"width" : 64,
 	"number_of_frames" : 1,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 50
+},
+
+"female_slash_hair_blonde_N" :  {
+	"texture" : "std_hair/ponytail2-female/blonde",
+	"topx" : 0,
+	"topy" : 768,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 6,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 50
+},
+
+"female_slash_hair_blonde_W" :  {
+	"texture" : "std_hair/ponytail2-female/blonde",
+	"topx" : 0,
+	"topy" : 832,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 6,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 50
+},
+
+"female_slash_hair_blonde_S" :  {
+	"texture" : "std_hair/ponytail2-female/blonde",
+	"topx" : 0,
+	"topy" : 896,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 6,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 50
+},
+
+"female_slash_hair_blonde_E" :  {
+	"texture" : "std_hair/ponytail2-female/blonde",
+	"topx" : 0,
+	"topy" : 960,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 6,
 	"frame_time" : 100,
 	"originx" : 32,
 	"originy" : 50
