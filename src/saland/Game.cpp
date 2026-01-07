@@ -605,6 +605,73 @@ static std::pair<float,float> PairInFrontOfEntity(float entityX, float entityY, 
 	return ret;
 }
 
+static void HandleSpawnCommand(GameRegion& gameRegion, Human* human) {
+	if (globalData.pendingSpawnCommand.race.empty()) {
+		return;
+	}
+
+	MonsterDef def = GetMonsterDefByRace(globalData.pendingSpawnCommand.race);
+
+	static std::random_device rd;
+	static std::mt19937 gen(rd());
+
+	for (int i = 0; i < globalData.pendingSpawnCommand.count; ++i) {
+		float spawnX, spawnY;
+
+		if (globalData.pendingSpawnCommand.spread) {
+			// Spawn at random locations on the map
+			// Get map dimensions (in pixels: width*32, height*32)
+			int mapWidth = gameRegion.world.tm.width * 32;
+			int mapHeight = gameRegion.world.tm.height * 32;
+
+			// Try to find a valid spawn location (avoid blocked tiles)
+			bool validLocation = false;
+			int attempts = 0;
+			while (!validLocation && attempts < 20) {
+				std::uniform_real_distribution<float> distX(32.0f, mapWidth - 32.0f);
+				std::uniform_real_distribution<float> distY(32.0f, mapHeight - 32.0f);
+				spawnX = distX(gen);
+				spawnY = distY(gen);
+
+				// Check if tile is not blocking
+				int tileX = static_cast<int>(spawnX / 32);
+				int tileY = static_cast<int>(spawnY / 32);
+				if (!gameRegion.world.tile_blocking(tileX, tileY)) {
+					validLocation = true;
+				}
+				attempts++;
+			}
+
+			// If no valid location found after attempts, use the last random position anyway
+		}
+		else {
+			// Spawn monsters in a circle around the player
+			float baseRadius = 80.0f;
+			float angle = (2.0f * M_PI * i) / globalData.pendingSpawnCommand.count;
+			spawnX = human->X + baseRadius * std::cos(angle);
+			spawnY = human->Y + baseRadius * std::sin(angle);
+		}
+
+		gameRegion.SpawnMonster(def, spawnX, spawnY);
+
+		// Set initial state if specified
+		auto& spawned = gameRegion.placeables.back();
+		std::shared_ptr<Monster> monster = std::dynamic_pointer_cast<Monster>(spawned);
+		if (monster) {
+			if (globalData.pendingSpawnCommand.initialState == "aggressive") {
+				monster->aiState = Monster::State::Aggressive;
+			}
+			else if (globalData.pendingSpawnCommand.initialState == "fleeing") {
+				monster->aiState = Monster::State::Fleeing;
+			}
+			// else remains in default Roaming state
+		}
+	}
+
+	// Clear the command
+	globalData.pendingSpawnCommand = SpawnCommand{};
+}
+
 void Game::Update() {
 	std::string middleText = "";
 	if (data->consoleActive && data->console) {
@@ -789,69 +856,7 @@ void Game::Update() {
 		ResetWorld(data->gameRegion.GetRegionX(), data->gameRegion.GetRegionY(), true);
 		reset_region = false;
 	}
-	// Handle spawn command
-	if (globalData.pendingSpawnCommand.race.length()) {
-		MonsterDef def = GetMonsterDefByRace(globalData.pendingSpawnCommand.race);
-
-		static std::random_device rd;
-		static std::mt19937 gen(rd());
-
-		for (int i = 0; i < globalData.pendingSpawnCommand.count; ++i) {
-			float spawnX, spawnY;
-
-			if (globalData.pendingSpawnCommand.spread) {
-				// Spawn at random locations on the map
-				// Get map dimensions (in pixels: width*32, height*32)
-				int mapWidth = data->gameRegion.world.tm.width * 32;
-				int mapHeight = data->gameRegion.world.tm.height * 32;
-
-				// Try to find a valid spawn location (avoid blocked tiles)
-				bool validLocation = false;
-				int attempts = 0;
-				while (!validLocation && attempts < 20) {
-					std::uniform_real_distribution<float> distX(32.0f, mapWidth - 32.0f);
-					std::uniform_real_distribution<float> distY(32.0f, mapHeight - 32.0f);
-					spawnX = distX(gen);
-					spawnY = distY(gen);
-
-					// Check if tile is not blocking
-					int tileX = static_cast<int>(spawnX / 32);
-					int tileY = static_cast<int>(spawnY / 32);
-					if (!data->gameRegion.world.tile_blocking(tileX, tileY)) {
-						validLocation = true;
-					}
-					attempts++;
-				}
-
-				// If no valid location found after attempts, use the last random position anyway
-			}
-			else {
-				// Spawn monsters in a circle around the player
-				float baseRadius = 80.0f;
-				float angle = (2.0f * M_PI * i) / globalData.pendingSpawnCommand.count;
-				spawnX = data->human->X + baseRadius * std::cos(angle);
-				spawnY = data->human->Y + baseRadius * std::sin(angle);
-			}
-
-			data->gameRegion.SpawnMonster(def, spawnX, spawnY);
-
-			// Set initial state if specified
-			auto& spawned = data->gameRegion.placeables.back();
-			std::shared_ptr<Monster> monster = std::dynamic_pointer_cast<Monster>(spawned);
-			if (monster) {
-				if (globalData.pendingSpawnCommand.initialState == "aggressive") {
-					monster->aiState = Monster::State::Aggressive;
-				}
-				else if (globalData.pendingSpawnCommand.initialState == "fleeing") {
-					monster->aiState = Monster::State::Fleeing;
-				}
-				// else remains in default Roaming state
-			}
-		}
-
-		// Clear the command
-		globalData.pendingSpawnCommand = SpawnCommand{};
-	}
+	HandleSpawnCommand(data->gameRegion, data->human.get());
 	if (data->consoleActive && data->console && !data->console->IsActive()) {
 		data->consoleActive = false;
 	}
