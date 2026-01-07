@@ -76,11 +76,13 @@ void ImGuiPlayerSelect::LoadSelectedPlayer() {
 			nlohmann::json j = nlohmann::json::parse(sago::GetFileContent(filename.c_str()));
 			editingPlayer = j;
 			editingPlayer.save_name = playerNames[selectedPlayerIndex];
-		} else {
+		}
+		else {
 			editingPlayer = Player();
 			editingPlayer.save_name = playerNames[selectedPlayerIndex];
 		}
-	} else {
+	}
+	else {
 		editingPlayer = Player();
 		editingPlayer.save_name = "player1";
 	}
@@ -117,7 +119,8 @@ void ImGuiPlayerSelect::CreateNewPlayer() {
 	do {
 		newName = std::format("player{}", newPlayerNum);
 		newPlayerNum++;
-	} while (std::find(playerNames.begin(), playerNames.end(), newName) != playerNames.end());
+	}
+	while (std::find(playerNames.begin(), playerNames.end(), newName) != playerNames.end());
 
 	playerNames.push_back(newName);
 	std::sort(playerNames.begin(), playerNames.end());
@@ -162,17 +165,17 @@ void ImGuiPlayerSelect::Draw(SDL_Renderer* target) {
 	ImGuiIO& io = ImGui::GetIO();
 	ImVec2 window_size(600, 500);
 	ImVec2 window_pos(
-		(io.DisplaySize.x - window_size.x) * 0.5f,
-		(io.DisplaySize.y - window_size.y) * 0.5f
+	    (io.DisplaySize.x - window_size.x) * 0.5f,
+	    (io.DisplaySize.y - window_size.y) * 0.5f
 	);
 
 	ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always);
 	ImGui::SetNextWindowSize(window_size, ImGuiCond_Always);
 
 	if (!ImGui::Begin("Player Management", &active,
-		ImGuiWindowFlags_NoResize |
-		ImGuiWindowFlags_NoMove |
-		ImGuiWindowFlags_NoCollapse)) {
+	                  ImGuiWindowFlags_NoResize |
+	                  ImGuiWindowFlags_NoMove |
+	                  ImGuiWindowFlags_NoCollapse)) {
 		ImGui::End();
 		return;
 	}

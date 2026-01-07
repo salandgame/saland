@@ -38,17 +38,17 @@ void ImGuiOptions::Draw(SDL_Renderer* target) {
 	ImGuiIO& io = ImGui::GetIO();
 	ImVec2 window_size(400, 250);
 	ImVec2 window_pos(
-		(io.DisplaySize.x - window_size.x) * 0.5f,
-		(io.DisplaySize.y - window_size.y) * 0.5f
+	    (io.DisplaySize.x - window_size.x) * 0.5f,
+	    (io.DisplaySize.y - window_size.y) * 0.5f
 	);
 
 	ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always);
 	ImGui::SetNextWindowSize(window_size, ImGuiCond_Always);
 
 	if (!ImGui::Begin("Options", &active,
-		ImGuiWindowFlags_NoResize |
-		ImGuiWindowFlags_NoMove |
-		ImGuiWindowFlags_NoCollapse)) {
+	                  ImGuiWindowFlags_NoResize |
+	                  ImGuiWindowFlags_NoMove |
+	                  ImGuiWindowFlags_NoCollapse)) {
 		ImGui::End();
 		return;
 	}

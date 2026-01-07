@@ -38,6 +38,13 @@ struct PlayerControls {
 	SDL_Keycode block_delete = SDLK_e;
 };
 
+struct SpawnCommand {
+	std::string race;
+	int count = 0;
+	std::string initialState; // "roaming", "aggressive", or "fleeing"
+	bool spread = false; // If true, spawn at random locations instead of around player
+};
+
 
 struct GlobalData {
 	bool isShuttingDown = false;
@@ -61,6 +68,8 @@ struct GlobalData {
 
 	bool editor = false;
 	sago::SagoLogicalResize logicalResize;
+
+	SpawnCommand pendingSpawnCommand;
 };
 
 extern GlobalData globalData;

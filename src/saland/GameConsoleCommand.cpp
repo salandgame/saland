@@ -193,11 +193,67 @@ struct DrawOverlayConsoleCommand : public ConsoleCommand {
 	}
 };
 
+struct ConsoleCommandSpawn : public ConsoleCommand {
+	virtual std::string getCommand() const override {
+		return "spawn";
+	}
+
+	virtual std::string run(const std::vector<std::string>& args) override {
+		if (args.size() < 3) {
+			throw std::runtime_error("Must be called like: spawn MONSTER_RACE COUNT [--aggressive|--fleeing]");
+		}
+
+		std::string race = args[1];
+		int count = 1;
+		try {
+			count = std::stoi(args[2]);
+		}
+		catch (...) {
+			std::string error_msg = "Failed to convert \"";
+			error_msg += args[2] + "\" into an integer";
+			throw std::runtime_error(error_msg);
+		}
+
+		if (count <= 0 || count > 100) {
+			throw std::runtime_error("Count must be between 1 and 100");
+		}
+
+		// Check for optional flags
+		std::string initialState = "roaming";
+		bool spread = false;
+		for (size_t i = 3; i < args.size(); ++i) {
+			if (args[i] == "--aggressive") {
+				initialState = "aggressive";
+			}
+			else if (args[i] == "--fleeing") {
+				initialState = "fleeing";
+			}
+			else if (args[i] == "--spread") {
+				spread = true;
+			}
+			else {
+				throw std::runtime_error("Unknown flag: " + args[i] + ". Use --aggressive, --fleeing, or --spread");
+			}
+		}
+
+		// Queue the spawn command (will be processed in Game.cpp)
+		globalData.pendingSpawnCommand = {race, count, initialState, spread};
+
+		std::string location = spread ? "randomly across the map" : "around player";
+		return "Spawning " + std::to_string(count) + " " + race + "(s) in " + initialState + " state " + location;
+	}
+
+	virtual std::string helpMessage() const override {
+		return "Spawn enemies. Usage: spawn MONSTER_RACE COUNT [--aggressive|--fleeing] [--spread]. Example: spawn bee 8 or spawn bat 5 --aggressive --spread";
+	}
+};
+
 static ConsoleCommandGiveItem cc_give_item;
 static ConsoleCommandItem cc_item;
 static ConsoleCommandQuit cc_quit;
 static ConsoleCommandConfig cc_config;
 static DrawOverlayConsoleCommand docc;
+static ConsoleCommandSpawn cc_spawn;
 
 void GameConsoleCommandRegister() {
 	RegisterCommand(&cc_give_item);
@@ -205,4 +261,5 @@ void GameConsoleCommandRegister() {
 	RegisterCommand(&cc_quit);
 	RegisterCommand(&cc_config);
 	RegisterCommand(&docc);
+	RegisterCommand(&cc_spawn);
 }
