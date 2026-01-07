@@ -94,6 +94,54 @@
 	"frame_time" : 150,
     "originx" : 16,
     "originy" : 16
+},
+
+"green_slime_N" :  {
+	"texture" : "monsters/slime",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 32,
+	"width" : 32,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 16,
+    "originy" : 16
+},
+
+"green_slime_W" :  {
+	"texture" : "monsters/slime",
+	"topx" : 0,
+	"topy" : 32,
+	"height" : 32,
+	"width" : 32,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 16,
+    "originy" : 16
+},
+
+"green_slime_S" :  {
+	"texture" : "monsters/slime",
+	"topx" : 0,
+	"topy" : 64,
+	"height" : 32,
+	"width" : 32,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 16,
+    "originy" : 16
+},
+
+"green_slime_E" :  {
+	"texture" : "monsters/slime",
+	"topx" : 0,
+	"topy" : 96,
+	"height" : 32,
+	"width" : 32,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 16,
+    "originy" : 16
 }
 
 }

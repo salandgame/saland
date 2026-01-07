@@ -25,6 +25,19 @@
 				"animation": "slash",
 				"animationDuration": 300.0
 			}
+		},
+		{
+			"race": "green_slime",
+			"radius": 16.0,
+			"health": 40.0,
+			"speed": 0.7,
+			"attack": {
+				"cooldownDuration": 2000.0,
+				"range": 35.0,
+				"damage": 3.0,
+				"animation": "slash",
+				"animationDuration": 300.0
+			}
 		}
 	]
 }
