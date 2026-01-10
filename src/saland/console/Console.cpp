@@ -59,6 +59,16 @@ struct HelpConsoleCommand : public ConsoleCommand {
 
 static HelpConsoleCommand hcc;
 
+static std::vector<std::string> splitByWhitespace(std::string const& line) {
+	std::vector<std::string> arg;
+	boost::escaped_list_separator<char> els('\\',' ','\"');
+	boost::tokenizer<boost::escaped_list_separator<char> > tok(line, els);
+	for (const std::string& item : tok) {
+		arg.push_back(item);
+	}
+	return arg;
+}
+
 Console::Console() {
 	RegisterCommand(&hcc);
 	inputBuffer[0] = '\0';
@@ -135,16 +145,19 @@ void Console::Draw(SDL_Renderer* target) {
 	// Display help information
 	std::string currentInput(inputBuffer);
 	if (currentInput.length()) {
+		// Extract the first word (the command) from the input
+		std::vector<std::string> inputParts = splitByWhitespace(currentInput);
+		std::string firstWord = inputParts.empty() ? currentInput : inputParts[0];
 		// Check if it's a complete command
-		if (commands.find(currentInput) != commands.end()) {
+		if (commands.find(firstWord) != commands.end()) {
 			// Show help message for the complete command
-			ImGui::TextColored(ImVec4(0.5f, 1.0f, 0.5f, 1.0f), "Help: %s", commands[currentInput]->helpMessage().c_str());
+			ImGui::TextColored(ImVec4(0.5f, 1.0f, 0.5f, 1.0f), "Help: %s", commands[firstWord]->helpMessage().c_str());
 		}
 		else {
 			// Show matching commands
 			std::vector<std::string> matches;
 			for (const auto& cmd : commands) {
-				if (cmd.first.find(currentInput) == 0) {
+				if (cmd.first.find(firstWord) == 0) {
 					matches.push_back(cmd.first);
 				}
 			}
@@ -168,17 +181,6 @@ void Console::Draw(SDL_Renderer* target) {
 	}
 
 	ImGui::End();
-}
-
-
-static std::vector<std::string> splitByWhitespace(std::string const& line) {
-	std::vector<std::string> arg;
-	boost::escaped_list_separator<char> els('\\',' ','\"');
-	boost::tokenizer<boost::escaped_list_separator<char> > tok(line, els);
-	for (const std::string& item : tok) {
-		arg.push_back(item);
-	}
-	return arg;
 }
 
 void Console::ProcessCommand(const std::string& command) {
