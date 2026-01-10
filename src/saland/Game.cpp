@@ -204,6 +204,7 @@ struct Game::GameImpl {
 	std::shared_ptr<GameSpellState> spellSelect;
 	bool consoleActive = false;
 	bool debugMenuActive = false;
+	int brushSize = 1; // Size of brush for tile placement/removal (1-5)
 };
 
 static SpawnPoint GetSpawnpoint(const sago::tiled::TileMap& tm) {
@@ -397,7 +398,7 @@ void Game::Draw(SDL_Renderer* target) {
 		int mousebox_y = data->world_mouse_y - data->world_mouse_y % 32 - data->topy;
 		if (data->spell_holder->slot_spell.at(data->spell_holder->slot_selected).type == SpellCursorType::tile) {
 			int phys_x1 = mousebox_x, phys_y1 = mousebox_y;
-			int phys_x2 = mousebox_x + 32, phys_y2 = mousebox_y + 32;
+			int phys_x2 = mousebox_x + 32 * data->brushSize, phys_y2 = mousebox_y + 32 * data->brushSize;
 			globalData.logicalResize.LogicalToPhysical(&phys_x1, &phys_y1);
 			globalData.logicalResize.LogicalToPhysical(&phys_x2, &phys_y2);
 			rectangleRGBA(globalData.screen, phys_x1, phys_y1, phys_x2, phys_y2, 255, 255, 0, 255);
@@ -576,6 +577,28 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 		}
 		if (event.key.keysym.sym == SDLK_F12) {
 			data->isActive = false;
+		}
+		if (event.key.keysym.sym == SDLK_PAGEUP) {
+			if (data->brushSize < 5) {
+				data->brushSize++;
+			}
+		}
+		if (event.key.keysym.sym == SDLK_PAGEDOWN) {
+			if (data->brushSize > 1) {
+				data->brushSize--;
+			}
+		}
+	}
+	if (event.type == SDL_MOUSEWHEEL) {
+		if (event.wheel.y > 0) { // Scroll up
+			if (data->brushSize < 5) {
+				data->brushSize++;
+			}
+		}
+		else if (event.wheel.y < 0) { // Scroll down
+			if (data->brushSize > 1) {
+				data->brushSize--;
+			}
 		}
 	}
 }
@@ -954,15 +977,25 @@ void Game::Update() {
 			if (data->human->castTimeRemaining == 0) {
 				data->human->castTimeRemaining = data->human->castTime;
 				data->human->animation = "spellcast";
-				int tile_x = data->world_mouse_x/32;
-				int tile_y = data->world_mouse_y/32;
+				int base_tile_x = data->world_mouse_x/32;
+				int base_tile_y = data->world_mouse_y/32;
 				int tile = data->spell_holder->slot_spell.at(data->spell_holder->slot_selected).tile;
-				if (sago::tiled::tileInBound(data->gameRegion.world.tm, tile_x, tile_y)
-				        && !(data->gameRegion.world.tile_protected(tile_x, tile_y)) ) {
-					int layer_number = data->gameRegion.world.blockingLayer;
-					sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
-					data->gameRegion.liqudHandler["water"].updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
-					data->gameRegion.liqudHandler["lava"].updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
+				int layer_number = data->gameRegion.world.blockingLayer;
+				bool anyTileChanged = false;
+				for (int dy = 0; dy < data->brushSize; ++dy) {
+					for (int dx = 0; dx < data->brushSize; ++dx) {
+						int tile_x = base_tile_x + dx;
+						int tile_y = base_tile_y + dy;
+						if (sago::tiled::tileInBound(data->gameRegion.world.tm, tile_x, tile_y)
+						        && !(data->gameRegion.world.tile_protected(tile_x, tile_y)) ) {
+							sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
+							data->gameRegion.liqudHandler["water"].updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
+							data->gameRegion.liqudHandler["lava"].updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
+							anyTileChanged = true;
+						}
+					}
+				}
+				if (anyTileChanged) {
 					data->gameRegion.world.init_physics(data->gameRegion.physicsBox);
 				}
 			}
@@ -971,15 +1004,25 @@ void Game::Update() {
 			if (data->human->castTimeRemaining == 0) {
 				data->human->castTimeRemaining = data->human->castTime;
 				data->human->animation = "spellcast";
-				int tile_x = data->world_mouse_x/32;
-				int tile_y = data->world_mouse_y/32;
-				if (sago::tiled::tileInBound(data->gameRegion.world.tm, tile_x, tile_y)
-				        && !(data->gameRegion.world.tile_protected(tile_x, tile_y)) ) {
-					int layer_number = data->gameRegion.world.blockingLayer;
-					uint32_t tile = 0;
-					sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
-					data->gameRegion.liqudHandler["water"].updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
-					data->gameRegion.liqudHandler["lava"].updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
+				int base_tile_x = data->world_mouse_x/32;
+				int base_tile_y = data->world_mouse_y/32;
+				int layer_number = data->gameRegion.world.blockingLayer;
+				uint32_t tile = 0;
+				bool anyTileChanged = false;
+				for (int dy = 0; dy < data->brushSize; ++dy) {
+					for (int dx = 0; dx < data->brushSize; ++dx) {
+						int tile_x = base_tile_x + dx;
+						int tile_y = base_tile_y + dy;
+						if (sago::tiled::tileInBound(data->gameRegion.world.tm, tile_x, tile_y)
+						        && !(data->gameRegion.world.tile_protected(tile_x, tile_y)) ) {
+							sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
+							data->gameRegion.liqudHandler["water"].updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
+							data->gameRegion.liqudHandler["lava"].updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
+							anyTileChanged = true;
+						}
+					}
+				}
+				if (anyTileChanged) {
 					data->gameRegion.world.init_physics(data->gameRegion.physicsBox);
 				}
 			}
