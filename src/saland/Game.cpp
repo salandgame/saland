@@ -889,8 +889,13 @@ void Game::Update() {
 		globalData.pendingSpawnLake = false;
 	}
 	if (!globalData.pendingSpawnItem.empty()) {
-		ItemDef itemDef = getItem(globalData.pendingSpawnItem);
-		data->gameRegion.SpawnItem(itemDef, static_cast<float>(data->world_mouse_x), static_cast<float>(data->world_mouse_y));
+		if (itemExists(globalData.pendingSpawnItem)) {
+			ItemDef itemDef = getItem(globalData.pendingSpawnItem);
+			data->gameRegion.SpawnItem(itemDef, static_cast<float>(data->world_mouse_x), static_cast<float>(data->world_mouse_y));
+		}
+		else {
+			std::cerr << "Item '" << globalData.pendingSpawnItem << "' does not exist\n";
+		}
 		globalData.pendingSpawnItem.clear();
 	}
 	if (data->consoleActive && data->console && !data->console->IsActive()) {

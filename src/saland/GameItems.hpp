@@ -38,5 +38,6 @@ struct ItemDef {
 };
 
 const ItemDef& getItem(const std::string& itemName);
+bool itemExists(const std::string& itemName);
 
 #endif  /* GAMEITEMS_HPP */

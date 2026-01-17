@@ -108,3 +108,10 @@ const ItemDef& getItem(const std::string& itemName) {
 	}
 	return all_items[itemName];
 }
+
+bool itemExists(const std::string& itemName) {
+	if (all_items.size() == 0) {
+		initItems();
+	}
+	return all_items.find(itemName) != all_items.end();
+}
