@@ -888,6 +888,11 @@ void Game::Update() {
 		data->gameRegion.world.init_physics(data->gameRegion.physicsBox);
 		globalData.pendingSpawnLake = false;
 	}
+	if (!globalData.pendingSpawnItem.empty()) {
+		ItemDef itemDef = getItem(globalData.pendingSpawnItem);
+		data->gameRegion.SpawnItem(itemDef, static_cast<float>(data->world_mouse_x), static_cast<float>(data->world_mouse_y));
+		globalData.pendingSpawnItem.clear();
+	}
 	if (data->consoleActive && data->console && !data->console->IsActive()) {
 		data->consoleActive = false;
 	}

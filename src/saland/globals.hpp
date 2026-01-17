@@ -71,6 +71,7 @@ struct GlobalData {
 
 	SpawnCommand pendingSpawnCommand;
 	bool pendingSpawnLake = false;
+	std::string pendingSpawnItem; // Item name to spawn at mouse position
 };
 
 extern GlobalData globalData;

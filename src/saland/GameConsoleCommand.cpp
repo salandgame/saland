@@ -261,6 +261,24 @@ struct ConsoleCommandSpawnLake : public ConsoleCommand {
 	}
 };
 
+struct ConsoleCommandSpawnItem : public ConsoleCommand {
+	virtual std::string getCommand() const override {
+		return "spawn_item";
+	}
+
+	virtual std::string run(const std::vector<std::string>& args) override {
+		if (args.size() < 2) {
+			throw std::runtime_error("Must be called like: spawn_item ITEM_NAME");
+		}
+		globalData.pendingSpawnItem = args[1];
+		return "Item '" + args[1] + "' will spawn at mouse position";
+	}
+
+	virtual std::string helpMessage() const override {
+		return "Spawns an item at the current mouse position. Usage: spawn_item ITEM_NAME";
+	}
+};
+
 static ConsoleCommandGiveItem cc_give_item;
 static ConsoleCommandItem cc_item;
 static ConsoleCommandQuit cc_quit;
@@ -268,6 +286,7 @@ static ConsoleCommandConfig cc_config;
 static DrawOverlayConsoleCommand docc;
 static ConsoleCommandSpawn cc_spawn;
 static ConsoleCommandSpawnLake cc_spawn_lake;
+static ConsoleCommandSpawnItem cc_spawn_item;
 
 void GameConsoleCommandRegister() {
 	RegisterCommand(&cc_give_item);
@@ -277,4 +296,5 @@ void GameConsoleCommandRegister() {
 	RegisterCommand(&docc);
 	RegisterCommand(&cc_spawn);
 	RegisterCommand(&cc_spawn_lake);
+	RegisterCommand(&cc_spawn_item);
 }
