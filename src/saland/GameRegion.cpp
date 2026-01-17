@@ -240,26 +240,35 @@ static std::vector<std::vector<int>> generateLakePattern() {
 	return pattern;
 }
 
+
 void GameRegion::ProcessRegionFirstTimeEnter(World& world) {
 	if (world.tm.properties["type"].value == "forrest") {
 		{
-			// Add a small lake
-			int x = (rand()%(world.tm.width-LAKE_WIDTH));
-			int y = (rand()%(world.tm.height-LAKE_HEIGHT));
-			const auto& pattern = generateLakePattern();
-			for (size_t i=0; i < LAKE_WIDTH; ++i) {
-				for (size_t j=0; j < LAKE_HEIGHT; ++j) {
-					if (pattern[i][j] == 0) {
-						continue;
-					}
-					int layer_number = world.blockingLayer;
-					uint32_t tile = 28;
-					sago::tiled::setTileOnLayerNumber(world.tm, layer_number, x+i, y+j, tile);
-					liqudHandler["water"].updateFirstTile(world.tm, x+i, y+j);
-				}
-			}
-		}
+            CreateLake(world);
+        }
 	}
+}
+
+void GameRegion::CreateLake(World& world)
+{
+    // Add a small lake
+    int x = (rand() % (world.tm.width - LAKE_WIDTH));
+    int y = (rand() % (world.tm.height - LAKE_HEIGHT));
+    const auto &pattern = generateLakePattern();
+    for (size_t i = 0; i < LAKE_WIDTH; ++i)
+    {
+        for (size_t j = 0; j < LAKE_HEIGHT; ++j)
+        {
+            if (pattern[i][j] == 0)
+            {
+                continue;
+            }
+            int layer_number = world.blockingLayer;
+            uint32_t tile = 28;
+            sago::tiled::setTileOnLayerNumber(world.tm, layer_number, x + i, y + j, tile);
+            liqudHandler["water"].updateFirstTile(world.tm, x + i, y + j);
+        }
+    }
 }
 
 void GameRegion::ProcessRegionEnter(World& world) {
