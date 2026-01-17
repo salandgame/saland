@@ -202,7 +202,6 @@ struct ConsoleCommandSpawn : public ConsoleCommand {
 		if (args.size() < 3) {
 			throw std::runtime_error("Must be called like: spawn MONSTER_RACE COUNT [--aggressive|--fleeing]");
 		}
-
 		std::string race = args[1];
 		int count = 1;
 		try {
@@ -213,7 +212,6 @@ struct ConsoleCommandSpawn : public ConsoleCommand {
 			error_msg += args[2] + "\" into an integer";
 			throw std::runtime_error(error_msg);
 		}
-
 		if (count <= 0 || count > 100) {
 			throw std::runtime_error("Count must be between 1 and 100");
 		}
@@ -248,12 +246,28 @@ struct ConsoleCommandSpawn : public ConsoleCommand {
 	}
 };
 
+struct ConsoleCommandSpawnLake : public ConsoleCommand {
+	virtual std::string getCommand() const override {
+		return "spawn_lake";
+	}
+
+	virtual std::string run(const std::vector<std::string>&) override {
+		globalData.pendingSpawnLake = true;
+		return "Lake will spawn at mouse position";
+	}
+
+	virtual std::string helpMessage() const override {
+		return "Spawns a lake at the current mouse position";
+	}
+};
+
 static ConsoleCommandGiveItem cc_give_item;
 static ConsoleCommandItem cc_item;
 static ConsoleCommandQuit cc_quit;
 static ConsoleCommandConfig cc_config;
 static DrawOverlayConsoleCommand docc;
 static ConsoleCommandSpawn cc_spawn;
+static ConsoleCommandSpawnLake cc_spawn_lake;
 
 void GameConsoleCommandRegister() {
 	RegisterCommand(&cc_give_item);
@@ -262,4 +276,5 @@ void GameConsoleCommandRegister() {
 	RegisterCommand(&cc_config);
 	RegisterCommand(&docc);
 	RegisterCommand(&cc_spawn);
+	RegisterCommand(&cc_spawn_lake);
 }

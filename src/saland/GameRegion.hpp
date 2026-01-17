@@ -67,6 +67,7 @@ public:
 	void SpawnPrefab(const Prefab& prefab, int destX, int destY);
 	void ProcessRegionFirstTimeEnter(World& world);
 	void CreateLake(World& world);
+	void CreateLake(World& world, int tile_x, int tile_y);
 	void ProcessRegionEnter(World& world);
 private:
 	int region_x = 0;

@@ -154,8 +154,8 @@ static std::string GetRegionType(int region_x, int region_y) {
 	return "default";
 }
 
-const int LAKE_WIDTH = 20; // width of the lake pattern
-const int LAKE_HEIGHT = 20; // height of the lake pattern
+const int LAKE_WIDTH = 10; // width of the lake pattern
+const int LAKE_HEIGHT = 10; // height of the lake pattern
 const int LAKE_SIZE = 40; // maximum size of the lake
 const int LAKE_MIN_SIZE = 8;
 
@@ -254,6 +254,12 @@ void GameRegion::CreateLake(World& world)
     // Add a small lake
     int x = (rand() % (world.tm.width - LAKE_WIDTH));
     int y = (rand() % (world.tm.height - LAKE_HEIGHT));
+    CreateLake(world, x, y);
+}
+
+void GameRegion::CreateLake(World& world, int tile_x, int tile_y)
+{
+    // Add a small lake at specified location
     const auto &pattern = generateLakePattern();
     for (size_t i = 0; i < LAKE_WIDTH; ++i)
     {
@@ -265,8 +271,8 @@ void GameRegion::CreateLake(World& world)
             }
             int layer_number = world.blockingLayer;
             uint32_t tile = 28;
-            sago::tiled::setTileOnLayerNumber(world.tm, layer_number, x + i, y + j, tile);
-            liqudHandler["water"].updateFirstTile(world.tm, x + i, y + j);
+            sago::tiled::setTileOnLayerNumber(world.tm, layer_number, tile_x + i, tile_y + j, tile);
+            liqudHandler["water"].updateFirstTile(world.tm, tile_x + i, tile_y + j);
         }
     }
 }

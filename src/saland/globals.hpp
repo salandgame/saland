@@ -70,6 +70,7 @@ struct GlobalData {
 	sago::SagoLogicalResize logicalResize;
 
 	SpawnCommand pendingSpawnCommand;
+	bool pendingSpawnLake = false;
 };
 
 extern GlobalData globalData;
@@ -79,4 +80,3 @@ void PlayerSave();
 void PlayerLoad();
 
 #endif /* GLOBALS_HPP */
-

@@ -880,6 +880,14 @@ void Game::Update() {
 		reset_region = false;
 	}
 	HandleSpawnCommand(data->gameRegion, data->human.get());
+	if (globalData.pendingSpawnLake) {
+		// Convert mouse position from pixels to tile coordinates
+		int tile_x = data->world_mouse_x / 32;
+		int tile_y = data->world_mouse_y / 32;
+		data->gameRegion.CreateLake(data->gameRegion.world, tile_x, tile_y);
+		data->gameRegion.world.init_physics(data->gameRegion.physicsBox);
+		globalData.pendingSpawnLake = false;
+	}
 	if (data->consoleActive && data->console && !data->console->IsActive()) {
 		data->consoleActive = false;
 	}
