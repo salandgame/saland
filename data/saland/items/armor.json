@@ -1,0 +1,16 @@
+{
+	"items": [
+		{
+			"itemid" : "armor_blouse_black",
+			"sprite" : "female_standing_blouse_black_N",
+			"sprite2" : "",
+			"armor_upper_body" : "blouse_black",
+			"armor_restriction" : ["female"],
+			"radius" : 16.0,
+			"isStatic" : false,
+			"isDestructible" : false,
+			"health" : 20,
+			"pickup" : true
+		}
+	]
+}
