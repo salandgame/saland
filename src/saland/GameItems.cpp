@@ -115,3 +115,14 @@ bool itemExists(const std::string& itemName) {
 	}
 	return all_items.find(itemName) != all_items.end();
 }
+
+std::vector<std::string> getItemNames() {
+	if (all_items.size() == 0) {
+		initItems();
+	}
+	std::vector<std::string> names;
+	for (const auto& item : all_items) {
+		names.push_back(item.first);
+	}
+	return names;
+}

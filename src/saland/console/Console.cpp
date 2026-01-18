@@ -23,6 +23,7 @@ https://github.com/sago007/saland
 
 #include "Console.hpp"
 #include "../globals.hpp"
+#include "../GameItems.hpp"
 #include <boost/tokenizer.hpp>
 #include "../../Libs/imgui/imgui.h"
 
@@ -74,7 +75,6 @@ Console::Console() {
 	inputBuffer[0] = '\0';
 	historyPos = -1;
 	scrollToBottom = false;
-	completionIndex = -1;
 }
 
 Console::~Console() {
@@ -121,10 +121,6 @@ void Console::Draw(SDL_Renderer* target) {
 	bool reclaim_focus = false;
 	ImGuiInputTextFlags input_flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackHistory | ImGuiInputTextFlags_CallbackCompletion;
 
-	// Store previous buffer to detect changes
-	static std::string previousBuffer;
-	std::string currentBuffer(inputBuffer);
-
 	if (ImGui::InputText("Input", inputBuffer, IM_ARRAYSIZE(inputBuffer), input_flags, &TextEditCallbackStub, (void*)this)) {
 		std::string command(inputBuffer);
 		if (!command.empty()) {
@@ -133,14 +129,6 @@ void Console::Draw(SDL_Renderer* target) {
 			reclaim_focus = true;
 		}
 	}
-
-	// Clear completion state if buffer was modified (not by history/completion)
-	std::string newBuffer(inputBuffer);
-	if (newBuffer != currentBuffer && newBuffer != previousBuffer) {
-		completionCandidates.clear();
-		completionIndex = -1;
-	}
-	previousBuffer = newBuffer;
 
 	// Display help information
 	std::string currentInput(inputBuffer);
@@ -225,10 +213,6 @@ int Console::TextEditCallbackStub(ImGuiInputTextCallbackData* data) {
 int Console::TextEditCallback(ImGuiInputTextCallbackData* data) {
 	switch (data->EventFlag) {
 	case ImGuiInputTextFlags_CallbackHistory: {
-		// Clear completion state when using history
-		completionCandidates.clear();
-		completionIndex = -1;
-
 		const int prev_history_pos = historyPos;
 		if (data->EventKey == ImGuiKey_UpArrow) {
 			if (historyPos == -1) {
@@ -259,30 +243,113 @@ int Console::TextEditCallback(ImGuiInputTextCallbackData* data) {
 		break;
 	}
 	case ImGuiInputTextFlags_CallbackCompletion: {
-		// Tab completion
+		// Bash-style tab completion (no cycling - user must type to disambiguate)
 		std::string currentInput(data->Buf, data->BufTextLen);
+		std::vector<std::string> parts = splitByWhitespace(currentInput);
 
-		// Build completion candidates on first tab press
-		if (completionCandidates.empty()) {
-			for (const auto& cmd : commands) {
-				if (cmd.first.find(currentInput) == 0) {
-					completionCandidates.push_back(cmd.first);
-				}
-			}
-			completionIndex = 0;
+		// Determine what we're completing
+		bool completingCommand = parts.empty() || (parts.size() == 1 && !currentInput.empty() && currentInput.back() != ' ');
+		bool completingItemArg = false;
+		std::string wordToComplete;
+		std::string prefix; // Text before the word being completed
+
+		if (completingCommand) {
+			// Completing the command itself
+			wordToComplete = parts.empty() ? "" : parts[0];
+			prefix = "";
 		}
 		else {
-			// Cycle through candidates
-			completionIndex = (completionIndex + 1) % completionCandidates.size();
+			// Completing an argument
+			std::string command = parts[0];
+			// Check if this command takes item names as arguments
+			if ((command == "spawn_item" && parts.size() <= 2) ||
+			    (command == "give" && parts.size() <= 2)) {
+				completingItemArg = true;
+				// Get the partial item name (or empty if just typed space)
+				if (currentInput.back() == ' ') {
+					wordToComplete = "";
+					prefix = currentInput;
+				}
+				else if (parts.size() >= 2) {
+					wordToComplete = parts[1];
+					// Find where the last word starts
+					size_t lastSpace = currentInput.rfind(' ');
+					prefix = currentInput.substr(0, lastSpace + 1);
+				}
+				else {
+					wordToComplete = "";
+					prefix = currentInput + " ";
+				}
+			}
 		}
 
-		if (!completionCandidates.empty()) {
+		// Build completion candidates
+		std::vector<std::string> candidates;
+		if (completingCommand) {
+			// Complete command names
+			for (const auto& cmd : commands) {
+				if (cmd.first.find(wordToComplete) == 0) {
+					candidates.push_back(cmd.first);
+				}
+			}
+		}
+		else if (completingItemArg) {
+			// Complete item names
+			std::vector<std::string> itemNames = getItemNames();
+			for (const auto& item : itemNames) {
+				if (item.find(wordToComplete) == 0) {
+					candidates.push_back(prefix + item);
+				}
+			}
+		}
+
+		if (candidates.empty()) {
+			// No matches - do nothing
+			break;
+		}
+		else if (candidates.size() == 1) {
+			// Single match - complete it fully
 			data->DeleteChars(0, data->BufTextLen);
-			data->InsertChars(0, completionCandidates[completionIndex].c_str());
-			data->BufDirty = true;  // Tell ImGui the buffer was modified
-			// Move cursor to end of inserted text
+			data->InsertChars(0, candidates[0].c_str());
+			data->BufDirty = true;
 			data->CursorPos = data->BufTextLen;
 			data->SelectionStart = data->SelectionEnd = data->CursorPos;
+		}
+		else {
+			// Multiple matches - find and apply common prefix, then show options
+			std::string commonPrefix = candidates[0];
+			for (size_t i = 1; i < candidates.size(); ++i) {
+				size_t j = 0;
+				while (j < commonPrefix.size() && j < candidates[i].size() &&
+				       commonPrefix[j] == candidates[i][j]) {
+					++j;
+				}
+				commonPrefix = commonPrefix.substr(0, j);
+			}
+
+			// Apply common prefix if it's longer than current input
+			if (commonPrefix.size() > currentInput.size()) {
+				data->DeleteChars(0, data->BufTextLen);
+				data->InsertChars(0, commonPrefix.c_str());
+				data->BufDirty = true;
+				data->CursorPos = data->BufTextLen;
+				data->SelectionStart = data->SelectionEnd = data->CursorPos;
+			}
+
+			// Show all matches in history
+			std::string matchList = "Matches: ";
+			for (size_t i = 0; i < candidates.size(); ++i) {
+				if (i > 0) matchList += ", ";
+				// Show just the completed word, not full command
+				if (completingItemArg) {
+					matchList += candidates[i].substr(prefix.size());
+				}
+				else {
+					matchList += candidates[i];
+				}
+			}
+			history.push_back({matchList, false});
+			scrollToBottom = true;
 		}
 		break;
 	}
