@@ -26,9 +26,6 @@ https://github.com/sago007/saland
 #include <string>
 #include "editor_loader.hpp"
 
-
-
-
 #pragma once
 
 class SagoTextureSelector : public sago::GameStateInterface {
@@ -38,7 +35,7 @@ public:
 	virtual ~SagoTextureSelector();
 
 	bool IsActive() override;
-	void ProcessInput(const SDL_Event& event, bool& processed) override;
+	void ProcessInput(const SDL_Event& event, bool &processed) override;
 	void Draw(SDL_Renderer* target) override;
 	void Update() override;
 	void Init();
@@ -52,4 +49,5 @@ private:
 	std::map<std::string,SagoSprite> sprites;
 	std::string selected_texture;
 	std::string selected_sprite;
+	int grid_size = 32;
 };

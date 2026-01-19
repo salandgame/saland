@@ -29,9 +29,13 @@ https://github.com/sago007/saland
 #include <SDL_image.h>
 #include "../../sago/SagoMisc.hpp"
 #include "../global.hpp"
+#include "../common.h"
+
+const char* const editor_texture_grid_size = "editor_texture_grid_size";
 
 
-class ChangeSDLColor {
+class ChangeSDLColor
+{
 public:
 	ChangeSDLColor(SDL_Renderer* renderer, Uint8 r, Uint8 g, Uint8 b, Uint8 a) : renderer(renderer) {
 		SDL_GetRenderDrawColor(renderer, &oldr, &oldg, &oldb, &olda);
@@ -127,7 +131,7 @@ static void ImGuiWritePartOfImage(SDL_Texture* texture, int topx, int topy, int 
 	float topyf = topy;
 	ImVec2 uv0 = ImVec2(topxf / tex_w, topyf / tex_h);
 	ImVec2 uv1 = ImVec2((topxf + sprite_w) / tex_w, (topyf + sprite_h) / tex_h);
-	ImGui::Image(ImTextureRef((void*)texture), ImVec2((float)w, (float)h), uv0, uv1);
+	ImGui::Image((ImTextureID)(intptr_t)texture, ImVec2((float)w, (float)h), uv0, uv1);
 }
 
 void SagoTextureSelector::runSpriteSelectorFrame(SDL_Renderer* target) {
@@ -158,6 +162,27 @@ void SagoTextureSelector::runSpriteSelectorFrame(SDL_Renderer* target) {
 	}
 	ImGui::End();
 
+	ImGui::Begin("SpriteProperties");
+	if (selected_sprite.length()) {
+		const SagoSprite& current_sprite = sprites[selected_sprite];
+		ImGui::Text("Sprite: %s", selected_sprite.c_str());
+		ImGui::Separator();
+		ImGui::Text("texture: %s", current_sprite.texture.c_str());
+		ImGui::Text("topx: %d", current_sprite.topx);
+		ImGui::Text("topy: %d", current_sprite.topy);
+		ImGui::Text("width: %d", current_sprite.width);
+		ImGui::Text("height: %d", current_sprite.height);
+		ImGui::Text("number_of_frames: %d", current_sprite.number_of_frames);
+		ImGui::Text("frame_time: %d", current_sprite.frame_time);
+		ImGui::Text("originx: %d", current_sprite.originx);
+		ImGui::Text("originy: %d", current_sprite.originy);
+		ImGui::Separator();
+		ImGui::Text("meta_name: %s", current_sprite.meta_name.c_str());
+		ImGui::Text("meta_from_file: %s", current_sprite.meta_from_file.c_str());
+		ImGui::Text("meta_modified: %s", current_sprite.meta_modified.c_str());
+	}
+	ImGui::End();
+
 	ImGui::Begin("SpriteTexture");
 	if (selected_sprite.length() && sprites[selected_sprite].texture.length()) {
 		int tex_w, tex_h;
@@ -167,7 +192,7 @@ void SagoTextureSelector::runSpriteSelectorFrame(SDL_Renderer* target) {
 		ImGui::Text("Size: %d x %d", tex_w, tex_h);
 		ImGui::BeginChild("Test");
 		ImVec2 p = ImGui::GetCursorScreenPos();
-		ImGui::Image(ImTextureRef((void*)current_texture), ImVec2((float)tex_w, (float)tex_h));
+		ImGui::Image((ImTextureID)(intptr_t)current_texture, ImVec2((float)tex_w, (float)tex_h));
 		ChangeSDLColor color(target);
 		color.setYellow();
 		for (int i = 1; i < current_sprite.number_of_frames; i++) {
@@ -182,6 +207,10 @@ void SagoTextureSelector::runSpriteSelectorFrame(SDL_Renderer* target) {
 
 void SagoTextureSelector::runTextureSelectorFrame(SDL_Renderer* target) {
 	ImGui::Begin("TextureList", nullptr, ImGuiWindowFlags_NoCollapse);
+	if (ImGui::SliderInt("grid size", &grid_size, 0, 100))
+	{
+		Config::getInstance()->setInt(editor_texture_grid_size, grid_size);
+	}
 	static char filter[256] = "";
 	ImGui::InputText("Filter", filter, IM_ARRAYSIZE(filter));
 	ImGui::Separator();
@@ -192,7 +221,6 @@ void SagoTextureSelector::runTextureSelectorFrame(SDL_Renderer* target) {
 			}
 		}
 	}
-
 	ImGui::End();
 
 	ImGui::Begin("TextureViewer");
@@ -203,10 +231,13 @@ void SagoTextureSelector::runTextureSelectorFrame(SDL_Renderer* target) {
 		ImGui::Text("Size: %d x %d", tex_w, tex_h);
 		ImGui::BeginChild("Test");
 		ImVec2 p = ImGui::GetCursorScreenPos();
-		ImGui::Image(ImTextureRef((void*)current_texture), ImVec2((float)tex_w, (float)tex_h));
+		ImGui::Image((ImTextureID)(intptr_t)current_texture, ImVec2((float)tex_w, (float)tex_h));
 		ChangeSDLColor color(target);
 		color.setRed();
-		addLinesToCanvas(target, current_texture, 32, 32, p.x, p.y);
+		if (grid_size)
+		{
+			addLinesToCanvas(target, current_texture, grid_size, grid_size, p.x, p.y);
+		}
 		ImGui::EndChild();
 	}
 	ImGui::End();
@@ -216,6 +247,7 @@ void SagoTextureSelector::runTextureSelectorFrame(SDL_Renderer* target) {
 
 
 SagoTextureSelector::SagoTextureSelector() {
+	grid_size = Config::getInstance()->getInt(editor_texture_grid_size, 32);
 }
 
 SagoTextureSelector::~SagoTextureSelector() {
@@ -225,8 +257,7 @@ bool SagoTextureSelector::IsActive() {
 	return isActive;
 }
 
-void SagoTextureSelector::ProcessInput(const SDL_Event& event, bool& processed) {
-	ImGui_ImplSDL2_ProcessEvent(&event);
+void SagoTextureSelector::ProcessInput(const SDL_Event& event, bool &processed) {
 }
 
 void SagoTextureSelector::Draw(SDL_Renderer* target) {

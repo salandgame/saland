@@ -66,7 +66,6 @@ void dieOnNullptr(bool, const char* msg);
  */
 double str2double(const std::string &str2parse) __attribute__((const));
 
-
 class TimeHandler
 {
 public:
@@ -126,6 +125,11 @@ public:
 	 *Returns "0" if varName does not exist or cannot be parsed.
 	 */
 	int getInt(const std::string &varName);
+
+	/**
+	 * Gets an int. If not set will set a default value.
+	 */
+	int getInt(const std::string& varName, int defaultValue);
 
 	/*getValue(varName)
 	 *Looks in the config file and returns the double that matches the key "varName"
