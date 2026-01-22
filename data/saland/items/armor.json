@@ -2,7 +2,7 @@
 	"items": [
 		{
 			"itemid" : "armor_blouse_black",
-			"sprite" : "female_standing_blouse_black_N",
+			"sprite" : "female_standing_blouse_black_S",
 			"sprite2" : "",
 			"armor_upper_body" : "blouse_black",
 			"armor_restriction" : ["female"],
@@ -12,5 +12,32 @@
 			"health" : 20,
 			"pickup" : true
 		}
+		,
+		{
+			"itemid" : "armor_pirate_shirt_sky",
+			"sprite" : "female_standing_pirate_shirt_sky_S",
+			"sprite2" : "",
+			"armor_upper_body" : "pirate_shirt_sky",
+			"armor_restriction" : ["female"],
+			"radius" : 16.0,
+			"isStatic" : false,
+			"isDestructible" : false,
+			"health" : 20,
+			"pickup" : true
+		}
+		,
+		{
+			"itemid" : "armor_basic_pants",
+			"sprite" : "male_standing_pants_1_S",
+			"sprite2" : "",
+			"armor_lower_body" : "pants_1",
+			"armor_restriction" : ["male", "female"],
+			"radius" : 16.0,
+			"isStatic" : false,
+			"isDestructible" : false,
+			"health" : 20,
+			"pickup" : true
+		}
+
 	]
 }
