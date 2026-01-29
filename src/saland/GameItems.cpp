@@ -79,6 +79,21 @@ static void ReadItemFile(const std::string& filename) {
 						if (member.name == "pickup") {
 							new_item.pickup = member.value.GetBool();
 						}
+						if (member.name == "armor_upper_body") {
+							new_item.armor_upper_body = member.value.GetString();
+						}
+						if (member.name == "armor_lower_body") {
+							new_item.armor_lower_body = member.value.GetString();
+						}
+						if (member.name == "armor_restriction") {
+							if (member.value.IsArray()) {
+								for (const auto& restriction : member.value.GetArray()) {
+									if (restriction.IsString()) {
+										new_item.armor_restriction.push_back(restriction.GetString());
+									}
+								}
+							}
+						}
 					}
 					all_items[new_item.itemid] = new_item;
 				}

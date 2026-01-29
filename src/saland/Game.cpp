@@ -28,6 +28,7 @@ https://github.com/sago007/saland
 #include "GameRegion.hpp"
 #include "Game.hpp"
 #include "GameShop.hpp"
+#include "GameItems.hpp"
 #include "model/World.hpp"
 #include "../sagotmx/tmx_struct.h"
 #include "../sago/SagoMisc.hpp"
@@ -230,14 +231,24 @@ void ApplyEquippedItems(Player& player) {
 		auto it = player.item_inventory.find(itemName);
 		if (it != player.item_inventory.end()) {
 			// Item is in inventory, apply its effects
-			if (itemName == "armor_basic_pants") {
-				player.visible_bottom = "pants_1";
-			}
-			if (itemName == "armor_pirate_shirt_sky" && player.race == "female") {
-				player.visible_top = "pirate_shirt_sky";
-			}
-			if (itemName == "armor_blouse_black" && player.race == "female") {
-				player.visible_top = "blouse_black";
+			if (itemExists(itemName)) {
+				const ItemDef& item = getItem(itemName);
+				// Check if player race matches armor restrictions
+				bool race_allowed = item.armor_restriction.empty();
+				for (const std::string& allowed_race : item.armor_restriction) {
+					if (allowed_race == player.race) {
+						race_allowed = true;
+						break;
+					}
+				}
+				if (race_allowed) {
+					if (!item.armor_upper_body.empty()) {
+						player.visible_top = item.armor_upper_body;
+					}
+					if (!item.armor_lower_body.empty()) {
+						player.visible_bottom = item.armor_lower_body;
+					}
+				}
 			}
 		}
 	}
