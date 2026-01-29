@@ -223,6 +223,26 @@ static SpawnPoint GetSpawnpoint(const sago::tiled::TileMap& tm) {
 	return ret;
 }
 
+void ApplyEquippedItems(Player& player) {
+	player.visible_bottom = "";
+	player.visible_top = "";
+	for (const std::string& itemName : player.equipped_items) {
+		auto it = player.item_inventory.find(itemName);
+		if (it != player.item_inventory.end()) {
+			// Item is in inventory, apply its effects
+			if (itemName == "armor_basic_pants") {
+				player.visible_bottom = "pants_1";
+			}
+			if (itemName == "armor_pirate_shirt_sky" && player.race == "female") {
+				player.visible_top = "pirate_shirt_sky";
+			}
+			if (itemName == "armor_blouse_black" && player.race == "female") {
+				player.visible_top = "blouse_black";
+			}
+		}
+	}
+}
+
 void PlayerSave() {
 	std::string playername = Config::getInstance()->getString("player");
 	nlohmann::json j = globalData.player;
@@ -237,6 +257,7 @@ void PlayerLoad() {
 		j = nlohmann::json::parse(sago::GetFileContent(filename.c_str()));
 		globalData.player = j;
 	}
+	ApplyEquippedItems(globalData.player);
 }
 
 void Game::ResetWorldNoSave(int x, int y, bool forceResetWorld) {

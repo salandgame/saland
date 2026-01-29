@@ -26,6 +26,7 @@ https://github.com/sago007/saland
 
 #include <string>
 #include <map>
+#include <vector>
 #include "nlohmann/json.hpp"
 
 struct Player {
@@ -33,6 +34,8 @@ struct Player {
 	std::string save_name="player1";
 	std::string race = "female";
 	std::string hair = "standard_hair";
+	std::string visible_bottom;
+	std::string visible_top;
 	std::string get_visible_race() {
 		return this->race;
 	}
@@ -40,21 +43,28 @@ struct Player {
 		return this->hair;
 	}
 	std::string get_visible_bottom() {
+		if (visible_bottom != "") {
+			return visible_bottom;
+		}
 		return "pants_1";
 	}
 	std::string get_visible_top() {
+		if (visible_top != "") {
+			return visible_top;
+		}
 		if (race == "male") {
 			return "";
 		}
 		return "pirate_shirt_sky";
 	}
-	std::string get_visibla_hat() {
+	std::string get_visible_hat() {
 		return "";
 	}
 	std::string get_visible_shoes() {
 		return "";
 	}
 	std::map<std::string, int> item_inventory;
+	std::vector<std::string> equipped_items = {"armor_basic_pants"};
 };
 
 void to_json(nlohmann::json& j, const Player& p);
