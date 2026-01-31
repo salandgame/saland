@@ -79,5 +79,6 @@ extern GlobalData globalData;
 // Player save/load functions
 void PlayerSave();
 void PlayerLoad();
+void ApplyEquippedItems(Player& player);
 
 #endif /* GLOBALS_HPP */

@@ -29,6 +29,7 @@ https://github.com/sago007/saland
 #include "Game.hpp"
 #include "GameShop.hpp"
 #include "GameItems.hpp"
+#include "GameInventoryState.hpp"
 #include "model/World.hpp"
 #include "../sagotmx/tmx_struct.h"
 #include "../sago/SagoMisc.hpp"
@@ -203,6 +204,7 @@ struct Game::GameImpl {
 	std::shared_ptr<SpellHolder> spell_holder;
 	std::shared_ptr<Console> console;
 	std::shared_ptr<GameSpellState> spellSelect;
+	std::shared_ptr<GameInventoryState> inventoryState;
 	bool consoleActive = false;
 	bool debugMenuActive = false;
 	int brushSize = 1; // Size of brush for tile placement/removal (1-5)
@@ -227,30 +229,58 @@ static SpawnPoint GetSpawnpoint(const sago::tiled::TileMap& tm) {
 void ApplyEquippedItems(Player& player) {
 	player.visible_bottom = "";
 	player.visible_top = "";
+
+	// Track which items are actually being used for each slot
+	std::string active_upper_item = "";
+	std::string active_lower_item = "";
+	std::vector<std::string> items_to_keep;
+
+	// First pass: find the last valid item for each slot
 	for (const std::string& itemName : player.equipped_items) {
 		auto it = player.item_inventory.find(itemName);
-		if (it != player.item_inventory.end()) {
-			// Item is in inventory, apply its effects
-			if (itemExists(itemName)) {
-				const ItemDef& item = getItem(itemName);
-				// Check if player race matches armor restrictions
-				bool race_allowed = item.armor_restriction.empty();
-				for (const std::string& allowed_race : item.armor_restriction) {
-					if (allowed_race == player.race) {
-						race_allowed = true;
-						break;
-					}
+		if (it != player.item_inventory.end() && itemExists(itemName)) {
+			const ItemDef& item = getItem(itemName);
+			// Check if player race matches armor restrictions
+			bool race_allowed = item.armor_restriction.empty();
+			for (const std::string& allowed_race : item.armor_restriction) {
+				if (allowed_race == player.race) {
+					race_allowed = true;
+					break;
 				}
-				if (race_allowed) {
-					if (!item.armor_upper_body.empty()) {
-						player.visible_top = item.armor_upper_body;
-					}
-					if (!item.armor_lower_body.empty()) {
-						player.visible_bottom = item.armor_lower_body;
-					}
+			}
+			if (race_allowed) {
+				// Track the last item for each slot
+				if (!item.armor_upper_body.empty()) {
+					active_upper_item = itemName;
+				}
+				if (!item.armor_lower_body.empty()) {
+					active_lower_item = itemName;
 				}
 			}
 		}
+	}
+
+	// Second pass: rebuild equipped_items with only one item per slot
+	for (const std::string& itemName : player.equipped_items) {
+		if (itemName == active_upper_item || itemName == active_lower_item) {
+			// Only keep this item if we haven't already added it
+			if (std::find(items_to_keep.begin(), items_to_keep.end(), itemName) == items_to_keep.end()) {
+				items_to_keep.push_back(itemName);
+			}
+		}
+	}
+
+	// Update the equipped items list
+	player.equipped_items = items_to_keep;
+
+	// Apply visual effects
+	if (!active_upper_item.empty() && itemExists(active_upper_item)) {
+		const ItemDef& item = getItem(active_upper_item);
+		player.visible_top = item.armor_upper_body;
+	}
+	if (!active_lower_item.empty() && itemExists(active_lower_item)) {
+		const ItemDef& item = getItem(active_lower_item);
+		player.visible_bottom = item.armor_lower_body;
 	}
 }
 
@@ -320,6 +350,7 @@ Game::Game() {
 	data->middleField.SetHolder(globalData.dataHolder);
 	data->middleField.SetFontSize(20);
 	data->spellSelect = std::make_shared<GameSpellState>();
+	data->inventoryState = std::make_shared<GameInventoryState>();
 	data->spell_holder = std::make_shared<SpellHolder>();
 	data->spellSelect->spell_holder = data->spell_holder;
 	data->spellSelect->tm = &data->gameRegion.world.tm;
@@ -475,6 +506,7 @@ void Game::Draw(SDL_Renderer* target) {
 	data->middleField.Draw(target, screen_width/2, screen_height/4, sago::SagoTextField::Alignment::center, sago::SagoTextField::VerticalAlignment::bottom, &globalData.logicalResize);
 
 	data->spellSelect->Draw(target);
+	data->inventoryState->Draw(target);
 
 
 	// Draw black bars where globalData.logicalResize suggests that the physical area ends.
@@ -570,6 +602,10 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 		}
 	}
 	data->spellSelect->ProcessInput(event, processed);
+	if (processed) {
+		return;
+	}
+	data->inventoryState->ProcessInput(event, processed);
 	if (processed) {
 		return;
 	}
