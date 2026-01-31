@@ -445,6 +445,10 @@ void Game::Draw(SDL_Renderer* target) {
 	if (data->topy+screen_height > data->gameRegion.world.tm.height*32+screen_boarder) {
 		data->topy = data->gameRegion.world.tm.height*32+screen_boarder-screen_height;
 	}
+	data->human->pants = globalData.player.get_visible_bottom();
+	data->human->hair = globalData.player.get_visible_hair();
+	data->human->race = globalData.player.get_visible_race();
+	data->human->top = globalData.player.get_visible_top();
 	std::sort(data->gameRegion.placeables.begin(), data->gameRegion.placeables.end(),sort_placeable);
 	SDL_Texture* texture = globalData.spriteHolder->GetDataHolder().getTexturePtr("terrain");
 	DrawOuterBorder(target, texture, data->gameRegion.world.tm, data->topx, data->topy, data->gameRegion.outerTile, &globalData.logicalResize);
