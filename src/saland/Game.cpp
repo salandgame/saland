@@ -412,7 +412,7 @@ static std::string GetLayerInfoForTile(const World& w, int x, int y) {
 	return ret.str();
 }
 
-static void DrawDebugMenu(SDL_Renderer* target) {
+static void DrawDebugMenu(SDL_Renderer*) {
 	ImGui::Begin("Debug menu");
 	//ImGui::Text("Hello, world!");
 	if (ImGui::Button("Toggle overlay")) {

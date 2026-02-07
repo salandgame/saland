@@ -241,9 +241,6 @@ void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, cons
 	}
 	if (entity->hair.length() > 0) {
 		std::string hairAnimation = animation;
-		if (hairAnimation == "spellcast") {
-			hairAnimation = "standing";
-		}
 		const sago::SagoSprite& myHair = sHolder->GetSprite(entity->race + "_"+hairAnimation+"_"+entity->hair+"_"+std::string(1,entity->direction));
 		if (relativeAnimation) {
 			myHair.DrawProgressive(target, relativeAnimationState, x, y, resize);

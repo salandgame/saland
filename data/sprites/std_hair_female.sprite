@@ -144,6 +144,54 @@
 	"originy" : 50
 },
 
+"female_spellcast_standard_hair_N" :  {
+	"texture" : "std_hair/ponytail2-female/redhead",
+	"topx" : 0,
+	"topy" : 1024,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 7,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 50
+},
+
+"female_spellcast_standard_hair_W" :  {
+	"texture" : "std_hair/ponytail2-female/redhead",
+	"topx" : 0,
+	"topy" : 1088,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 7,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 50
+},
+
+"female_spellcast_standard_hair_S" :  {
+	"texture" : "std_hair/ponytail2-female/redhead",
+	"topx" : 0,
+	"topy" : 1152,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 7,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 50
+},
+
+"female_spellcast_standard_hair_E" :  {
+	"texture" : "std_hair/ponytail2-female/redhead",
+	"topx" : 0,
+	"topy" : 1216,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 7,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 50
+},
+
 "female_hurt_standard_hair_S" :  {
 	"texture" : "std_hair/ponytail2-female/redhead",
 	"topx" : 0,
