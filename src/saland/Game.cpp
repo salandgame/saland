@@ -609,9 +609,11 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 	if (processed) {
 		return;
 	}
-	data->inventoryState->ProcessInput(event, processed);
-	if (processed) {
-		return;
+	if (!data->consoleActive) {
+		data->inventoryState->ProcessInput(event, processed);
+		if (processed) {
+			return;
+		}
 	}
 	if (event.type == SDL_KEYDOWN) {
 		if (event.key.keysym.sym == SDLK_1 || event.key.keysym.sym == SDLK_KP_1) {
