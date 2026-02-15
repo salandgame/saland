@@ -38,6 +38,19 @@
 			"health" : 20,
 			"pickup" : true
 		}
+		,
+		{
+			"itemid" : "armor_pants2_black",
+			"sprite" : "male_standing_pants2_black_S",
+			"sprite2" : "",
+			"armor_lower_body" : "pants2_black",
+			"armor_restriction" : ["male", "female"],
+			"radius" : 16.0,
+			"isStatic" : false,
+			"isDestructible" : false,
+			"health" : 20,
+			"pickup" : true
+		}
 
 	]
 }
