@@ -45,6 +45,7 @@ public:
 	std::vector<bool> protected_tiles;
 	std::vector<bool> blocking_tiles;
 	int ground2Layer = -1;
+	int ground2OverlayLayer = -1;
 	int blockingLayer = -1;
 	int blockingLayer_overlay_1 = -1;
 };

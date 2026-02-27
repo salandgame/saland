@@ -319,6 +319,9 @@ void GameRegion::InitCommon() {
 	liqudHandler["lava"].blockingLayer = world.blockingLayer;
 	liqudHandler["lava"].blockingLayer_overlay_1 = world.blockingLayer_overlay_1;
 	liqudHandler["lava"].setupTiles(16);
+	liqudHandler["ground"].blockingLayer = world.ground2Layer;
+	liqudHandler["ground"].blockingLayer_overlay_1 = world.ground2OverlayLayer;
+	liqudHandler["ground"].setupTiles(1);
 
 }
 

@@ -208,8 +208,9 @@ static void bubble_layer_after(sago::tiled::TileMap& tm, const char* layer, cons
 	}
 }
 
-static void init_tilemap(sago::tiled::TileMap& tm, int& ground2Layer, int& blockingLayer, int& blockingLayer_overlay_1) {
+static void init_tilemap(sago::tiled::TileMap& tm, int& ground2Layer, int& ground2OverlayLayer, int& blockingLayer, int& blockingLayer_overlay_1) {
 	ground2Layer = -1;
+	ground2OverlayLayer = -1;
 	blockingLayer = -1;
 	blockingLayer_overlay_1 = -1;
 	int prefab_layer_ground = -1;
@@ -218,6 +219,9 @@ static void init_tilemap(sago::tiled::TileMap& tm, int& ground2Layer, int& block
 	for (size_t i=0; i < tm.layers.size(); ++i) {
 		if (tm.layers[i].name == "ground_2") {
 			ground2Layer = i;
+		}
+		if (tm.layers[i].name == "ground_2_overlay_1") {
+			ground2OverlayLayer = i;
 		}
 		if (tm.layers[i].name == "blocking") {
 			blockingLayer = i;
@@ -235,6 +239,9 @@ static void init_tilemap(sago::tiled::TileMap& tm, int& ground2Layer, int& block
 			prefab_blocking_2 = i;
 		}
 	}
+	if (ground2OverlayLayer == -1) {
+		ground2OverlayLayer = append_layer(tm, "ground_2_overlay_1");
+	}
 	if (prefab_layer_ground == -1) {
 		append_layer(tm, "prefab_ground_1");
 	}
@@ -250,6 +257,8 @@ static void init_tilemap(sago::tiled::TileMap& tm, int& ground2Layer, int& block
 	if (prefab_layer_overlay == -1) {
 		append_layer(tm, "prefab_overlay_1");
 	}
+	bubble_layer_after(tm, "ground_2_overlay_1", "ground_2");
+	bubble_layer_after(tm, "prefab_ground_1", "ground_2_overlay_1");
 	bubble_layer_after(tm, "blocking", "prefab_ground_1");
 	bubble_layer_after(tm, "prefab_blocking_2", "blocking");
 	bubble_layer_after(tm, "blocking_overlay_1", "prefab_blocking_2");
@@ -259,6 +268,9 @@ static void init_tilemap(sago::tiled::TileMap& tm, int& ground2Layer, int& block
 	for (size_t i=0; i < tm.layers.size(); ++i) {
 		if (tm.layers[i].name == "ground_2") {
 			ground2Layer = i;
+		}
+		if (tm.layers[i].name == "ground_2_overlay_1") {
+			ground2OverlayLayer = i;
 		}
 		if (tm.layers[i].name == "blocking") {
 			blockingLayer = i;
@@ -281,7 +293,7 @@ void World::init(std::shared_ptr<b2World>& world, const std::string& mapFileName
 			tm.tileset[i].alternativeSource = &ts.back();
 		}
 	}
-	init_tilemap(tm, ground2Layer, blockingLayer, blockingLayer_overlay_1);
+	init_tilemap(tm, ground2Layer, ground2OverlayLayer, blockingLayer, blockingLayer_overlay_1);
 	init_physics(world);
 	protected_tiles.resize(tm.height*tm.width);
 

@@ -453,7 +453,8 @@ void Game::Draw(SDL_Renderer* target) {
 	SDL_Texture* texture = globalData.spriteHolder->GetDataHolder().getTexturePtr("terrain");
 	DrawOuterBorder(target, texture, data->gameRegion.world.tm, data->topx, data->topy, data->gameRegion.outerTile, &globalData.logicalResize);
 	for (size_t i = 0; i < data->gameRegion.world.tm.layers.size(); ++i) {
-		if (std::string(data->gameRegion.world.tm.layers.at(i).name).find("overlay",0) == std::string::npos ) {
+		const std::string& layerName = data->gameRegion.world.tm.layers.at(i).name;
+		if (layerName.find("overlay",0) == std::string::npos || layerName.find("ground",0) != std::string::npos) {
 			DrawLayer(target, globalData.spriteHolder.get(), data->gameRegion.world.tm, i, data->topx, data->topy, &globalData.logicalResize);
 		}
 	}
@@ -494,7 +495,8 @@ void Game::Draw(SDL_Renderer* target) {
 		}
 	}
 	for (size_t i = 0; i < data->gameRegion.world.tm.layers.size(); ++i) {
-		if (std::string(data->gameRegion.world.tm.layers.at(i).name).find("overlay",0) != std::string::npos ) {
+		const std::string& layerName = data->gameRegion.world.tm.layers.at(i).name;
+		if (layerName.find("overlay",0) != std::string::npos && layerName.find("ground",0) == std::string::npos) {
 			DrawLayer(target, globalData.spriteHolder.get(), data->gameRegion.world.tm, i, data->topx, data->topy, &globalData.logicalResize);
 		}
 	}
@@ -1081,6 +1083,7 @@ void Game::Update() {
 							if (sago::tiled::tileInBound(data->gameRegion.world.tm, tile_x, tile_y)
 							        && !(data->gameRegion.world.tile_protected(tile_x, tile_y)) ) {
 								sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
+								data->gameRegion.liqudHandler["ground"].updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
 							}
 						}
 					}
