@@ -37,6 +37,11 @@
 			"type" : "tile"
 		}
 		,{
+			"name" : "spell_create_ground",
+			"tile" : 1,
+			"type" : "tile"
+		}
+		,{
 			"icon" : "item_food_potato",
 			"name" : "spell_spawn_item",
 			"item_name" : "food_potato"

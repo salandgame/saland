@@ -208,13 +208,17 @@ static void bubble_layer_after(sago::tiled::TileMap& tm, const char* layer, cons
 	}
 }
 
-static void init_tilemap(sago::tiled::TileMap& tm, int& blockingLayer, int& blockingLayer_overlay_1) {
+static void init_tilemap(sago::tiled::TileMap& tm, int& ground2Layer, int& blockingLayer, int& blockingLayer_overlay_1) {
+	ground2Layer = -1;
 	blockingLayer = -1;
 	blockingLayer_overlay_1 = -1;
 	int prefab_layer_ground = -1;
 	int prefab_blocking_2 = -1;
 	int prefab_layer_overlay = -1;
 	for (size_t i=0; i < tm.layers.size(); ++i) {
+		if (tm.layers[i].name == "ground_2") {
+			ground2Layer = i;
+		}
 		if (tm.layers[i].name == "blocking") {
 			blockingLayer = i;
 		}
@@ -251,8 +255,11 @@ static void init_tilemap(sago::tiled::TileMap& tm, int& blockingLayer, int& bloc
 	bubble_layer_after(tm, "blocking_overlay_1", "prefab_blocking_2");
 	bubble_layer_after(tm, "prefab_overlay_1", "blocking_overlay_1");
 	bubble_layer_after(tm, "overlay_1", "prefab_overlay_1");
-	// Recheck blocking and blocking_overlay_1 layers as they might have been shifted while sorting.
+	// Recheck layers as they might have been shifted while sorting.
 	for (size_t i=0; i < tm.layers.size(); ++i) {
+		if (tm.layers[i].name == "ground_2") {
+			ground2Layer = i;
+		}
 		if (tm.layers[i].name == "blocking") {
 			blockingLayer = i;
 		}
@@ -274,7 +281,7 @@ void World::init(std::shared_ptr<b2World>& world, const std::string& mapFileName
 			tm.tileset[i].alternativeSource = &ts.back();
 		}
 	}
-	init_tilemap(tm, blockingLayer, blockingLayer_overlay_1);
+	init_tilemap(tm, ground2Layer, blockingLayer, blockingLayer_overlay_1);
 	init_physics(world);
 	protected_tiles.resize(tm.height*tm.width);
 
