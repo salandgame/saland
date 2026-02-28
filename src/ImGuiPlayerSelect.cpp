@@ -292,6 +292,11 @@ void ImGuiPlayerSelect::Draw(SDL_Renderer* target) {
 		// Draw base character
 		baseSprite.Draw(target, animationTime, static_cast<int>(previewX), static_cast<int>(previewY), nullptr);
 
+		// Draw head
+		std::string headSpriteName = editingPlayer.get_visible_race() + "_head_walkcycle_W";
+		const sago::SagoSprite& headSprite = globalData.spriteHolder->GetSprite(headSpriteName);
+		headSprite.Draw(target, animationTime, static_cast<int>(previewX), static_cast<int>(previewY), nullptr);
+
 		// Draw pants if available
 		std::string bottom = editingPlayer.get_visible_bottom();
 		if (bottom.length()) {

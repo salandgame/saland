@@ -2,7 +2,7 @@
 "_comment" : "This file is generated with extra/scripts/build_sprites.sh. Do not edit."
 ,
 "male_walkcycle_N" : {
-"texture" : "male_walkcycle",
+"texture" : "spritesheet/body/bodies/male/walk",
 "topx" : 64,
 "topy" : 0,
 "height" : 64,
@@ -14,7 +14,7 @@
 }
 ,
 "male_walkcycle_W" : {
-"texture" : "male_walkcycle",
+"texture" : "spritesheet/body/bodies/male/walk",
 "topx" : 64,
 "topy" : 64,
 "height" : 64,
@@ -26,7 +26,7 @@
 }
 ,
 "male_walkcycle_S" : {
-"texture" : "male_walkcycle",
+"texture" : "spritesheet/body/bodies/male/walk",
 "topx" : 64,
 "topy" : 128,
 "height" : 64,
@@ -38,7 +38,7 @@
 }
 ,
 "male_walkcycle_E" : {
-"texture" : "male_walkcycle",
+"texture" : "spritesheet/body/bodies/male/walk",
 "topx" : 64,
 "topy" : 192,
 "height" : 64,
@@ -50,7 +50,7 @@
 }
 ,
 "male_standing_N" : {
-"texture" : "male_walkcycle",
+"texture" : "spritesheet/body/bodies/male/idle",
 "topx" : 0,
 "topy" : 0,
 "height" : 64,
@@ -62,7 +62,7 @@
 }
 ,
 "male_standing_W" : {
-"texture" : "male_walkcycle",
+"texture" : "spritesheet/body/bodies/male/idle",
 "topx" : 0,
 "topy" : 64,
 "height" : 64,
@@ -74,7 +74,7 @@
 }
 ,
 "male_standing_S" : {
-"texture" : "male_walkcycle",
+"texture" : "spritesheet/body/bodies/male/idle",
 "topx" : 0,
 "topy" : 128,
 "height" : 64,
@@ -86,7 +86,7 @@
 }
 ,
 "male_standing_E" : {
-"texture" : "male_walkcycle",
+"texture" : "spritesheet/body/bodies/male/idle",
 "topx" : 0,
 "topy" : 192,
 "height" : 64,
@@ -98,7 +98,7 @@
 }
 ,
 "male_spellcast_N" : {
-"texture" : "male_spellcast",
+"texture" : "spritesheet/body/bodies/male/spellcast",
 "topx" : 0,
 "topy" : 0,
 "height" : 64,
@@ -110,7 +110,7 @@
 }
 ,
 "male_spellcast_W" : {
-"texture" : "male_spellcast",
+"texture" : "spritesheet/body/bodies/male/spellcast",
 "topx" : 0,
 "topy" : 64,
 "height" : 64,
@@ -122,7 +122,7 @@
 }
 ,
 "male_spellcast_S" : {
-"texture" : "male_spellcast",
+"texture" : "spritesheet/body/bodies/male/spellcast",
 "topx" : 0,
 "topy" : 128,
 "height" : 64,
@@ -134,7 +134,7 @@
 }
 ,
 "male_spellcast_E" : {
-"texture" : "male_spellcast",
+"texture" : "spritesheet/body/bodies/male/spellcast",
 "topx" : 0,
 "topy" : 192,
 "height" : 64,
@@ -146,7 +146,7 @@
 }
 ,
 "male_slash_N" : {
-"texture" : "male_slash",
+"texture" : "spritesheet/body/bodies/male/slash",
 "topx" : 0,
 "topy" : 0,
 "height" : 64,
@@ -158,7 +158,7 @@
 }
 ,
 "male_slash_W" : {
-"texture" : "male_slash",
+"texture" : "spritesheet/body/bodies/male/slash",
 "topx" : 0,
 "topy" : 64,
 "height" : 64,
@@ -170,7 +170,7 @@
 }
 ,
 "male_slash_S" : {
-"texture" : "male_slash",
+"texture" : "spritesheet/body/bodies/male/slash",
 "topx" : 0,
 "topy" : 128,
 "height" : 64,
@@ -182,7 +182,7 @@
 }
 ,
 "male_slash_E" : {
-"texture" : "male_slash",
+"texture" : "spritesheet/body/bodies/male/slash",
 "topx" : 0,
 "topy" : 192,
 "height" : 64,
@@ -194,7 +194,211 @@
 }
 ,
 "male_hurt_S" : {
-"texture" : "male_hurt",
+"texture" : "spritesheet/body/bodies/male/hurt",
+"topx" : 0,
+"topy" : 0,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 6,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"male_head_walkcycle_N" : {
+"texture" : "spritesheet/head/heads/human/male/walk",
+"topx" : 64,
+"topy" : 0,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 8,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"male_head_walkcycle_W" : {
+"texture" : "spritesheet/head/heads/human/male/walk",
+"topx" : 64,
+"topy" : 64,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 8,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"male_head_walkcycle_S" : {
+"texture" : "spritesheet/head/heads/human/male/walk",
+"topx" : 64,
+"topy" : 128,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 8,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"male_head_walkcycle_E" : {
+"texture" : "spritesheet/head/heads/human/male/walk",
+"topx" : 64,
+"topy" : 192,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 8,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"male_head_standing_N" : {
+"texture" : "spritesheet/head/heads/human/male/idle",
+"topx" : 0,
+"topy" : 0,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 1,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"male_head_standing_W" : {
+"texture" : "spritesheet/head/heads/human/male/idle",
+"topx" : 0,
+"topy" : 64,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 1,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"male_head_standing_S" : {
+"texture" : "spritesheet/head/heads/human/male/idle",
+"topx" : 0,
+"topy" : 128,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 1,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"male_head_standing_E" : {
+"texture" : "spritesheet/head/heads/human/male/idle",
+"topx" : 0,
+"topy" : 192,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 1,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"male_head_spellcast_N" : {
+"texture" : "spritesheet/head/heads/human/male/spellcast",
+"topx" : 0,
+"topy" : 0,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 7,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"male_head_spellcast_W" : {
+"texture" : "spritesheet/head/heads/human/male/spellcast",
+"topx" : 0,
+"topy" : 64,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 7,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"male_head_spellcast_S" : {
+"texture" : "spritesheet/head/heads/human/male/spellcast",
+"topx" : 0,
+"topy" : 128,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 7,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"male_head_spellcast_E" : {
+"texture" : "spritesheet/head/heads/human/male/spellcast",
+"topx" : 0,
+"topy" : 192,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 7,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"male_head_slash_N" : {
+"texture" : "spritesheet/head/heads/human/male/slash",
+"topx" : 0,
+"topy" : 0,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 6,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"male_head_slash_W" : {
+"texture" : "spritesheet/head/heads/human/male/slash",
+"topx" : 0,
+"topy" : 64,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 6,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"male_head_slash_S" : {
+"texture" : "spritesheet/head/heads/human/male/slash",
+"topx" : 0,
+"topy" : 128,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 6,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"male_head_slash_E" : {
+"texture" : "spritesheet/head/heads/human/male/slash",
+"topx" : 0,
+"topy" : 192,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 6,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"male_head_hurt_S" : {
+"texture" : "spritesheet/head/heads/human/male/hurt",
 "topx" : 0,
 "topy" : 0,
 "height" : 64,
@@ -206,7 +410,7 @@
 }
 ,
 "female_walkcycle_N" : {
-"texture" : "female_walkcycle",
+"texture" : "spritesheet/body/bodies/female/walk",
 "topx" : 64,
 "topy" : 0,
 "height" : 64,
@@ -218,7 +422,7 @@
 }
 ,
 "female_walkcycle_W" : {
-"texture" : "female_walkcycle",
+"texture" : "spritesheet/body/bodies/female/walk",
 "topx" : 64,
 "topy" : 64,
 "height" : 64,
@@ -230,7 +434,7 @@
 }
 ,
 "female_walkcycle_S" : {
-"texture" : "female_walkcycle",
+"texture" : "spritesheet/body/bodies/female/walk",
 "topx" : 64,
 "topy" : 128,
 "height" : 64,
@@ -242,7 +446,7 @@
 }
 ,
 "female_walkcycle_E" : {
-"texture" : "female_walkcycle",
+"texture" : "spritesheet/body/bodies/female/walk",
 "topx" : 64,
 "topy" : 192,
 "height" : 64,
@@ -254,7 +458,7 @@
 }
 ,
 "female_standing_N" : {
-"texture" : "female_walkcycle",
+"texture" : "spritesheet/body/bodies/female/idle",
 "topx" : 0,
 "topy" : 0,
 "height" : 64,
@@ -266,7 +470,7 @@
 }
 ,
 "female_standing_W" : {
-"texture" : "female_walkcycle",
+"texture" : "spritesheet/body/bodies/female/idle",
 "topx" : 0,
 "topy" : 64,
 "height" : 64,
@@ -278,7 +482,7 @@
 }
 ,
 "female_standing_S" : {
-"texture" : "female_walkcycle",
+"texture" : "spritesheet/body/bodies/female/idle",
 "topx" : 0,
 "topy" : 128,
 "height" : 64,
@@ -290,7 +494,7 @@
 }
 ,
 "female_standing_E" : {
-"texture" : "female_walkcycle",
+"texture" : "spritesheet/body/bodies/female/idle",
 "topx" : 0,
 "topy" : 192,
 "height" : 64,
@@ -302,7 +506,7 @@
 }
 ,
 "female_spellcast_N" : {
-"texture" : "female_spellcast",
+"texture" : "spritesheet/body/bodies/female/spellcast",
 "topx" : 0,
 "topy" : 0,
 "height" : 64,
@@ -314,7 +518,7 @@
 }
 ,
 "female_spellcast_W" : {
-"texture" : "female_spellcast",
+"texture" : "spritesheet/body/bodies/female/spellcast",
 "topx" : 0,
 "topy" : 64,
 "height" : 64,
@@ -326,7 +530,7 @@
 }
 ,
 "female_spellcast_S" : {
-"texture" : "female_spellcast",
+"texture" : "spritesheet/body/bodies/female/spellcast",
 "topx" : 0,
 "topy" : 128,
 "height" : 64,
@@ -338,7 +542,7 @@
 }
 ,
 "female_spellcast_E" : {
-"texture" : "female_spellcast",
+"texture" : "spritesheet/body/bodies/female/spellcast",
 "topx" : 0,
 "topy" : 192,
 "height" : 64,
@@ -350,7 +554,7 @@
 }
 ,
 "female_slash_N" : {
-"texture" : "female_slash",
+"texture" : "spritesheet/body/bodies/female/slash",
 "topx" : 0,
 "topy" : 0,
 "height" : 64,
@@ -362,7 +566,7 @@
 }
 ,
 "female_slash_W" : {
-"texture" : "female_slash",
+"texture" : "spritesheet/body/bodies/female/slash",
 "topx" : 0,
 "topy" : 64,
 "height" : 64,
@@ -374,7 +578,7 @@
 }
 ,
 "female_slash_S" : {
-"texture" : "female_slash",
+"texture" : "spritesheet/body/bodies/female/slash",
 "topx" : 0,
 "topy" : 128,
 "height" : 64,
@@ -386,7 +590,7 @@
 }
 ,
 "female_slash_E" : {
-"texture" : "female_slash",
+"texture" : "spritesheet/body/bodies/female/slash",
 "topx" : 0,
 "topy" : 192,
 "height" : 64,
@@ -398,7 +602,211 @@
 }
 ,
 "female_hurt_S" : {
-"texture" : "female_hurt",
+"texture" : "spritesheet/body/bodies/female/hurt",
+"topx" : 0,
+"topy" : 0,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 6,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"female_head_walkcycle_N" : {
+"texture" : "spritesheet/head/heads/human/female/walk",
+"topx" : 64,
+"topy" : 0,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 8,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"female_head_walkcycle_W" : {
+"texture" : "spritesheet/head/heads/human/female/walk",
+"topx" : 64,
+"topy" : 64,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 8,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"female_head_walkcycle_S" : {
+"texture" : "spritesheet/head/heads/human/female/walk",
+"topx" : 64,
+"topy" : 128,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 8,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"female_head_walkcycle_E" : {
+"texture" : "spritesheet/head/heads/human/female/walk",
+"topx" : 64,
+"topy" : 192,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 8,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"female_head_standing_N" : {
+"texture" : "spritesheet/head/heads/human/female/idle",
+"topx" : 0,
+"topy" : 0,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 1,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"female_head_standing_W" : {
+"texture" : "spritesheet/head/heads/human/female/idle",
+"topx" : 0,
+"topy" : 64,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 1,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"female_head_standing_S" : {
+"texture" : "spritesheet/head/heads/human/female/idle",
+"topx" : 0,
+"topy" : 128,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 1,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"female_head_standing_E" : {
+"texture" : "spritesheet/head/heads/human/female/idle",
+"topx" : 0,
+"topy" : 192,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 1,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"female_head_spellcast_N" : {
+"texture" : "spritesheet/head/heads/human/female/spellcast",
+"topx" : 0,
+"topy" : 0,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 7,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"female_head_spellcast_W" : {
+"texture" : "spritesheet/head/heads/human/female/spellcast",
+"topx" : 0,
+"topy" : 64,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 7,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"female_head_spellcast_S" : {
+"texture" : "spritesheet/head/heads/human/female/spellcast",
+"topx" : 0,
+"topy" : 128,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 7,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"female_head_spellcast_E" : {
+"texture" : "spritesheet/head/heads/human/female/spellcast",
+"topx" : 0,
+"topy" : 192,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 7,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"female_head_slash_N" : {
+"texture" : "spritesheet/head/heads/human/female/slash",
+"topx" : 0,
+"topy" : 0,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 6,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"female_head_slash_W" : {
+"texture" : "spritesheet/head/heads/human/female/slash",
+"topx" : 0,
+"topy" : 64,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 6,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"female_head_slash_S" : {
+"texture" : "spritesheet/head/heads/human/female/slash",
+"topx" : 0,
+"topy" : 128,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 6,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"female_head_slash_E" : {
+"texture" : "spritesheet/head/heads/human/female/slash",
+"topx" : 0,
+"topy" : 192,
+"height" : 64,
+"width" : 64,
+"number_of_frames" : 6,
+"frame_time" : 100,
+"originx" : 32,
+"originy" : 50
+}
+,
+"female_head_hurt_S" : {
+"texture" : "spritesheet/head/heads/human/female/hurt",
 "topx" : 0,
 "topy" : 0,
 "height" : 64,

@@ -221,6 +221,14 @@ void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, cons
 	else {
 		mySprite.Draw(target, time, x, y, resize);
 	}
+	// Draw head
+	const sago::SagoSprite& myHead = sHolder->GetSprite(entity->race + "_head_" + animation + "_" + std::string(1, entity->direction));
+	if (relativeAnimation) {
+		myHead.DrawProgressive(target, relativeAnimationState, x, y, resize);
+	}
+	else {
+		myHead.Draw(target, time, x, y, resize);
+	}
 	if (entity->pants.length() > 0) {
 		const sago::SagoSprite& myPants = sHolder->GetSprite(entity->race + "_"+animation+"_"+entity->pants+"_"+std::string(1,entity->direction));
 		if (relativeAnimation) {

@@ -11,3 +11,4 @@ saland
 !src/saland
 !data/saland
 nbproject
+*.pyc
