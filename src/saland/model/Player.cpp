@@ -24,13 +24,16 @@ https://github.com/sago007/saland
 #include "Player.hpp"
 
 void to_json(nlohmann::json& j, const Player& p) {
-	j = nlohmann::json{ {"race", p.race}, {"hair", p.hair}, {"item_inventory", p.item_inventory}, {"equipped_items", p.equipped_items} };
+	j = nlohmann::json{ {"race", p.race}, {"hair", p.hair}, {"hair_bg", p.hair_bg}, {"item_inventory", p.item_inventory}, {"equipped_items", p.equipped_items} };
 }
 
 void from_json(const nlohmann::json& j, Player& p) {
 	j.at("race").get_to(p.race);
 	if (j.contains("hair")) {
 		j.at("hair").get_to(p.hair);
+	}
+	if (j.contains("hair_bg")) {
+		j.at("hair_bg").get_to(p.hair_bg);
 	}
 	j.at("item_inventory").get_to(p.item_inventory);
 	if (j.contains("equipped_items")) {

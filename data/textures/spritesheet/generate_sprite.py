@@ -42,6 +42,7 @@ Notes:
     - Texture paths use "male" and "thin" folders (thin = female body type)
     - Standing and walkcycle animations use separate texture folders (idle/walk)
     - Total output: 34 sprite entries (17 per race)
+    - Use --texture-base for items without race-specific folders (e.g. hair)
 
 Examples:
     # Single color:
@@ -50,10 +51,14 @@ Examples:
     # Multiple colors:
     python3 generate_sprite.py pants2 black blue red > ../../sprites/pants2.sprite
     
+    # Custom texture base (no race folder in path):
+    python3 generate_sprite.py --texture-base spritesheet/hair/sara/adult/fg hair_sara black > ../../sprites/hair_sara.sprite
+    
     This generates sprites like:
     - "male_walkcycle_pants2_black_N" -> texture: "spritesheet/pants2/male/walk/black"
     - "male_walkcycle_pants2_blue_N" -> texture: "spritesheet/pants2/male/walk/blue"
     - "female_hurt_pants2_black_S" -> texture: "spritesheet/pants2/thin/hurt/black"
+    - "female_walkcycle_hair_sara_black_N" -> texture: "spritesheet/hair/sara/adult/fg/walk/black"
 """
 
 import sys
@@ -93,13 +98,15 @@ DIRECTIONS = {
     "E": 192
 }
 
-def generate_sprite_entry(race, animation, item_name, color, direction, topx=0):
+def generate_sprite_entry(race, animation, item_name, color, direction, topx=0, texture_base=None):
     """Generate a single sprite entry"""
-    race_folder = RACE_FOLDER_MAP.get(race, race)
     animation_folder = ANIMATION_FOLDER.get(animation, animation)
     
-    # Texture path: spritesheet/{item_name}/{race_folder}/{animation_folder}/{color}
-    texture_name = f"spritesheet/{item_name}/{race_folder}/{animation_folder}/{color}"
+    if texture_base:
+        texture_name = f"{texture_base}/{animation_folder}/{color}"
+    else:
+        race_folder = RACE_FOLDER_MAP.get(race, race)
+        texture_name = f"spritesheet/{item_name}/{race_folder}/{animation_folder}/{color}"
     # Sprite name: {race}_{animation}_{item_name}_{color}_{direction}
     sprite_name = f"{race}_{animation}_{item_name}_{color}_{direction}"
     
@@ -120,7 +127,7 @@ def generate_sprite_entry(race, animation, item_name, color, direction, topx=0):
     
     return sprite_name, entry
 
-def generate_sprites(item_name, color):
+def generate_sprites(item_name, color, texture_base=None):
     """Generate all sprite entries for the given item and color"""
     sprites = {}
     
@@ -135,12 +142,12 @@ def generate_sprites(item_name, color):
                 topx = 64  # walkcycle starts after standing frame in walk spritesheet
             
             for direction in ["N", "W", "S", "E"]:
-                sprite_name, entry = generate_sprite_entry(race, animation, item_name, color, direction, topx)
+                sprite_name, entry = generate_sprite_entry(race, animation, item_name, color, direction, topx, texture_base)
                 sprites[sprite_name] = entry
         
         # Generate animations with only S direction
         for animation in ANIMATIONS_TO_GENERATE_ONLY_S:
-            sprite_name, entry = generate_sprite_entry(race, animation, item_name, color, "S", topx=0)
+            sprite_name, entry = generate_sprite_entry(race, animation, item_name, color, "S", topx=0, texture_base=texture_base)
             # For hurt animation, it uses its own texture with topy=0
             entry["topy"] = 0
             sprites[sprite_name] = entry
@@ -148,19 +155,32 @@ def generate_sprites(item_name, color):
     return sprites
 
 def main():
-    if len(sys.argv) < 3:
-        print("Usage: python3 generate_sprite.py <item_name> <color1> [color2 ...]", file=sys.stderr)
+    args = sys.argv[1:]
+    texture_base = None
+    
+    # Parse --texture-base option
+    if "--texture-base" in args:
+        idx = args.index("--texture-base")
+        if idx + 1 >= len(args):
+            print("Error: --texture-base requires a value", file=sys.stderr)
+            sys.exit(1)
+        texture_base = args[idx + 1]
+        args = args[:idx] + args[idx + 2:]
+    
+    if len(args) < 2:
+        print("Usage: python3 generate_sprite.py [--texture-base PATH] <item_name> <color1> [color2 ...]", file=sys.stderr)
         print("Example: python3 generate_sprite.py pants2 black > ../../sprites/pants2_black.sprite", file=sys.stderr)
         print("         python3 generate_sprite.py pants2 black blue red > ../../sprites/pants2.sprite", file=sys.stderr)
+        print("         python3 generate_sprite.py --texture-base spritesheet/hair/sara/adult/fg hair_sara black", file=sys.stderr)
         sys.exit(1)
     
-    item_name = sys.argv[1]
-    colors = sys.argv[2:]  # All remaining arguments are colors
+    item_name = args[0]
+    colors = args[1:]  # All remaining arguments are colors
     
     # Generate sprites for all colors and merge into one dictionary
     all_sprites = {}
     for color in colors:
-        sprites = generate_sprites(item_name, color)
+        sprites = generate_sprites(item_name, color, texture_base)
         all_sprites.update(sprites)
     
     # Output JSON with nice formatting

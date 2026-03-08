@@ -62,6 +62,7 @@ private:
 	struct HairOption {
 		std::string id;
 		std::string displayName;
+		std::string bg_id;  // Optional background hair sprite id
 	};
 	std::vector<HairOption> hairOptions;
 

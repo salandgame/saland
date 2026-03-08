@@ -12,3 +12,5 @@ saland
 !data/saland
 nbproject
 *.pyc
+*.orig
+*.org

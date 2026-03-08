@@ -34,6 +34,7 @@ struct Player {
 	std::string save_name="player1";
 	std::string race = "female";
 	std::string hair = "standard_hair";
+	std::string hair_bg;
 	std::string visible_bottom;
 	std::string visible_top;
 	std::string get_visible_race() {
@@ -41,6 +42,9 @@ struct Player {
 	}
 	std::string get_visible_hair() {
 		return this->hair;
+	}
+	std::string get_visible_hair_bg() {
+		return this->hair_bg;
 	}
 	std::string get_visible_bottom() {
 		if (visible_bottom != "") {

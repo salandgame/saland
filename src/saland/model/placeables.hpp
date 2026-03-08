@@ -97,6 +97,7 @@ class Human : public Creature {
 public:
 	std::string race = "male";
 	std::string hair = "";
+	std::string hair_bg = "";
 	std::string pants = "";
 	std::string top = "";
 	std::string weapon = "";

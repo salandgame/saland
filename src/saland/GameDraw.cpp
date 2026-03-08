@@ -214,6 +214,17 @@ void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, cons
 	int x = std::round(entity->X) - offsetX;
 	int y = std::round(entity->Y) - offsetY;
 	DrawCollision(target, entity, offsetX, offsetY, drawCollision, resize);
+	// Draw back hair (bg) before the body so it appears behind the character
+	if (entity->hair_bg.length() > 0) {
+		std::string hairBgAnimation = animation;
+		const sago::SagoSprite& myHairBg = sHolder->GetSprite(entity->race + "_"+hairBgAnimation+"_"+entity->hair_bg+"_"+std::string(1,entity->direction));
+		if (relativeAnimation) {
+			myHairBg.DrawProgressive(target, relativeAnimationState, x, y, resize);
+		}
+		else {
+			myHairBg.Draw(target, time, x, y, resize);
+		}
+	}
 	const sago::SagoSprite& mySprite = sHolder->GetSprite(entity->race + "_" + animation + "_" + std::string(1, entity->direction));
 	if (relativeAnimation) {
 		mySprite.DrawProgressive(target, relativeAnimationState, x, y, resize);
