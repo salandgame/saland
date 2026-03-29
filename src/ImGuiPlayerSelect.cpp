@@ -35,11 +35,11 @@ https://github.com/sago007/saland
 ImGuiPlayerSelect::ImGuiPlayerSelect() {
 	// Define available hair options
 	hairOptions = {
-		{"standard_hair", "Redhead", "standard_hair_bg"},
-		{"hair_blonde", "Blonde", "hair_blonde_bg"},
-		{"hair_brunette", "Brunette", "hair_brunette_bg"},
-		{"hair_raven", "Black", "hair_raven_bg"},
-		{"hair_blue", "Blue", "hair_blue_bg"},
+		{"standard_hair", "Redhead", ""},
+		{"hair_blonde", "Blonde", ""},
+		{"hair_brunette", "Brunette", ""},
+		{"hair_raven", "Black", ""},
+		{"hair_blue", "Blue", ""},
 		{"hair_1", "Short Blue", ""},
 		{"hair_sara_black", "Sara (Black)", "hair_sara_bg_black"},
 		{"hair_sara_blonde", "Sara (Blonde)", "hair_sara_bg_blonde"},
