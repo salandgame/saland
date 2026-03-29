@@ -1,7 +1,7 @@
 {
 
 "male_walkcycle_standard_hair_N" :  {
-	"texture" : "spritesheets/hair/messy2/adult/walk/redhead",
+	"texture" : "spritesheet/hair/messy2/adult/walk/redhead",
 	"topx" : 64,
 	"topy" : 0,
 	"height" : 64,
@@ -13,7 +13,7 @@
 },
 
 "male_walkcycle_standard_hair_W" :  {
-	"texture" : "spritesheets/hair/messy2/adult/walk/redhead",
+	"texture" : "spritesheet/hair/messy2/adult/walk/redhead",
 	"topx" : 64,
 	"topy" : 64,
 	"height" : 64,
@@ -25,7 +25,7 @@
 },
 
 "male_walkcycle_standard_hair_S" :  {
-	"texture" : "spritesheets/hair/messy2/adult/walk/redhead",
+	"texture" : "spritesheet/hair/messy2/adult/walk/redhead",
 	"topx" : 64,
 	"topy" : 128,
 	"height" : 64,
@@ -37,7 +37,7 @@
 },
 
 "male_walkcycle_standard_hair_E" :  {
-	"texture" : "spritesheets/hair/messy2/adult/walk/redhead",
+	"texture" : "spritesheet/hair/messy2/adult/walk/redhead",
 	"topx" : 64,
 	"topy" : 192,
 	"height" : 64,
@@ -49,7 +49,7 @@
 },
 
 "male_standing_standard_hair_N" :  {
-	"texture" : "spritesheets/hair/messy2/adult/walk/redhead",
+	"texture" : "spritesheet/hair/messy2/adult/walk/redhead",
 	"topx" : 0,
 	"topy" : 0,
 	"height" : 64,
@@ -61,7 +61,7 @@
 },
 
 "male_standing_standard_hair_W" :  {
-	"texture" : "spritesheets/hair/messy2/adult/walk/redhead",
+	"texture" : "spritesheet/hair/messy2/adult/walk/redhead",
 	"topx" : 0,
 	"topy" : 64,
 	"height" : 64,
@@ -73,7 +73,7 @@
 },
 
 "male_standing_standard_hair_S" :  {
-	"texture" : "spritesheets/hair/messy2/adult/walk/redhead",
+	"texture" : "spritesheet/hair/messy2/adult/walk/redhead",
 	"topx" : 0,
 	"topy" : 128,
 	"height" : 64,
@@ -85,7 +85,7 @@
 },
 
 "male_standing_standard_hair_E" :  {
-	"texture" : "spritesheets/hair/messy2/adult/walk/redhead",
+	"texture" : "spritesheet/hair/messy2/adult/walk/redhead",
 	"topx" : 0,
 	"topy" : 192,
 	"height" : 64,
@@ -97,7 +97,7 @@
 },
 
 "male_slash_standard_hair_N" :  {
-	"texture" : "spritesheets/hair/messy2/adult/slash/redhead",
+	"texture" : "spritesheet/hair/messy2/adult/slash/redhead",
 	"topx" : 0,
 	"topy" : 0,
 	"height" : 64,
@@ -109,7 +109,7 @@
 },
 
 "male_slash_standard_hair_W" :  {
-	"texture" : "spritesheets/hair/messy2/adult/slash/redhead",
+	"texture" : "spritesheet/hair/messy2/adult/slash/redhead",
 	"topx" : 0,
 	"topy" : 64,
 	"height" : 64,
@@ -121,7 +121,7 @@
 },
 
 "male_slash_standard_hair_S" :  {
-	"texture" : "spritesheets/hair/messy2/adult/slash/redhead",
+	"texture" : "spritesheet/hair/messy2/adult/slash/redhead",
 	"topx" : 0,
 	"topy" : 128,
 	"height" : 64,
@@ -133,7 +133,7 @@
 },
 
 "male_slash_standard_hair_E" :  {
-	"texture" : "spritesheets/hair/messy2/adult/slash/redhead",
+	"texture" : "spritesheet/hair/messy2/adult/slash/redhead",
 	"topx" : 0,
 	"topy" : 192,
 	"height" : 64,
@@ -145,7 +145,7 @@
 },
 
 "male_hurt_standard_hair_S" :  {
-	"texture" : "spritesheets/hair/messy2/adult/hurt/redhead",
+	"texture" : "spritesheet/hair/messy2/adult/hurt/redhead",
 	"topx" : 0,
 	"topy" : 0,
 	"height" : 64,
