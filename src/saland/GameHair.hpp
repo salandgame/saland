@@ -1,7 +1,7 @@
 /*
 ===========================================================================
  * Saland Adventures
-Copyright (C) 2014-2024 Poul Sander
+Copyright (C) 2014-2026 Poul Sander
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -21,19 +21,20 @@ https://github.com/sago007/saland
 ===========================================================================
 */
 
-#include "Player.hpp"
+#ifndef GAMEHAIR_HPP
+#define GAMEHAIR_HPP
 
-void to_json(nlohmann::json& j, const Player& p) {
-	j = nlohmann::json{ {"race", p.race}, {"hair", p.hair}, {"item_inventory", p.item_inventory}, {"equipped_items", p.equipped_items} };
-}
+#include <string>
+#include <vector>
 
-void from_json(const nlohmann::json& j, Player& p) {
-	j.at("race").get_to(p.race);
-	if (j.contains("hair")) {
-		j.at("hair").get_to(p.hair);
-	}
-	j.at("item_inventory").get_to(p.item_inventory);
-	if (j.contains("equipped_items")) {
-		j.at("equipped_items").get_to(p.equipped_items);
-	}
-}
+struct HairDef {
+	std::string hairid;
+	std::string displayName;
+	std::string bg;
+	std::vector<std::string> restriction;
+};
+
+const HairDef& getHairDef(const std::string& hairName, const std::string& race);
+std::vector<HairDef> getHairOptions(const std::string& race);
+
+#endif  /* GAMEHAIR_HPP */

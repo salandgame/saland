@@ -26,6 +26,7 @@ https://github.com/sago007/saland
 
 #include "sago/GameStateInterface.hpp"
 #include "saland/model/Player.hpp"
+#include "saland/GameHair.hpp"
 #include <string>
 #include <vector>
 
@@ -58,13 +59,7 @@ private:
 	char nameBuffer[64] = "";
 	int selectedRaceIndex = 0;
 	int selectedHairIndex = 0;
-
-	struct HairOption {
-		std::string id;
-		std::string displayName;
-		std::string bg_id;  // Optional background hair sprite id
-	};
-	std::vector<HairOption> hairOptions;
+	std::vector<HairDef> hairOptions;
 
 	bool needsSave = false;
 	bool needsRefresh = false;

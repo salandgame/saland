@@ -341,7 +341,6 @@ Game::Game() {
 	ResetWorld(0, 0, false);
 	data->human->pants = globalData.player.get_visible_bottom();
 	data->human->hair = globalData.player.get_visible_hair();
-	data->human->hair_bg = globalData.player.get_visible_hair_bg();
 
 	data->human->race = globalData.player.get_visible_race();
 	data->human->top = globalData.player.get_visible_top();
@@ -448,7 +447,6 @@ void Game::Draw(SDL_Renderer* target) {
 	}
 	data->human->pants = globalData.player.get_visible_bottom();
 	data->human->hair = globalData.player.get_visible_hair();
-	data->human->hair_bg = globalData.player.get_visible_hair_bg();
 	data->human->race = globalData.player.get_visible_race();
 	data->human->top = globalData.player.get_visible_top();
 	std::sort(data->gameRegion.placeables.begin(), data->gameRegion.placeables.end(),sort_placeable);

@@ -1,0 +1,28 @@
+{
+	"hair": [
+		{ "hairid": "standard_hair", "displayName": "Messy Redhead", "bg": "", "restriction": ["male"] },
+		{ "hairid": "standard_hair", "displayName": "Ponytail Redhead", "bg": "standard_hair_bg", "restriction": ["female"] },
+		{ "hairid": "hair_blonde", "displayName": "Blonde", "bg": "", "restriction": ["male"] },
+		{ "hairid": "hair_blonde", "displayName": "Ponytail Blonde", "bg": "hair_blonde_bg", "restriction": ["female"] },
+		{ "hairid": "hair_brunette", "displayName": "Brunette", "bg": "", "restriction": ["male"] },
+		{ "hairid": "hair_brunette", "displayName": "Ponytail Brunette", "bg": "hair_brunette_bg", "restriction": ["female"] },
+		{ "hairid": "hair_raven", "displayName": "Black", "bg": "", "restriction": ["male"] },
+		{ "hairid": "hair_raven", "displayName": "Ponytail Black", "bg": "hair_raven_bg", "restriction": ["female"] },
+		{ "hairid": "hair_blue", "displayName": "Blue", "bg": "", "restriction": ["male"] },
+		{ "hairid": "hair_blue", "displayName": "Ponytail Blue", "bg": "hair_blue_bg", "restriction": ["female"] },
+		{ "hairid": "hair_1", "displayName": "Short Blue", "bg": "" },
+		{ "hairid": "hair_sara_black", "displayName": "Sara (Black)", "bg": "hair_sara_bg_black" },
+		{ "hairid": "hair_sara_blonde", "displayName": "Sara (Blonde)", "bg": "hair_sara_bg_blonde" },
+		{ "hairid": "hair_sara_blue", "displayName": "Sara (Blue)", "bg": "hair_sara_bg_blue" },
+		{ "hairid": "hair_sara_brown", "displayName": "Sara (Brown)", "bg": "hair_sara_bg_brown" },
+		{ "hairid": "hair_sara_ginger", "displayName": "Sara (Ginger)", "bg": "hair_sara_bg_ginger" },
+		{ "hairid": "hair_sara_gold", "displayName": "Sara (Gold)", "bg": "hair_sara_bg_gold" },
+		{ "hairid": "hair_sara_gray", "displayName": "Sara (Gray)", "bg": "hair_sara_bg_gray" },
+		{ "hairid": "hair_sara_green", "displayName": "Sara (Green)", "bg": "hair_sara_bg_green" },
+		{ "hairid": "hair_sara_pink", "displayName": "Sara (Pink)", "bg": "hair_sara_bg_pink" },
+		{ "hairid": "hair_sara_purple", "displayName": "Sara (Purple)", "bg": "hair_sara_bg_purple" },
+		{ "hairid": "hair_sara_raven", "displayName": "Sara (Raven)", "bg": "hair_sara_bg_raven" },
+		{ "hairid": "hair_sara_red", "displayName": "Sara (Red)", "bg": "hair_sara_bg_red" },
+		{ "hairid": "hair_sara_white", "displayName": "Sara (White)", "bg": "hair_sara_bg_white" }
+	]
+}

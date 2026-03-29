@@ -33,29 +33,6 @@ https://github.com/sago007/saland
 #include <format>
 
 ImGuiPlayerSelect::ImGuiPlayerSelect() {
-	// Define available hair options
-	hairOptions = {
-		{"standard_hair", "Redhead", ""},
-		{"hair_blonde", "Blonde", ""},
-		{"hair_brunette", "Brunette", ""},
-		{"hair_raven", "Black", ""},
-		{"hair_blue", "Blue", ""},
-		{"hair_1", "Short Blue", ""},
-		{"hair_sara_black", "Sara (Black)", "hair_sara_bg_black"},
-		{"hair_sara_blonde", "Sara (Blonde)", "hair_sara_bg_blonde"},
-		{"hair_sara_blue", "Sara (Blue)", "hair_sara_bg_blue"},
-		{"hair_sara_brown", "Sara (Brown)", "hair_sara_bg_brown"},
-		{"hair_sara_ginger", "Sara (Ginger)", "hair_sara_bg_ginger"},
-		{"hair_sara_gold", "Sara (Gold)", "hair_sara_bg_gold"},
-		{"hair_sara_gray", "Sara (Gray)", "hair_sara_bg_gray"},
-		{"hair_sara_green", "Sara (Green)", "hair_sara_bg_green"},
-		{"hair_sara_pink", "Sara (Pink)", "hair_sara_bg_pink"},
-		{"hair_sara_purple", "Sara (Purple)", "hair_sara_bg_purple"},
-		{"hair_sara_raven", "Sara (Raven)", "hair_sara_bg_raven"},
-		{"hair_sara_red", "Sara (Red)", "hair_sara_bg_red"},
-		{"hair_sara_white", "Sara (White)", "hair_sara_bg_white"},
-	};
-
 	LoadPlayerList();
 	LoadSelectedPlayer();
 }
@@ -107,10 +84,13 @@ void ImGuiPlayerSelect::LoadSelectedPlayer() {
 	// Set race index
 	selectedRaceIndex = (editingPlayer.race == "male") ? 0 : 1;
 
+	// Load hair options filtered by current race
+	hairOptions = getHairOptions(editingPlayer.race);
+
 	// Set hair index
 	selectedHairIndex = 0;
 	for (size_t i = 0; i < hairOptions.size(); i++) {
-		if (hairOptions[i].id == editingPlayer.hair) {
+		if (hairOptions[i].hairid == editingPlayer.hair) {
 			selectedHairIndex = i;
 			break;
 		}
@@ -249,6 +229,11 @@ void ImGuiPlayerSelect::Draw(SDL_Renderer* target) {
 	const char* races[] = { "Male", "Female" };
 	if (ImGui::Combo("##race", &selectedRaceIndex, races, 2)) {
 		editingPlayer.race = (selectedRaceIndex == 0) ? "male" : "female";
+		hairOptions = getHairOptions(editingPlayer.race);
+		selectedHairIndex = 0;
+		if (!hairOptions.empty()) {
+			editingPlayer.hair = hairOptions[0].hairid;
+		}
 		needsSave = true;
 	}
 
@@ -261,8 +246,7 @@ void ImGuiPlayerSelect::Draw(SDL_Renderer* target) {
 		hairNames.push_back(option.displayName.c_str());
 	}
 	if (ImGui::Combo("##hair", &selectedHairIndex, hairNames.data(), hairNames.size())) {
-		editingPlayer.hair = hairOptions[selectedHairIndex].id;
-		editingPlayer.hair_bg = hairOptions[selectedHairIndex].bg_id;
+		editingPlayer.hair = hairOptions[selectedHairIndex].hairid;
 		needsSave = true;
 	}
 
@@ -304,7 +288,7 @@ void ImGuiPlayerSelect::Draw(SDL_Renderer* target) {
 		const sago::SagoSprite& baseSprite = globalData.spriteHolder->GetSprite(spriteName);
 
 		// Draw back hair (bg) before the body so it appears behind the character
-		std::string hair_bg = editingPlayer.get_visible_hair_bg();
+		std::string hair_bg = getHairDef(editingPlayer.hair, editingPlayer.race).bg;
 		if (hair_bg.length()) {
 			std::string hairBgSpriteName = editingPlayer.get_visible_race() + "_walkcycle_" + hair_bg + "_W";
 			const sago::SagoSprite& hairBgSprite = globalData.spriteHolder->GetSprite(hairBgSpriteName);

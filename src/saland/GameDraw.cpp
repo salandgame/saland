@@ -22,6 +22,7 @@ https://github.com/sago007/saland
 */
 
 #include "GameDraw.hpp"
+#include "GameHair.hpp"
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include <cmath>
 #include "../sago/SagoTextField.hpp"
@@ -215,9 +216,10 @@ void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, cons
 	int y = std::round(entity->Y) - offsetY;
 	DrawCollision(target, entity, offsetX, offsetY, drawCollision, resize);
 	// Draw back hair (bg) before the body so it appears behind the character
-	if (entity->hair_bg.length() > 0) {
+	std::string hairBgId = getHairDef(entity->hair, entity->race).bg;
+	if (hairBgId.length() > 0) {
 		std::string hairBgAnimation = animation;
-		const sago::SagoSprite& myHairBg = sHolder->GetSprite(entity->race + "_"+hairBgAnimation+"_"+entity->hair_bg+"_"+std::string(1,entity->direction));
+		const sago::SagoSprite& myHairBg = sHolder->GetSprite(entity->race + "_"+hairBgAnimation+"_"+hairBgId+"_"+std::string(1,entity->direction));
 		if (relativeAnimation) {
 			myHairBg.DrawProgressive(target, relativeAnimationState, x, y, resize);
 		}
