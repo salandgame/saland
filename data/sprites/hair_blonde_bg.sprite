@@ -1,7 +1,7 @@
 {
 
-"female_walkcycle_standard_hair_N" :  {
-	"texture" : "spritesheets/hair/ponytail2/adult/fg/walk/redhead",
+"female_walkcycle_hair_blonde_bg_N" :  {
+	"texture" : "spritesheets/hair/ponytail2/adult/bg/walk/blonde",
 	"topx" : 64,
 	"topy" : 0,
 	"height" : 64,
@@ -12,8 +12,8 @@
 	"originy" : 50
 },
 
-"female_walkcycle_standard_hair_W" :  {
-	"texture" : "spritesheets/hair/ponytail2/adult/fg/walk/redhead",
+"female_walkcycle_hair_blonde_bg_W" :  {
+	"texture" : "spritesheets/hair/ponytail2/adult/bg/walk/blonde",
 	"topx" : 64,
 	"topy" : 64,
 	"height" : 64,
@@ -24,8 +24,8 @@
 	"originy" : 50
 },
 
-"female_walkcycle_standard_hair_S" :  {
-	"texture" : "spritesheets/hair/ponytail2/adult/fg/walk/redhead",
+"female_walkcycle_hair_blonde_bg_S" :  {
+	"texture" : "spritesheets/hair/ponytail2/adult/bg/walk/blonde",
 	"topx" : 64,
 	"topy" : 128,
 	"height" : 64,
@@ -36,8 +36,8 @@
 	"originy" : 50
 },
 
-"female_walkcycle_standard_hair_E" :  {
-	"texture" : "spritesheets/hair/ponytail2/adult/fg/walk/redhead",
+"female_walkcycle_hair_blonde_bg_E" :  {
+	"texture" : "spritesheets/hair/ponytail2/adult/bg/walk/blonde",
 	"topx" : 64,
 	"topy" : 192,
 	"height" : 64,
@@ -48,8 +48,8 @@
 	"originy" : 50
 },
 
-"female_standing_standard_hair_N" :  {
-	"texture" : "spritesheets/hair/ponytail2/adult/fg/walk/redhead",
+"female_standing_hair_blonde_bg_N" :  {
+	"texture" : "spritesheets/hair/ponytail2/adult/bg/walk/blonde",
 	"topx" : 0,
 	"topy" : 0,
 	"height" : 64,
@@ -60,8 +60,8 @@
 	"originy" : 50
 },
 
-"female_standing_standard_hair_W" :  {
-	"texture" : "spritesheets/hair/ponytail2/adult/fg/walk/redhead",
+"female_standing_hair_blonde_bg_W" :  {
+	"texture" : "spritesheets/hair/ponytail2/adult/bg/walk/blonde",
 	"topx" : 0,
 	"topy" : 64,
 	"height" : 64,
@@ -72,8 +72,8 @@
 	"originy" : 50
 },
 
-"female_standing_standard_hair_S" :  {
-	"texture" : "spritesheets/hair/ponytail2/adult/fg/walk/redhead",
+"female_standing_hair_blonde_bg_S" :  {
+	"texture" : "spritesheets/hair/ponytail2/adult/bg/walk/blonde",
 	"topx" : 0,
 	"topy" : 128,
 	"height" : 64,
@@ -84,8 +84,8 @@
 	"originy" : 50
 },
 
-"female_standing_standard_hair_E" :  {
-	"texture" : "spritesheets/hair/ponytail2/adult/fg/walk/redhead",
+"female_standing_hair_blonde_bg_E" :  {
+	"texture" : "spritesheets/hair/ponytail2/adult/bg/walk/blonde",
 	"topx" : 0,
 	"topy" : 192,
 	"height" : 64,
@@ -96,8 +96,8 @@
 	"originy" : 50
 },
 
-"female_slash_standard_hair_N" :  {
-	"texture" : "spritesheets/hair/ponytail2/adult/fg/slash/redhead",
+"female_slash_hair_blonde_bg_N" :  {
+	"texture" : "spritesheets/hair/ponytail2/adult/bg/slash/blonde",
 	"topx" : 0,
 	"topy" : 0,
 	"height" : 64,
@@ -108,8 +108,8 @@
 	"originy" : 50
 },
 
-"female_slash_standard_hair_W" :  {
-	"texture" : "spritesheets/hair/ponytail2/adult/fg/slash/redhead",
+"female_slash_hair_blonde_bg_W" :  {
+	"texture" : "spritesheets/hair/ponytail2/adult/bg/slash/blonde",
 	"topx" : 0,
 	"topy" : 64,
 	"height" : 64,
@@ -120,8 +120,8 @@
 	"originy" : 50
 },
 
-"female_slash_standard_hair_S" :  {
-	"texture" : "spritesheets/hair/ponytail2/adult/fg/slash/redhead",
+"female_slash_hair_blonde_bg_S" :  {
+	"texture" : "spritesheets/hair/ponytail2/adult/bg/slash/blonde",
 	"topx" : 0,
 	"topy" : 128,
 	"height" : 64,
@@ -132,8 +132,8 @@
 	"originy" : 50
 },
 
-"female_slash_standard_hair_E" :  {
-	"texture" : "spritesheets/hair/ponytail2/adult/fg/slash/redhead",
+"female_slash_hair_blonde_bg_E" :  {
+	"texture" : "spritesheets/hair/ponytail2/adult/bg/slash/blonde",
 	"topx" : 0,
 	"topy" : 192,
 	"height" : 64,
@@ -144,8 +144,8 @@
 	"originy" : 50
 },
 
-"female_spellcast_standard_hair_N" :  {
-	"texture" : "spritesheets/hair/ponytail2/adult/fg/spellcast/redhead",
+"female_spellcast_hair_blonde_bg_N" :  {
+	"texture" : "spritesheets/hair/ponytail2/adult/bg/spellcast/blonde",
 	"topx" : 0,
 	"topy" : 0,
 	"height" : 64,
@@ -156,8 +156,8 @@
 	"originy" : 50
 },
 
-"female_spellcast_standard_hair_W" :  {
-	"texture" : "spritesheets/hair/ponytail2/adult/fg/spellcast/redhead",
+"female_spellcast_hair_blonde_bg_W" :  {
+	"texture" : "spritesheets/hair/ponytail2/adult/bg/spellcast/blonde",
 	"topx" : 0,
 	"topy" : 64,
 	"height" : 64,
@@ -168,8 +168,8 @@
 	"originy" : 50
 },
 
-"female_spellcast_standard_hair_S" :  {
-	"texture" : "spritesheets/hair/ponytail2/adult/fg/spellcast/redhead",
+"female_spellcast_hair_blonde_bg_S" :  {
+	"texture" : "spritesheets/hair/ponytail2/adult/bg/spellcast/blonde",
 	"topx" : 0,
 	"topy" : 128,
 	"height" : 64,
@@ -180,8 +180,8 @@
 	"originy" : 50
 },
 
-"female_spellcast_standard_hair_E" :  {
-	"texture" : "spritesheets/hair/ponytail2/adult/fg/spellcast/redhead",
+"female_spellcast_hair_blonde_bg_E" :  {
+	"texture" : "spritesheets/hair/ponytail2/adult/bg/spellcast/blonde",
 	"topx" : 0,
 	"topy" : 192,
 	"height" : 64,
@@ -192,8 +192,8 @@
 	"originy" : 50
 },
 
-"female_hurt_standard_hair_S" :  {
-	"texture" : "spritesheets/hair/ponytail2/adult/fg/hurt/redhead",
+"female_hurt_hair_blonde_bg_S" :  {
+	"texture" : "spritesheets/hair/ponytail2/adult/bg/hurt/blonde",
 	"topx" : 0,
 	"topy" : 0,
 	"height" : 64,
