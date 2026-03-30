@@ -1,10 +1,10 @@
 {
 	"hair": [
-		{ "hairid": "standard_hair", "displayName": "Messy Redhead", "bg": "", "restriction": ["male"] },
-		{ "hairid": "standard_hair", "displayName": "Ponytail Redhead", "bg": "standard_hair_bg", "restriction": ["female"] },
+		{ "hairid": "standard_hair", "displayName": "Messy Red", "bg": "", "restriction": ["male"] },
+		{ "hairid": "standard_hair", "displayName": "Ponytail Red", "bg": "standard_hair_bg", "restriction": ["female"] },
 		{ "hairid": "hair_blonde", "displayName": "Blonde", "bg": "", "restriction": ["male"] },
 		{ "hairid": "hair_blonde", "displayName": "Ponytail Blonde", "bg": "hair_blonde_bg", "restriction": ["female"] },
-		{ "hairid": "hair_brunette", "displayName": "Brunette", "bg": "", "restriction": ["male"] },
+		{ "hairid": "hair_brunette", "displayName": "Brown", "bg": "", "restriction": ["male"] },
 		{ "hairid": "hair_brunette", "displayName": "Ponytail Brunette", "bg": "hair_brunette_bg", "restriction": ["female"] },
 		{ "hairid": "hair_raven", "displayName": "Black", "bg": "", "restriction": ["male"] },
 		{ "hairid": "hair_raven", "displayName": "Ponytail Black", "bg": "hair_raven_bg", "restriction": ["female"] },
