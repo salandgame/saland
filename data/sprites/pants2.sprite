@@ -1,6 +1,6 @@
 {
     "male_slash_pants2_green_N": {
-        "texture": "spritesheet/pants2/male/slash/green",
+        "texture": "spritesheets/pants2/male/slash/green",
         "topx": 0,
         "topy": 0,
         "height": 64,
@@ -11,7 +11,7 @@
         "originy": 50
     },
     "male_slash_pants2_green_W": {
-        "texture": "spritesheet/pants2/male/slash/green",
+        "texture": "spritesheets/pants2/male/slash/green",
         "topx": 0,
         "topy": 64,
         "height": 64,
@@ -22,7 +22,7 @@
         "originy": 50
     },
     "male_slash_pants2_green_S": {
-        "texture": "spritesheet/pants2/male/slash/green",
+        "texture": "spritesheets/pants2/male/slash/green",
         "topx": 0,
         "topy": 128,
         "height": 64,
@@ -33,7 +33,7 @@
         "originy": 50
     },
     "male_slash_pants2_green_E": {
-        "texture": "spritesheet/pants2/male/slash/green",
+        "texture": "spritesheets/pants2/male/slash/green",
         "topx": 0,
         "topy": 192,
         "height": 64,
@@ -44,7 +44,7 @@
         "originy": 50
     },
     "male_spellcast_pants2_green_N": {
-        "texture": "spritesheet/pants2/male/spellcast/green",
+        "texture": "spritesheets/pants2/male/spellcast/green",
         "topx": 0,
         "topy": 0,
         "height": 64,
@@ -55,7 +55,7 @@
         "originy": 50
     },
     "male_spellcast_pants2_green_W": {
-        "texture": "spritesheet/pants2/male/spellcast/green",
+        "texture": "spritesheets/pants2/male/spellcast/green",
         "topx": 0,
         "topy": 64,
         "height": 64,
@@ -66,7 +66,7 @@
         "originy": 50
     },
     "male_spellcast_pants2_green_S": {
-        "texture": "spritesheet/pants2/male/spellcast/green",
+        "texture": "spritesheets/pants2/male/spellcast/green",
         "topx": 0,
         "topy": 128,
         "height": 64,
@@ -77,7 +77,7 @@
         "originy": 50
     },
     "male_spellcast_pants2_green_E": {
-        "texture": "spritesheet/pants2/male/spellcast/green",
+        "texture": "spritesheets/pants2/male/spellcast/green",
         "topx": 0,
         "topy": 192,
         "height": 64,
@@ -88,7 +88,7 @@
         "originy": 50
     },
     "male_standing_pants2_green_N": {
-        "texture": "spritesheet/pants2/male/idle/green",
+        "texture": "spritesheets/pants2/male/idle/green",
         "topx": 0,
         "topy": 0,
         "height": 64,
@@ -99,7 +99,7 @@
         "originy": 50
     },
     "male_standing_pants2_green_W": {
-        "texture": "spritesheet/pants2/male/idle/green",
+        "texture": "spritesheets/pants2/male/idle/green",
         "topx": 0,
         "topy": 64,
         "height": 64,
@@ -110,7 +110,7 @@
         "originy": 50
     },
     "male_standing_pants2_green_S": {
-        "texture": "spritesheet/pants2/male/idle/green",
+        "texture": "spritesheets/pants2/male/idle/green",
         "topx": 0,
         "topy": 128,
         "height": 64,
@@ -121,7 +121,7 @@
         "originy": 50
     },
     "male_standing_pants2_green_E": {
-        "texture": "spritesheet/pants2/male/idle/green",
+        "texture": "spritesheets/pants2/male/idle/green",
         "topx": 0,
         "topy": 192,
         "height": 64,
@@ -132,7 +132,7 @@
         "originy": 50
     },
     "male_walkcycle_pants2_green_N": {
-        "texture": "spritesheet/pants2/male/walk/green",
+        "texture": "spritesheets/pants2/male/walk/green",
         "topx": 64,
         "topy": 0,
         "height": 64,
@@ -143,7 +143,7 @@
         "originy": 50
     },
     "male_walkcycle_pants2_green_W": {
-        "texture": "spritesheet/pants2/male/walk/green",
+        "texture": "spritesheets/pants2/male/walk/green",
         "topx": 64,
         "topy": 64,
         "height": 64,
@@ -154,7 +154,7 @@
         "originy": 50
     },
     "male_walkcycle_pants2_green_S": {
-        "texture": "spritesheet/pants2/male/walk/green",
+        "texture": "spritesheets/pants2/male/walk/green",
         "topx": 64,
         "topy": 128,
         "height": 64,
@@ -165,7 +165,7 @@
         "originy": 50
     },
     "male_walkcycle_pants2_green_E": {
-        "texture": "spritesheet/pants2/male/walk/green",
+        "texture": "spritesheets/pants2/male/walk/green",
         "topx": 64,
         "topy": 192,
         "height": 64,
@@ -176,7 +176,7 @@
         "originy": 50
     },
     "male_hurt_pants2_green_S": {
-        "texture": "spritesheet/pants2/male/hurt/green",
+        "texture": "spritesheets/pants2/male/hurt/green",
         "topx": 0,
         "topy": 0,
         "height": 64,
@@ -187,7 +187,7 @@
         "originy": 50
     },
     "female_slash_pants2_green_N": {
-        "texture": "spritesheet/pants2/thin/slash/green",
+        "texture": "spritesheets/pants2/thin/slash/green",
         "topx": 0,
         "topy": 0,
         "height": 64,
@@ -198,7 +198,7 @@
         "originy": 50
     },
     "female_slash_pants2_green_W": {
-        "texture": "spritesheet/pants2/thin/slash/green",
+        "texture": "spritesheets/pants2/thin/slash/green",
         "topx": 0,
         "topy": 64,
         "height": 64,
@@ -209,7 +209,7 @@
         "originy": 50
     },
     "female_slash_pants2_green_S": {
-        "texture": "spritesheet/pants2/thin/slash/green",
+        "texture": "spritesheets/pants2/thin/slash/green",
         "topx": 0,
         "topy": 128,
         "height": 64,
@@ -220,7 +220,7 @@
         "originy": 50
     },
     "female_slash_pants2_green_E": {
-        "texture": "spritesheet/pants2/thin/slash/green",
+        "texture": "spritesheets/pants2/thin/slash/green",
         "topx": 0,
         "topy": 192,
         "height": 64,
@@ -231,7 +231,7 @@
         "originy": 50
     },
     "female_spellcast_pants2_green_N": {
-        "texture": "spritesheet/pants2/thin/spellcast/green",
+        "texture": "spritesheets/pants2/thin/spellcast/green",
         "topx": 0,
         "topy": 0,
         "height": 64,
@@ -242,7 +242,7 @@
         "originy": 50
     },
     "female_spellcast_pants2_green_W": {
-        "texture": "spritesheet/pants2/thin/spellcast/green",
+        "texture": "spritesheets/pants2/thin/spellcast/green",
         "topx": 0,
         "topy": 64,
         "height": 64,
@@ -253,7 +253,7 @@
         "originy": 50
     },
     "female_spellcast_pants2_green_S": {
-        "texture": "spritesheet/pants2/thin/spellcast/green",
+        "texture": "spritesheets/pants2/thin/spellcast/green",
         "topx": 0,
         "topy": 128,
         "height": 64,
@@ -264,7 +264,7 @@
         "originy": 50
     },
     "female_spellcast_pants2_green_E": {
-        "texture": "spritesheet/pants2/thin/spellcast/green",
+        "texture": "spritesheets/pants2/thin/spellcast/green",
         "topx": 0,
         "topy": 192,
         "height": 64,
@@ -275,7 +275,7 @@
         "originy": 50
     },
     "female_standing_pants2_green_N": {
-        "texture": "spritesheet/pants2/thin/idle/green",
+        "texture": "spritesheets/pants2/thin/idle/green",
         "topx": 0,
         "topy": 0,
         "height": 64,
@@ -286,7 +286,7 @@
         "originy": 50
     },
     "female_standing_pants2_green_W": {
-        "texture": "spritesheet/pants2/thin/idle/green",
+        "texture": "spritesheets/pants2/thin/idle/green",
         "topx": 0,
         "topy": 64,
         "height": 64,
@@ -297,7 +297,7 @@
         "originy": 50
     },
     "female_standing_pants2_green_S": {
-        "texture": "spritesheet/pants2/thin/idle/green",
+        "texture": "spritesheets/pants2/thin/idle/green",
         "topx": 0,
         "topy": 128,
         "height": 64,
@@ -308,7 +308,7 @@
         "originy": 50
     },
     "female_standing_pants2_green_E": {
-        "texture": "spritesheet/pants2/thin/idle/green",
+        "texture": "spritesheets/pants2/thin/idle/green",
         "topx": 0,
         "topy": 192,
         "height": 64,
@@ -319,7 +319,7 @@
         "originy": 50
     },
     "female_walkcycle_pants2_green_N": {
-        "texture": "spritesheet/pants2/thin/walk/green",
+        "texture": "spritesheets/pants2/thin/walk/green",
         "topx": 64,
         "topy": 0,
         "height": 64,
@@ -330,7 +330,7 @@
         "originy": 50
     },
     "female_walkcycle_pants2_green_W": {
-        "texture": "spritesheet/pants2/thin/walk/green",
+        "texture": "spritesheets/pants2/thin/walk/green",
         "topx": 64,
         "topy": 64,
         "height": 64,
@@ -341,7 +341,7 @@
         "originy": 50
     },
     "female_walkcycle_pants2_green_S": {
-        "texture": "spritesheet/pants2/thin/walk/green",
+        "texture": "spritesheets/pants2/thin/walk/green",
         "topx": 64,
         "topy": 128,
         "height": 64,
@@ -352,7 +352,7 @@
         "originy": 50
     },
     "female_walkcycle_pants2_green_E": {
-        "texture": "spritesheet/pants2/thin/walk/green",
+        "texture": "spritesheets/pants2/thin/walk/green",
         "topx": 64,
         "topy": 192,
         "height": 64,
@@ -363,7 +363,7 @@
         "originy": 50
     },
     "female_hurt_pants2_green_S": {
-        "texture": "spritesheet/pants2/thin/hurt/green",
+        "texture": "spritesheets/pants2/thin/hurt/green",
         "topx": 0,
         "topy": 0,
         "height": 64,
@@ -374,7 +374,7 @@
         "originy": 50
     },
     "male_slash_pants2_black_N": {
-        "texture": "spritesheet/pants2/male/slash/black",
+        "texture": "spritesheets/pants2/male/slash/black",
         "topx": 0,
         "topy": 0,
         "height": 64,
@@ -385,7 +385,7 @@
         "originy": 50
     },
     "male_slash_pants2_black_W": {
-        "texture": "spritesheet/pants2/male/slash/black",
+        "texture": "spritesheets/pants2/male/slash/black",
         "topx": 0,
         "topy": 64,
         "height": 64,
@@ -396,7 +396,7 @@
         "originy": 50
     },
     "male_slash_pants2_black_S": {
-        "texture": "spritesheet/pants2/male/slash/black",
+        "texture": "spritesheets/pants2/male/slash/black",
         "topx": 0,
         "topy": 128,
         "height": 64,
@@ -407,7 +407,7 @@
         "originy": 50
     },
     "male_slash_pants2_black_E": {
-        "texture": "spritesheet/pants2/male/slash/black",
+        "texture": "spritesheets/pants2/male/slash/black",
         "topx": 0,
         "topy": 192,
         "height": 64,
@@ -418,7 +418,7 @@
         "originy": 50
     },
     "male_spellcast_pants2_black_N": {
-        "texture": "spritesheet/pants2/male/spellcast/black",
+        "texture": "spritesheets/pants2/male/spellcast/black",
         "topx": 0,
         "topy": 0,
         "height": 64,
@@ -429,7 +429,7 @@
         "originy": 50
     },
     "male_spellcast_pants2_black_W": {
-        "texture": "spritesheet/pants2/male/spellcast/black",
+        "texture": "spritesheets/pants2/male/spellcast/black",
         "topx": 0,
         "topy": 64,
         "height": 64,
@@ -440,7 +440,7 @@
         "originy": 50
     },
     "male_spellcast_pants2_black_S": {
-        "texture": "spritesheet/pants2/male/spellcast/black",
+        "texture": "spritesheets/pants2/male/spellcast/black",
         "topx": 0,
         "topy": 128,
         "height": 64,
@@ -451,7 +451,7 @@
         "originy": 50
     },
     "male_spellcast_pants2_black_E": {
-        "texture": "spritesheet/pants2/male/spellcast/black",
+        "texture": "spritesheets/pants2/male/spellcast/black",
         "topx": 0,
         "topy": 192,
         "height": 64,
@@ -462,7 +462,7 @@
         "originy": 50
     },
     "male_standing_pants2_black_N": {
-        "texture": "spritesheet/pants2/male/idle/black",
+        "texture": "spritesheets/pants2/male/idle/black",
         "topx": 0,
         "topy": 0,
         "height": 64,
@@ -473,7 +473,7 @@
         "originy": 50
     },
     "male_standing_pants2_black_W": {
-        "texture": "spritesheet/pants2/male/idle/black",
+        "texture": "spritesheets/pants2/male/idle/black",
         "topx": 0,
         "topy": 64,
         "height": 64,
@@ -484,7 +484,7 @@
         "originy": 50
     },
     "male_standing_pants2_black_S": {
-        "texture": "spritesheet/pants2/male/idle/black",
+        "texture": "spritesheets/pants2/male/idle/black",
         "topx": 0,
         "topy": 128,
         "height": 64,
@@ -495,7 +495,7 @@
         "originy": 50
     },
     "male_standing_pants2_black_E": {
-        "texture": "spritesheet/pants2/male/idle/black",
+        "texture": "spritesheets/pants2/male/idle/black",
         "topx": 0,
         "topy": 192,
         "height": 64,
@@ -506,7 +506,7 @@
         "originy": 50
     },
     "male_walkcycle_pants2_black_N": {
-        "texture": "spritesheet/pants2/male/walk/black",
+        "texture": "spritesheets/pants2/male/walk/black",
         "topx": 64,
         "topy": 0,
         "height": 64,
@@ -517,7 +517,7 @@
         "originy": 50
     },
     "male_walkcycle_pants2_black_W": {
-        "texture": "spritesheet/pants2/male/walk/black",
+        "texture": "spritesheets/pants2/male/walk/black",
         "topx": 64,
         "topy": 64,
         "height": 64,
@@ -528,7 +528,7 @@
         "originy": 50
     },
     "male_walkcycle_pants2_black_S": {
-        "texture": "spritesheet/pants2/male/walk/black",
+        "texture": "spritesheets/pants2/male/walk/black",
         "topx": 64,
         "topy": 128,
         "height": 64,
@@ -539,7 +539,7 @@
         "originy": 50
     },
     "male_walkcycle_pants2_black_E": {
-        "texture": "spritesheet/pants2/male/walk/black",
+        "texture": "spritesheets/pants2/male/walk/black",
         "topx": 64,
         "topy": 192,
         "height": 64,
@@ -550,7 +550,7 @@
         "originy": 50
     },
     "male_hurt_pants2_black_S": {
-        "texture": "spritesheet/pants2/male/hurt/black",
+        "texture": "spritesheets/pants2/male/hurt/black",
         "topx": 0,
         "topy": 0,
         "height": 64,
@@ -561,7 +561,7 @@
         "originy": 50
     },
     "female_slash_pants2_black_N": {
-        "texture": "spritesheet/pants2/thin/slash/black",
+        "texture": "spritesheets/pants2/thin/slash/black",
         "topx": 0,
         "topy": 0,
         "height": 64,
@@ -572,7 +572,7 @@
         "originy": 50
     },
     "female_slash_pants2_black_W": {
-        "texture": "spritesheet/pants2/thin/slash/black",
+        "texture": "spritesheets/pants2/thin/slash/black",
         "topx": 0,
         "topy": 64,
         "height": 64,
@@ -583,7 +583,7 @@
         "originy": 50
     },
     "female_slash_pants2_black_S": {
-        "texture": "spritesheet/pants2/thin/slash/black",
+        "texture": "spritesheets/pants2/thin/slash/black",
         "topx": 0,
         "topy": 128,
         "height": 64,
@@ -594,7 +594,7 @@
         "originy": 50
     },
     "female_slash_pants2_black_E": {
-        "texture": "spritesheet/pants2/thin/slash/black",
+        "texture": "spritesheets/pants2/thin/slash/black",
         "topx": 0,
         "topy": 192,
         "height": 64,
@@ -605,7 +605,7 @@
         "originy": 50
     },
     "female_spellcast_pants2_black_N": {
-        "texture": "spritesheet/pants2/thin/spellcast/black",
+        "texture": "spritesheets/pants2/thin/spellcast/black",
         "topx": 0,
         "topy": 0,
         "height": 64,
@@ -616,7 +616,7 @@
         "originy": 50
     },
     "female_spellcast_pants2_black_W": {
-        "texture": "spritesheet/pants2/thin/spellcast/black",
+        "texture": "spritesheets/pants2/thin/spellcast/black",
         "topx": 0,
         "topy": 64,
         "height": 64,
@@ -627,7 +627,7 @@
         "originy": 50
     },
     "female_spellcast_pants2_black_S": {
-        "texture": "spritesheet/pants2/thin/spellcast/black",
+        "texture": "spritesheets/pants2/thin/spellcast/black",
         "topx": 0,
         "topy": 128,
         "height": 64,
@@ -638,7 +638,7 @@
         "originy": 50
     },
     "female_spellcast_pants2_black_E": {
-        "texture": "spritesheet/pants2/thin/spellcast/black",
+        "texture": "spritesheets/pants2/thin/spellcast/black",
         "topx": 0,
         "topy": 192,
         "height": 64,
@@ -649,7 +649,7 @@
         "originy": 50
     },
     "female_standing_pants2_black_N": {
-        "texture": "spritesheet/pants2/thin/idle/black",
+        "texture": "spritesheets/pants2/thin/idle/black",
         "topx": 0,
         "topy": 0,
         "height": 64,
@@ -660,7 +660,7 @@
         "originy": 50
     },
     "female_standing_pants2_black_W": {
-        "texture": "spritesheet/pants2/thin/idle/black",
+        "texture": "spritesheets/pants2/thin/idle/black",
         "topx": 0,
         "topy": 64,
         "height": 64,
@@ -671,7 +671,7 @@
         "originy": 50
     },
     "female_standing_pants2_black_S": {
-        "texture": "spritesheet/pants2/thin/idle/black",
+        "texture": "spritesheets/pants2/thin/idle/black",
         "topx": 0,
         "topy": 128,
         "height": 64,
@@ -682,7 +682,7 @@
         "originy": 50
     },
     "female_standing_pants2_black_E": {
-        "texture": "spritesheet/pants2/thin/idle/black",
+        "texture": "spritesheets/pants2/thin/idle/black",
         "topx": 0,
         "topy": 192,
         "height": 64,
@@ -693,7 +693,7 @@
         "originy": 50
     },
     "female_walkcycle_pants2_black_N": {
-        "texture": "spritesheet/pants2/thin/walk/black",
+        "texture": "spritesheets/pants2/thin/walk/black",
         "topx": 64,
         "topy": 0,
         "height": 64,
@@ -704,7 +704,7 @@
         "originy": 50
     },
     "female_walkcycle_pants2_black_W": {
-        "texture": "spritesheet/pants2/thin/walk/black",
+        "texture": "spritesheets/pants2/thin/walk/black",
         "topx": 64,
         "topy": 64,
         "height": 64,
@@ -715,7 +715,7 @@
         "originy": 50
     },
     "female_walkcycle_pants2_black_S": {
-        "texture": "spritesheet/pants2/thin/walk/black",
+        "texture": "spritesheets/pants2/thin/walk/black",
         "topx": 64,
         "topy": 128,
         "height": 64,
@@ -726,7 +726,7 @@
         "originy": 50
     },
     "female_walkcycle_pants2_black_E": {
-        "texture": "spritesheet/pants2/thin/walk/black",
+        "texture": "spritesheets/pants2/thin/walk/black",
         "topx": 64,
         "topy": 192,
         "height": 64,
@@ -737,7 +737,7 @@
         "originy": 50
     },
     "female_hurt_pants2_black_S": {
-        "texture": "spritesheet/pants2/thin/hurt/black",
+        "texture": "spritesheets/pants2/thin/hurt/black",
         "topx": 0,
         "topy": 0,
         "height": 64,

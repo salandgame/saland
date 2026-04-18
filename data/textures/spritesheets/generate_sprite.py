@@ -17,7 +17,7 @@ Output:
     Generates JSON with sprite definitions in the format:
     {
         "race_animation_item_color_direction": {
-            "texture": "spritesheet/item/race_folder/animation_folder/color",
+            "texture": "spritesheets/item/race_folder/animation_folder/color",
             "topx": <x_offset>,
             "topy": <y_offset>,
             "height": 64,
@@ -52,13 +52,13 @@ Examples:
     python3 generate_sprite.py pants2 black blue red > ../../sprites/pants2.sprite
     
     # Custom texture base (no race folder in path):
-    python3 generate_sprite.py --texture-base spritesheet/hair/sara/adult/fg hair_sara black > ../../sprites/hair_sara.sprite
+    python3 generate_sprite.py --texture-base spritesheets/hair/sara/adult/fg hair_sara black > ../../sprites/hair_sara.sprite
     
     This generates sprites like:
-    - "male_walkcycle_pants2_black_N" -> texture: "spritesheet/pants2/male/walk/black"
-    - "male_walkcycle_pants2_blue_N" -> texture: "spritesheet/pants2/male/walk/blue"
-    - "female_hurt_pants2_black_S" -> texture: "spritesheet/pants2/thin/hurt/black"
-    - "female_walkcycle_hair_sara_black_N" -> texture: "spritesheet/hair/sara/adult/fg/walk/black"
+    - "male_walkcycle_pants2_black_N" -> texture: "spritesheets/pants2/male/walk/black"
+    - "male_walkcycle_pants2_blue_N" -> texture: "spritesheets/pants2/male/walk/blue"
+    - "female_hurt_pants2_black_S" -> texture: "spritesheets/pants2/thin/hurt/black"
+    - "female_walkcycle_hair_sara_black_N" -> texture: "spritesheets/hair/sara/adult/fg/walk/black"
 """
 
 import sys
@@ -106,7 +106,7 @@ def generate_sprite_entry(race, animation, item_name, color, direction, topx=0, 
         texture_name = f"{texture_base}/{animation_folder}/{color}"
     else:
         race_folder = RACE_FOLDER_MAP.get(race, race)
-        texture_name = f"spritesheet/{item_name}/{race_folder}/{animation_folder}/{color}"
+        texture_name = f"spritesheets/{item_name}/{race_folder}/{animation_folder}/{color}"
     # Sprite name: {race}_{animation}_{item_name}_{color}_{direction}
     sprite_name = f"{race}_{animation}_{item_name}_{color}_{direction}"
     
@@ -171,7 +171,7 @@ def main():
         print("Usage: python3 generate_sprite.py [--texture-base PATH] <item_name> <color1> [color2 ...]", file=sys.stderr)
         print("Example: python3 generate_sprite.py pants2 black > ../../sprites/pants2_black.sprite", file=sys.stderr)
         print("         python3 generate_sprite.py pants2 black blue red > ../../sprites/pants2.sprite", file=sys.stderr)
-        print("         python3 generate_sprite.py --texture-base spritesheet/hair/sara/adult/fg hair_sara black", file=sys.stderr)
+        print("         python3 generate_sprite.py --texture-base spritesheets/hair/sara/adult/fg hair_sara black", file=sys.stderr)
         sys.exit(1)
     
     item_name = args[0]
