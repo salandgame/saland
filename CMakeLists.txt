@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10.2)
+cmake_minimum_required(VERSION 3.10..99.0)
 project (saland)
 
 # Define install paths
@@ -37,6 +37,9 @@ if (WIN32)
 	endif()
 endif()
 
+if(POLICY CMP0167)
+  cmake_policy(SET CMP0167 NEW)
+endif()
 find_package(Boost COMPONENTS program_options REQUIRED)
 
 # box2d is not API compatible between versions (not even minor versions), so this explicit version must always be used.
