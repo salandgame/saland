@@ -1,7 +1,7 @@
 {
 
 "male_walkcycle_hair_brunette_N" :  {
-	"texture" : "spritesheet/hair/plain/adult/walk/dark_brown",
+	"texture" : "spritesheets/hair/plain/adult/walk/dark_brown",
 	"topx" : 64,
 	"topy" : 0,
 	"height" : 64,
@@ -13,7 +13,7 @@
 },
 
 "male_walkcycle_hair_brunette_W" :  {
-	"texture" : "spritesheet/hair/plain/adult/walk/dark_brown",
+	"texture" : "spritesheets/hair/plain/adult/walk/dark_brown",
 	"topx" : 64,
 	"topy" : 64,
 	"height" : 64,
@@ -25,7 +25,7 @@
 },
 
 "male_walkcycle_hair_brunette_S" :  {
-	"texture" : "spritesheet/hair/plain/adult/walk/dark_brown",
+	"texture" : "spritesheets/hair/plain/adult/walk/dark_brown",
 	"topx" : 64,
 	"topy" : 128,
 	"height" : 64,
@@ -37,7 +37,7 @@
 },
 
 "male_walkcycle_hair_brunette_E" :  {
-	"texture" : "spritesheet/hair/plain/adult/walk/dark_brown",
+	"texture" : "spritesheets/hair/plain/adult/walk/dark_brown",
 	"topx" : 64,
 	"topy" : 192,
 	"height" : 64,
@@ -49,7 +49,7 @@
 },
 
 "male_standing_hair_brunette_N" :  {
-	"texture" : "spritesheet/hair/plain/adult/walk/dark_brown",
+	"texture" : "spritesheets/hair/plain/adult/walk/dark_brown",
 	"topx" : 0,
 	"topy" : 0,
 	"height" : 64,
@@ -61,7 +61,7 @@
 },
 
 "male_standing_hair_brunette_W" :  {
-	"texture" : "spritesheet/hair/plain/adult/walk/dark_brown",
+	"texture" : "spritesheets/hair/plain/adult/walk/dark_brown",
 	"topx" : 0,
 	"topy" : 64,
 	"height" : 64,
@@ -73,7 +73,7 @@
 },
 
 "male_standing_hair_brunette_S" :  {
-	"texture" : "spritesheet/hair/plain/adult/walk/dark_brown",
+	"texture" : "spritesheets/hair/plain/adult/walk/dark_brown",
 	"topx" : 0,
 	"topy" : 128,
 	"height" : 64,
@@ -85,7 +85,7 @@
 },
 
 "male_standing_hair_brunette_E" :  {
-	"texture" : "spritesheet/hair/plain/adult/walk/dark_brown",
+	"texture" : "spritesheets/hair/plain/adult/walk/dark_brown",
 	"topx" : 0,
 	"topy" : 192,
 	"height" : 64,
@@ -97,7 +97,7 @@
 },
 
 "male_slash_hair_brunette_N" :  {
-	"texture" : "spritesheet/hair/plain/adult/slash/dark_brown",
+	"texture" : "spritesheets/hair/plain/adult/slash/dark_brown",
 	"topx" : 0,
 	"topy" : 0,
 	"height" : 64,
@@ -109,7 +109,7 @@
 },
 
 "male_slash_hair_brunette_W" :  {
-	"texture" : "spritesheet/hair/plain/adult/slash/dark_brown",
+	"texture" : "spritesheets/hair/plain/adult/slash/dark_brown",
 	"topx" : 0,
 	"topy" : 64,
 	"height" : 64,
@@ -121,7 +121,7 @@
 },
 
 "male_slash_hair_brunette_S" :  {
-	"texture" : "spritesheet/hair/plain/adult/slash/dark_brown",
+	"texture" : "spritesheets/hair/plain/adult/slash/dark_brown",
 	"topx" : 0,
 	"topy" : 128,
 	"height" : 64,
@@ -133,7 +133,7 @@
 },
 
 "male_slash_hair_brunette_E" :  {
-	"texture" : "spritesheet/hair/plain/adult/slash/dark_brown",
+	"texture" : "spritesheets/hair/plain/adult/slash/dark_brown",
 	"topx" : 0,
 	"topy" : 192,
 	"height" : 64,
@@ -145,7 +145,7 @@
 },
 
 "male_spellcast_hair_brunette_N" :  {
-	"texture" : "spritesheet/hair/plain/adult/spellcast/dark_brown",
+	"texture" : "spritesheets/hair/plain/adult/spellcast/dark_brown",
 	"topx" : 0,
 	"topy" : 0,
 	"height" : 64,
@@ -157,7 +157,7 @@
 },
 
 "male_spellcast_hair_brunette_W" :  {
-	"texture" : "spritesheet/hair/plain/adult/spellcast/dark_brown",
+	"texture" : "spritesheets/hair/plain/adult/spellcast/dark_brown",
 	"topx" : 0,
 	"topy" : 64,
 	"height" : 64,
@@ -169,7 +169,7 @@
 },
 
 "male_spellcast_hair_brunette_S" :  {
-	"texture" : "spritesheet/hair/plain/adult/spellcast/dark_brown",
+	"texture" : "spritesheets/hair/plain/adult/spellcast/dark_brown",
 	"topx" : 0,
 	"topy" : 128,
 	"height" : 64,
@@ -181,7 +181,7 @@
 },
 
 "male_spellcast_hair_brunette_E" :  {
-	"texture" : "spritesheet/hair/plain/adult/spellcast/dark_brown",
+	"texture" : "spritesheets/hair/plain/adult/spellcast/dark_brown",
 	"topx" : 0,
 	"topy" : 192,
 	"height" : 64,
@@ -193,7 +193,7 @@
 },
 
 "male_hurt_hair_brunette_S" :  {
-	"texture" : "spritesheet/hair/plain/adult/hurt/dark_brown",
+	"texture" : "spritesheets/hair/plain/adult/hurt/dark_brown",
 	"topx" : 0,
 	"topy" : 0,
 	"height" : 64,
@@ -205,7 +205,7 @@
 },
 
 "female_walkcycle_hair_brunette_N" :  {
-	"texture" : "spritesheet/hair/ponytail2/adult/fg/walk/dark_brown",
+	"texture" : "spritesheets/hair/ponytail2/adult/fg/walk/dark_brown",
 	"topx" : 64,
 	"topy" : 0,
 	"height" : 64,
@@ -217,7 +217,7 @@
 },
 
 "female_walkcycle_hair_brunette_W" :  {
-	"texture" : "spritesheet/hair/ponytail2/adult/fg/walk/dark_brown",
+	"texture" : "spritesheets/hair/ponytail2/adult/fg/walk/dark_brown",
 	"topx" : 64,
 	"topy" : 64,
 	"height" : 64,
@@ -229,7 +229,7 @@
 },
 
 "female_walkcycle_hair_brunette_S" :  {
-	"texture" : "spritesheet/hair/ponytail2/adult/fg/walk/dark_brown",
+	"texture" : "spritesheets/hair/ponytail2/adult/fg/walk/dark_brown",
 	"topx" : 64,
 	"topy" : 128,
 	"height" : 64,
@@ -241,7 +241,7 @@
 },
 
 "female_walkcycle_hair_brunette_E" :  {
-	"texture" : "spritesheet/hair/ponytail2/adult/fg/walk/dark_brown",
+	"texture" : "spritesheets/hair/ponytail2/adult/fg/walk/dark_brown",
 	"topx" : 64,
 	"topy" : 192,
 	"height" : 64,
@@ -253,7 +253,7 @@
 },
 
 "female_standing_hair_brunette_N" :  {
-	"texture" : "spritesheet/hair/ponytail2/adult/fg/walk/dark_brown",
+	"texture" : "spritesheets/hair/ponytail2/adult/fg/walk/dark_brown",
 	"topx" : 0,
 	"topy" : 0,
 	"height" : 64,
@@ -265,7 +265,7 @@
 },
 
 "female_standing_hair_brunette_W" :  {
-	"texture" : "spritesheet/hair/ponytail2/adult/fg/walk/dark_brown",
+	"texture" : "spritesheets/hair/ponytail2/adult/fg/walk/dark_brown",
 	"topx" : 0,
 	"topy" : 64,
 	"height" : 64,
@@ -277,7 +277,7 @@
 },
 
 "female_standing_hair_brunette_S" :  {
-	"texture" : "spritesheet/hair/ponytail2/adult/fg/walk/dark_brown",
+	"texture" : "spritesheets/hair/ponytail2/adult/fg/walk/dark_brown",
 	"topx" : 0,
 	"topy" : 128,
 	"height" : 64,
@@ -289,7 +289,7 @@
 },
 
 "female_standing_hair_brunette_E" :  {
-	"texture" : "spritesheet/hair/ponytail2/adult/fg/walk/dark_brown",
+	"texture" : "spritesheets/hair/ponytail2/adult/fg/walk/dark_brown",
 	"topx" : 0,
 	"topy" : 192,
 	"height" : 64,
@@ -301,7 +301,7 @@
 },
 
 "female_slash_hair_brunette_N" :  {
-	"texture" : "spritesheet/hair/ponytail2/adult/fg/slash/dark_brown",
+	"texture" : "spritesheets/hair/ponytail2/adult/fg/slash/dark_brown",
 	"topx" : 0,
 	"topy" : 0,
 	"height" : 64,
@@ -313,7 +313,7 @@
 },
 
 "female_slash_hair_brunette_W" :  {
-	"texture" : "spritesheet/hair/ponytail2/adult/fg/slash/dark_brown",
+	"texture" : "spritesheets/hair/ponytail2/adult/fg/slash/dark_brown",
 	"topx" : 0,
 	"topy" : 64,
 	"height" : 64,
@@ -325,7 +325,7 @@
 },
 
 "female_slash_hair_brunette_S" :  {
-	"texture" : "spritesheet/hair/ponytail2/adult/fg/slash/dark_brown",
+	"texture" : "spritesheets/hair/ponytail2/adult/fg/slash/dark_brown",
 	"topx" : 0,
 	"topy" : 128,
 	"height" : 64,
@@ -337,7 +337,7 @@
 },
 
 "female_slash_hair_brunette_E" :  {
-	"texture" : "spritesheet/hair/ponytail2/adult/fg/slash/dark_brown",
+	"texture" : "spritesheets/hair/ponytail2/adult/fg/slash/dark_brown",
 	"topx" : 0,
 	"topy" : 192,
 	"height" : 64,
@@ -349,7 +349,7 @@
 },
 
 "female_spellcast_hair_brunette_N" :  {
-	"texture" : "spritesheet/hair/ponytail2/adult/fg/spellcast/dark_brown",
+	"texture" : "spritesheets/hair/ponytail2/adult/fg/spellcast/dark_brown",
 	"topx" : 0,
 	"topy" : 0,
 	"height" : 64,
@@ -361,7 +361,7 @@
 },
 
 "female_spellcast_hair_brunette_W" :  {
-	"texture" : "spritesheet/hair/ponytail2/adult/fg/spellcast/dark_brown",
+	"texture" : "spritesheets/hair/ponytail2/adult/fg/spellcast/dark_brown",
 	"topx" : 0,
 	"topy" : 64,
 	"height" : 64,
@@ -373,7 +373,7 @@
 },
 
 "female_spellcast_hair_brunette_S" :  {
-	"texture" : "spritesheet/hair/ponytail2/adult/fg/spellcast/dark_brown",
+	"texture" : "spritesheets/hair/ponytail2/adult/fg/spellcast/dark_brown",
 	"topx" : 0,
 	"topy" : 128,
 	"height" : 64,
@@ -385,7 +385,7 @@
 },
 
 "female_spellcast_hair_brunette_E" :  {
-	"texture" : "spritesheet/hair/ponytail2/adult/fg/spellcast/dark_brown",
+	"texture" : "spritesheets/hair/ponytail2/adult/fg/spellcast/dark_brown",
 	"topx" : 0,
 	"topy" : 192,
 	"height" : 64,
@@ -397,7 +397,7 @@
 },
 
 "female_hurt_hair_brunette_S" :  {
-	"texture" : "spritesheet/hair/ponytail2/adult/fg/hurt/dark_brown",
+	"texture" : "spritesheets/hair/ponytail2/adult/fg/hurt/dark_brown",
 	"topx" : 0,
 	"topy" : 0,
 	"height" : 64,
