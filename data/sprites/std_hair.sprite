@@ -154,6 +154,54 @@
 	"frame_time" : 100,
 	"originx" : 32,
 	"originy" : 50
+},
+
+"male_spellcast_standard_hair_N" :  {
+	"texture" : "spritesheets/hair/messy2/adult/spellcast/redhead",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 7,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 50
+},
+
+"male_spellcast_standard_hair_W" :  {
+	"texture" : "spritesheets/hair/messy2/adult/spellcast/redhead",
+	"topx" : 0,
+	"topy" : 64,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 7,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 50
+},
+
+"male_spellcast_standard_hair_S" :  {
+	"texture" : "spritesheets/hair/messy2/adult/spellcast/redhead",
+	"topx" : 0,
+	"topy" : 128,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 7,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 50
+},
+
+"male_spellcast_standard_hair_E" :  {
+	"texture" : "spritesheets/hair/messy2/adult/spellcast/redhead",
+	"topx" : 0,
+	"topy" : 192,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 7,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 50
 }
 
 }
