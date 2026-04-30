@@ -24,6 +24,7 @@ https://github.com/sago007/saland
 #include "GameRegion.hpp"
 #include "GameItems.hpp"
 #include "GameMonsters.hpp"
+#include "model/LevelSystem.hpp"
 #include <cmath>
 #include <random>
 
@@ -38,15 +39,23 @@ static std::string createFileName(int x, int y,const std::string& worldName) {
 
 
 
-void GameRegion::SpawnMonster(const MonsterDef& def, float destX, float destY) {
+void GameRegion::SpawnMonster(const MonsterDef& def, float destX, float destY, int level) {
 	std::shared_ptr<Monster> monster = std::make_shared<Monster>();
 	monster.get()->Radius = def.radius;
 	monster.get()->race = def.race;
 	monster.get()->X = destX;
 	monster.get()->Y = destY;
-	monster.get()->health = def.health;
 	monster.get()->speed = def.speed;
+	monster.get()->xp_reward = def.xp_reward;
+	monster.get()->level = level;
+
+	// Apply level scaling to stats
+	LevelStats stats = calculateStats(def.health, 0.0f, def.attack.damage, level);
+	monster.get()->health = stats.maxHealth;
+	monster.get()->maxHealth = stats.maxHealth;
 	monster.get()->attack = def.attack;
+	monster.get()->attack.damage = stats.damageMultiplier;  // scaled damage
+	monster.get()->damageMultiplier = 1.0f;
 	placeables.push_back(monster);
 
 	b2BodyDef monsterBodyDef;

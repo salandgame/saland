@@ -65,6 +65,8 @@ struct Player {
 	}
 	std::map<std::string, int> item_inventory;
 	std::vector<std::string> equipped_items = {"armor_basic_pants"};
+	int xp = 0;
+	int level = 1;
 };
 
 void to_json(nlohmann::json& j, const Player& p);

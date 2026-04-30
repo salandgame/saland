@@ -39,6 +39,7 @@ https://github.com/sago007/saland
 #include "model/placeables.hpp"
 #include "model/spells.hpp"
 #include "model/Player.hpp"
+#include "model/LevelSystem.hpp"
 #include "../os.hpp"
 #include "SDL.h"
 #include <SDL2/SDL2_gfxPrimitives.h>
@@ -345,6 +346,16 @@ Game::Game() {
 	data->human->race = globalData.player.get_visible_race();
 	data->human->top = globalData.player.get_visible_top();
 
+	// Apply level stats from saved player data
+	data->human->xp = globalData.player.xp;
+	data->human->level = globalData.player.level;
+	LevelStats playerStats = calculateStats(100.0f, 50.0f, 1.0f, data->human->level);
+	data->human->maxHealth = playerStats.maxHealth;
+	data->human->health = playerStats.maxHealth;
+	data->human->maxMana = playerStats.maxMana;
+	data->human->mana = playerStats.maxMana;
+	data->human->damageMultiplier = playerStats.damageMultiplier;
+
 	data->bottomField.SetHolder(globalData.dataHolder);
 	data->bottomField.SetFontSize(20);
 	data->middleField.SetHolder(globalData.dataHolder);
@@ -574,7 +585,7 @@ void Game::Draw(SDL_Renderer* target) {
 	static char healthText[32];
 	static sago::SagoTextField healthField;
 	healthField.SetHolder(globalData.dataHolder);
-	snprintf(healthText, sizeof(healthText), "Health: %d/100", static_cast<int>(data->human->health));
+	snprintf(healthText, sizeof(healthText), "Health: %d/%d", static_cast<int>(data->human->health), static_cast<int>(data->human->maxHealth));
 	healthField.SetText(healthText);
 	healthField.Draw(globalData.screen, 1024-4, 30, sago::SagoTextField::Alignment::right, sago::SagoTextField::VerticalAlignment::top, &globalData.logicalResize);
 
@@ -585,6 +596,23 @@ void Game::Draw(SDL_Renderer* target) {
 	snprintf(manaText, sizeof(manaText), "Mana: %d/%d", static_cast<int>(data->human->mana), static_cast<int>(data->human->maxMana));
 	manaField.SetText(manaText);
 	manaField.Draw(globalData.screen, 1024-4, 56, sago::SagoTextField::Alignment::right, sago::SagoTextField::VerticalAlignment::top, &globalData.logicalResize);
+
+	// Level display
+	static char levelText[32];
+	static sago::SagoTextField levelField;
+	levelField.SetHolder(globalData.dataHolder);
+	snprintf(levelText, sizeof(levelText), "Level: %d", data->human->level);
+	levelField.SetText(levelText);
+	levelField.Draw(globalData.screen, 1024-4, 82, sago::SagoTextField::Alignment::right, sago::SagoTextField::VerticalAlignment::top, &globalData.logicalResize);
+
+	// XP display
+	static char xpText[64];
+	static sago::SagoTextField xpField;
+	xpField.SetHolder(globalData.dataHolder);
+	int xpNext = xpRequiredForLevel(data->human->level + 1);
+	snprintf(xpText, sizeof(xpText), "XP: %d / %d", data->human->xp, xpNext);
+	xpField.SetText(xpText);
+	xpField.Draw(globalData.screen, 1024-4, 108, sago::SagoTextField::Alignment::right, sago::SagoTextField::VerticalAlignment::top, &globalData.logicalResize);
 }
 
 
@@ -751,7 +779,7 @@ static void HandleSpawnCommand(GameRegion& gameRegion, Human* human) {
 			spawnY = human->Y + baseRadius * std::sin(angle);
 		}
 
-		gameRegion.SpawnMonster(def, spawnX, spawnY);
+		gameRegion.SpawnMonster(def, spawnX, spawnY, globalData.pendingSpawnCommand.level);
 
 		// Set initial state if specified
 		auto& spawned = gameRegion.placeables.back();
@@ -838,6 +866,23 @@ void Game::Update() {
 			if (monster->attack.animationTime == monster->attack.animationDuration) {
 				// Attack just started, apply damage to player
 				MonsterAttackPlayer(monster, data->human.get());
+			}
+			// Award XP on monster death
+			if (monster->removeMe && data->human && data->human->diedAt == 0.0f) {
+				int xpGain = static_cast<int>(monster->xp_reward * monster->level);
+				data->human->xp += xpGain;
+				int newLevel = levelFromXp(data->human->xp);
+				if (newLevel > data->human->level) {
+					data->human->level = newLevel;
+					LevelStats stats = calculateStats(100.0f, 50.0f, 1.0f, newLevel);
+					data->human->maxHealth = stats.maxHealth;
+					data->human->maxMana = stats.maxMana;
+					data->human->damageMultiplier = stats.damageMultiplier;
+					data->human->health = stats.maxHealth;  // Full heal on level-up
+					data->human->mana = stats.maxMana;
+				}
+				globalData.player.xp = data->human->xp;
+				globalData.player.level = data->human->level;
 			}
 		}
 		MiscItem* item = dynamic_cast<MiscItem*> (entity.get());

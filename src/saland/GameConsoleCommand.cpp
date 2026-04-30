@@ -219,6 +219,7 @@ struct ConsoleCommandSpawn : public ConsoleCommand {
 		// Check for optional flags
 		std::string initialState = "roaming";
 		bool spread = false;
+		int level = 1;
 		for (size_t i = 3; i < args.size(); ++i) {
 			if (args[i] == "--aggressive") {
 				initialState = "aggressive";
@@ -229,20 +230,32 @@ struct ConsoleCommandSpawn : public ConsoleCommand {
 			else if (args[i] == "--spread") {
 				spread = true;
 			}
+			else if (args[i] == "--level" && i + 1 < args.size()) {
+				try {
+					level = std::stoi(args[i + 1]);
+				}
+				catch (...) {
+					throw std::runtime_error("Failed to parse level value: " + args[i + 1]);
+				}
+				if (level < 1 || level > 100) {
+					throw std::runtime_error("Level must be between 1 and 100");
+				}
+				++i; // skip the level value
+			}
 			else {
-				throw std::runtime_error("Unknown flag: " + args[i] + ". Use --aggressive, --fleeing, or --spread");
+				throw std::runtime_error("Unknown flag: " + args[i] + ". Use --aggressive, --fleeing, --spread, or --level N");
 			}
 		}
 
 		// Queue the spawn command (will be processed in Game.cpp)
-		globalData.pendingSpawnCommand = {race, count, initialState, spread};
+		globalData.pendingSpawnCommand = {race, count, level, initialState, spread};
 
 		std::string location = spread ? "randomly across the map" : "around player";
-		return "Spawning " + std::to_string(count) + " " + race + "(s) in " + initialState + " state " + location;
+		return "Spawning " + std::to_string(count) + " " + race + "(s) level " + std::to_string(level) + " in " + initialState + " state " + location;
 	}
 
 	virtual std::string helpMessage() const override {
-		return "Spawn enemies. Usage: spawn MONSTER_RACE COUNT [--aggressive|--fleeing] [--spread]. Example: spawn bee 8 or spawn bat 5 --aggressive --spread";
+		return "Spawn enemies. Usage: spawn MONSTER_RACE COUNT [--aggressive|--fleeing] [--spread] [--level N]. Example: spawn bee 8 or spawn bat 5 --aggressive --level 3";
 	}
 };
 

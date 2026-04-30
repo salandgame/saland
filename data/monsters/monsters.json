@@ -5,6 +5,7 @@
 			"radius": 16.0,
 			"health": 30.0,
 			"speed": 1.0,
+			"xp_reward": 40,
 			"attack": {
 				"cooldownDuration": 1500.0,
 				"range": 40.0,
@@ -18,6 +19,7 @@
 			"radius": 16.0,
 			"health": 30.0,
 			"speed": 1.0,
+			"xp_reward": 40,
 			"attack": {
 				"cooldownDuration": 1500.0,
 				"range": 40.0,
@@ -31,6 +33,7 @@
 			"radius": 16.0,
 			"health": 40.0,
 			"speed": 0.7,
+			"xp_reward": 60,
 			"attack": {
 				"cooldownDuration": 2000.0,
 				"range": 35.0,

@@ -76,6 +76,9 @@ static void LoadMonsterDefinitions() {
 					else if (memberName == "speed") {
 						def.speed = member.value.GetFloat();
 					}
+					else if (memberName == "xp_reward") {
+						def.xp_reward = member.value.GetFloat();
+					}
 					else if (memberName == "attack" && member.value.IsObject()) {
 						for (const auto& attackMember : member.value.GetObject()) {
 							std::string attackName = attackMember.name.GetString();

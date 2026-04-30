@@ -197,6 +197,11 @@ void ProjectileHit(Projectile* p, Placeable* target) {
 	Monster* monster = dynamic_cast<Monster*> (target);
 	if (target->destructible) {
 		float damageAmount = p->damage.getDamage();
+		// Apply damage multiplier from the entity that fired the projectile
+		Human* firedByHuman = dynamic_cast<Human*>(p->fired_by.get());
+		if (firedByHuman) {
+			damageAmount *= firedByHuman->damageMultiplier;
+		}
 		target->health -= damageAmount;
 		p->removeMe = true;
 

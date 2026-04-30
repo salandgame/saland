@@ -80,9 +80,11 @@ public:
 
 class Creature : public Placeable {
 public:
+	float maxHealth = 10.0;
 	float stinema = 10.0;
 	float mana = 20.0;
 	float maxMana = 20.0;
+	float damageMultiplier = 1.0f;
 	char direction = 'S';
 	bool moving = false;
 	float moveX = 0.0;
@@ -103,6 +105,8 @@ public:
 	std::string animation = "spellcast";
 	float castTimeRemaining = 0;  //If non-zero then we are casting a spell
 	float castTime = 400;    //Number of milliseconds it will take to complete the cast
+	int xp = 0;
+	int level = 1;
 };
 
 struct MonsterAttack {
@@ -124,6 +128,8 @@ public:
 	};
 	std::string race = "bat";
 	float speed = 1.0f;
+	int level = 1;
+	float xp_reward = 50.0f;
 	// AI logic:
 	float aiNextThink = 0.0;
 	State aiState = State::Roaming;

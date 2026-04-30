@@ -37,6 +37,7 @@ struct MonsterDef {
 	std::string race = "";
 	float health = 30.0f;
 	float speed = 1.0f;
+	float xp_reward = 50.0f;
 	MonsterAttack attack;
 };
 
@@ -62,7 +63,7 @@ public:
 	std::string GetFilename() const {
 		return mapFileName;
 	}
-	void SpawnMonster(const MonsterDef& def, float destX, float destY) ;
+	void SpawnMonster(const MonsterDef& def, float destX, float destY, int level = 1) ;
 	void SpawnItem(const ItemDef& def, float destX, float destY) ;
 	void SpawnPrefab(const Prefab& prefab, int destX, int destY);
 	void ProcessRegionFirstTimeEnter(World& world);

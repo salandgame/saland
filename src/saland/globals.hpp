@@ -41,6 +41,7 @@ struct PlayerControls {
 struct SpawnCommand {
 	std::string race;
 	int count = 0;
+	int level = 1;
 	std::string initialState; // "roaming", "aggressive", or "fleeing"
 	bool spread = false; // If true, spawn at random locations instead of around player
 };
