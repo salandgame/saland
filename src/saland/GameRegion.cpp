@@ -323,6 +323,57 @@ void GameRegion::InitCommon() {
 	world.managed_bodies.clear();
 }
 
+/**
+ * Ensures the named tileset (by short name, without path or .tsx extension) is present in the
+ * TileMap. If it is already loaded nothing happens. If it is missing but the .tsx file exists,
+ * it is loaded and appended to the map's tileset list with the next available firstgid.
+ * This allows old saved maps to gain new tilesets without manual editing.
+ */
+static void ensureTilesetInMap(World& world, const std::string& tsxName) {
+	// Check if already present (quiet — avoids duplicate warning from getFirstGidForTilesetSource)
+	for (const auto& ts : world.tm.tileset) {
+		if (!ts.source.empty()) {
+			std::string basename = ts.source;
+			size_t slash = basename.find_last_of("/\\");
+			if (slash != std::string::npos) {
+				basename = basename.substr(slash + 1);
+			}
+			size_t dot = basename.rfind('.');
+			if (dot != std::string::npos) {
+				basename = basename.substr(0, dot);
+			}
+			if (basename == tsxName) {
+				return;  // already present
+			}
+		}
+	}
+	std::string tsxPath = "maps/" + tsxName + ".tsx";
+	if (!sago::FileExists(tsxPath.c_str())) {
+		std::cerr << "ensureTilesetInMap: " << tsxPath << " not found in virtual filesystem\n";
+		return;
+	}
+	// Compute next available firstgid (max of firstgid + tilecount for each existing tileset)
+	int next_firstgid = 1;
+	for (const auto& ts : world.tm.tileset) {
+		const sago::tiled::TileSet* effective = &ts;
+		while (effective->alternativeSource) {
+			effective = effective->alternativeSource;
+		}
+		int end_gid = ts.firstgid + (effective->tilecount > 0 ? effective->tilecount : 1024);
+		if (end_gid > next_firstgid) {
+			next_firstgid = end_gid;
+		}
+	}
+	std::string tsx_content = sago::GetFileContent(tsxPath.c_str());
+	world.ts.push_back(sago::tiled::string2tileset(tsx_content));
+	sago::tiled::TileSet map_entry;
+	map_entry.firstgid = next_firstgid;
+	map_entry.source = tsxName + ".tsx";
+	map_entry.alternativeSource = &world.ts.back();
+	world.tm.tileset.push_back(map_entry);
+	std::cout << "Dynamically loaded tileset '" << tsxName << "' at firstgid=" << next_firstgid << "\n";
+}
+
 void GameRegion::InitLiquidHandlers() {
 	liqudHandler.clear();
 
@@ -344,6 +395,7 @@ void GameRegion::InitLiquidHandlers() {
 	liqudHandler["ground"].blockingLayer_overlay_1 = world.ground2OverlayLayer;
 	liqudHandler["ground"].setupTiles(terrain_firstgid + 0, terrain_cols);
 
+	ensureTilesetInMap(world, "tiles_dungeon");
 	uint32_t dungeon_firstgid = sago::tiled::getFirstGidForTilesetSource(world.tm, "tiles_dungeon");
 	if (dungeon_firstgid > 0) {
 		int dungeon_cols = sago::tiled::getTilesetColumns(world.tm, "tiles_dungeon");
