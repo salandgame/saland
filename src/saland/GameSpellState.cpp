@@ -72,8 +72,12 @@ void GameSpellState::GameSpellState::Draw(SDL_Renderer* target) {
 		if (current_spell.icon.length() > 0) {
 			globalData.spriteHolder.get()->GetSprite(current_spell.icon).Draw(target, SDL_GetTicks(), 36+i*56, 36, resize);
 		}
-		if (current_spell.tile > 0) {
-			DrawTile(target, globalData.spriteHolder.get(), *tm, current_spell.tile, 20+i*BOX_SPACING, 20, resize);
+		bool hasTile = (current_spell.tile > 0) || (!current_spell.tileset_name.empty());
+		if (hasTile && tm != nullptr) {
+			uint32_t gid = resolveSpellTileGID(current_spell, *tm);
+			if (gid > 0) {
+				DrawTile(target, globalData.spriteHolder.get(), *tm, gid, 20+i*BOX_SPACING, 20, resize);
+			}
 		}
 	}
 	if (!data->spellSelectActive) {
@@ -87,8 +91,12 @@ void GameSpellState::GameSpellState::Draw(SDL_Renderer* target) {
 		if (current_spell.icon.length() > 0) {
 			globalData.spriteHolder.get()->GetSprite(current_spell.icon).Draw(target, SDL_GetTicks(), x+BOX_SIZE/2, y+BOX_SIZE/2, resize);
 		}
-		if (current_spell.tile > 0) {
-			DrawTile(target, globalData.spriteHolder.get(), *tm, current_spell.tile, x+10, y+10, resize);
+		bool hasTile = (current_spell.tile > 0) || (!current_spell.tileset_name.empty());
+		if (hasTile && tm != nullptr) {
+			uint32_t gid = resolveSpellTileGID(current_spell, *tm);
+			if (gid > 0) {
+				DrawTile(target, globalData.spriteHolder.get(), *tm, gid, x+10, y+10, resize);
+			}
 		}
 	}
 }

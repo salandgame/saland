@@ -75,6 +75,7 @@ private:
 	int region_y = 0;
 	std::string mapFileName = "maps/sample1.tmx";
 	void InitCommon();
+	void InitLiquidHandlers();
 };
 
 #endif /* GAMEREGION_HPP */

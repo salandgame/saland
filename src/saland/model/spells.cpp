@@ -33,7 +33,9 @@ void SpellHolder::add_spell(const Spell& spell) {
 	if (spell.item_name[0]) {
 		name = name + ":" + spell.item_name;
 	}
-	if (spell.tile) {
+	if (!spell.tileset_name.empty()) {
+		name = name + ":" + spell.tileset_name + ":" + std::to_string(spell.tile);
+	} else if (spell.tile) {
 		name = name + ":" + std::to_string(spell.tile);
 	}
 	spellIndex[name] = spells.size() - 1;
@@ -67,6 +69,9 @@ void SpellHolder::ReadSpellFile(const std::string& filename) {
 						}
 						if (member.name == "item_name") {
 							spell.item_name = member.value.GetString();
+						}
+						if (member.name == "tileset") {
+							spell.tileset_name = member.value.GetString();
 						}
 						if (member.name == "tile") {
 							spell.tile = member.value.GetInt64();
@@ -131,4 +136,15 @@ const Spell& SpellHolder::get_spell_by_name(const std::string& spell_name) const
 
 const Spell& SpellHolder::get_spell_clear_tile() const {
 	return clearTileSpell;
+}
+
+uint32_t resolveSpellTileGID(const Spell& spell, const sago::tiled::TileMap& tm) {
+	if (spell.tileset_name.empty()) {
+		return static_cast<uint32_t>(spell.tile);
+	}
+	uint32_t firstgid = sago::tiled::getFirstGidForTilesetSource(tm, spell.tileset_name);
+	if (firstgid == 0) {
+		return static_cast<uint32_t>(spell.tile);
+	}
+	return firstgid + static_cast<uint32_t>(spell.tile);
 }

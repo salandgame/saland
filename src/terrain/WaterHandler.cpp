@@ -29,9 +29,8 @@ WaterHandler::WaterHandler() {
 	setupTiles(default_tile);
 }
 
-void WaterHandler::setupTiles(uint32_t start_tile) {
+void WaterHandler::setupTiles(uint32_t start_tile, int tile_count_width) {
 	default_tile = start_tile;
-	int tile_count_width = 32;
 	tile_map["11111110"] = start_tile+1;
 	tile_map["11111011"] = start_tile+2;
 	tile_map["11011111"] = start_tile+tile_count_width+1;
@@ -53,10 +52,12 @@ void WaterHandler::setupTiles(uint32_t start_tile) {
 	tile_map["11111111b"] = start_tile+tile_count_width*5+1;
 	tile_map["11111111c"] = start_tile+tile_count_width*5+2;
 
-	tiles = {start_tile, start_tile+1, start_tile+2, start_tile+33, start_tile+34,
-	         start_tile+35, start_tile+64, start_tile+65, start_tile+66, start_tile+96,
-	         start_tile+97, start_tile+98, start_tile+128, start_tile+129, start_tile+130,
-	         start_tile+160, start_tile+161, start_tile+162
+	tiles = {start_tile, start_tile+1, start_tile+2,
+	         start_tile+tile_count_width+1, start_tile+tile_count_width+2, start_tile+tile_count_width+3,
+	         start_tile+tile_count_width*2, start_tile+tile_count_width*2+1, start_tile+tile_count_width*2+2,
+	         start_tile+tile_count_width*3, start_tile+tile_count_width*3+1, start_tile+tile_count_width*3+2,
+	         start_tile+tile_count_width*4, start_tile+tile_count_width*4+1, start_tile+tile_count_width*4+2,
+	         start_tile+tile_count_width*5, start_tile+tile_count_width*5+1, start_tile+tile_count_width*5+2
 	        };
 }
 

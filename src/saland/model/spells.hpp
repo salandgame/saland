@@ -28,6 +28,7 @@ https://github.com/sago007/saland
 #include <vector>
 #include <array>
 #include <map>
+#include "../../sagotmx/tmx_struct.h"
 
 enum class SpellCursorType { dot = 0, tile=1, shpere = 2 };
 
@@ -35,7 +36,8 @@ struct Spell {
 	std::string name;
 	std::string icon;
 	std::string item_name;
-	int tile = 0;  //Number reference to a tile, we might also need a tileset at some point
+	int tile = 0;  //Local (0-indexed) tile offset within the named tileset, or raw GID when tileset_name is empty
+	std::string tileset_name;  //Short name of the tileset source (e.g. "terrain", "tiles_dungeon"). Empty = raw GID in tile field.
 	SpellCursorType type = SpellCursorType::dot;
 };
 
@@ -57,5 +59,11 @@ public:
 	const Spell& get_spell_clear_tile() const;
 	void ReadSpellFile(const std::string& filename);
 };
+
+/**
+ * Resolves the GID for a spell's tile. If tileset_name is set, returns firstgid + tile (local offset).
+ * If tileset_name is empty, returns tile directly as a raw GID (backward compatibility).
+ */
+uint32_t resolveSpellTileGID(const Spell& spell, const sago::tiled::TileMap& tm);
 
 #endif  //MODEL_SPELLS_HPP

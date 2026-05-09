@@ -368,10 +368,10 @@ Game::Game() {
 	data->spell_holder->init();
 	data->spell_holder->slot_spell.at(0) = data->spell_holder->get_spell_by_name("spell_fireball");
 	data->spell_holder->slot_spell.at(1) = data->spell_holder->get_spell_by_name("weapon_slash_long_knife");
-	data->spell_holder->slot_spell.at(2) = data->spell_holder->get_spell_by_name("spell_create_block:607");
-	data->spell_holder->slot_spell.at(3) = data->spell_holder->get_spell_by_name("spell_create_block:28");
-	data->spell_holder->slot_spell.at(4) = data->spell_holder->get_spell_by_name("spell_create_block:16");
-	data->spell_holder->slot_spell.at(5) = data->spell_holder->get_spell_by_name("spell_create_ground:1");
+	data->spell_holder->slot_spell.at(2) = data->spell_holder->get_spell_by_name("spell_create_block:terrain:606");
+	data->spell_holder->slot_spell.at(3) = data->spell_holder->get_spell_by_name("spell_create_block:terrain:27");
+	data->spell_holder->slot_spell.at(4) = data->spell_holder->get_spell_by_name("spell_create_block:terrain:15");
+	data->spell_holder->slot_spell.at(5) = data->spell_holder->get_spell_by_name("spell_create_ground:terrain:0");
 	data->spell_holder->slot_spell.at(6) = data->spell_holder->get_spell_by_name("spell_spawn_item:food_potato");
 	data->spell_holder->slot_spell.at(7) = data->spell_holder->get_spell_by_name("spell_spawn_item:barrel");
 	data->spell_holder->slot_spell.at(8) = data->spell_holder->get_spell_by_name("spell_spawn_item:tree_palm");
@@ -1118,7 +1118,7 @@ void Game::Update() {
 				data->human->animation = "spellcast";
 				int base_tile_x = data->world_mouse_x/32;
 				int base_tile_y = data->world_mouse_y/32;
-				int tile = data->spell_holder->slot_spell.at(data->spell_holder->slot_selected).tile;
+				uint32_t tile = resolveSpellTileGID(data->spell_holder->slot_spell.at(data->spell_holder->slot_selected), data->gameRegion.world.tm);
 				int layer_number = data->gameRegion.world.ground2Layer;
 				if (layer_number >= 0) {
 					for (int dy = 0; dy < data->brushSize; ++dy) {
@@ -1141,7 +1141,7 @@ void Game::Update() {
 				data->human->animation = "spellcast";
 				int base_tile_x = data->world_mouse_x/32;
 				int base_tile_y = data->world_mouse_y/32;
-				int tile = data->spell_holder->slot_spell.at(data->spell_holder->slot_selected).tile;
+				uint32_t tile = resolveSpellTileGID(data->spell_holder->slot_spell.at(data->spell_holder->slot_selected), data->gameRegion.world.tm);
 				int layer_number = data->gameRegion.world.blockingLayer;
 				bool anyTileChanged = false;
 				for (int dy = 0; dy < data->brushSize; ++dy) {
@@ -1153,6 +1153,7 @@ void Game::Update() {
 							sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
 							data->gameRegion.liqudHandler["water"].updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
 							data->gameRegion.liqudHandler["lava"].updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
+							data->gameRegion.liqudHandler["dungeon"].updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
 							anyTileChanged = true;
 						}
 					}
@@ -1178,6 +1179,35 @@ void Game::Update() {
 						if (sago::tiled::tileInBound(data->gameRegion.world.tm, tile_x, tile_y)
 						        && !(data->gameRegion.world.tile_protected(tile_x, tile_y)) ) {
 							sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
+							data->gameRegion.liqudHandler["water"].updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
+							data->gameRegion.liqudHandler["lava"].updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
+							data->gameRegion.liqudHandler["dungeon"].updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
+							anyTileChanged = true;
+						}
+					}
+				}
+				if (anyTileChanged) {
+					data->gameRegion.world.init_physics(data->gameRegion.physicsBox);
+				}
+			}
+		}
+		if (data->spell_holder->slot_spell.at(data->spell_holder->slot_selected).name == "spell_create_dungeon") {
+			if (data->human->castTimeRemaining == 0) {
+				data->human->castTimeRemaining = data->human->castTime;
+				data->human->animation = "spellcast";
+				int base_tile_x = data->world_mouse_x/32;
+				int base_tile_y = data->world_mouse_y/32;
+				uint32_t tile = resolveSpellTileGID(data->spell_holder->slot_spell.at(data->spell_holder->slot_selected), data->gameRegion.world.tm);
+				int layer_number = data->gameRegion.world.blockingLayer;
+				bool anyTileChanged = false;
+				for (int dy = 0; dy < data->brushSize; ++dy) {
+					for (int dx = 0; dx < data->brushSize; ++dx) {
+						int tile_x = base_tile_x + dx;
+						int tile_y = base_tile_y + dy;
+						if (sago::tiled::tileInBound(data->gameRegion.world.tm, tile_x, tile_y)
+						        && !(data->gameRegion.world.tile_protected(tile_x, tile_y)) ) {
+							sago::tiled::setTileOnLayerNumber(data->gameRegion.world.tm, layer_number, tile_x, tile_y, tile);
+							data->gameRegion.liqudHandler["dungeon"].updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
 							data->gameRegion.liqudHandler["water"].updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
 							data->gameRegion.liqudHandler["lava"].updateFirstTile(data->gameRegion.world.tm, tile_x, tile_y);
 							anyTileChanged = true;

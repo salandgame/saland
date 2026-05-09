@@ -279,7 +279,7 @@ void GameRegion::CreateLake(World& world, int tile_x, int tile_y)
                 continue;
             }
             int layer_number = world.blockingLayer;
-            uint32_t tile = 28;
+            uint32_t tile = liqudHandler["water"].default_tile;
             sago::tiled::setTileOnLayerNumber(world.tm, layer_number, tile_x + i, tile_y + j, tile);
             liqudHandler["water"].updateFirstTile(world.tm, tile_x + i, tile_y + j);
         }
@@ -321,22 +321,42 @@ void GameRegion::InitCommon() {
 	placeables.clear();
 	physicsBox.reset(new b2World(b2Vec2(0.0f, 0.0f)));
 	world.managed_bodies.clear();
+}
+
+void GameRegion::InitLiquidHandlers() {
+	liqudHandler.clear();
+
+	uint32_t terrain_firstgid = sago::tiled::getFirstGidForTilesetSource(world.tm, "terrain");
+	if (terrain_firstgid == 0) {
+		terrain_firstgid = 1;  // fallback for maps without a named terrain tileset
+	}
+	int terrain_cols = sago::tiled::getTilesetColumns(world.tm, "terrain");
 
 	liqudHandler["water"].blockingLayer = world.blockingLayer;
 	liqudHandler["water"].blockingLayer_overlay_1 = world.blockingLayer_overlay_1;
-	liqudHandler["water"].setupTiles(28);
+	liqudHandler["water"].setupTiles(terrain_firstgid + 27, terrain_cols);
+
 	liqudHandler["lava"].blockingLayer = world.blockingLayer;
 	liqudHandler["lava"].blockingLayer_overlay_1 = world.blockingLayer_overlay_1;
-	liqudHandler["lava"].setupTiles(16);
+	liqudHandler["lava"].setupTiles(terrain_firstgid + 15, terrain_cols);
+
 	liqudHandler["ground"].blockingLayer = world.ground2Layer;
 	liqudHandler["ground"].blockingLayer_overlay_1 = world.ground2OverlayLayer;
-	liqudHandler["ground"].setupTiles(1);
+	liqudHandler["ground"].setupTiles(terrain_firstgid + 0, terrain_cols);
 
+	uint32_t dungeon_firstgid = sago::tiled::getFirstGidForTilesetSource(world.tm, "tiles_dungeon");
+	if (dungeon_firstgid > 0) {
+		int dungeon_cols = sago::tiled::getTilesetColumns(world.tm, "tiles_dungeon");
+		liqudHandler["dungeon"].blockingLayer = world.blockingLayer;
+		liqudHandler["dungeon"].blockingLayer_overlay_1 = world.blockingLayer_overlay_1;
+		liqudHandler["dungeon"].setupTiles(dungeon_firstgid, dungeon_cols);
+	}
 }
 
 void GameRegion::InitDungeon(const std::string& dungeonName, const std::string& dungeonType, bool forceResetWorld) {
 	InitCommon();
 	world.init(physicsBox, "maps/"+dungeonName+".tmx");
+	InitLiquidHandlers();
 }
 
 
@@ -354,6 +374,7 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 	InitCommon();
 	ScanPrefabs("prefabs01");
 	world.init(physicsBox, loadMap);
+	InitLiquidHandlers();
 
 
 	const std::vector<sago::tiled::TileObjectGroup>& object_groups = world.tm.object_groups;

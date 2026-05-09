@@ -695,6 +695,64 @@ inline void setTileOnLayerNumber(TileMap& m, int layer_number, int x, int y, uin
 	*dp = tile;
 }
 
+/**
+ * Returns the firstgid of the tileset whose source filename (without path and extension)
+ * matches short_name. For example, pass "terrain" to find the tileset loaded from "terrain.tsx".
+ * Returns 0 and prints a warning if not found.
+ */
+inline uint32_t getFirstGidForTilesetSource(const TileMap& tm, const std::string& short_name) {
+	for (const auto& ts : tm.tileset) {
+		if (!ts.source.empty()) {
+			std::string basename = ts.source;
+			size_t slash = basename.find_last_of("/\\");
+			if (slash != std::string::npos) {
+				basename = basename.substr(slash + 1);
+			}
+			size_t dot = basename.rfind('.');
+			if (dot != std::string::npos) {
+				basename = basename.substr(0, dot);
+			}
+			if (basename == short_name) {
+				return static_cast<uint32_t>(ts.firstgid);
+			}
+		}
+	}
+	std::cerr << "Warning: tileset '" << short_name << "' not found in TileMap\n";
+	return 0;
+}
+
+/**
+ * Returns the number of tile columns in the tileset identified by short_name.
+ * Computed as image.width / tilewidth from the loaded tileset data.
+ * Returns 32 as fallback if not found or image data is unavailable.
+ */
+inline int getTilesetColumns(const TileMap& tm, const std::string& short_name) {
+	for (const auto& ts : tm.tileset) {
+		if (!ts.source.empty()) {
+			std::string basename = ts.source;
+			size_t slash = basename.find_last_of("/\\");
+			if (slash != std::string::npos) {
+				basename = basename.substr(slash + 1);
+			}
+			size_t dot = basename.rfind('.');
+			if (dot != std::string::npos) {
+				basename = basename.substr(0, dot);
+			}
+			if (basename == short_name) {
+				const TileSet* effective = &ts;
+				while (effective->alternativeSource) {
+					effective = effective->alternativeSource;
+				}
+				if (effective->tilewidth > 0 && effective->image.width > 0) {
+					return effective->image.width / effective->tilewidth;
+				}
+				return 32;
+			}
+		}
+	}
+	return 32;
+}
+
 }  //tiled
 }  //sago
 

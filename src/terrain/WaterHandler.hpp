@@ -36,7 +36,7 @@ struct WaterHandler {
 
 	WaterHandler();
 
-	void setupTiles(uint32_t start_tile);
+	void setupTiles(uint32_t start_tile, int tile_count_width = 32);
 
 	uint32_t getTile(sago::tiled::TileMap& tm, int x, int y, uint32_t& overlay_tile);
 
