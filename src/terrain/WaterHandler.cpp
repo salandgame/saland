@@ -22,6 +22,7 @@ https://github.com/sago007/saland
 */
 
 #include "WaterHandler.hpp"
+#include <functional>
 #include <iostream>
 
 WaterHandler::WaterHandler() {
@@ -48,6 +49,10 @@ void WaterHandler::setupTiles(uint32_t start_tile) {
 	tile_map["11111000"] = start_tile+tile_count_width*4+1;
 	tile_map["11010000"] = start_tile+tile_count_width*4+2;
 
+	tile_map["11111111a"] = start_tile+tile_count_width*5;
+	tile_map["11111111b"] = start_tile+tile_count_width*5+1;
+	tile_map["11111111c"] = start_tile+tile_count_width*5+2;
+
 	tiles = {start_tile, start_tile+1, start_tile+2, start_tile+33, start_tile+34,
 	         start_tile+35, start_tile+64, start_tile+65, start_tile+66, start_tile+96,
 	         start_tile+97, start_tile+98, start_tile+128, start_tile+129, start_tile+130,
@@ -57,6 +62,22 @@ void WaterHandler::setupTiles(uint32_t start_tile) {
 
 uint32_t WaterHandler::getTile(sago::tiled::TileMap& tm, int x, int y, uint32_t& overlay_tile) {
 	std::string theString = stringForTileSurrounding(tm, x, y);
+	if (theString == "11111111") {
+		// Use a position-based hash so the variant is stable across updates.
+		// rand()-based variation caused infinite recursion: updateTile writes
+		// the tile, recurses into neighbours, which recurse back here and may
+		// roll a different variant, writing the tile again, ad infinitum.
+		size_t hash = std::hash<int>{}(x * 73856093) ^ std::hash<int>{}(y * 19349663);
+		int variant = static_cast<int>(hash % 100);
+		if (variant < 1) {
+			theString = "11111111a";       // ~1 %
+		} else if (variant < 16) {
+			theString = "11111111b";       // ~15 %
+		} else if (variant < 31) {
+			theString = "11111111c";       // ~15 %
+		}
+		// else keep "11111111"            // ~69 %
+	}
 	uint32_t tile = tile_map[theString];
 	overlay_tile = 0;
 	if (tile > 0) {
