@@ -101,7 +101,8 @@ static void addFolderToList(const std::string& folder, std::vector<std::string>&
 	std::vector<std::string> textures = sago::GetFileList(folder.c_str());
 	for (const auto& texture : textures) {
 		std::cout << "Texture: " << texture << "\n";
-		if (texture.find(".png") == std::string::npos) {
+		if (!texture.ends_with(".png") && !texture.ends_with(".jpg") &&
+		        !texture.ends_with(".jpeg") && !texture.ends_with(".bmp")) {
 			continue;
 		}
 		if (filter.empty() || texture.find(filter) != std::string::npos) {
