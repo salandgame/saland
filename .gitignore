@@ -14,3 +14,7 @@ nbproject
 *.pyc
 *.orig
 *.org
+embedded_libs/downloads/
+build/
+_deps/
+

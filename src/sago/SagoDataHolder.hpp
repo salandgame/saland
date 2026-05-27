@@ -22,10 +22,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "SDL.h"
-#include <SDL_mixer.h>      //Used for sound & music
-#include <SDL_image.h>      //To load PNG images!
-#include <SDL_ttf.h>
+#include <SDL3/SDL.h>
+#include "../Libs/sdl3_mixer_compat.h"   //Used for sound & music
+#include <SDL3_image/SDL_image.h>   //To load PNG images!
+#include <SDL3_ttf/SDL_ttf.h>
 #include <physfs.h>         //Abstract file system. To use containers
 #include <string>
 

@@ -52,7 +52,7 @@ void GameShop::Draw(SDL_Renderer* target) {
 }
 
 void GameShop::ProcessInput(const SDL_Event& event, bool&) {
-	if (event.type == SDL_KEYDOWN) {
+	if (event.type == SDL_EVENT_KEY_DOWN) {
 		data->active = false;
 	}
 }

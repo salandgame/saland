@@ -197,8 +197,8 @@ void Console::ProcessCommand(const std::string& command) {
 
 void Console::ProcessInput(const SDL_Event& event, bool& processed) {
 	// ImGui handles all input internally, we just need to handle console close
-	if (event.type == SDL_KEYDOWN) {
-		if (event.key.keysym.sym == SDLK_ESCAPE && event.key.keysym.mod & KMOD_LSHIFT) {
+	if (event.type == SDL_EVENT_KEY_DOWN) {
+		if (event.key.key == SDLK_ESCAPE && event.key.mod & SDL_KMOD_LSHIFT) {
 			active = false;
 			processed = true;
 		}

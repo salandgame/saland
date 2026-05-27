@@ -214,12 +214,12 @@ void GameInventoryState::Draw(SDL_Renderer*) {
 }
 
 void GameInventoryState::ProcessInput(const SDL_Event& event, bool& processed) {
-	if (event.type == SDL_KEYDOWN) {
-		if (event.key.keysym.sym == SDLK_i) {
+	if (event.type == SDL_EVENT_KEY_DOWN) {
+		if (event.key.key == SDLK_I) {
 			data->active = !data->active;
 			processed = true;
 		}
-		if (event.key.keysym.sym == SDLK_ESCAPE && data->active) {
+		if (event.key.key == SDLK_ESCAPE && data->active) {
 			data->active = false;
 			processed = true;
 		}

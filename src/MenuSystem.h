@@ -26,7 +26,7 @@ https://github.com/sago007/saland
 #define	_MENUSYSTEM_H
 
 #include <string>
-#include "SDL.h"
+#include <SDL3/SDL.h>
 #include <map>
 #include <vector>
 #include "sago/SagoSprite.hpp"

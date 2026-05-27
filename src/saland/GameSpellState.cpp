@@ -111,8 +111,8 @@ bool GameSpellState::IsSpellSelectActive() {
 
 void GameSpellState::ProcessInput(const SDL_Event& event, bool& processed) {
 	UpdateMouseCoordinates(event, globalData.mousex, globalData.mousey);
-	if (event.type == SDL_KEYDOWN) {
-		if (event.key.keysym.sym == SDLK_ESCAPE) {
+	if (event.type == SDL_EVENT_KEY_DOWN) {
+		if (event.key.key == SDLK_ESCAPE) {
 			data->spellSelectActive = !data->spellSelectActive;
 			processed = true;
 		}
@@ -120,7 +120,7 @@ void GameSpellState::ProcessInput(const SDL_Event& event, bool& processed) {
 	if (!data->spellSelectActive) {
 		return;
 	}
-	if (event.type == SDL_MOUSEBUTTONDOWN) {
+	if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
 		if (event.button.button == SDL_BUTTON_LEFT) {
 			// Convert physical mouse coordinates to logical coordinates
 			int logical_mousex, logical_mousey;

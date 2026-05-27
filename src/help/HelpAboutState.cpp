@@ -50,12 +50,12 @@ static void setHelpGamepadFont(const sago::SagoDataHolder* holder, sago::SagoTex
 
 
 HelpAboutState::HelpAboutState() {
-	SDL_RendererInfo renderInfo;
-	SDL_version compiled;
-	SDL_version linked;
-	SDL_GetRendererInfo(globalData.screen, &renderInfo);
-	SDL_VERSION(&compiled);
-	SDL_GetVersion(&linked);
+	const char* renderName = SDL_GetRendererName(globalData.screen);
+	if (!renderName) {
+		renderName = _("Unknown");
+	}
+	const int compiledV = SDL_VERSION;
+	const int linkedV = SDL_GetVersion();
 	const char* audio_driver_name = SDL_GetCurrentAudioDriver();
 	if (!audio_driver_name) {
 		audio_driver_name = _("No audio driver");
@@ -66,10 +66,16 @@ HelpAboutState::HelpAboutState() {
 	infoStream << _("Version:") << " " << VERSION_NUMBER << "\n";
 	infoStream << _("Homepage:") << " " << "https://salandgame.github.io\n";
 	infoStream << _("Github page:") << " " << "https://github.com/salandgame/saland\n";
-	infoStream << _("SDL render:") << " " << renderInfo.name << "\n";
+	infoStream << _("SDL render:") << " " << renderName << "\n";
 	infoStream << _("SDL audio driver:") << " " << audio_driver_name << "\n";
-	infoStream << _("SDL compiled version:") << " " << (int)compiled.major << "." << (int)compiled.minor << "." << (int)compiled.patch << "\n";
-	infoStream << _("SDL linked version:") << " " << (int)linked.major << "." << (int)linked.minor << "." << (int)linked.patch << "\n";
+	infoStream << _("SDL compiled version:") << " "
+	           << SDL_VERSIONNUM_MAJOR(compiledV) << "."
+	           << SDL_VERSIONNUM_MINOR(compiledV) << "."
+	           << SDL_VERSIONNUM_MICRO(compiledV) << "\n";
+	infoStream << _("SDL linked version:") << " "
+	           << SDL_VERSIONNUM_MAJOR(linkedV) << "."
+	           << SDL_VERSIONNUM_MINOR(linkedV) << "."
+	           << SDL_VERSIONNUM_MICRO(linkedV) << "\n";
 	infoStream << _("Save folder:") << " " << PHYSFS_getWriteDir() << "\n";
 	infoStream << _("Locale:") << " " << setlocale( LC_CTYPE, nullptr ) << "\n";
 	setHelpGamepadFont(&globalData.spriteHolder->GetDataHolder(), titleField, _("About"));
@@ -112,7 +118,7 @@ void HelpAboutState::Draw(SDL_Renderer* target) {
 
 void HelpAboutState::Update() {
 	// If the mouse button is released, make bMouseUp equal true
-	if ( !(SDL_GetMouseState(nullptr, nullptr)&SDL_BUTTON(1)) ) {
+	if ( !(SDL_GetMouseState(nullptr, nullptr)&SDL_BUTTON_MASK(SDL_BUTTON_LEFT)) ) {
 		bMouseUp=true;
 	}
 }

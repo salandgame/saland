@@ -27,7 +27,7 @@ https://github.com/sago007/saland
 #include "saland/globals.hpp"
 #include "sago/SagoMisc.hpp"
 #include "sago/SagoSpriteHolder.hpp"
-#include <SDL.h>
+#include <SDL3/SDL.h>
 #include <algorithm>
 #include <cstring>
 #include <format>
@@ -331,8 +331,8 @@ void ImGuiPlayerSelect::Draw(SDL_Renderer* target) {
 
 void ImGuiPlayerSelect::ProcessInput(const SDL_Event& event, bool& processed) {
 	// Handle Escape key to close menu
-	if (event.type == SDL_KEYDOWN) {
-		if (event.key.keysym.sym == SDLK_ESCAPE) {
+	if (event.type == SDL_EVENT_KEY_DOWN) {
+		if (event.key.key == SDLK_ESCAPE) {
 			active = false;
 			processed = true;
 		}

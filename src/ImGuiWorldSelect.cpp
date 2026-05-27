@@ -24,7 +24,7 @@ https://github.com/sago007/saland
 #include "ImGuiWorldSelect.hpp"
 #include "Libs/imgui/imgui.h"
 #include "common.h"
-#include <SDL.h>
+#include <SDL3/SDL.h>
 
 ImGuiWorldSelect::ImGuiWorldSelect() {
 	currentWorld = Config::getInstance()->getString("world");
@@ -95,8 +95,8 @@ void ImGuiWorldSelect::Draw(SDL_Renderer* target) {
 
 void ImGuiWorldSelect::ProcessInput(const SDL_Event& event, bool& processed) {
 	// Handle Escape key to close menu
-	if (event.type == SDL_KEYDOWN) {
-		if (event.key.keysym.sym == SDLK_ESCAPE) {
+	if (event.type == SDL_EVENT_KEY_DOWN) {
+		if (event.key.key == SDLK_ESCAPE) {
 			active = false;
 			processed = true;
 		}

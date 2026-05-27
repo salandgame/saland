@@ -48,7 +48,8 @@ bool OpenDialogbox(int x, int y, std::string& name, const std::string& header) {
 	return false;
 }
 
-DialogBox::DialogBox(int x, int y, const std::string& name, const std::string& header) : header(header) {
+DialogBox::DialogBox(int x, int y, const std::string& name, const std::string& header)
+	: header(header), textInputScope(globalData.window) {
 	this->x = x;
 	this->y = y;
 	SetName(name);
@@ -135,8 +136,8 @@ void DialogBox::Draw(SDL_Renderer* target) {
 
 
 static bool isGamePadStartEvent(const SDL_Event& event) {
-	if (event.type == SDL_CONTROLLERBUTTONDOWN) {
-		if (event.cbutton.button == SDL_CONTROLLER_BUTTON_START ) {
+	if (event.type == SDL_EVENT_GAMEPAD_BUTTON_DOWN) {
+		if (event.gbutton.button == SDL_GAMEPAD_BUTTON_START ) {
 			return true;
 		}
 	}
@@ -144,8 +145,8 @@ static bool isGamePadStartEvent(const SDL_Event& event) {
 }
 
 static bool isGamePadLEvent(const SDL_Event& event) {
-	if (event.type == SDL_CONTROLLERBUTTONDOWN) {
-		if (event.cbutton.button == SDL_CONTROLLER_BUTTON_LEFTSHOULDER ) {
+	if (event.type == SDL_EVENT_GAMEPAD_BUTTON_DOWN) {
+		if (event.gbutton.button == SDL_GAMEPAD_BUTTON_LEFT_SHOULDER ) {
 			return true;
 		}
 	}
@@ -153,8 +154,8 @@ static bool isGamePadLEvent(const SDL_Event& event) {
 }
 
 static bool isGamePadREvent(const SDL_Event& event) {
-	if (event.type == SDL_CONTROLLERBUTTONDOWN) {
-		if (event.cbutton.button == SDL_CONTROLLER_BUTTON_RIGHTSHOULDER ) {
+	if (event.type == SDL_EVENT_GAMEPAD_BUTTON_DOWN) {
+		if (event.gbutton.button == SDL_GAMEPAD_BUTTON_RIGHT_SHOULDER ) {
 			return true;
 		}
 	}
@@ -179,19 +180,19 @@ void DialogBox::virtualKeyboardWriteSelectedChar(ReadKeyboard* rk, const std::st
 
 
 void DialogBox::ProcessInput(const SDL_Event& event, bool& processed) {
-	if (event.type == SDL_TEXTINPUT) {
+	if (event.type == SDL_EVENT_TEXT_INPUT) {
 		if ((rk->ReadKey(event))&&(globalData.SoundEnabled)&&(!globalData.NoSound)) {
 			//Mix_PlayChannel(1, globalData.typingChunk.get(), 0);
 		}
 	}
 
-	if ( event.type == SDL_KEYDOWN ) {
-		if ( (event.key.keysym.sym == SDLK_RETURN)||(event.key.keysym.sym == SDLK_KP_ENTER) ) {
+	if ( event.type == SDL_EVENT_KEY_DOWN ) {
+		if ( (event.key.key == SDLK_RETURN)||(event.key.key == SDLK_KP_ENTER) ) {
 			name = rk->GetString();
 			updated = true;
 			isActive = false;
 		}
-		else if ( (event.key.keysym.sym == SDLK_ESCAPE) ) {
+		else if ( (event.key.key == SDLK_ESCAPE) ) {
 			isActive = false;
 		}
 		else {
@@ -214,11 +215,11 @@ void DialogBox::ProcessInput(const SDL_Event& event, bool& processed) {
 			const std::string& insertChar = f.GetText();
 			virtualKeyboardWriteSelectedChar(rk.get(), insertChar);
 		}
-		if (event.type == SDL_CONTROLLERBUTTONDOWN) {
-			if (event.cbutton.button == SDL_CONTROLLER_BUTTON_X ) {
+		if (event.type == SDL_EVENT_GAMEPAD_BUTTON_DOWN) {
+			if (event.gbutton.button == SDL_GAMEPAD_BUTTON_WEST ) {
 				rk->emulateBackspace();
 			}
-			if (event.cbutton.button == SDL_CONTROLLER_BUTTON_Y ) {
+			if (event.gbutton.button == SDL_GAMEPAD_BUTTON_NORTH ) {
 				rk->putchar(" ");
 			}
 		}
@@ -257,11 +258,11 @@ void DialogBox::ProcessInput(const SDL_Event& event, bool& processed) {
 		}
 	}
 	processed = true;
-	if ( !(SDL_GetMouseState(nullptr, nullptr)&SDL_BUTTON(1)) ) {
+	if ( !(SDL_GetMouseState(nullptr, nullptr)&SDL_BUTTON_MASK(SDL_BUTTON_LEFT)) ) {
 		bMouseUp=true;
 	}
 
-	if (SDL_GetMouseState(nullptr,nullptr)&SDL_BUTTON(1) && bMouseUp) {
+	if (SDL_GetMouseState(nullptr,nullptr)&SDL_BUTTON_MASK(SDL_BUTTON_LEFT) && bMouseUp) {
 		bMouseUp = false;
 		if (insideRect(x+25, y+128, 50, 250)) {
 			name = rk->GetString();

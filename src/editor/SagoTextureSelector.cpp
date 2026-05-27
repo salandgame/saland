@@ -24,9 +24,9 @@ https://github.com/sago007/saland
 #include "SagoTextureSelector.hpp"
 #include <iostream>
 #include "imgui.h"
-#include "backends/imgui_impl_sdl2.h"
-#include "backends/imgui_impl_sdlrenderer2.h"
-#include <SDL_image.h>
+#include "backends/imgui_impl_sdl3.h"
+#include "backends/imgui_impl_sdlrenderer3.h"
+#include <SDL3_image/SDL_image.h>
 #include "../../sago/SagoMisc.hpp"
 #include "../global.hpp"
 #include "../common.h"
@@ -69,8 +69,8 @@ private:
 
 
 static void addLinesToCanvas(SDL_Renderer* renderer, SDL_Texture* texture, int xstep = 32, int ystep = 32, int xoffset = 0, int yoffset = 0) {
-	int width, height;
-	SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
+	int width = texture->w;
+	int height = texture->h;
 	Uint8 r, g, b, a;
 	SDL_GetRenderDrawColor(renderer, &r, &g, &b, &a);
 
@@ -124,8 +124,8 @@ std::string remove_file_extension(const std::string& filename) {
 
 
 static void ImGuiWritePartOfImage(SDL_Texture* texture, int topx, int topy, int w, int h) {
-	int tex_w, tex_h;
-	SDL_QueryTexture(texture, nullptr, nullptr, &tex_w, &tex_h);
+	int tex_w = texture->w;
+	int tex_h = texture->h;
 	float sprite_w = w;
 	float sprite_h = h;
 	float topxf = topx;
@@ -186,10 +186,10 @@ void SagoTextureSelector::runSpriteSelectorFrame(SDL_Renderer* target) {
 
 	ImGui::Begin("SpriteTexture");
 	if (selected_sprite.length() && sprites[selected_sprite].texture.length()) {
-		int tex_w, tex_h;
 		const SagoSprite& current_sprite = sprites[selected_sprite];
 		SDL_Texture* current_texture = globalData.dataHolder->getTexturePtr(current_sprite.texture);
-		SDL_QueryTexture(current_texture, nullptr, nullptr, &tex_w, &tex_h);
+		int tex_w = current_texture ? current_texture->w : 0;
+		int tex_h = current_texture ? current_texture->h : 0;
 		ImGui::Text("Size: %d x %d", tex_w, tex_h);
 		ImGui::BeginChild("Test");
 		ImVec2 p = ImGui::GetCursorScreenPos();
@@ -226,9 +226,9 @@ void SagoTextureSelector::runTextureSelectorFrame(SDL_Renderer* target) {
 
 	ImGui::Begin("TextureViewer");
 	if (selected_texture.length()) {
-		int tex_w, tex_h;
 		SDL_Texture* current_texture = globalData.dataHolder->getTexturePtr(remove_file_extension(selected_texture));
-		SDL_QueryTexture(current_texture, nullptr, nullptr, &tex_w, &tex_h);
+		int tex_w = current_texture ? current_texture->w : 0;
+		int tex_h = current_texture ? current_texture->h : 0;
 		ImGui::Text("Size: %d x %d", tex_w, tex_h);
 		ImGui::BeginChild("Test");
 		ImVec2 p = ImGui::GetCursorScreenPos();

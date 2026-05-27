@@ -23,7 +23,7 @@ https://github.com/sago007/saland
 
 #include "GameDraw.hpp"
 #include "GameHair.hpp"
-#include <SDL2/SDL2_gfxPrimitives.h>
+#include "../Libs/sdl3_gfx_compat.h"
 #include <cmath>
 #include "../sago/SagoTextField.hpp"
 
@@ -61,7 +61,15 @@ static void Draw(SDL_Renderer* target, SDL_Texture* t, int x, int y, const SDL_R
 	if (resize) {
 		resize->LogicalToPhysical(pos);
 	}
-	SDL_RenderCopy(target, t, &part, &pos);
+	SDL_FRect partF = {
+		static_cast<float>(part.x), static_cast<float>(part.y),
+		static_cast<float>(part.w), static_cast<float>(part.h)
+	};
+	SDL_FRect posF = {
+		static_cast<float>(pos.x), static_cast<float>(pos.y),
+		static_cast<float>(pos.w), static_cast<float>(pos.h)
+	};
+	SDL_RenderTexture(target, t, &partF, &posF);
 }
 
 static void DrawCollision(SDL_Renderer* target, const Placeable* entity, int offsetX, int offsetY, bool drawCollision, sago::SagoLogicalResize* resize = nullptr) {
@@ -322,8 +330,12 @@ void DrawMonster(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Mo
 			if (resize) {
 				resize->LogicalToPhysical(slashRect);
 			}
+			SDL_FRect slashRectF = {
+				static_cast<float>(slashRect.x), static_cast<float>(slashRect.y),
+				static_cast<float>(slashRect.w), static_cast<float>(slashRect.h)
+			};
 			SDL_SetRenderDrawColor(target, 255, 100, 100, 200);
-			SDL_RenderFillRect(target, &slashRect);
+			SDL_RenderFillRect(target, &slashRectF);
 		}
 	}
 }

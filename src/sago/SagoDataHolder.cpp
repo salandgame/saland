@@ -28,7 +28,7 @@ SOFTWARE.
 #include <vector>
 #include <physfs.h>
 #include <memory>
-#include <SDL_mixer.h>
+#include "../Libs/sdl3_mixer_compat.h"
 #include "SagoMiscSdl2.hpp"
 #include "SagoMisc.hpp"
 
@@ -44,7 +44,7 @@ struct SagoDataHolder::SagoDataHolderData {
 	std::map<std::string, std::map<int, TTF_Font*> > fonts;  //font, ptsize
 	std::map<std::string, Mix_Music*> music;
 	std::map<std::string, Mix_Chunk*> sounds;
-	std::vector<SDL_RWops*> rwOpsToFree;
+	std::vector<SDL_IOStream*> ioStreamsToFree;
 	std::vector<std::unique_ptr<char[]>> dataToFree;
 	bool verbose = false;
 	Uint64 version = 1;
@@ -89,10 +89,10 @@ void SagoDataHolder::invalidateAll() {
 		}
 	}
 	data->fonts.clear();
-	for (auto& item : data->rwOpsToFree) {
-		SDL_FreeRW(item);
+	for (auto& item : data->ioStreamsToFree) {
+		SDL_CloseIO(item);
 	}
-	data->rwOpsToFree.clear();
+	data->ioStreamsToFree.clear();
 }
 
 SagoDataHolder::~SagoDataHolder() {
@@ -123,13 +123,13 @@ SDL_Texture* SagoDataHolder::getTexturePtr(const std::string& textureName) const
 	unsigned int m_size = 0;
 	std::unique_ptr<char[]> m_data;
 	ReadBytesFromFile(path.c_str(), m_data, m_size);
-	SDL_RWops* rw = SDL_RWFromMem (m_data.get(), m_size);
+	SDL_IOStream* rw = SDL_IOFromMem (m_data.get(), m_size);
 	//The above might fail an return null.
 	if (!rw) {
 		std::cerr << "Error. Corrupt data file!\n";
 		return NULL;
 	}
-	SDL_Surface* surface = IMG_Load_RW(rw,true);
+	SDL_Surface* surface = IMG_Load_IO(rw, true);
 
 	ret = SDL_CreateTextureFromSurface(data->renderer, surface);
 
@@ -137,8 +137,8 @@ SDL_Texture* SagoDataHolder::getTexturePtr(const std::string& textureName) const
 		std::cerr << "getTextureFailed to load " << path << "\n";
 	}
 	// Nearest ensure that we do not have gab between tiles
-	SDL_SetTextureScaleMode(ret, SDL_ScaleModeNearest);
-	SDL_FreeSurface(surface);
+	SDL_SetTextureScaleMode(ret, SDL_SCALEMODE_NEAREST);
+	SDL_DestroySurface(surface);
 	data->textures[textureName] = ret;
 	return ret;
 }
@@ -160,7 +160,7 @@ TTF_Font* SagoDataHolder::getFontPtr(const std::string& fontName, int ptsize) co
 	std::unique_ptr<char[]> m_data;
 	ReadBytesFromFile(path.c_str(), m_data, m_size);
 
-	SDL_RWops* rw = SDL_RWFromMem (m_data.get(), m_size);
+	SDL_IOStream* rw = SDL_IOFromMem (m_data.get(), m_size);
 
 	//The above might fail an return null.
 	if (!rw) {
@@ -168,13 +168,13 @@ TTF_Font* SagoDataHolder::getFontPtr(const std::string& fontName, int ptsize) co
 		return ret;
 	}
 
-	ret = TTF_OpenFontRW(rw, SDL_FALSE, ptsize);
+	ret = TTF_OpenFontIO(rw, false, ptsize);
 	if (!ret) {
-		std::cerr << "Error openening font: " << fontName << " because: " << TTF_GetError() << "\n";
+		std::cerr << "Error openening font: " << fontName << " because: " << SDL_GetError() << "\n";
 	}
 	data->fonts[fontName][ptsize] = ret;
 	data->dataToFree.push_back(std::move(m_data));
-	data->rwOpsToFree.push_back(rw);
+	data->ioStreamsToFree.push_back(rw);
 	return ret;
 }
 
@@ -194,7 +194,7 @@ Mix_Music* SagoDataHolder::getMusicPtr(const std::string& musicName) const {
 	unsigned int m_size = 0;
 	std::unique_ptr<char[]> m_data;
 	ReadBytesFromFile(path.c_str(), m_data, m_size);
-	SDL_RWops* rw = SDL_RWFromMem (m_data.get(), m_size);
+	SDL_IOStream* rw = SDL_IOFromMem (m_data.get(), m_size);
 
 	//The above might fail an return null.
 	if (!rw) {
@@ -202,10 +202,10 @@ Mix_Music* SagoDataHolder::getMusicPtr(const std::string& musicName) const {
 		return NULL;
 	}
 
-	ret = Mix_LoadMUS_RW(rw, SDL_TRUE);  //SDL_TRUE causes rw to be freed
+	ret = Mix_LoadMUS_IO(rw, true);  //true causes rw to be freed
 
 	if (!ret) {
-		std::cerr << "getMusicPtr to load " << path << " because: " << Mix_GetError() << "\n";
+		std::cerr << "getMusicPtr to load " << path << " because: " << SDL_GetError() << "\n";
 	}
 	data->music[musicName] = ret;
 	data->dataToFree.push_back(std::move(m_data));
@@ -229,7 +229,7 @@ Mix_Chunk* SagoDataHolder::getSoundPtr(const std::string& soundName) const {
 	unsigned int m_size = 0;
 	std::unique_ptr<char[]> m_data;
 	ReadBytesFromFile(path.c_str(), m_data, m_size);
-	SDL_RWops* rw = SDL_RWFromMem (m_data.get(), m_size);
+	SDL_IOStream* rw = SDL_IOFromMem (m_data.get(), m_size);
 
 	//The above might fail an return null.
 	if (!rw) {
@@ -237,7 +237,7 @@ Mix_Chunk* SagoDataHolder::getSoundPtr(const std::string& soundName) const {
 		return NULL;
 	}
 
-	ret = Mix_LoadWAV_RW(rw, SDL_TRUE);
+	ret = Mix_LoadWAV_IO(rw, true);
 	data->sounds[soundName] = ret;
 	data->dataToFree.push_back(std::move(m_data));
 	return ret;

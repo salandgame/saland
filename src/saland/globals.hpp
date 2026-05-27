@@ -34,8 +34,8 @@ struct PlayerControls {
 	SDL_Scancode move_down = SDL_SCANCODE_S;
 	SDL_Scancode move_left = SDL_SCANCODE_A;
 	SDL_Scancode move_right = SDL_SCANCODE_D;
-	SDL_Keycode block_create = SDLK_q;
-	SDL_Keycode block_delete = SDLK_e;
+	SDL_Keycode block_create = SDLK_Q;
+	SDL_Keycode block_delete = SDLK_E;
 };
 
 struct SpawnCommand {
@@ -53,6 +53,7 @@ struct GlobalData {
 	bool resetVideo = false;
 	bool SoundEnabled = true;
 	bool NoSound = false;
+	SDL_Window* window = nullptr;
 	SDL_Renderer* screen = nullptr;
 	std::unique_ptr<sago::SagoSpriteHolder> spriteHolder;
 	sago::SagoDataHolder* dataHolder;

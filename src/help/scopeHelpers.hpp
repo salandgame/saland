@@ -42,13 +42,19 @@ public:
 
 class SDL_TextInput {
 public:
-	SDL_TextInput() {
-		SDL_StartTextInput();
+	explicit SDL_TextInput(SDL_Window* window) : window(window) {
+		if (window) {
+			SDL_StartTextInput(window);
+		}
 	}
 
 	~SDL_TextInput() {
-		SDL_StopTextInput();
+		if (window) {
+			SDL_StopTextInput(window);
+		}
 	}
+private:
+	SDL_Window* window;
 };
 
 #endif  /* SCOPEHELPERS_HPP */

@@ -21,7 +21,7 @@ https://github.com/sago007/saland
 ===========================================================================
  */
 
-#include <SDL2/SDL_timer.h>
+#include <SDL3/SDL.h>
 
 #include "GameDraw.hpp"
 #include "GameUpdates.hpp"
@@ -41,8 +41,7 @@ https://github.com/sago007/saland
 #include "model/Player.hpp"
 #include "model/LevelSystem.hpp"
 #include "../os.hpp"
-#include "SDL.h"
-#include <SDL2/SDL2_gfxPrimitives.h>
+#include "../Libs/sdl3_gfx_compat.h"
 #include <algorithm>
 #include <cmath>
 #include <condition_variable>
@@ -534,22 +533,22 @@ void Game::Draw(SDL_Renderer* target) {
 
 	// Top bar
 	if (topMargin > 0) {
-		SDL_Rect topBar = {0, 0, globalData.xsize, topMargin};
+		SDL_FRect topBar = {0.0f, 0.0f, static_cast<float>(globalData.xsize), static_cast<float>(topMargin)};
 		SDL_SetRenderDrawColor(target, 0, 0, 0, 255);
 		SDL_RenderFillRect(target, &topBar);
 		// Bottom bar
-		SDL_Rect bottomBar = {0, globalData.ysize - topMargin, globalData.xsize, topMargin};
+		SDL_FRect bottomBar = {0.0f, static_cast<float>(globalData.ysize - topMargin), static_cast<float>(globalData.xsize), static_cast<float>(topMargin)};
 		SDL_SetRenderDrawColor(target, 0, 0, 0, 255);
 		SDL_RenderFillRect(target, &bottomBar);
 	}
 
 	// Left bar
 	if (leftMargin > 0) {
-		SDL_Rect leftBar = {0, 0, leftMargin, globalData.ysize};
+		SDL_FRect leftBar = {0.0f, 0.0f, static_cast<float>(leftMargin), static_cast<float>(globalData.ysize)};
 		SDL_SetRenderDrawColor(target, 0, 0, 0, 255);
 		SDL_RenderFillRect(target, &leftBar);
 		// Right bar
-		SDL_Rect rightBar = {globalData.xsize - leftMargin, 0, leftMargin, globalData.ysize};
+		SDL_FRect rightBar = {static_cast<float>(globalData.xsize - leftMargin), 0.0f, static_cast<float>(leftMargin), static_cast<float>(globalData.ysize)};
 		SDL_SetRenderDrawColor(target, 0, 0, 0, 255);
 		SDL_RenderFillRect(target, &rightBar);
 	}
@@ -623,9 +622,9 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 			return;
 		}
 	}
-	if (event.type == SDL_KEYDOWN) {
+	if (event.type == SDL_EVENT_KEY_DOWN) {
 		// Console activation is the first thing we check and we stop if it is activated.
-		if (event.key.keysym.sym == SDLK_ESCAPE && event.key.keysym.mod & KMOD_LSHIFT) {
+		if (event.key.key == SDLK_ESCAPE && event.key.mod & SDL_KMOD_LSHIFT) {
 			if (!data->console) {
 				data->console = std::make_shared<Console>();
 			}
@@ -645,55 +644,55 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 			return;
 		}
 	}
-	if (event.type == SDL_KEYDOWN) {
-		if (event.key.keysym.sym == SDLK_1 || event.key.keysym.sym == SDLK_KP_1) {
+	if (event.type == SDL_EVENT_KEY_DOWN) {
+		if (event.key.key == SDLK_1 || event.key.key == SDLK_KP_1) {
 			data->spell_holder->slot_selected = 0;
 		}
-		if (event.key.keysym.sym == SDLK_2 || event.key.keysym.sym == SDLK_KP_2) {
+		if (event.key.key == SDLK_2 || event.key.key == SDLK_KP_2) {
 			data->spell_holder->slot_selected = 1;
 		}
-		if (event.key.keysym.sym == SDLK_3 || event.key.keysym.sym == SDLK_KP_3) {
+		if (event.key.key == SDLK_3 || event.key.key == SDLK_KP_3) {
 			data->spell_holder->slot_selected = 2;
 		}
-		if (event.key.keysym.sym == SDLK_4 || event.key.keysym.sym == SDLK_KP_4) {
+		if (event.key.key == SDLK_4 || event.key.key == SDLK_KP_4) {
 			data->spell_holder->slot_selected = 3;
 		}
-		if (event.key.keysym.sym == SDLK_5 || event.key.keysym.sym == SDLK_KP_5) {
+		if (event.key.key == SDLK_5 || event.key.key == SDLK_KP_5) {
 			data->spell_holder->slot_selected = 4;
 		}
-		if (event.key.keysym.sym == SDLK_6 || event.key.keysym.sym == SDLK_KP_6) {
+		if (event.key.key == SDLK_6 || event.key.key == SDLK_KP_6) {
 			data->spell_holder->slot_selected = 5;
 		}
-		if (event.key.keysym.sym == SDLK_7 || event.key.keysym.sym == SDLK_KP_7) {
+		if (event.key.key == SDLK_7 || event.key.key == SDLK_KP_7) {
 			data->spell_holder->slot_selected = 6;
 		}
-		if (event.key.keysym.sym == SDLK_8 || event.key.keysym.sym == SDLK_KP_8) {
+		if (event.key.key == SDLK_8 || event.key.key == SDLK_KP_8) {
 			data->spell_holder->slot_selected = 7;
 		}
-		if (event.key.keysym.sym == SDLK_9 || event.key.keysym.sym == SDLK_KP_9) {
+		if (event.key.key == SDLK_9 || event.key.key == SDLK_KP_9) {
 			data->spell_holder->slot_selected = 8;
 		}
-		if (event.key.keysym.sym == SDLK_0 || event.key.keysym.sym == SDLK_KP_0) {
+		if (event.key.key == SDLK_0 || event.key.key == SDLK_KP_0) {
 			data->spell_holder->slot_selected = 9;
 		}
-		if (event.key.keysym.sym == SDLK_F11) {
+		if (event.key.key == SDLK_F11) {
 			data->debugMenuActive = !data->debugMenuActive;
 		}
-		if (event.key.keysym.sym == SDLK_F12) {
+		if (event.key.key == SDLK_F12) {
 			data->isActive = false;
 		}
-		if (event.key.keysym.sym == SDLK_PAGEUP) {
+		if (event.key.key == SDLK_PAGEUP) {
 			if (data->brushSize < 5) {
 				data->brushSize++;
 			}
 		}
-		if (event.key.keysym.sym == SDLK_PAGEDOWN) {
+		if (event.key.key == SDLK_PAGEDOWN) {
 			if (data->brushSize > 1) {
 				data->brushSize--;
 			}
 		}
 	}
-	if (event.type == SDL_MOUSEWHEEL) {
+	if (event.type == SDL_EVENT_MOUSE_WHEEL) {
 		if (event.wheel.y > 0) { // Scroll up
 			if (data->brushSize < 5) {
 				data->brushSize++;
@@ -807,7 +806,7 @@ void Game::Update() {
 	data->spellSelect->Update();
 	Uint32 nowTime = SDL_GetTicks();
 	Uint32 deltaTime = nowTime - data->lastUpdate;
-	const Uint8* state = SDL_GetKeyboardState(NULL);
+	const bool* state = SDL_GetKeyboardState(NULL);
 	float deltaX = 0.0f;
 	float deltaY = 0.0f;
 	if (!data->consoleActive) {
@@ -914,9 +913,11 @@ void Game::Update() {
 	}
 	data->center_x = std::round(data->human->X);
 	data->center_y = std::round(data->human->Y);
-	int mousex;
-	int mousey;
-	SDL_GetMouseState(&mousex, &mousey);
+	float mousex_f = 0.0f;
+	float mousey_f = 0.0f;
+	SDL_GetMouseState(&mousex_f, &mousey_f);
+	int mousex = static_cast<int>(mousex_f);
+	int mousey = static_cast<int>(mousey_f);
 	// Convert physical mouse coordinates to logical coordinates
 	int logical_mousex, logical_mousey;
 	globalData.logicalResize.PhysicalToLogical(mousex, mousey, logical_mousex, logical_mousey);

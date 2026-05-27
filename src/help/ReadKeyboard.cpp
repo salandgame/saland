@@ -62,13 +62,13 @@ void ReadKeyboard::removeChar() {
 }
 
 bool ReadKeyboard::ReadKey(const SDL_Event& key) {
-	if (key.type == SDL_TEXTINPUT) {
+	if (key.type == SDL_EVENT_TEXT_INPUT) {
 		putchar(key.text.text);
 		if (key.text.text[0] != 0) {
 			return true;
 		}
 	}
-	return ReadKey(key.key.keysym.sym);
+	return ReadKey(key.key.key);
 }
 
 bool ReadKeyboard::cursorLeft() {

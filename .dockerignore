@@ -10,3 +10,6 @@ Makefile
 saland
 !src/saland
 nbproject
+build/
+embedded_libs/downloads/
+.git/

@@ -25,7 +25,7 @@ https://github.com/sago007/saland
 #include "Libs/imgui/imgui.h"
 #include "common.h"
 #include "saland/globals.hpp"
-#include <SDL.h>
+#include <SDL3/SDL.h>
 #include <format>
 
 ImGuiMainMenu::ImGuiMainMenu() {
@@ -109,8 +109,8 @@ void ImGuiMainMenu::Draw(SDL_Renderer* target) {
 
 void ImGuiMainMenu::ProcessInput(const SDL_Event& event, bool& processed) {
 	// Handle Escape key to close menu
-	if (event.type == SDL_KEYDOWN) {
-		if (event.key.keysym.sym == SDLK_ESCAPE) {
+	if (event.type == SDL_EVENT_KEY_DOWN) {
+		if (event.key.key == SDLK_ESCAPE) {
 			active = false;
 			processed = true;
 		}

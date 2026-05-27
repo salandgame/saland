@@ -27,7 +27,7 @@ https://github.com/sago007/saland
 #include "globals.hpp"
 #include "model/placeables.hpp"
 #include "model/World.hpp"
-#include "SDL.h"
+#include <SDL3/SDL.h>
 
 void DrawOuterBorder(SDL_Renderer* renderer, SDL_Texture* texture, const sago::tiled::TileMap& tm, int topx, int topy, uint32 outerTile, sago::SagoLogicalResize* resize = nullptr);
 void DrawLayer(SDL_Renderer* renderer, sago::SagoSpriteHolder* sHolder, const sago::tiled::TileMap& tm, size_t layer, int topx, int topy, sago::SagoLogicalResize* resize = nullptr);

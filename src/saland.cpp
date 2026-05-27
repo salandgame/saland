@@ -23,21 +23,15 @@ https://github.com/salandgame/saland
 
 #include <iostream>
 #include <boost/program_options.hpp>
-#include <SDL_mixer.h>
+#include "Libs/sdl3_mixer_compat.h"
 #include "editor/SagoTextureSelector.hpp"
 #include "sago/SagoDataHolder.hpp"
 #include "sago/SagoSpriteHolder.hpp"
 #include "sago/GameStateInterface.hpp"
 #include "sago/SagoTextField.hpp"
 #include <sstream>
-#include <SDL_events.h>
-#include <SDL_render.h>
-#include <SDL_rect.h>
-#include <SDL2/SDL_render.h>
-#include <SDL2/SDL_pixels.h>
-#include <SDL2/SDL2_gfxPrimitives.h>
-#include <SDL2/SDL_events.h>
-#include <SDL2/SDL_timer.h>
+#include <SDL3/SDL.h>
+#include "Libs/sdl3_gfx_compat.h"
 #include "saland/globals.hpp"
 #include "saland/Game.hpp"
 
@@ -118,13 +112,13 @@ public:
 	}
 
 	virtual void ProcessInput(const SDL_Event& event, bool& processed) override {
-		if ( event.type == SDL_KEYDOWN ) {
-			if (event.key.keysym.sym == SDLK_RETURN) {
+		if ( event.type == SDL_EVENT_KEY_DOWN ) {
+			if (event.key.key == SDLK_RETURN) {
 				isActive = false;
 				processed = true;
 			}
 		}
-		if (event.type == SDL_MOUSEBUTTONDOWN) {
+		if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
 			if (event.button.button == SDL_BUTTON_LEFT) {
 				isActive = false;
 				processed = true;
@@ -160,28 +154,15 @@ void writeScreenShot() {
 		std::cout << "Saving screenshot" << "\n";
 	}
 	int rightNow = (int)time(nullptr);
-	SDL_Surface* infoSurface = SDL_GetWindowSurface(win);
-	if (!infoSurface) {
-		std::cerr << "Could not get infoSurface. No screenshot written. Be aware that the screenshot feature only works with software render\n";
-		return;
-	}
-	std::vector<char> pixels(infoSurface->w * infoSurface->h * infoSurface->format->BytesPerPixel);
-	int errorCode = SDL_RenderReadPixels(globalData.screen, &infoSurface->clip_rect, infoSurface->format->format, static_cast<void*>(pixels.data()), infoSurface->w * infoSurface->format->BytesPerPixel);
-	if (errorCode) {
-		SDL_FreeSurface(infoSurface);
-		std::cerr << "Could not do SDL_RenderReadPixels. Error code: " << errorCode << ". No screenshot written\n";
-		return;
-	}
-	SDL_Surface* sreenshotSurface = SDL_CreateRGBSurfaceFrom(static_cast<void*>(pixels.data()), infoSurface->w, infoSurface->h, infoSurface->format->BitsPerPixel, infoSurface->w * infoSurface->format->BytesPerPixel, infoSurface->format->Rmask, infoSurface->format->Gmask, infoSurface->format->Bmask, infoSurface->format->Amask);
-	SDL_FreeSurface(infoSurface);
-	if (!sreenshotSurface) {
-		std::cerr << "Could not get sreenshotSurface. No screenshot written\n";
+	SDL_Surface* screenshotSurface = SDL_RenderReadPixels(globalData.screen, nullptr);
+	if (!screenshotSurface) {
+		std::cerr << "SDL_RenderReadPixels failed: " << SDL_GetError() << ". No screenshot written\n";
 		return;
 	}
 	OsCreateFolder(pathToScreenShots());
 	std::string buf = pathToScreenShots() + "/screenshot"+std::to_string(rightNow)+".bmp";
-	SDL_SaveBMP(sreenshotSurface, buf.c_str());
-	SDL_FreeSurface(sreenshotSurface);
+	SDL_SaveBMP(screenshotSurface, buf.c_str());
+	SDL_DestroySurface(screenshotSurface);
 	if (!globalData.NoSound) {
 		if (globalData.SoundEnabled) {
 			Mix_PlayChannel(1, globalData.dataHolder->getSoundHandler("cameraclick").get(), 0);
@@ -199,14 +180,14 @@ void writeScreenShot() {
  */
 void UpdateMouseCoordinates(const SDL_Event& event, int& mousex, int& mousey) {
 	switch (event.type) {
-	case SDL_MOUSEBUTTONDOWN:
-	case SDL_MOUSEBUTTONUP:
-		mousex = event.button.x;
-		mousey = event.button.y;
+	case SDL_EVENT_MOUSE_BUTTON_DOWN:
+	case SDL_EVENT_MOUSE_BUTTON_UP:
+		mousex = static_cast<int>(event.button.x);
+		mousey = static_cast<int>(event.button.y);
 		break;
-	case SDL_MOUSEMOTION:
-		mousex = event.motion.x;
-		mousey = event.motion.y;
+	case SDL_EVENT_MOUSE_MOTION:
+		mousex = static_cast<int>(event.motion.x);
+		mousey = static_cast<int>(event.motion.y);
 		break;
 	default:
 		break;
@@ -226,14 +207,14 @@ void RunGameState(sago::GameStateInterface& state ) {
 		SDL_RenderClear(globalData.screen);
 		int w=1;
 		int h=1;
-		SDL_GetRendererOutputSize(globalData.screen, &w, &h);
+		SDL_GetRenderOutputSize(globalData.screen, &w, &h);
 		globalData.logicalResize.SetPhysicalSize(w, h);
-		ImGui_ImplSDLRenderer2_NewFrame();
-		ImGui_ImplSDL2_NewFrame();
+		ImGui_ImplSDLRenderer3_NewFrame();
+		ImGui_ImplSDL3_NewFrame();
 		ImGui::NewFrame();
 		state.Draw(globalData.screen);
 		ImGui::Render();
-		ImGui_ImplSDLRenderer2_RenderDrawData( ImGui::GetDrawData(), globalData.screen );
+		ImGui_ImplSDLRenderer3_RenderDrawData( ImGui::GetDrawData(), globalData.screen );
 
 		//While using Dear ImGui we do not draw the mouse ourself. This is gone: globalData.mouse.Draw(globalData.screen, SDL_GetTicks(), globalData.mousex, globalData.mousey);
 		SDL_RenderPresent(globalData.screen);
@@ -243,24 +224,22 @@ void RunGameState(sago::GameStateInterface& state ) {
 		bool mustWriteScreenshot = false;
 
 		while ( SDL_PollEvent(&event) ) {
-			if ( event.type == SDL_QUIT ) {
+			if ( event.type == SDL_EVENT_QUIT ) {
 				globalData.isShuttingDown = true;
 				done = true;
 			}
 
-			if (event.type == SDL_WINDOWEVENT) {
-				if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-					std::cout << event.window.data1 << ", " << event.window.data2 << "\n";
-					SDL_GetRendererOutputSize(globalData.screen, &globalData.xsize, &globalData.ysize);
-				}
+			if (event.type == SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED) {
+				std::cout << event.window.data1 << ", " << event.window.data2 << "\n";
+				SDL_GetRenderOutputSize(globalData.screen, &globalData.xsize, &globalData.ysize);
 			}
 
-			if (event.type == SDL_KEYDOWN) {
-				if (!globalData.resetVideo && event.key.keysym.sym == SDLK_RETURN && event.key.keysym.mod & KMOD_LALT) {
+			if (event.type == SDL_EVENT_KEY_DOWN) {
+				if (!globalData.resetVideo && event.key.key == SDLK_RETURN && event.key.mod & SDL_KMOD_LALT) {
 					globalData.fullscreen = !globalData.fullscreen;
 					globalData.resetVideo = true;
 				}
-				if ( event.key.keysym.sym == SDLK_F9 ) {
+				if ( event.key.key == SDLK_F9 ) {
 					mustWriteScreenshot = true;
 				}
 			}
@@ -269,7 +248,7 @@ void RunGameState(sago::GameStateInterface& state ) {
 				writeScreenShot();
 			}
 			bool processed = false;
-			ImGui_ImplSDL2_ProcessEvent(&event);
+			ImGui_ImplSDL3_ProcessEvent(&event);
 			state.ProcessInput(event, processed);
 
 		}
@@ -336,15 +315,15 @@ void ResetFullscreen() {
 	sago::SagoDataHolder& dataHolder = *globalData.dataHolder;
 	Mix_HaltMusic();  //We need to reload all data in case the screen type changes. Music must be stopped before unload.
 	if (globalData.fullscreen) {
-		SDL_SetWindowFullscreen(win, SDL_WINDOW_FULLSCREEN_DESKTOP);
+		SDL_SetWindowFullscreen(win, true);
 	}
 	else {
-		SDL_SetWindowFullscreen(win, 0);
+		SDL_SetWindowFullscreen(win, false);
 	}
 	dataHolder.invalidateAll(globalData.screen);
 	globalData.spriteHolder.reset(new sago::SagoSpriteHolder( dataHolder ) );
-	SDL_ShowCursor(SDL_ENABLE);
-	//SDL_GetRendererOutputSize(globalData.screen, &globalData.xsize, &globalData.ysize);
+	SDL_ShowCursor();
+	//SDL_GetRenderOutputSize(globalData.screen, &globalData.xsize, &globalData.ysize);
 }
 
 void toggleFullscreen() {
@@ -399,30 +378,36 @@ void runGame() {
 	globalData.xsize = 1280;
 	globalData.ysize = 800;
 	SDL_Init(SDL_INIT_VIDEO);
-	IMG_Init(IMG_INIT_PNG);
-	TTF_Init();
-	Mix_Init(MIX_INIT_OGG);
+	// IMG_Init has been removed from SDL3_image; the loaders are always available.
+	if (!TTF_Init()) {
+		std::cerr << "TTF_Init failed: " << SDL_GetError() << "\n";
+	}
+	if (!MIX_Init()) {
+		std::cerr << "MIX_Init failed: " << SDL_GetError() << "\n";
+	}
 	if (!globalData.NoSound) {
 		//If sound has not been disabled, then load the sound system
-		if (Mix_OpenAudio(44100, AUDIO_S16SYS, 2, 2048) < 0) {
-			std::cerr << "Warning: Couldn't set 44100 Hz 16-bit audio - Reason: " << SDL_GetError() << "\n"
+		SDL_AudioSpec spec;
+		SDL_zero(spec);
+		spec.freq = 44100;
+		spec.format = SDL_AUDIO_S16;
+		spec.channels = 2;
+		g_saland_mixer = MIX_CreateMixerDevice(0, &spec);
+		if (!g_saland_mixer) {
+			std::cerr << "Warning: Couldn't open audio - Reason: " << SDL_GetError() << "\n"
 			          << "Sound will be disabled!" << "\n";
 			globalData.NoSound = true; //Tries to stop all sound from playing/loading
 		}
 	}
 
-	int rendererFlags = 0;
-
 	globalData.fullscreen = Config::getInstance()->getInt("fullscreen");
-	if (Config::getInstance()->getInt("always-software")) {
-		rendererFlags |= SDL_RENDERER_SOFTWARE;
-	}
-	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
-	SDL_SetHint(SDL_HINT_MOUSE_RELATIVE_SCALING, "1");
-	win = SDL_CreateWindow("Saland Adventures", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, globalData.xsize, globalData.ysize, SDL_WINDOW_RESIZABLE);
-	globalData.screen = SDL_CreateRenderer(win, -1, rendererFlags);
+	const bool always_software = Config::getInstance()->getInt("always-software");
 
-	//SDL_RenderSetLogicalSize(globalData.screen, globalData.xsize, globalData.ysize);
+	win = SDL_CreateWindow("Saland Adventures", globalData.xsize, globalData.ysize, SDL_WINDOW_RESIZABLE);
+	globalData.window = win;
+	globalData.screen = SDL_CreateRenderer(win, always_software ? "software" : nullptr);
+
+	//SDL_SetRenderLogicalPresentation(globalData.screen, globalData.xsize, globalData.ysize, SDL_LOGICAL_PRESENTATION_LETTERBOX);
 	InitImGui(win, globalData.screen, globalData.xsize, globalData.ysize);
 	ImGuiIO& io = ImGui::GetIO();
 	io.IniFilename = nullptr;
@@ -455,6 +440,12 @@ void runGame() {
 	SDL_DestroyRenderer(globalData.screen);
 	SDL_DestroyWindow(win);
 
+	if (g_saland_mixer) {
+		MIX_DestroyMixer(g_saland_mixer);
+		g_saland_mixer = nullptr;
+	}
+	MIX_Quit();
+	TTF_Quit();
 	SDL_Quit();
 
 }
