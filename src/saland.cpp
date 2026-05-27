@@ -437,6 +437,11 @@ void runGame() {
 
 	ImGui::SaveIniSettingsToDisk(imgui_inifile.c_str());
 
+	// Destroy all SDL/TTF/mixer-owned resources while the subsystems are still
+	// alive.  The holder's destructor will call invalidateAll() again, but by
+	// then all maps are empty so it becomes a safe no-op.
+	holder.invalidateAll();
+
 	SDL_DestroyRenderer(globalData.screen);
 	SDL_DestroyWindow(win);
 
