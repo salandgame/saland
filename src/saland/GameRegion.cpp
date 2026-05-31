@@ -477,6 +477,24 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 	SpawnMonster(batDef, 1200.0f, 1400.0f);
 	MonsterDef beeDef = GetMonsterDefByRace("bee");
 	SpawnMonster(beeDef, 220.0f, 220.0f);
+	MonsterDef smallWormDef = GetMonsterDefByRace("small_worm");
+	SpawnMonster(smallWormDef, 400.0f, 300.0f);
+	SpawnMonster(smallWormDef, 600.0f, 500.0f);
+	MonsterDef bigWormDef = GetMonsterDefByRace("big_worm");
+	SpawnMonster(bigWormDef, 800.0f, 700.0f);
+	MonsterDef eyeballDef = GetMonsterDefByRace("eyeball");
+	SpawnMonster(eyeballDef, 350.0f, 600.0f);
+	SpawnMonster(eyeballDef, 900.0f, 300.0f);
+	MonsterDef ghostDef = GetMonsterDefByRace("ghost");
+	SpawnMonster(ghostDef, 500.0f, 800.0f);
+	SpawnMonster(ghostDef, 1100.0f, 600.0f);
+	MonsterDef manEaterFlowerDef = GetMonsterDefByRace("man_eater_flower");
+	SpawnMonster(manEaterFlowerDef, 700.0f, 400.0f);
+	MonsterDef snakeDef = GetMonsterDefByRace("snake");
+	SpawnMonster(snakeDef, 450.0f, 450.0f);
+	SpawnMonster(snakeDef, 1000.0f, 900.0f);
+	MonsterDef pumpkingDef = GetMonsterDefByRace("pumpking");
+	SpawnMonster(pumpkingDef, 1500.0f, 1500.0f);
 }
 
 void GameRegion::SaveRegion() {
