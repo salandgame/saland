@@ -23,7 +23,7 @@ https://github.com/salandgame/saland
 
 #include <iostream>
 #include <boost/program_options.hpp>
-#include "Libs/sdl3_mixer_compat.h"
+#include <SDL3_mixer/SDL_mixer.h>
 #include "editor/SagoTextureSelector.hpp"
 #include "sago/SagoDataHolder.hpp"
 #include "sago/SagoSpriteHolder.hpp"
@@ -165,7 +165,10 @@ void writeScreenShot() {
 	SDL_DestroySurface(screenshotSurface);
 	if (!globalData.NoSound) {
 		if (globalData.SoundEnabled) {
-			Mix_PlayChannel(1, globalData.dataHolder->getSoundHandler("cameraclick").get(), 0);
+			MIX_Audio* clickSound = globalData.dataHolder->getSoundHandler("cameraclick").get();
+			if (clickSound) {
+				MIX_PlayAudio(globalData.sdlMixer, clickSound);
+			}
 		}
 	}
 }
@@ -313,7 +316,9 @@ void runPlayerSelect() {
 
 void ResetFullscreen() {
 	sago::SagoDataHolder& dataHolder = *globalData.dataHolder;
-	Mix_HaltMusic();  //We need to reload all data in case the screen type changes. Music must be stopped before unload.
+	if (globalData.sdlMixer) {
+		MIX_StopAllTracks(globalData.sdlMixer, 0);  //We need to reload all data in case the screen type changes. Music must be stopped before unload.
+	}
 	if (globalData.fullscreen) {
 		SDL_SetWindowFullscreen(win, true);
 	}
@@ -392,8 +397,8 @@ void runGame() {
 		spec.freq = 44100;
 		spec.format = SDL_AUDIO_S16;
 		spec.channels = 2;
-		g_saland_mixer = MIX_CreateMixerDevice(0, &spec);
-		if (!g_saland_mixer) {
+		globalData.sdlMixer = MIX_CreateMixerDevice(0, &spec);
+		if (!globalData.sdlMixer) {
 			std::cerr << "Warning: Couldn't open audio - Reason: " << SDL_GetError() << "\n"
 			          << "Sound will be disabled!" << "\n";
 			globalData.NoSound = true; //Tries to stop all sound from playing/loading
@@ -417,6 +422,7 @@ void runGame() {
 	globalData.logicalResize = sago::SagoLogicalResize(1280, 720);
 
 	sago::SagoDataHolder holder(globalData.screen);
+	holder.setMixer(globalData.sdlMixer);
 	globalData.spriteHolder.reset(new sago::SagoSpriteHolder(holder));
 	globalData.dataHolder = &holder;
 	ResetFullscreen();
@@ -445,9 +451,9 @@ void runGame() {
 	SDL_DestroyRenderer(globalData.screen);
 	SDL_DestroyWindow(win);
 
-	if (g_saland_mixer) {
-		MIX_DestroyMixer(g_saland_mixer);
-		g_saland_mixer = nullptr;
+	if (globalData.sdlMixer) {
+		MIX_DestroyMixer(globalData.sdlMixer);
+		globalData.sdlMixer = nullptr;
 	}
 	MIX_Quit();
 	TTF_Quit();

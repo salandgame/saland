@@ -55,6 +55,7 @@ struct GlobalData {
 	bool NoSound = false;
 	SDL_Window* window = nullptr;
 	SDL_Renderer* screen = nullptr;
+	MIX_Mixer* sdlMixer = nullptr;
 	std::unique_ptr<sago::SagoSpriteHolder> spriteHolder;
 	sago::SagoDataHolder* dataHolder;
 	int verboseLevel = 0;

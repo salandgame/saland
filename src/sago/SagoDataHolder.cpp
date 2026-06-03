@@ -28,7 +28,6 @@ SOFTWARE.
 #include <vector>
 #include <physfs.h>
 #include <memory>
-#include "../Libs/sdl3_mixer_compat.h"
 #include "SagoMiscSdl2.hpp"
 #include "SagoMisc.hpp"
 
@@ -42,13 +41,14 @@ namespace sago {
 struct SagoDataHolder::SagoDataHolderData {
 	std::map<std::string, SDL_Texture*> textures;
 	std::map<std::string, std::map<int, TTF_Font*> > fonts;  //font, ptsize
-	std::map<std::string, Mix_Music*> music;
-	std::map<std::string, Mix_Chunk*> sounds;
+	std::map<std::string, MIX_Audio*> music;
+	std::map<std::string, MIX_Audio*> sounds;
 	std::vector<SDL_IOStream*> ioStreamsToFree;
 	std::vector<std::unique_ptr<char[]>> dataToFree;
 	bool verbose = false;
 	Uint64 version = 1;
 	SDL_Renderer* renderer = nullptr;
+	MIX_Mixer* mixer = nullptr;
 };
 
 static void printFileWeLoad(const std::string& value) {
@@ -76,11 +76,15 @@ void SagoDataHolder::invalidateAll() {
 	}
 	data->textures.clear();
 	for (auto& item : data->music) {
-		Mix_FreeMusic(item.second);
+		if (item.second) {
+			MIX_DestroyAudio(item.second);
+		}
 	}
 	data->music.clear();
 	for (auto& item : data->sounds) {
-		Mix_FreeChunk(item.second);
+		if (item.second) {
+			MIX_DestroyAudio(item.second);
+		}
 	}
 	data->sounds.clear();
 	for (auto& item : data->fonts) {
@@ -178,8 +182,8 @@ TTF_Font* SagoDataHolder::getFontPtr(const std::string& fontName, int ptsize) co
 	return ret;
 }
 
-Mix_Music* SagoDataHolder::getMusicPtr(const std::string& musicName) const {
-	Mix_Music* ret = data->music[musicName];
+MIX_Audio* SagoDataHolder::getMusicPtr(const std::string& musicName) const {
+	MIX_Audio* ret = data->music[musicName];
 	if (ret) {
 		return ret;
 	}
@@ -202,7 +206,12 @@ Mix_Music* SagoDataHolder::getMusicPtr(const std::string& musicName) const {
 		return NULL;
 	}
 
-	ret = Mix_LoadMUS_IO(rw, true);  //true causes rw to be freed
+	if (!data->mixer) {
+		SDL_CloseIO(rw);
+		return NULL;
+	}
+	//false predecode: music is streamed. true closes rw when done.
+	ret = MIX_LoadAudio_IO(data->mixer, rw, false, true);
 
 	if (!ret) {
 		std::cerr << "getMusicPtr to load " << path << " because: " << SDL_GetError() << "\n";
@@ -213,8 +222,8 @@ Mix_Music* SagoDataHolder::getMusicPtr(const std::string& musicName) const {
 }
 
 
-Mix_Chunk* SagoDataHolder::getSoundPtr(const std::string& soundName) const {
-	Mix_Chunk* ret = data->sounds[soundName];
+MIX_Audio* SagoDataHolder::getSoundPtr(const std::string& soundName) const {
+	MIX_Audio* ret = data->sounds[soundName];
 	if (ret) {
 		return ret;
 	}
@@ -237,7 +246,12 @@ Mix_Chunk* SagoDataHolder::getSoundPtr(const std::string& soundName) const {
 		return NULL;
 	}
 
-	ret = Mix_LoadWAV_IO(rw, true);
+	if (!data->mixer) {
+		SDL_CloseIO(rw);
+		return NULL;
+	}
+	//true predecode: sound effects are short and decoded up front. true closes rw when done.
+	ret = MIX_LoadAudio_IO(data->mixer, rw, true, true);
 	data->sounds[soundName] = ret;
 	data->dataToFree.push_back(std::move(m_data));
 	return ret;
@@ -245,6 +259,10 @@ Mix_Chunk* SagoDataHolder::getSoundPtr(const std::string& soundName) const {
 
 void SagoDataHolder::setVerbose(bool value) {
 	data->verbose = value;
+}
+
+void SagoDataHolder::setMixer(MIX_Mixer* mixer) {
+	data->mixer = mixer;
 }
 
 Uint64 SagoDataHolder::getVersion() const {
@@ -274,7 +292,7 @@ MusicHandler::MusicHandler(const SagoDataHolder* holder, const std::string& musi
 	this->data = nullptr;
 }
 
-Mix_Music* MusicHandler::get() {
+MIX_Audio* MusicHandler::get() {
 	if (version != holder->getVersion()) {
 		//The holder has been invalidated
 		this->data = this->holder->getMusicPtr(musicName);
@@ -289,7 +307,7 @@ SoundHandler::SoundHandler(const SagoDataHolder* holder, const std::string& soun
 	this->data = nullptr;
 }
 
-Mix_Chunk* SoundHandler::get() {
+MIX_Audio* SoundHandler::get() {
 	if (version != holder->getVersion()) {
 		//The holder has been invalidated
 		this->data = this->holder->getSoundPtr(soundName);

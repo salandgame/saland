@@ -23,7 +23,7 @@ SOFTWARE.
 */
 
 #include <SDL3/SDL.h>
-#include "../Libs/sdl3_mixer_compat.h"   //Used for sound & music
+#include <SDL3_mixer/SDL_mixer.h>   //Used for sound & music
 #include <SDL3_image/SDL_image.h>   //To load PNG images!
 #include <SDL3_ttf/SDL_ttf.h>
 #include <physfs.h>         //Abstract file system. To use containers
@@ -53,11 +53,11 @@ class MusicHandler final {
 public:
 	MusicHandler() {};
 	MusicHandler(const SagoDataHolder* holder, const std::string& musicName);
-	Mix_Music* get();
+	MIX_Audio* get();
 private:
 	std::string musicName;
 	const SagoDataHolder* holder = nullptr;
-	Mix_Music* data = nullptr;
+	MIX_Audio* data = nullptr;
 	Uint64 version = 0;
 };
 
@@ -66,11 +66,11 @@ class SoundHandler final {
 public:
 	SoundHandler() {};
 	SoundHandler(const SagoDataHolder* holder, const std::string& soundName);
-	Mix_Chunk* get();
+	MIX_Audio* get();
 private:
 	std::string soundName;
 	const SagoDataHolder* holder = nullptr;
-	Mix_Chunk* data = nullptr;
+	MIX_Audio* data = nullptr;
 	Uint64 version = 0;
 };
 
@@ -92,11 +92,18 @@ public:
 
 	TextureHandler getTextureHandler(const std::string& textureName) const;
 	TTF_Font* getFontPtr(const std::string& fontName, int ptsize) const;
-	Mix_Music* getMusicPtr(const std::string& musicName) const;
+	MIX_Audio* getMusicPtr(const std::string& musicName) const;
 	MusicHandler getMusicHandler(const std::string& musicName) const;
-	Mix_Chunk* getSoundPtr(const std::string& soundName) const;
+	MIX_Audio* getSoundPtr(const std::string& soundName) const;
 	SoundHandler getSoundHandler(const std::string& soundName) const;
 	void setVerbose(bool value);
+
+	/**
+	 * Set the mixer used to load and play audio. The mixer is not owned by
+	 * the holder; the caller keeps ownership and must keep it alive while
+	 * the holder is in use. If no mixer is set, audio loading is a no-op.
+	 */
+	void setMixer(MIX_Mixer* mixer);
 
 	/**
 	 * Invalidates all pointers returned by any of the get variables
