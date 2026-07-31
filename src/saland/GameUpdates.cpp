@@ -24,6 +24,13 @@ https://github.com/sago007/saland
 #include "GameUpdates.hpp"
 #include <cmath>
 #include <cstdlib>
+#include <SDL_mixer.h>
+
+static void PlayHitSound() {
+	if (!globalData.NoSound && globalData.SoundEnabled) {
+		Mix_PlayChannel(-1, globalData.dataHolder->getSoundHandler("qubodupPunch/qubodupPunch05").get(), 0);
+	}
+}
 
 static void SetDesiredVelocity(b2Body* body, float x, float y) {
 	b2Vec2 vel = body->GetLinearVelocity();
@@ -204,6 +211,7 @@ void ProjectileHit(Projectile* p, Placeable* target) {
 		}
 		target->health -= damageAmount;
 		p->removeMe = true;
+		PlayHitSound();
 
 		// Create damage number
 		DamageNumber dmg;
@@ -226,6 +234,7 @@ void MonsterAttackPlayer(Monster* monster, Human* player) {
 
 	// Apply damage to player
 	player->health -= monster->attack.damage;
+	PlayHitSound();
 
 	// Create damage number on player
 	DamageNumber dmg;
