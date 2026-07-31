@@ -73,6 +73,8 @@ struct GlobalData {
 	SpawnCommand pendingSpawnCommand;
 	bool pendingSpawnLake = false;
 	std::string pendingSpawnItem; // Item name to spawn at mouse position
+
+	std::string currentMusic; // name of music track that should be playing ("" = none); used to resume after ResetFullscreen()
 };
 
 extern GlobalData globalData;

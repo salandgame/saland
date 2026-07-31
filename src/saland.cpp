@@ -214,6 +214,8 @@ void UpdateMouseCoordinates(const SDL_Event& event, int& mousex, int& mousey) {
 }
 
 void ResetFullscreen();
+void playMusic(const std::string& name);
+void stopMusic();
 
 void RunGameState(sago::GameStateInterface& state ) {
 	bool done = false;     //We are done!
@@ -293,7 +295,9 @@ void runStartGame() {
 		globalData.player.race = "male";
 	}
 	Game g;
+	playMusic("forest");
 	RunGameState(g);
+	stopMusic();
 }
 
 void runEditor() {
@@ -332,6 +336,18 @@ void runPlayerSelect() {
 }
 
 
+void playMusic(const std::string& name) {
+	globalData.currentMusic = name;
+	if (!globalData.NoSound && globalData.SoundEnabled) {
+		Mix_PlayMusic(globalData.dataHolder->getMusicHandler(name).get(), -1);
+	}
+}
+
+void stopMusic() {
+	globalData.currentMusic.clear();
+	Mix_HaltMusic();
+}
+
 void ResetFullscreen() {
 	sago::SagoDataHolder& dataHolder = *globalData.dataHolder;
 	Mix_HaltMusic();  //We need to reload all data in case the screen type changes. Music must be stopped before unload.
@@ -345,6 +361,9 @@ void ResetFullscreen() {
 	globalData.spriteHolder.reset(new sago::SagoSpriteHolder( dataHolder ) );
 	SDL_ShowCursor(SDL_ENABLE);
 	//SDL_GetRendererOutputSize(globalData.screen, &globalData.xsize, &globalData.ysize);
+	if (!globalData.currentMusic.empty() && !globalData.NoSound && globalData.SoundEnabled) {
+		Mix_PlayMusic(dataHolder.getMusicHandler(globalData.currentMusic).get(), -1);
+	}
 }
 
 void toggleFullscreen() {
