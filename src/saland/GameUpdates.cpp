@@ -28,7 +28,7 @@ https://github.com/sago007/saland
 
 static void PlayHitSound() {
 	if (!globalData.NoSound && globalData.SoundEnabled) {
-		Mix_PlayChannel(-1, globalData.dataHolder->getSoundHandler("qubodupPunch/qubodupPunch05").get(), 0);
+		Mix_PlayChannel(-1, globalData.dataHolder->getSoundHandler("feedback/hitlo").get(), 0);
 	}
 }
 
