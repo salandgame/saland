@@ -40,5 +40,25 @@
 			"health" : 100,
 			"pickup" : false
 		}
+		,{
+			"itemid" : "tree_cherry",
+			"sprite" : "tree_cherry",
+			"sprite2" : "",
+			"radius" : 20.0,
+			"isStatic" : true,
+			"isDestructible" : true,
+			"health" : 100,
+			"pickup" : false
+		}
+		,{
+			"itemid" : "tree_fir",
+			"sprite" : "tree_fir",
+			"sprite2" : "",
+			"radius" : 20.0,
+			"isStatic" : true,
+			"isDestructible" : true,
+			"health" : 100,
+			"pickup" : false
+		}
 	]
 }

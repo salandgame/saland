@@ -94,6 +94,54 @@
 	"frame_time" : 100,
 	"originx" : 32,
 	"originy" : 80
+},
+
+"tree_cherry" : {
+	"texture" : "plant_repack",
+	"topx" : 192,
+	"topy" : 0,
+	"height" : 128,
+	"width" : 96,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+	"originx" : 48,
+	"originy" : 112
+},
+
+"tree_cherry_icon" : {
+	"texture" : "plant_repack",
+	"topx" : 224,
+	"topy" : 32,
+	"height" : 32,
+	"width" : 32,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+	"originx" : 16,
+	"originy" : 16
+},
+
+"tree_fir" : {
+	"texture" : "plant_repack",
+	"topx" : 96,
+	"topy" : 128,
+	"height" : 160,
+	"width" : 96,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+	"originx" : 48,
+	"originy" : 144
+},
+
+"tree_fir_icon" : {
+	"texture" : "plant_repack",
+	"topx" : 128,
+	"topy" : 160,
+	"height" : 32,
+	"width" : 32,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+	"originx" : 16,
+	"originy" : 16
 }
 
 }

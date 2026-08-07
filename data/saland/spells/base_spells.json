@@ -77,6 +77,16 @@
 			"item_name" : "tree_pine"
 		}
 		,{
+			"icon" : "tree_cherry_icon",
+			"name" : "spell_spawn_item",
+			"item_name" : "tree_cherry"
+		}
+		,{
+			"icon" : "tree_fir_icon",
+			"name" : "spell_spawn_item",
+			"item_name" : "tree_fir"
+		}
+		,{
 			"icon" : "icon_small_hammer",
 			"name" : "spell_place_prefab",
 			"type" : "tile"
