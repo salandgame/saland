@@ -8,5 +8,15 @@
 		"number_of_frames" : 1,
 		"originx" : 25,
 		"originy" : 25
+	},
+	"icon_small_hammer" : {
+		"texture" : "tools/smallhammer",
+		"topx" : 0,
+		"topy" : 0,
+		"height" : 16,
+		"width" : 16,
+		"number_of_frames" : 1,
+		"originx" : 8,
+		"originy" : 8
 	}
 }
