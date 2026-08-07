@@ -100,6 +100,16 @@ void GameRegion::SpawnPrefab(const Prefab& prefab, int destX, int destY) {
 	this->world.init_physics(this->physicsBox);
 }
 
+bool GameRegion::RemovePrefabAtTile(int tileX, int tileY) {
+	PlacedPrefabInfo info;
+	if (!FindPlacedPrefabAtTile(world.tm, tileX, tileY, info)) {
+		return false;
+	}
+	RemovePlacedPrefab(world.tm, info);
+	this->world.init_physics(this->physicsBox);
+	return true;
+}
+
 void GameRegion::SpawnItem(const ItemDef& def, float destX, float destY) {
 	std::shared_ptr<MiscItem> barrel = std::make_shared<MiscItem>();
 	barrel.get()->Radius = def.radius;

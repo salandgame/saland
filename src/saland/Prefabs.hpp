@@ -53,3 +53,23 @@ size_t getPrefabCount();
 
 const Prefab& getPrefabByIndex(size_t index);
 
+struct PlacedPrefabInfo {
+	std::string name;
+	int destX = 0;
+	int destY = 0;
+	int width = 0;
+	int height = 0;
+};
+
+/**
+ * Looks for a previously placed prefab (tracked via its "prefab_marking" object) whose
+ * footprint covers the given tile. Returns false if no placed prefab covers that tile.
+ */
+bool FindPlacedPrefabAtTile(const sago::tiled::TileMap& tm, int tileX, int tileY, PlacedPrefabInfo& out);
+
+/**
+ * Clears the tiles stamped by a previously placed prefab and removes its marking object.
+ * Use FindPlacedPrefabAtTile to locate the prefab to remove.
+ */
+void RemovePlacedPrefab(sago::tiled::TileMap& dest, const PlacedPrefabInfo& info);
+

@@ -81,5 +81,10 @@
 			"name" : "spell_place_prefab",
 			"type" : "tile"
 		}
+		,{
+			"icon" : "icon_trash_can",
+			"name" : "spell_remove_prefab",
+			"type" : "dot"
+		}
 	]
 }

@@ -24,6 +24,7 @@ https://github.com/salandgame/saland
 #include "Prefabs.hpp"
 #include "../sago/SagoMisc.hpp"
 #include "../sagotmx/tmx_struct.h"
+#include <algorithm>
 
 
 std::vector<Prefab> prefabs;
@@ -128,6 +129,54 @@ const Prefab& getPrefabByIndex(size_t index) {
 		return blankPrefab;
 	}
 	return prefabs.at(index);
+}
+
+bool FindPlacedPrefabAtTile(const sago::tiled::TileMap& tm, int tileX, int tileY, PlacedPrefabInfo& out) {
+	for (const auto& group : tm.object_groups) {
+		if (group.name != "prefab_marking") {
+			continue;
+		}
+		for (const auto& o : group.objects) {
+			int destX = (o.x - 2) / 32;
+			int destY = (o.y - 2) / 32;
+			int width = (o.width + 4) / 32;
+			int height = (o.height + 4) / 32;
+			if (tileX >= destX && tileX < destX+width && tileY >= destY && tileY < destY+height) {
+				out.name = o.name;
+				out.destX = destX;
+				out.destY = destY;
+				out.width = width;
+				out.height = height;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+void RemovePlacedPrefab(sago::tiled::TileMap& dest, const PlacedPrefabInfo& info) {
+	static const char* destLayers[] = {"prefab_ground_1", "blocking", "prefab_blocking_2", "prefab_overlay_1"};
+	for (const char* destLayer : destLayers) {
+		int destLayerNumber = GetLayerNumber(dest, destLayer);
+		if (destLayerNumber < 0) {
+			continue;
+		}
+		for (int i = 0; i < info.width; ++i) {
+			for (int j = 0; j < info.height; ++j) {
+				sago::tiled::setTileOnLayerNumber(dest, destLayerNumber, info.destX+i, info.destY+j, 0);
+			}
+		}
+	}
+	for (auto& group : dest.object_groups) {
+		if (group.name != "prefab_marking") {
+			continue;
+		}
+		auto& objects = group.objects;
+		objects.erase(std::remove_if(objects.begin(), objects.end(), [&info](const sago::tiled::TileObject& o) {
+			return o.name == info.name && (o.x - 2) / 32 == info.destX && (o.y - 2) / 32 == info.destY;
+		}), objects.end());
+		break;
+	}
 }
 
 void TestApplyPrefab(sago::tiled::TileMap& dest, int destX, int destY) {

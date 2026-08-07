@@ -1251,6 +1251,15 @@ void Game::Update() {
 				data->gameRegion.SpawnPrefab(getPrefabByIndex(data->selectedPrefabIndex), base_tile_x, base_tile_y);
 			}
 		}
+		if (data->spell_holder->slot_spell.at(data->spell_holder->slot_selected).name == "spell_remove_prefab") {
+			if (data->human->castTimeRemaining == 0) {
+				data->human->castTimeRemaining = data->human->castTime;
+				data->human->animation = "spellcast";
+				int tile_x = data->world_mouse_x/32;
+				int tile_y = data->world_mouse_y/32;
+				data->gameRegion.RemovePrefabAtTile(tile_x, tile_y);
+			}
+		}
 	}
 	data->middleField.SetText(middleText);
 }
