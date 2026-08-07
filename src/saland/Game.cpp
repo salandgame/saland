@@ -209,6 +209,7 @@ struct Game::GameImpl {
 	bool consoleActive = false;
 	bool debugMenuActive = false;
 	int brushSize = 1; // Size of brush for tile placement/removal (1-5)
+	size_t selectedPrefabIndex = 0; // Which prefab is loaded for spell_place_prefab
 };
 
 static SpawnPoint GetSpawnpoint(const sago::tiled::TileMap& tm) {
@@ -475,9 +476,17 @@ void Game::Draw(SDL_Renderer* target) {
 	if (data->world_mouse_x >= 0 && data->world_mouse_y >= 0) {
 		int mousebox_x = data->world_mouse_x - data->world_mouse_x % 32 - data->topx;
 		int mousebox_y = data->world_mouse_y - data->world_mouse_y % 32 - data->topy;
-		if (data->spell_holder->slot_spell.at(data->spell_holder->slot_selected).type == SpellCursorType::tile) {
+		const Spell& drawSelectedSpell = data->spell_holder->slot_spell.at(data->spell_holder->slot_selected);
+		if (drawSelectedSpell.type == SpellCursorType::tile) {
+			int boxWidth = 32 * data->brushSize;
+			int boxHeight = 32 * data->brushSize;
+			if (drawSelectedSpell.name == "spell_place_prefab" && getPrefabCount() > 0) {
+				const Prefab& prefab = getPrefabByIndex(data->selectedPrefabIndex);
+				boxWidth = 32 * prefab.width;
+				boxHeight = 32 * prefab.height;
+			}
 			int phys_x1 = mousebox_x, phys_y1 = mousebox_y;
-			int phys_x2 = mousebox_x + 32 * data->brushSize, phys_y2 = mousebox_y + 32 * data->brushSize;
+			int phys_x2 = mousebox_x + boxWidth, phys_y2 = mousebox_y + boxHeight;
 			globalData.logicalResize.LogicalToPhysical(&phys_x1, &phys_y1);
 			globalData.logicalResize.LogicalToPhysical(&phys_x2, &phys_y2);
 			rectangleRGBA(globalData.screen, phys_x1, phys_y1, phys_x2, phys_y2, 255, 255, 0, 255);
@@ -514,6 +523,10 @@ void Game::Draw(SDL_Renderer* target) {
 	if (data->world_mouse_x >= 0 && data->world_mouse_y >= 0) {
 		std::string s = std::format("world_x = {}, world_y = {}, layer_info:{}", data->world_mouse_x/32, data->world_mouse_y/32,
 		                            GetLayerInfoForTile(data->gameRegion.world, data->world_mouse_x/32, data->world_mouse_y/32));
+		const Spell& bottomSelectedSpell = data->spell_holder->slot_spell.at(data->spell_holder->slot_selected);
+		if (bottomSelectedSpell.name == "spell_place_prefab" && getPrefabCount() > 0) {
+			s += std::format(", prefab: {}", getPrefabByIndex(data->selectedPrefabIndex).name);
+		}
 		data->bottomField.SetText(s);
 	}
 	else {
@@ -694,7 +707,17 @@ void Game::ProcessInput(const SDL_Event& event, bool& processed) {
 		}
 	}
 	if (event.type == SDL_MOUSEWHEEL) {
-		if (event.wheel.y > 0) { // Scroll up
+		const Spell& selectedSpell = data->spell_holder->slot_spell.at(data->spell_holder->slot_selected);
+		if (selectedSpell.name == "spell_place_prefab" && getPrefabCount() > 0) {
+			size_t count = getPrefabCount();
+			if (event.wheel.y > 0) { // Scroll up
+				data->selectedPrefabIndex = (data->selectedPrefabIndex + 1) % count;
+			}
+			else if (event.wheel.y < 0) { // Scroll down
+				data->selectedPrefabIndex = (data->selectedPrefabIndex + count - 1) % count;
+			}
+		}
+		else if (event.wheel.y > 0) { // Scroll up
 			if (data->brushSize < 5) {
 				data->brushSize++;
 			}
@@ -1217,6 +1240,15 @@ void Game::Update() {
 				if (anyTileChanged) {
 					data->gameRegion.world.init_physics(data->gameRegion.physicsBox);
 				}
+			}
+		}
+		if (data->spell_holder->slot_spell.at(data->spell_holder->slot_selected).name == "spell_place_prefab") {
+			if (data->human->castTimeRemaining == 0 && getPrefabCount() > 0) {
+				data->human->castTimeRemaining = data->human->castTime;
+				data->human->animation = "spellcast";
+				int base_tile_x = data->world_mouse_x/32;
+				int base_tile_y = data->world_mouse_y/32;
+				data->gameRegion.SpawnPrefab(getPrefabByIndex(data->selectedPrefabIndex), base_tile_x, base_tile_y);
 			}
 		}
 	}

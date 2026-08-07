@@ -76,5 +76,9 @@
 			"name" : "spell_spawn_item",
 			"item_name" : "tree_pine"
 		}
+		,{
+			"name" : "spell_place_prefab",
+			"type" : "tile"
+		}
 	]
 }

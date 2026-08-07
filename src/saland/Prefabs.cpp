@@ -118,6 +118,18 @@ Prefab getPrefab(const char* name) {
 	return p;
 }
 
+size_t getPrefabCount() {
+	return prefabs.size();
+}
+
+const Prefab& getPrefabByIndex(size_t index) {
+	static Prefab blankPrefab;
+	if (index >= prefabs.size()) {
+		return blankPrefab;
+	}
+	return prefabs.at(index);
+}
+
 void TestApplyPrefab(sago::tiled::TileMap& dest, int destX, int destY) {
 	if (prefabs.size() == 0) {
 		return;

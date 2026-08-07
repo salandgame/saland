@@ -49,3 +49,7 @@ void ApplyPrefab(sago::tiled::TileMap& dest, int destX, int destY, const Prefab&
 
 Prefab getPrefab(const char* name);
 
+size_t getPrefabCount();
+
+const Prefab& getPrefabByIndex(size_t index);
+
