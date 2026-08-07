@@ -96,18 +96,25 @@ void GameRegion::SpawnPrefab(const Prefab& prefab, int destX, int destY) {
 			}
 		}
 	}
+	if (PrefabFootprintOverlapsPlaced(world.tm, destX, destY, prefab.width, prefab.height)) {
+		std::cout << "Do not spawn prefab " << prefab.name << "(" << destX << "," << destY << "), Overlaps an existing prefab\n";
+		return;
+	}
 	ApplyPrefab(world.tm, destX, destY, prefab);
 	this->world.init_physics(this->physicsBox);
 }
 
 bool GameRegion::RemovePrefabAtTile(int tileX, int tileY) {
+	bool removedAny = false;
 	PlacedPrefabInfo info;
-	if (!FindPlacedPrefabAtTile(world.tm, tileX, tileY, info)) {
-		return false;
+	while (FindPlacedPrefabAtTile(world.tm, tileX, tileY, info)) {
+		RemovePlacedPrefab(world.tm, info);
+		removedAny = true;
 	}
-	RemovePlacedPrefab(world.tm, info);
-	this->world.init_physics(this->physicsBox);
-	return true;
+	if (removedAny) {
+		this->world.init_physics(this->physicsBox);
+	}
+	return removedAny;
 }
 
 void GameRegion::SpawnItem(const ItemDef& def, float destX, float destY) {

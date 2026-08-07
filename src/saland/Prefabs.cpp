@@ -41,6 +41,13 @@ static int GetLayerNumber(const sago::tiled::TileMap& tm, const char* name) {
 	return -1;
 }
 
+static void MarkerToTileRect(const sago::tiled::TileObject& o, int& destX, int& destY, int& width, int& height) {
+	destX = (o.x - 2) / 32;
+	destY = (o.y - 2) / 32;
+	width = (o.width + 4) / 32;
+	height = (o.height + 4) / 32;
+}
+
 static int32_t translate_tile(const sago::tiled::TileMap& dest, const sago::tiled::TileMap& source, int32_t source_tile) {
 	if (source_tile == 0) {
 		return 0;
@@ -137,16 +144,31 @@ bool FindPlacedPrefabAtTile(const sago::tiled::TileMap& tm, int tileX, int tileY
 			continue;
 		}
 		for (const auto& o : group.objects) {
-			int destX = (o.x - 2) / 32;
-			int destY = (o.y - 2) / 32;
-			int width = (o.width + 4) / 32;
-			int height = (o.height + 4) / 32;
+			int destX, destY, width, height;
+			MarkerToTileRect(o, destX, destY, width, height);
 			if (tileX >= destX && tileX < destX+width && tileY >= destY && tileY < destY+height) {
 				out.name = o.name;
 				out.destX = destX;
 				out.destY = destY;
 				out.width = width;
 				out.height = height;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+bool PrefabFootprintOverlapsPlaced(const sago::tiled::TileMap& tm, int destX, int destY, int width, int height) {
+	for (const auto& group : tm.object_groups) {
+		if (group.name != "prefab_marking") {
+			continue;
+		}
+		for (const auto& o : group.objects) {
+			int mDestX, mDestY, mWidth, mHeight;
+			MarkerToTileRect(o, mDestX, mDestY, mWidth, mHeight);
+			bool disjoint = destX+width <= mDestX || mDestX+mWidth <= destX || destY+height <= mDestY || mDestY+mHeight <= destY;
+			if (!disjoint) {
 				return true;
 			}
 		}
@@ -173,7 +195,9 @@ void RemovePlacedPrefab(sago::tiled::TileMap& dest, const PlacedPrefabInfo& info
 		}
 		auto& objects = group.objects;
 		objects.erase(std::remove_if(objects.begin(), objects.end(), [&info](const sago::tiled::TileObject& o) {
-			return o.name == info.name && (o.x - 2) / 32 == info.destX && (o.y - 2) / 32 == info.destY;
+			int destX, destY, width, height;
+			MarkerToTileRect(o, destX, destY, width, height);
+			return o.name == info.name && destX == info.destX && destY == info.destY;
 		}), objects.end());
 		break;
 	}

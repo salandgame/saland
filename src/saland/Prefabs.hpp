@@ -68,6 +68,12 @@ struct PlacedPrefabInfo {
 bool FindPlacedPrefabAtTile(const sago::tiled::TileMap& tm, int tileX, int tileY, PlacedPrefabInfo& out);
 
 /**
+ * Returns true if a prefab footprint of the given size at (destX, destY) would overlap
+ * any already-placed prefab (tracked via "prefab_marking" objects).
+ */
+bool PrefabFootprintOverlapsPlaced(const sago::tiled::TileMap& tm, int destX, int destY, int width, int height);
+
+/**
  * Clears the tiles stamped by a previously placed prefab and removes its marking object.
  * Use FindPlacedPrefabAtTile to locate the prefab to remove.
  */
