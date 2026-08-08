@@ -142,6 +142,30 @@
 	"frame_time" : 100,
 	"originx" : 16,
 	"originy" : 16
+},
+
+"campfire" : {
+	"texture" : "CampFireFinished",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 64,
+	"width" : 64,
+	"number_of_frames" : 5,
+	"frame_time" : 100,
+	"originx" : 32,
+	"originy" : 54
+},
+
+"campfire_icon" : {
+	"texture" : "CampFireFinished",
+	"topx" : 16,
+	"topy" : 16,
+	"height" : 32,
+	"width" : 32,
+	"number_of_frames" : 1,
+	"frame_time" : 100,
+	"originx" : 16,
+	"originy" : 16
 }
 
 }

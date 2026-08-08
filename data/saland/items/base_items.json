@@ -60,5 +60,15 @@
 			"health" : 100,
 			"pickup" : false
 		}
+		,{
+			"itemid" : "campfire",
+			"sprite" : "campfire",
+			"sprite2" : "",
+			"radius" : 16.0,
+			"isStatic" : true,
+			"isDestructible" : true,
+			"health" : 20,
+			"pickup" : false
+		}
 	]
 }

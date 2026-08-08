@@ -87,6 +87,11 @@
 			"item_name" : "tree_fir"
 		}
 		,{
+			"icon" : "campfire_icon",
+			"name" : "spell_spawn_item",
+			"item_name" : "campfire"
+		}
+		,{
 			"icon" : "icon_small_hammer",
 			"name" : "spell_place_prefab",
 			"type" : "tile"
