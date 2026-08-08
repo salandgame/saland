@@ -79,6 +79,12 @@ static void ReadItemFile(const std::string& filename) {
 						if (member.name == "pickup") {
 							new_item.pickup = member.value.GetBool();
 						}
+						if (member.name == "healRadius") {
+							new_item.healRadius = member.value.GetDouble();
+						}
+						if (member.name == "healPerSecond") {
+							new_item.healPerSecond = member.value.GetDouble();
+						}
 						if (member.name == "armor_upper_body") {
 							new_item.armor_upper_body = member.value.GetString();
 						}

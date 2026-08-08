@@ -922,6 +922,17 @@ void Game::Update() {
 				item->removeMe = true;
 				globalData.player.item_inventory[item->name]++;
 			}
+			if (item->healPerSecond > 0.0f && !data->human->diedAt) {
+				float dx = data->human->X - item->X;
+				float dy = data->human->Y - item->Y;
+				float distance = std::sqrt(dx * dx + dy * dy);
+				if (distance <= item->healRadius) {
+					data->human->health += (deltaTime / 1000.0f) * item->healPerSecond;
+					if (data->human->health > data->human->maxHealth) {
+						data->human->health = data->human->maxHealth;
+					}
+				}
+			}
 		}
 	}
 	auto& vp = data->gameRegion.placeables;

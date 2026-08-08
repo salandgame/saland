@@ -68,7 +68,9 @@
 			"isStatic" : true,
 			"isDestructible" : true,
 			"health" : 20,
-			"pickup" : false
+			"pickup" : false,
+			"healRadius" : 70.0,
+			"healPerSecond" : 1.0
 		}
 	]
 }

@@ -76,6 +76,8 @@ public:
 	std::string name = "Unknamed item";
 	double base_value = 1.0;
 	bool pickup = false;
+	float healRadius = 0.0f;
+	float healPerSecond = 0.0f;
 };
 
 class Creature : public Placeable {

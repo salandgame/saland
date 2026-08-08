@@ -35,6 +35,8 @@ struct ItemDef {
 	bool isDestructible = true;
 	float health = 10.0f;
 	bool pickup = false;
+	float healRadius = 0.0f;
+	float healPerSecond = 0.0f;
 	std::string armor_upper_body = "";
 	std::string armor_lower_body = "";
 	std::vector<std::string> armor_restriction;
