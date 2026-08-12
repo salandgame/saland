@@ -422,7 +422,7 @@ void runGame() {
 		spec.freq = 44100;
 		spec.format = SDL_AUDIO_S16;
 		spec.channels = 2;
-		globalData.sdlMixer = MIX_CreateMixerDevice(0, &spec);
+		globalData.sdlMixer = MIX_CreateMixerDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &spec);
 		if (!globalData.sdlMixer) {
 			std::cerr << "Warning: Couldn't open audio - Reason: " << SDL_GetError() << "\n"
 			          << "Sound will be disabled!" << "\n";
