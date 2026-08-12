@@ -198,6 +198,8 @@ void UpdateMouseCoordinates(const SDL_Event& event, int& mousex, int& mousey) {
 }
 
 void ResetFullscreen();
+void playMusic(const std::string& name);
+void stopMusic();
 
 void RunGameState(sago::GameStateInterface& state ) {
 	bool done = false;     //We are done!
@@ -275,7 +277,9 @@ void runStartGame() {
 		globalData.player.race = "male";
 	}
 	Game g;
+	playMusic("forest");
 	RunGameState(g);
+	stopMusic();
 }
 
 void runEditor() {
@@ -314,6 +318,24 @@ void runPlayerSelect() {
 }
 
 
+void playMusic(const std::string& name) {
+	globalData.currentMusic = name;
+	if (!globalData.NoSound && globalData.SoundEnabled && globalData.musicTrack) {
+		MIX_SetTrackAudio(globalData.musicTrack, globalData.dataHolder->getMusicHandler(name).get());
+		SDL_PropertiesID options = SDL_CreateProperties();
+		SDL_SetNumberProperty(options, MIX_PROP_PLAY_LOOPS_NUMBER, -1); // Loop forever
+		MIX_PlayTrack(globalData.musicTrack, options);
+		SDL_DestroyProperties(options);
+	}
+}
+
+void stopMusic() {
+	globalData.currentMusic.clear();
+	if (globalData.musicTrack) {
+		MIX_StopTrack(globalData.musicTrack, 0);
+	}
+}
+
 void ResetFullscreen() {
 	sago::SagoDataHolder& dataHolder = *globalData.dataHolder;
 	if (globalData.sdlMixer) {
@@ -329,6 +351,9 @@ void ResetFullscreen() {
 	globalData.spriteHolder.reset(new sago::SagoSpriteHolder( dataHolder ) );
 	SDL_ShowCursor();
 	//SDL_GetRenderOutputSize(globalData.screen, &globalData.xsize, &globalData.ysize);
+	if (!globalData.currentMusic.empty() && !globalData.NoSound && globalData.SoundEnabled) {
+		playMusic(globalData.currentMusic);
+	}
 }
 
 void toggleFullscreen() {
@@ -403,6 +428,9 @@ void runGame() {
 			          << "Sound will be disabled!" << "\n";
 			globalData.NoSound = true; //Tries to stop all sound from playing/loading
 		}
+		else {
+			globalData.musicTrack = MIX_CreateTrack(globalData.sdlMixer);
+		}
 	}
 
 	globalData.fullscreen = Config::getInstance()->getInt("fullscreen");
@@ -452,6 +480,8 @@ void runGame() {
 	SDL_DestroyWindow(win);
 
 	if (globalData.sdlMixer) {
+		MIX_DestroyTrack(globalData.musicTrack);
+		globalData.musicTrack = nullptr;
 		MIX_DestroyMixer(globalData.sdlMixer);
 		globalData.sdlMixer = nullptr;
 	}

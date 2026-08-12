@@ -41,6 +41,104 @@
 				"animation": "slash",
 				"animationDuration": 300.0
 			}
+		},
+		{
+			"race": "small_worm",
+			"radius": 12.0,
+			"health": 20.0,
+			"speed": 1.1,
+			"xp_reward": 25,
+			"attack": {
+				"cooldownDuration": 1200.0,
+				"range": 30.0,
+				"damage": 3.0,
+				"animation": "slash",
+				"animationDuration": 300.0
+			}
+		},
+		{
+			"race": "big_worm",
+			"radius": 22.0,
+			"health": 100.0,
+			"speed": 0.5,
+			"xp_reward": 120,
+			"attack": {
+				"cooldownDuration": 2500.0,
+				"range": 50.0,
+				"damage": 12.0,
+				"animation": "slash",
+				"animationDuration": 300.0
+			}
+		},
+		{
+			"race": "eyeball",
+			"radius": 16.0,
+			"health": 35.0,
+			"speed": 1.0,
+			"xp_reward": 55,
+			"attack": {
+				"cooldownDuration": 1500.0,
+				"range": 45.0,
+				"damage": 7.0,
+				"animation": "slash",
+				"animationDuration": 300.0
+			}
+		},
+		{
+			"race": "ghost",
+			"radius": 14.0,
+			"health": 25.0,
+			"speed": 1.4,
+			"xp_reward": 50,
+			"attack": {
+				"cooldownDuration": 1000.0,
+				"range": 35.0,
+				"damage": 5.0,
+				"animation": "slash",
+				"animationDuration": 300.0
+			}
+		},
+		{
+			"race": "man_eater_flower",
+			"radius": 20.0,
+			"health": 70.0,
+			"speed": 0.2,
+			"xp_reward": 90,
+			"attack": {
+				"cooldownDuration": 1200.0,
+				"range": 50.0,
+				"damage": 10.0,
+				"animation": "slash",
+				"animationDuration": 300.0
+			}
+		},
+		{
+			"race": "pumpking",
+			"radius": 24.0,
+			"health": 300.0,
+			"speed": 0.7,
+			"xp_reward": 500,
+			"attack": {
+				"cooldownDuration": 1000.0,
+				"range": 55.0,
+				"damage": 20.0,
+				"animation": "slash",
+				"animationDuration": 300.0
+			}
+		},
+		{
+			"race": "snake",
+			"radius": 14.0,
+			"health": 45.0,
+			"speed": 1.0,
+			"xp_reward": 65,
+			"attack": {
+				"cooldownDuration": 1300.0,
+				"range": 38.0,
+				"damage": 8.0,
+				"animation": "slash",
+				"animationDuration": 300.0
+			}
 		}
 	]
 }

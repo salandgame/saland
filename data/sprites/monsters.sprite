@@ -142,6 +142,342 @@
 	"frame_time" : 150,
     "originx" : 16,
     "originy" : 16
+},
+
+"small_worm_N" :  {
+	"texture" : "monsters/small_worm",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 32,
+	"width" : 32,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 16,
+    "originy" : 16
+},
+
+"small_worm_W" :  {
+	"texture" : "monsters/small_worm",
+	"topx" : 0,
+	"topy" : 32,
+	"height" : 32,
+	"width" : 32,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 16,
+    "originy" : 16
+},
+
+"small_worm_S" :  {
+	"texture" : "monsters/small_worm",
+	"topx" : 0,
+	"topy" : 64,
+	"height" : 32,
+	"width" : 32,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 16,
+    "originy" : 16
+},
+
+"small_worm_E" :  {
+	"texture" : "monsters/small_worm",
+	"topx" : 0,
+	"topy" : 96,
+	"height" : 32,
+	"width" : 32,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 16,
+    "originy" : 16
+},
+
+"big_worm_N" :  {
+	"texture" : "monsters/big_worm",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 50,
+	"width" : 35,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 17,
+    "originy" : 25
+},
+
+"big_worm_W" :  {
+	"texture" : "monsters/big_worm",
+	"topx" : 0,
+	"topy" : 50,
+	"height" : 50,
+	"width" : 35,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 17,
+    "originy" : 25
+},
+
+"big_worm_S" :  {
+	"texture" : "monsters/big_worm",
+	"topx" : 0,
+	"topy" : 100,
+	"height" : 50,
+	"width" : 35,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 17,
+    "originy" : 25
+},
+
+"big_worm_E" :  {
+	"texture" : "monsters/big_worm",
+	"topx" : 0,
+	"topy" : 150,
+	"height" : 50,
+	"width" : 35,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 17,
+    "originy" : 25
+},
+
+"eyeball_N" :  {
+	"texture" : "monsters/eyeball",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 38,
+	"width" : 32,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 16,
+    "originy" : 19
+},
+
+"eyeball_W" :  {
+	"texture" : "monsters/eyeball",
+	"topx" : 0,
+	"topy" : 38,
+	"height" : 38,
+	"width" : 32,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 16,
+    "originy" : 19
+},
+
+"eyeball_S" :  {
+	"texture" : "monsters/eyeball",
+	"topx" : 0,
+	"topy" : 76,
+	"height" : 38,
+	"width" : 32,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 16,
+    "originy" : 19
+},
+
+"eyeball_E" :  {
+	"texture" : "monsters/eyeball",
+	"topx" : 0,
+	"topy" : 114,
+	"height" : 38,
+	"width" : 32,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 16,
+    "originy" : 19
+},
+
+"ghost_N" :  {
+	"texture" : "monsters/ghost",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 46,
+	"width" : 40,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 20,
+    "originy" : 23
+},
+
+"ghost_W" :  {
+	"texture" : "monsters/ghost",
+	"topx" : 0,
+	"topy" : 46,
+	"height" : 46,
+	"width" : 40,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 20,
+    "originy" : 23
+},
+
+"ghost_S" :  {
+	"texture" : "monsters/ghost",
+	"topx" : 0,
+	"topy" : 92,
+	"height" : 46,
+	"width" : 40,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 20,
+    "originy" : 23
+},
+
+"ghost_E" :  {
+	"texture" : "monsters/ghost",
+	"topx" : 0,
+	"topy" : 138,
+	"height" : 46,
+	"width" : 40,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 20,
+    "originy" : 23
+},
+
+"man_eater_flower_N" :  {
+	"texture" : "monsters/man_eater_flower",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 76,
+	"width" : 60,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 30,
+    "originy" : 38
+},
+
+"man_eater_flower_W" :  {
+	"texture" : "monsters/man_eater_flower",
+	"topx" : 0,
+	"topy" : 76,
+	"height" : 76,
+	"width" : 60,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 30,
+    "originy" : 38
+},
+
+"man_eater_flower_S" :  {
+	"texture" : "monsters/man_eater_flower",
+	"topx" : 0,
+	"topy" : 152,
+	"height" : 76,
+	"width" : 60,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 30,
+    "originy" : 38
+},
+
+"man_eater_flower_E" :  {
+	"texture" : "monsters/man_eater_flower",
+	"topx" : 0,
+	"topy" : 228,
+	"height" : 76,
+	"width" : 60,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 30,
+    "originy" : 38
+},
+
+"pumpking_N" :  {
+	"texture" : "monsters/pumpking",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 46,
+	"width" : 46,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 23,
+    "originy" : 23
+},
+
+"pumpking_W" :  {
+	"texture" : "monsters/pumpking",
+	"topx" : 0,
+	"topy" : 46,
+	"height" : 46,
+	"width" : 46,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 23,
+    "originy" : 23
+},
+
+"pumpking_S" :  {
+	"texture" : "monsters/pumpking",
+	"topx" : 0,
+	"topy" : 92,
+	"height" : 46,
+	"width" : 46,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 23,
+    "originy" : 23
+},
+
+"pumpking_E" :  {
+	"texture" : "monsters/pumpking",
+	"topx" : 0,
+	"topy" : 138,
+	"height" : 46,
+	"width" : 46,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 23,
+    "originy" : 23
+},
+
+"snake_N" :  {
+	"texture" : "monsters/snake",
+	"topx" : 0,
+	"topy" : 0,
+	"height" : 32,
+	"width" : 32,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 16,
+    "originy" : 16
+},
+
+"snake_W" :  {
+	"texture" : "monsters/snake",
+	"topx" : 0,
+	"topy" : 32,
+	"height" : 32,
+	"width" : 32,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 16,
+    "originy" : 16
+},
+
+"snake_S" :  {
+	"texture" : "monsters/snake",
+	"topx" : 0,
+	"topy" : 64,
+	"height" : 32,
+	"width" : 32,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 16,
+    "originy" : 16
+},
+
+"snake_E" :  {
+	"texture" : "monsters/snake",
+	"topx" : 0,
+	"topy" : 96,
+	"height" : 32,
+	"width" : 32,
+	"number_of_frames" : 3,
+	"frame_time" : 150,
+    "originx" : 16,
+    "originy" : 16
 }
 
 }

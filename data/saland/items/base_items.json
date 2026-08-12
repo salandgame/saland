@@ -40,5 +40,37 @@
 			"health" : 100,
 			"pickup" : false
 		}
+		,{
+			"itemid" : "tree_cherry",
+			"sprite" : "tree_cherry",
+			"sprite2" : "",
+			"radius" : 20.0,
+			"isStatic" : true,
+			"isDestructible" : true,
+			"health" : 100,
+			"pickup" : false
+		}
+		,{
+			"itemid" : "tree_fir",
+			"sprite" : "tree_fir",
+			"sprite2" : "",
+			"radius" : 20.0,
+			"isStatic" : true,
+			"isDestructible" : true,
+			"health" : 100,
+			"pickup" : false
+		}
+		,{
+			"itemid" : "campfire",
+			"sprite" : "campfire",
+			"sprite2" : "",
+			"radius" : 16.0,
+			"isStatic" : true,
+			"isDestructible" : true,
+			"health" : 20,
+			"pickup" : false,
+			"healRadius" : 70.0,
+			"healPerSecond" : 1.0
+		}
 	]
 }

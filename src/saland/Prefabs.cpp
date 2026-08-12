@@ -24,6 +24,7 @@ https://github.com/salandgame/saland
 #include "Prefabs.hpp"
 #include "../sago/SagoMisc.hpp"
 #include "../sagotmx/tmx_struct.h"
+#include <algorithm>
 
 
 std::vector<Prefab> prefabs;
@@ -38,6 +39,13 @@ static int GetLayerNumber(const sago::tiled::TileMap& tm, const char* name) {
 	}
 	std::cerr << "Failed to find layer: " << name << "\n";
 	return -1;
+}
+
+static void MarkerToTileRect(const sago::tiled::TileObject& o, int& destX, int& destY, int& width, int& height) {
+	destX = (o.x - 2) / 32;
+	destY = (o.y - 2) / 32;
+	width = (o.width + 4) / 32;
+	height = (o.height + 4) / 32;
 }
 
 static int32_t translate_tile(const sago::tiled::TileMap& dest, const sago::tiled::TileMap& source, int32_t source_tile) {
@@ -116,6 +124,83 @@ Prefab getPrefab(const char* name) {
 	}
 	p = prefabs.at(id);
 	return p;
+}
+
+size_t getPrefabCount() {
+	return prefabs.size();
+}
+
+const Prefab& getPrefabByIndex(size_t index) {
+	static Prefab blankPrefab;
+	if (index >= prefabs.size()) {
+		return blankPrefab;
+	}
+	return prefabs.at(index);
+}
+
+bool FindPlacedPrefabAtTile(const sago::tiled::TileMap& tm, int tileX, int tileY, PlacedPrefabInfo& out) {
+	for (const auto& group : tm.object_groups) {
+		if (group.name != "prefab_marking") {
+			continue;
+		}
+		for (const auto& o : group.objects) {
+			int destX, destY, width, height;
+			MarkerToTileRect(o, destX, destY, width, height);
+			if (tileX >= destX && tileX < destX+width && tileY >= destY && tileY < destY+height) {
+				out.name = o.name;
+				out.destX = destX;
+				out.destY = destY;
+				out.width = width;
+				out.height = height;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+bool PrefabFootprintOverlapsPlaced(const sago::tiled::TileMap& tm, int destX, int destY, int width, int height) {
+	for (const auto& group : tm.object_groups) {
+		if (group.name != "prefab_marking") {
+			continue;
+		}
+		for (const auto& o : group.objects) {
+			int mDestX, mDestY, mWidth, mHeight;
+			MarkerToTileRect(o, mDestX, mDestY, mWidth, mHeight);
+			bool disjoint = destX+width <= mDestX || mDestX+mWidth <= destX || destY+height <= mDestY || mDestY+mHeight <= destY;
+			if (!disjoint) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+void RemovePlacedPrefab(sago::tiled::TileMap& dest, const PlacedPrefabInfo& info) {
+	static const char* destLayers[] = {"prefab_ground_1", "blocking", "prefab_blocking_2", "prefab_overlay_1"};
+	for (const char* destLayer : destLayers) {
+		int destLayerNumber = GetLayerNumber(dest, destLayer);
+		if (destLayerNumber < 0) {
+			continue;
+		}
+		for (int i = 0; i < info.width; ++i) {
+			for (int j = 0; j < info.height; ++j) {
+				sago::tiled::setTileOnLayerNumber(dest, destLayerNumber, info.destX+i, info.destY+j, 0);
+			}
+		}
+	}
+	for (auto& group : dest.object_groups) {
+		if (group.name != "prefab_marking") {
+			continue;
+		}
+		auto& objects = group.objects;
+		objects.erase(std::remove_if(objects.begin(), objects.end(), [&info](const sago::tiled::TileObject& o) {
+			int destX, destY, width, height;
+			MarkerToTileRect(o, destX, destY, width, height);
+			return o.name == info.name && destX == info.destX && destY == info.destY;
+		}), objects.end());
+		break;
+	}
 }
 
 void TestApplyPrefab(sago::tiled::TileMap& dest, int destX, int destY) {

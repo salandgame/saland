@@ -66,6 +66,7 @@ public:
 	void SpawnMonster(const MonsterDef& def, float destX, float destY, int level = 1) ;
 	void SpawnItem(const ItemDef& def, float destX, float destY) ;
 	void SpawnPrefab(const Prefab& prefab, int destX, int destY);
+	bool RemovePrefabAtTile(int tileX, int tileY);
 	void ProcessRegionFirstTimeEnter(World& world);
 	void CreateLake(World& world);
 	void CreateLake(World& world, int tile_x, int tile_y);

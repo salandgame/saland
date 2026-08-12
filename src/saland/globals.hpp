@@ -56,6 +56,7 @@ struct GlobalData {
 	SDL_Window* window = nullptr;
 	SDL_Renderer* screen = nullptr;
 	MIX_Mixer* sdlMixer = nullptr;
+	MIX_Track* musicTrack = nullptr;
 	std::unique_ptr<sago::SagoSpriteHolder> spriteHolder;
 	sago::SagoDataHolder* dataHolder;
 	int verboseLevel = 0;
@@ -75,6 +76,8 @@ struct GlobalData {
 	SpawnCommand pendingSpawnCommand;
 	bool pendingSpawnLake = false;
 	std::string pendingSpawnItem; // Item name to spawn at mouse position
+
+	std::string currentMusic; // name of music track that should be playing ("" = none); used to resume after ResetFullscreen()
 };
 
 extern GlobalData globalData;

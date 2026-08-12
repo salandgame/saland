@@ -96,8 +96,25 @@ void GameRegion::SpawnPrefab(const Prefab& prefab, int destX, int destY) {
 			}
 		}
 	}
+	if (PrefabFootprintOverlapsPlaced(world.tm, destX, destY, prefab.width, prefab.height)) {
+		std::cout << "Do not spawn prefab " << prefab.name << "(" << destX << "," << destY << "), Overlaps an existing prefab\n";
+		return;
+	}
 	ApplyPrefab(world.tm, destX, destY, prefab);
 	this->world.init_physics(this->physicsBox);
+}
+
+bool GameRegion::RemovePrefabAtTile(int tileX, int tileY) {
+	bool removedAny = false;
+	PlacedPrefabInfo info;
+	while (FindPlacedPrefabAtTile(world.tm, tileX, tileY, info)) {
+		RemovePlacedPrefab(world.tm, info);
+		removedAny = true;
+	}
+	if (removedAny) {
+		this->world.init_physics(this->physicsBox);
+	}
+	return removedAny;
 }
 
 void GameRegion::SpawnItem(const ItemDef& def, float destX, float destY) {
@@ -111,6 +128,8 @@ void GameRegion::SpawnItem(const ItemDef& def, float destX, float destY) {
 	barrel.get()->health = def.health;
 	barrel.get()->name = def.itemid;
 	barrel.get()->pickup = def.pickup;
+	barrel.get()->healRadius = def.healRadius;
+	barrel.get()->healPerSecond = def.healPerSecond;
 	for (int i=(destX-def.radius)/32; i <= (destX+def.radius)/32+1; ++i) {
 		for (int j=(destY-def.radius)/32; j <= (destY+def.radius)/32+1; ++j) {
 			if (world.tile_protected(i, j)) {
@@ -477,6 +496,24 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 	SpawnMonster(batDef, 1200.0f, 1400.0f);
 	MonsterDef beeDef = GetMonsterDefByRace("bee");
 	SpawnMonster(beeDef, 220.0f, 220.0f);
+	MonsterDef smallWormDef = GetMonsterDefByRace("small_worm");
+	SpawnMonster(smallWormDef, 400.0f, 300.0f);
+	SpawnMonster(smallWormDef, 600.0f, 500.0f);
+	MonsterDef bigWormDef = GetMonsterDefByRace("big_worm");
+	SpawnMonster(bigWormDef, 800.0f, 700.0f);
+	MonsterDef eyeballDef = GetMonsterDefByRace("eyeball");
+	SpawnMonster(eyeballDef, 350.0f, 600.0f);
+	SpawnMonster(eyeballDef, 900.0f, 300.0f);
+	MonsterDef ghostDef = GetMonsterDefByRace("ghost");
+	SpawnMonster(ghostDef, 500.0f, 800.0f);
+	SpawnMonster(ghostDef, 1100.0f, 600.0f);
+	MonsterDef manEaterFlowerDef = GetMonsterDefByRace("man_eater_flower");
+	SpawnMonster(manEaterFlowerDef, 700.0f, 400.0f);
+	MonsterDef snakeDef = GetMonsterDefByRace("snake");
+	SpawnMonster(snakeDef, 450.0f, 450.0f);
+	SpawnMonster(snakeDef, 1000.0f, 900.0f);
+	MonsterDef pumpkingDef = GetMonsterDefByRace("pumpking");
+	SpawnMonster(pumpkingDef, 1500.0f, 1500.0f);
 }
 
 void GameRegion::SaveRegion() {
