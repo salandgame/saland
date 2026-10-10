@@ -446,6 +446,7 @@ void GameRegion::Init(int x, int y, const std::string& worldName, bool forceRese
 	ScanPrefabs("prefabs01");
 	world.init(physicsBox, loadMap);
 	InitLiquidHandlers();
+	ensureTilesetInMap(world, "house");  //Used by the house prefabs in prefabs01
 
 
 	const std::vector<sago::tiled::TileObjectGroup>& object_groups = world.tm.object_groups;
