@@ -21,6 +21,8 @@ https://github.com/salandgame/saland
 ===========================================================================
 */
 
+#pragma once
+
 #include <string>
 #include <vector>
 #include "../sagotmx/tmx_struct.h"
@@ -52,6 +54,11 @@ Prefab getPrefab(const char* name);
 size_t getPrefabCount();
 
 const Prefab& getPrefabByIndex(size_t index);
+
+/**
+ * The tile map the prefab was scanned from. Tiles in it use that map's own gids.
+ */
+const sago::tiled::TileMap& getPrefabTileMap(const Prefab& prefab);
 
 struct PlacedPrefabInfo {
 	std::string name;

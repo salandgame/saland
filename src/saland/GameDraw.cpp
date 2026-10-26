@@ -103,14 +103,54 @@ void DrawOuterBorder(SDL_Renderer* renderer, SDL_Texture* texture, const sago::t
 	}
 }
 
-void DrawTile(SDL_Renderer* renderer, sago::SagoSpriteHolder* sHolder, const sago::tiled::TileMap& tm, uint32_t gid, int x, int y, sago::SagoLogicalResize* resize) {
+static const Uint8 OPAQUE_ALPHA = PREFAB_DRAW_OPAQUE;
+static const Uint8 PREVIEW_ALPHA = 140;
+
+static void DrawTileWithAlpha(SDL_Renderer* renderer, sago::SagoSpriteHolder* sHolder, const sago::tiled::TileMap& tm, uint32_t gid, int x, int y, Uint8 alpha, sago::SagoLogicalResize* resize) {
 	SDL_Rect part{};
 	std::string imageFile;
 	getTextureLocationFromGid(tm, gid, &imageFile, &part.x, &part.y, &part.w, &part.h);
 	imageFile = imageFile.substr(12);
 	imageFile = imageFile.substr(0, imageFile.length()-4);
 	SDL_Texture* texture = sHolder->GetDataHolder().getTexturePtr(imageFile);
+	SDL_SetTextureAlphaMod(texture, alpha);
 	Draw(renderer, texture, x, y, part, resize);
+	SDL_SetTextureAlphaMod(texture, OPAQUE_ALPHA);
+}
+
+void DrawTile(SDL_Renderer* renderer, sago::SagoSpriteHolder* sHolder, const sago::tiled::TileMap& tm, uint32_t gid, int x, int y, sago::SagoLogicalResize* resize) {
+	DrawTileWithAlpha(renderer, sHolder, tm, gid, x, y, OPAQUE_ALPHA, resize);
+}
+
+static void DrawPrefabLayer(SDL_Renderer* renderer, sago::SagoSpriteHolder* sHolder, const sago::tiled::TileMap& tm, const sago::tiled::TileLayer& layer, const Prefab& prefab, int x, int y, Uint8 alpha, sago::SagoLogicalResize* resize) {
+	for (int i = 0; i < prefab.width; ++i) {
+		for (int j = 0; j < prefab.height; ++j) {
+			uint32_t gid = sago::tiled::getTileFromLayer(tm, layer, prefab.topx+i, prefab.topy+j);
+			if (gid == 0) {
+				continue;
+			}
+			DrawTileWithAlpha(renderer, sHolder, tm, gid, x + 32 * i, y + 32 * j, alpha, resize);
+		}
+	}
+}
+
+void DrawPrefab(SDL_Renderer* renderer, sago::SagoSpriteHolder* sHolder, const Prefab& prefab, int x, int y, Uint8 alpha, sago::SagoLogicalResize* resize) {
+	if (prefab.width < 1 || prefab.height < 1) {
+		return;
+	}
+	static const char* sourceLayers[] = {"prefab_ground_1", "prefab_blocking_1", "prefab_blocking_2", "prefab_overlay_1"};
+	const sago::tiled::TileMap& tm = getPrefabTileMap(prefab);
+	for (const char* layerName : sourceLayers) {
+		for (const sago::tiled::TileLayer& layer : tm.layers) {
+			if (layer.name == layerName) {
+				DrawPrefabLayer(renderer, sHolder, tm, layer, prefab, x, y, alpha, resize);
+			}
+		}
+	}
+}
+
+void DrawPrefabPreview(SDL_Renderer* renderer, sago::SagoSpriteHolder* sHolder, const Prefab& prefab, int x, int y, sago::SagoLogicalResize* resize) {
+	DrawPrefab(renderer, sHolder, prefab, x, y, PREVIEW_ALPHA, resize);
 }
 
 void DrawLayer(SDL_Renderer* renderer, sago::SagoSpriteHolder* sHolder, const sago::tiled::TileMap& tm, size_t layer, int topx, int topy, sago::SagoLogicalResize* resize) {

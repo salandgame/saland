@@ -27,11 +27,21 @@ https://github.com/sago007/saland
 #include "globals.hpp"
 #include "model/placeables.hpp"
 #include "model/World.hpp"
+#include "Prefabs.hpp"
 #include "SDL.h"
 
 void DrawOuterBorder(SDL_Renderer* renderer, SDL_Texture* texture, const sago::tiled::TileMap& tm, int topx, int topy, uint32 outerTile, sago::SagoLogicalResize* resize = nullptr);
 void DrawLayer(SDL_Renderer* renderer, sago::SagoSpriteHolder* sHolder, const sago::tiled::TileMap& tm, size_t layer, int topx, int topy, sago::SagoLogicalResize* resize = nullptr);
 void DrawOjbectGroup(SDL_Renderer* renderer, const sago::tiled::TileMap& tm, size_t object_group, int topx, int topy, sago::SagoLogicalResize* resize = nullptr);
+const Uint8 PREFAB_DRAW_OPAQUE = 255;
+/**
+ * Draws the prefab's layers with its top left corner at screen position (x, y) using the given alpha.
+ */
+void DrawPrefab(SDL_Renderer* renderer, sago::SagoSpriteHolder* sHolder, const Prefab& prefab, int x, int y, Uint8 alpha, sago::SagoLogicalResize* resize = nullptr);
+/**
+ * Draws a translucent copy of the prefab's layers with its top left corner at screen position (x, y).
+ */
+void DrawPrefabPreview(SDL_Renderer* renderer, sago::SagoSpriteHolder* sHolder, const Prefab& prefab, int x, int y, sago::SagoLogicalResize* resize = nullptr);
 void DrawMiscEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const MiscItem* entity, float time,
                     int offsetX, int offsetY, bool drawCollision, sago::SagoLogicalResize* resize = nullptr);
 void DrawHumanEntity(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Human* entity, float time, int offsetX, int offsetY, bool drawCollision, sago::SagoLogicalResize* resize = nullptr);

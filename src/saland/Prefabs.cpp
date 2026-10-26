@@ -27,9 +27,24 @@ https://github.com/salandgame/saland
 #include <algorithm>
 
 
+#include <list>
+
 std::vector<Prefab> prefabs;
 std::map<std::string, sago::tiled::TileMap> prefabTileMaps;
 std::map<std::string, size_t> prefabs_map;
+// External tilesets referenced by the prefab maps. A list keeps the pointers in alternativeSource valid.
+static std::list<sago::tiled::TileSet> prefabTileSets;
+
+static void ResolveExternalTilesets(sago::tiled::TileMap& tm) {
+	for (sago::tiled::TileSet& ts : tm.tileset) {
+		if (ts.source.length() == 0) {
+			continue;
+		}
+		std::string tsx_file = sago::GetFileContent("maps/"+ts.source);
+		prefabTileSets.push_back(sago::tiled::string2tileset(tsx_file));
+		ts.alternativeSource = &prefabTileSets.back();
+	}
+}
 
 static int GetLayerNumber(const sago::tiled::TileMap& tm, const char* name) {
 	for (size_t i=0; i < tm.layers.size(); ++i) {
@@ -138,6 +153,10 @@ const Prefab& getPrefabByIndex(size_t index) {
 	return prefabs.at(index);
 }
 
+const sago::tiled::TileMap& getPrefabTileMap(const Prefab& prefab) {
+	return prefabTileMaps.at(prefab.filename);
+}
+
 bool FindPlacedPrefabAtTile(const sago::tiled::TileMap& tm, int tileX, int tileY, PlacedPrefabInfo& out) {
 	for (const auto& group : tm.object_groups) {
 		if (group.name != "prefab_marking") {
@@ -211,9 +230,13 @@ void TestApplyPrefab(sago::tiled::TileMap& dest, int destX, int destY) {
 }
 
 void ScanPrefabs(const std::string& filename) {
+	if (prefabTileMaps.count(filename)) {
+		return;
+	}
 	std::string mapFileName = "maps/"+filename+".tmx";
 	std::string tmx_file = sago::GetFileContent(mapFileName);
 	sago::tiled::TileMap tm = sago::tiled::string2tilemap(tmx_file);
+	ResolveExternalTilesets(tm);
 	prefabTileMaps[filename] = tm;
 	for (const auto& t : tm.object_groups) {
 		std::cout << "Prefab object group: " << t.name << "\n";

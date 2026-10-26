@@ -40,6 +40,8 @@ https://github.com/salandgame/saland
 #include <SDL2/SDL_timer.h>
 #include "saland/globals.hpp"
 #include "saland/Game.hpp"
+#include "saland/Prefabs.hpp"
+#include "saland/PrefabPreview.hpp"
 
 #include "SagoImGui.hpp"
 
@@ -478,6 +480,37 @@ void runGame() {
 
 }
 
+static const char* PREFAB_MAP_FILE = "prefabs01";
+
+/**
+ * Renders prefabs to png files without opening a window.
+ */
+static int runPrefabPreview(const std::string& prefabName, const std::string& outputDir) {
+	SDL_setenv("SDL_VIDEODRIVER", "dummy", 1);
+	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+		std::cerr << "SDL_Init failed: " << SDL_GetError() << "\n";
+		return 1;
+	}
+	IMG_Init(IMG_INIT_PNG);
+	win = SDL_CreateWindow("Saland prefab preview", 0, 0, 64, 64, SDL_WINDOW_HIDDEN);
+	globalData.screen = SDL_CreateRenderer(win, -1, SDL_RENDERER_SOFTWARE);
+	if (!globalData.screen) {
+		std::cerr << "Could not create renderer: " << SDL_GetError() << "\n";
+		return 1;
+	}
+	sago::SagoDataHolder holder(globalData.screen);
+	globalData.spriteHolder.reset(new sago::SagoSpriteHolder(holder));
+	globalData.dataHolder = &holder;
+	ScanPrefabs(PREFAB_MAP_FILE);
+	int exitCode = RenderPrefabsToPng(prefabName, outputDir);
+	globalData.spriteHolder.reset();
+	globalData.dataHolder = nullptr;
+	SDL_DestroyRenderer(globalData.screen);
+	SDL_DestroyWindow(win);
+	SDL_Quit();
+	return exitCode;
+}
+
 int main(int argc, char* argv[]) {
 	PHYSFS_init(argv[0]);
 	PHYSFS_mount((std::string(SHAREDIR)+"/packages/saland-0001.data").c_str(), nullptr, 0);
@@ -495,6 +528,9 @@ int main(int argc, char* argv[]) {
 	("fullscreen", "Run in fullscreen")
 	("no-fullscreen", "Run in window")
 	("software-renderer", boost::program_options::value<int>(), "Asks SDL2 to use software renderer")
+	("list-prefabs", "Print the available prefabs and quit")
+	("preview-prefab", boost::program_options::value<std::string>(), "Render the named prefab (or \"all\") to a png file without starting the game")
+	("preview-output", boost::program_options::value<std::string>()->default_value("."), "Directory the prefab preview png files are written to")
 	;
 	boost::program_options::variables_map vm;
 	boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
@@ -506,6 +542,14 @@ int main(int argc, char* argv[]) {
 	if (vm.count("version")) {
 		std::cout << "saland " << VERSION_NUMBER << "\n";
 		return 0;
+	}
+	if (vm.count("list-prefabs")) {
+		ScanPrefabs(PREFAB_MAP_FILE);
+		ListPrefabs();
+		return 0;
+	}
+	if (vm.count("preview-prefab")) {
+		return runPrefabPreview(vm["preview-prefab"].as<std::string>(), vm["preview-output"].as<std::string>());
 	}
 	if (vm.count("editor")) {
 		globalData.editor = true;

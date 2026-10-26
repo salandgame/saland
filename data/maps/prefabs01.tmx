@@ -4,29 +4,29 @@
  <tileset firstgid="1025" source="house.tsx"/>
  <layer id="1" name="prefab_ground_1" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eAHt0bENAkEQA8CvA6gC6AOoAmiBBOgcJytdipzOSdZGdjC3bR4BAgQIEOgFXpmY9GsWGoH5h/U2e7qdwCX1azL31s1plwL39B/J3Ge5p94JvFP/JHO/3Zx2KbBLf7/kUO6pdwLH1E9Lzt2cNgECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECBAgQIECAAAECfwr8AKNDC2w=
+   eJzt0bENwlAMRdFfpGMDYAFaYA9gCmCFNAmbYwokS6ED4eKfI125fZJbA4DvjalsNSx72Q3L+I3xQ2/+8X+n6JzupXZO967RLd177ZzuTdGc7qNyDG0dbVLb2jnd20eH1LF2DgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB05wnX9g3E
   </data>
  </layer>
  <layer id="2" name="prefab_blocking_1" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eNrt000uBFEYheEqakK3EfaAGWbYA1aBVWDasRURW8Am/C3C39xJ3MHNneqkevA8yZsvXd2jU+muY5E9pMf01Dzvh65bqloe/p5v5W437Qx2nIfn9JJe01t6r75bzcaTqmnZ/CD3sOnI+/iXWbkf6TN9pe/0U/1mPRtvVG2WzXdz95r2vY+5WOnzP0iTNE1rvU3GdNt8vjfJqI7TSdWpSUZxU+5ZukvnpQvTjOoyXVVdmwQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAXxCytiGQw=
+   eJzt0c0uXVEcxuG9ORNfk/qYYqZnIKGzcg+4ClwFptJbaZregprRC6BMaM19TSjxJnZiRZpQRxB5nuSXtc9ZeyU7/1VVvGUb6Ufa/MfeVtpOP//jDE+3k3bTr7SX9ou9g3SYfqc/6egRZ3ia9WY9TifpNJ2l8+Kdi3SZ/qardP2IM3Smp66q3tSX+tNAfbf3Ic+DaSgNp5H64TN05uu939+L5/a9OU/WD5+hM3Npvmih2KtbVdVV1N26/X8061jReOvFP/vd+dKsi+lbWmpaLt7pzZz7ivqbuU9k/VjUdh/PZiWtFq0Ve4OZ81DRcDP3z1lnimbdx6uayvyniz65DwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADgnbgBN5gyjg==
   </data>
  </layer>
  <layer id="5" name="prefab_blocking_2" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eNrt0TEKgDAMQNEOQewggovH8P63s4uIULdWO7y3JGT8SQloYY7nvOSo7/QXld5buU1x73xneem9+gPwk12CoRwSAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwkBOe9QDb
+   eJzt0bEKg1AMBdAnhFaHUunSD9DRYv//6xqQDg/ESWyRcyCE3DG3FGBP19i+OVYf2zfAr3VR76826s3+nivZI/99iWVzrHklezel3LOLuanzIbPIGfX0F6bs4Zbz0gcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAcCIfJBkCKg==
   </data>
  </layer>
  <layer id="3" name="prefab_overlay_1" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eNrt0LEJgDAUBNBfZB51NnEqdQkLh7BwF1NYxCA2FiK8B0f4l+4irsacKWeu+iZFtEW6dN+Xf7yzVPdqkk/057tV/W4aAB4MJgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPitA9mRCFU=
+   eJztziEOhDAQBdCemXAqWMdyAAQGsX7FGsSegwoEDAZqSMh7yU+nnfykKe01OW3OKx11Oe+c/kKHckO4j5t5CrvPiQ5lqvX8hvffZp7D7n+iA8Cz1Xd/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgGILZ6kQ3Q==
   </data>
  </layer>
  <objectgroup id="4" name="prefab_marking">
   <object id="1" name="basic_house" type="prefab" x="112" y="16" width="129" height="317"/>
   <object id="2" name="statue_1" type="prefab" x="38" y="69" width="22" height="51"/>
   <object id="3" name="statue_2" type="prefab" x="38" y="200" width="22" height="47"/>
-  <object id="4" name="brick_house" type="prefab" x="322" y="2" width="156" height="156"/>
-  <object id="5" name="stone_house" type="prefab" x="514" y="2" width="188" height="156"/>
+  <object id="4" name="brick_house" type="prefab" x="322" y="2" width="156" height="284"/>
+  <object id="5" name="stone_house" type="prefab" x="514" y="2" width="156" height="316"/>
  </objectgroup>
 </map>

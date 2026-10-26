@@ -66,6 +66,7 @@ struct GlobalData {
 
 	bool debugDrawCollision = false;
 	bool debugDrawProtectedAreas = false;
+	bool prefabPreview = true; // Draw a translucent preview of the selected prefab at the mouse position
 
 	bool editor = false;
 	sago::SagoLogicalResize logicalResize;

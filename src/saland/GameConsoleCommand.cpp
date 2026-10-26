@@ -292,6 +292,27 @@ struct ConsoleCommandSpawnItem : public ConsoleCommand {
 	}
 };
 
+struct ConsoleCommandPrefabPreview : public ConsoleCommand {
+	virtual std::string getCommand() const override {
+		return "prefab_preview";
+	}
+
+	virtual std::string run(const std::vector<std::string>& args) override {
+		if (args.size() != 2) {
+			throw std::runtime_error("Must be called like \"prefab_preview 0|1\"");
+		}
+		globalData.prefabPreview = string2int_trows(args[1]) != 0;
+		if (globalData.prefabPreview) {
+			return "Prefab preview enabled";
+		}
+		return "Prefab preview disabled";
+	}
+
+	virtual std::string helpMessage() const override {
+		return "Show or hide a translucent preview of the selected prefab at the mouse position. Usage: prefab_preview 0|1";
+	}
+};
+
 static ConsoleCommandGiveItem cc_give_item;
 static ConsoleCommandItem cc_item;
 static ConsoleCommandQuit cc_quit;
@@ -300,6 +321,7 @@ static DrawOverlayConsoleCommand docc;
 static ConsoleCommandSpawn cc_spawn;
 static ConsoleCommandSpawnLake cc_spawn_lake;
 static ConsoleCommandSpawnItem cc_spawn_item;
+static ConsoleCommandPrefabPreview cc_prefab_preview;
 
 void GameConsoleCommandRegister() {
 	RegisterCommand(&cc_give_item);
@@ -310,4 +332,5 @@ void GameConsoleCommandRegister() {
 	RegisterCommand(&cc_spawn);
 	RegisterCommand(&cc_spawn_lake);
 	RegisterCommand(&cc_spawn_item);
+	RegisterCommand(&cc_prefab_preview);
 }

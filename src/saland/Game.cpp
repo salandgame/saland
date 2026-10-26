@@ -430,6 +430,7 @@ static void DrawDebugMenu(SDL_Renderer*) {
 	if (ImGui::Button("Toggle overlay")) {
 		globalData.debugDrawCollision = !globalData.debugDrawCollision;
 	}
+	ImGui::Checkbox("Prefab preview", &globalData.prefabPreview);
 	ImGui::End();
 	ImGui::Begin("Items");
 	for (const auto& item: globalData.player.item_inventory) {
@@ -484,6 +485,9 @@ void Game::Draw(SDL_Renderer* target) {
 				const Prefab& prefab = getPrefabByIndex(data->selectedPrefabIndex);
 				boxWidth = 32 * prefab.width;
 				boxHeight = 32 * prefab.height;
+				if (globalData.prefabPreview) {
+					DrawPrefabPreview(target, globalData.spriteHolder.get(), prefab, mousebox_x, mousebox_y, &globalData.logicalResize);
+				}
 			}
 			int phys_x1 = mousebox_x, phys_y1 = mousebox_y;
 			int phys_x2 = mousebox_x + boxWidth, phys_y2 = mousebox_y + boxHeight;
