@@ -30,9 +30,17 @@ https://github.com/sago007/saland
 
 
 void ProjectileHit(Projectile* p, Placeable* target);
+/**
+ * Turns the projectile into an explosion and damages every valid target within its explosionRadius.
+ * Only mutates existing elements of placeables, so it is safe to call while iterating over them.
+ */
+void ExplodeProjectile(Projectile* p, std::vector<std::shared_ptr<Placeable>>& placeables);
 void UpdateHuman(Human* entity, float fDeltaTime);
 void UpdateMonster(Monster* entity, float fDeltaTime, Human* player);
-void UpdateProjectile(Projectile* entity, float fDeltaTime);
+/**
+ * Returns true on the frame the projectile reaches its target position (only possible when hasTarget is set).
+ */
+bool UpdateProjectile(Projectile* entity, float fDeltaTime);
 void MonsterAttackPlayer(Monster* monster, Human* player);
 
 #endif /* GAMEUPDATES_HPP */

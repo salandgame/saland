@@ -190,40 +190,102 @@ void UpdateMonster(Monster* entity, float fDeltaTime, Human* player) {
 	}
 }
 
-void UpdateProjectile(Projectile* entity, float fDeltaTime) {
+static void UpdateExplosion(Projectile* entity, float fDeltaTime) {
+	entity->explosionTimeRemaining -= fDeltaTime;
+	if (entity->explosionTimeRemaining <= 0.0f) {
+		entity->explosionTimeRemaining = 0.0f;
+		entity->removeMe = true;
+	}
+}
+
+static bool ReachesTargetThisFrame(const Projectile* entity, float step) {
+	float dx = entity->targetX - entity->X;
+	float dy = entity->targetY - entity->Y;
+	float remaining = std::sqrt(dx*dx + dy*dy);
+	return remaining <= step;
+}
+
+bool UpdateProjectile(Projectile* entity, float fDeltaTime) {
+	if (entity->exploding) {
+		UpdateExplosion(entity, fDeltaTime);
+		return false;
+	}
 	entity->timeToLive -= fDeltaTime;
 	if (entity->timeToLive < 0.0f) {
 		entity->removeMe = true;
-		return;
+		return false;
 	}
-	entity->X -= entity->directionX*fDeltaTime*entity->velocity;
-	entity->Y -= entity->directionY*fDeltaTime*entity->velocity;
+	float step = fDeltaTime*entity->velocity;
+	if (entity->hasTarget && ReachesTargetThisFrame(entity, step)) {
+		entity->X = entity->targetX;
+		entity->Y = entity->targetY;
+		return true;
+	}
+	entity->X -= entity->directionX*step;
+	entity->Y -= entity->directionY*step;
+	return false;
+}
+
+static void ApplyProjectileDamage(Projectile* p, Placeable* target) {
+	float damageAmount = p->damage.getDamage();
+	// Apply damage multiplier from the entity that fired the projectile
+	Human* firedByHuman = dynamic_cast<Human*>(p->fired_by.get());
+	if (firedByHuman) {
+		damageAmount *= firedByHuman->damageMultiplier;
+	}
+	target->health -= damageAmount;
+
+	DamageNumber dmg;
+	dmg.X = target->X;
+	dmg.Y = target->Y - target->Radius; // Above the entity
+	dmg.damage = damageAmount;
+	dmg.createdAt = SDL_GetTicks();
+	target->damageNumbers.push_back(dmg);
 }
 
 void ProjectileHit(Projectile* p, Placeable* target) {
 	Monster* monster = dynamic_cast<Monster*> (target);
 	if (target->destructible) {
-		float damageAmount = p->damage.getDamage();
-		// Apply damage multiplier from the entity that fired the projectile
-		Human* firedByHuman = dynamic_cast<Human*>(p->fired_by.get());
-		if (firedByHuman) {
-			damageAmount *= firedByHuman->damageMultiplier;
-		}
-		target->health -= damageAmount;
+		ApplyProjectileDamage(p, target);
 		p->removeMe = true;
 		PlayHitSound();
-
-		// Create damage number
-		DamageNumber dmg;
-		dmg.X = target->X;
-		dmg.Y = target->Y - target->Radius; // Above the entity
-		dmg.damage = damageAmount;
-		dmg.createdAt = SDL_GetTicks();
-		target->damageNumbers.push_back(dmg);
 	}
 	if (monster) {
 		// Potentially change monster state to aggressive
 		monster->aiState = Monster::State::Aggressive;
+	}
+}
+
+static bool IsExplosionTarget(const Projectile* p, const Placeable* target) {
+	if (target->removeMe || !target->destructible) {
+		return false;
+	}
+	if (target == p || target == p->fired_by.get()) {
+		return false;
+	}
+	if (dynamic_cast<const Human*>(target) || dynamic_cast<const Projectile*>(target)) {
+		return false;
+	}
+	float dx = target->X - p->X;
+	float dy = target->Y - p->Y;
+	return std::sqrt(dx*dx + dy*dy) <= p->explosionRadius;
+}
+
+void ExplodeProjectile(Projectile* p, std::vector<std::shared_ptr<Placeable>>& placeables) {
+	p->exploding = true;
+	p->explosionTimeRemaining = projectileExplosionDurationMs;
+	p->velocity = 0.0f;
+	p->sprite = "";
+	PlayHitSound();
+	for (std::shared_ptr<Placeable>& target : placeables) {
+		if (!IsExplosionTarget(p, target.get())) {
+			continue;
+		}
+		ApplyProjectileDamage(p, target.get());
+		Monster* monster = dynamic_cast<Monster*>(target.get());
+		if (monster) {
+			monster->aiState = Monster::State::Aggressive;
+		}
 	}
 }
 

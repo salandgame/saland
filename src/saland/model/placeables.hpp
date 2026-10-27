@@ -31,6 +31,7 @@ https://github.com/sago007/saland
 #include <cstdint>
 
 const float pixel2unit = 32.0f;
+const float projectileExplosionDurationMs = 300.0f;
 
 struct DamageNumber {
 	float X = 0.0f;
@@ -152,6 +153,22 @@ public:
 	Damage damage;
 	std::shared_ptr<Placeable> fired_by;
 	std::string sprite = "effect_fireball";
+	// Explosion support. explosionRadius > 0 means the projectile explodes instead of doing single-target damage.
+	bool hasTarget = false;
+	float targetX = 0.0f;
+	float targetY = 0.0f;
+	float explosionRadius = 0.0f;
+	bool exploding = false;
+	float explosionTimeRemaining = 0.0f;
+
+	bool explodes() const {
+		return explosionRadius > 0.0f;
+	}
+
+	// 0.0 when the explosion starts, 1.0 when it has finished
+	float explosionProgress() const {
+		return 1.0f - explosionTimeRemaining / projectileExplosionDurationMs;
+	}
 };
 
 #endif /* PLACEABLES_HPP */

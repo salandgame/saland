@@ -9,6 +9,13 @@
 			"type": "dot"
 		}
 		,{
+			"name": "spell_big_fireball",
+			"icon": "effect_fireball",
+			"item_name": "",
+			"tile": 0,
+			"type": "dot"
+		}
+		,{
 			"name": "spell_watershot",
 			"icon": "effect_watershot",
 			"item_name": "",

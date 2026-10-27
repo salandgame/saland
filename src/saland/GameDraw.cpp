@@ -25,6 +25,7 @@ https://github.com/sago007/saland
 #include "GameHair.hpp"
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include <cmath>
+#include <algorithm>
 #include "../sago/SagoTextField.hpp"
 
 struct TextCache {
@@ -64,22 +65,53 @@ static void Draw(SDL_Renderer* target, SDL_Texture* t, int x, int y, const SDL_R
 	SDL_RenderCopy(target, t, &part, &pos);
 }
 
+struct PhysicalCircle {
+	int x = 0;
+	int y = 0;
+	int r = 0;
+};
+
+static PhysicalCircle ToPhysicalCircle(int x, int y, int r, sago::SagoLogicalResize* resize) {
+	PhysicalCircle circle{x, y, r};
+	if (!resize) {
+		return circle;
+	}
+	int edgeX = x + r;
+	resize->LogicalToPhysical(&circle.x, &circle.y);
+	resize->LogicalToPhysical(&edgeX, nullptr);
+	circle.r = edgeX - circle.x;
+	return circle;
+}
+
 static void DrawCollision(SDL_Renderer* target, const Placeable* entity, int offsetX, int offsetY, bool drawCollision, sago::SagoLogicalResize* resize = nullptr) {
 	if (drawCollision) {
-		int x = entity->X - offsetX;
-		int y = entity->Y - offsetY;
-		int r = entity->Radius;
-		if (resize) {
-			int temp_r = r+x;
-			resize->LogicalToPhysical(&x, &y);
-			resize->LogicalToPhysical(&temp_r, nullptr);
-			r = temp_r - x;
-		}
+		PhysicalCircle c = ToPhysicalCircle(entity->X - offsetX, entity->Y - offsetY, entity->Radius, resize);
 		circleRGBA(target,
-		           x, y, r,
+		           c.x, c.y, c.r,
 		           255, 255, 0, 255);
-		textCache.getLabel(entity->id)->Draw(target, x + r + 4, y, sago::SagoTextField::Alignment::left, sago::SagoTextField::VerticalAlignment::center);
+		textCache.getLabel(entity->id)->Draw(target, c.x + c.r + 4, c.y, sago::SagoTextField::Alignment::left, sago::SagoTextField::VerticalAlignment::center);
 	}
+}
+
+static const Uint8 explosionOuterR = 255;
+static const Uint8 explosionOuterG = 140;
+static const Uint8 explosionOuterB = 0;
+static const Uint8 explosionCoreR = 255;
+static const Uint8 explosionCoreG = 230;
+static const Uint8 explosionCoreB = 60;
+static const float explosionCoreRadiusFraction = 0.5f;
+static const float explosionMaxAlpha = 220.0f;
+
+static void DrawExplosion(SDL_Renderer* target, const Projectile* entity, int offsetX, int offsetY, sago::SagoLogicalResize* resize) {
+	float progress = std::clamp(entity->explosionProgress(), 0.0f, 1.0f);
+	int radius = std::round(entity->explosionRadius * progress);
+	Uint8 alpha = std::round(explosionMaxAlpha * (1.0f - progress));
+	int x = std::round(entity->X) - offsetX;
+	int y = std::round(entity->Y) - offsetY;
+	PhysicalCircle outer = ToPhysicalCircle(x, y, radius, resize);
+	filledCircleRGBA(target, outer.x, outer.y, outer.r, explosionOuterR, explosionOuterG, explosionOuterB, alpha);
+	PhysicalCircle core = ToPhysicalCircle(x, y, std::round(radius * explosionCoreRadiusFraction), resize);
+	filledCircleRGBA(target, core.x, core.y, core.r, explosionCoreR, explosionCoreG, explosionCoreB, alpha);
 }
 
 void DrawOuterBorder(SDL_Renderer* renderer, SDL_Texture* texture, const sago::tiled::TileMap& tm, int topx, int topy, uint32 outerTile, sago::SagoLogicalResize* resize) {
@@ -370,8 +402,10 @@ void DrawMonster(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Mo
 
 
 void DrawProjectile(SDL_Renderer* target, sago::SagoSpriteHolder* sHolder, const Projectile* entity, float time, int offsetX, int offsetY, bool drawCollision, sago::SagoLogicalResize* resize) {
-	(void)sHolder;
-	(void)time;
+	if (entity->exploding) {
+		DrawExplosion(target, entity, offsetX, offsetY, resize);
+		return;
+	}
 	if (entity->sprite.length()) {
 		const sago::SagoSprite& mySprite = sHolder->GetSprite(entity->sprite);
 		double angleRadian = 0.0;

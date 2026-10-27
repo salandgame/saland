@@ -405,6 +405,66 @@ static void SetLengthToOne(float& x, float& y) {
 	y = y/currentLength;
 }
 
+static const float bigFireballManaCost = 15.0f;
+static const float bigFireballDamage = 25.0f;
+static const float bigFireballBlastRadius = 64.0f;
+static const float bigFireballVelocity = 0.5f;  // px/ms, half the fireball speed so the flight is visible
+static const float bigFireballProjectileRadius = 10.0f;
+static const float bigFireballMinFlightDistance = 1.0f;  // guards SetLengthToOne against zero length
+
+// Make nearby enemies aggressive with 60% probability
+static void AggroNearbyMonsters(std::vector<std::shared_ptr<Placeable>>& placeables, const Human& caster) {
+	static std::random_device rd;
+	static std::mt19937 gen(rd());
+	static std::uniform_real_distribution<> dis(0.0, 1.0);
+	const float aggroRadius = 200.0f;
+	const float aggroChance = 0.6f;
+
+	for (std::shared_ptr<Placeable>& placeable : placeables) {
+		std::shared_ptr<Monster> monster = std::dynamic_pointer_cast<Monster>(placeable);
+		if (!monster) {
+			continue;
+		}
+		float dx = monster->X - caster.X;
+		float dy = monster->Y - caster.Y;
+		float distance = std::sqrt(dx * dx + dy * dy);
+		if (distance <= aggroRadius && dis(gen) < aggroChance) {
+			monster->aiState = Monster::State::Aggressive;
+		}
+	}
+}
+
+static bool Intersect(const Placeable& p1, const Placeable& p2);
+
+static bool IsCollisionCandidate(const Projectile* projectile, const std::shared_ptr<Placeable>& self, const std::shared_ptr<Placeable>& target) {
+	if (target->removeMe || target == self) {
+		return false;
+	}
+	if (projectile->fired_by.get() == target.get()) {
+		return false;
+	}
+	if (projectile->explodes()) {
+		// The big fireball only detonates on things it can damage
+		if (!target->destructible || dynamic_cast<Projectile*>(target.get()) || dynamic_cast<Human*>(target.get())) {
+			return false;
+		}
+	}
+	return Intersect(*self, *target);
+}
+
+static void ProjectileCollisions(Projectile* projectile, std::shared_ptr<Placeable>& self, std::vector<std::shared_ptr<Placeable>>& placeables) {
+	for (std::shared_ptr<Placeable>& target : placeables) {
+		if (!IsCollisionCandidate(projectile, self, target)) {
+			continue;
+		}
+		if (projectile->explodes()) {
+			ExplodeProjectile(projectile, placeables);
+			return;
+		}
+		ProjectileHit(projectile, target.get());
+	}
+}
+
 static std::string GetLayerInfoForTile(const World& w, int x, int y) {
 	std::stringstream ret;
 	if (!sago::tiled::tileInBound(w.tm, x, y)) {
@@ -494,6 +554,14 @@ void Game::Draw(SDL_Renderer* target) {
 			globalData.logicalResize.LogicalToPhysical(&phys_x1, &phys_y1);
 			globalData.logicalResize.LogicalToPhysical(&phys_x2, &phys_y2);
 			rectangleRGBA(globalData.screen, phys_x1, phys_y1, phys_x2, phys_y2, 255, 255, 0, 255);
+		}
+		if (drawSelectedSpell.name == "spell_big_fireball") {
+			int centerX = data->world_mouse_x - data->topx;
+			int centerY = data->world_mouse_y - data->topy;
+			int edgeX = centerX + static_cast<int>(bigFireballBlastRadius);
+			globalData.logicalResize.LogicalToPhysical(&centerX, &centerY);
+			globalData.logicalResize.LogicalToPhysical(&edgeX, nullptr);
+			circleRGBA(globalData.screen, centerX, centerY, edgeX - centerX, 255, 140, 0, 160);
 		}
 	}
 	//Draw
@@ -872,18 +940,15 @@ void Game::Update() {
 		UpdateDamageNumbers(entity.get());
 		Projectile* projectile = dynamic_cast<Projectile*> (entity.get());
 		if (projectile) {
-			UpdateProjectile(projectile, deltaTime);
-			for (std::shared_ptr<Placeable>& target : data->gameRegion.placeables) {
-				if (target->removeMe) {
-					continue;
-				}
-				if (entity != target && Intersect(*entity.get(), *target.get())) {
-					if (projectile->fired_by.get() == target.get()) {
-						continue;
-					}
-					std::cout << "Hit\n" << entity->X << "," << entity->Y << " " << target->X << "," << target->Y << "\n";
-					ProjectileHit(projectile, target.get());
-				}
+			bool reachedTarget = UpdateProjectile(projectile, deltaTime);
+			if (projectile->exploding || projectile->removeMe) {
+				// An exploding projectile has already dealt its damage
+			}
+			else if (reachedTarget) {
+				ExplodeProjectile(projectile, data->gameRegion.placeables);
+			}
+			else {
+				ProjectileCollisions(projectile, entity, data->gameRegion.placeables);
 			}
 		}
 		Monster* monster = dynamic_cast<Monster*> (entity.get());
@@ -1081,24 +1146,34 @@ void Game::Update() {
 				SetLengthToOne(projectile->directionX, projectile->directionY);
 				projectile->fired_by = data->human;
 				data->gameRegion.placeables.push_back(projectile);
-
-				// Make nearby enemies aggressive with 60% probability
-				static std::random_device rd;
-				static std::mt19937 gen(rd());
-				static std::uniform_real_distribution<> dis(0.0, 1.0);
-				const float aggroRadius = 200.0f;
-				const float aggroChance = 0.6f;
-
-				for (auto& placeable : data->gameRegion.placeables) {
-					std::shared_ptr<Monster> monster = std::dynamic_pointer_cast<Monster>(placeable);
-					if (monster) {
-						float dx = monster->X - data->human->X;
-						float dy = monster->Y - data->human->Y;
-						float distance = std::sqrt(dx * dx + dy * dy);
-						if (distance <= aggroRadius && dis(gen) < aggroChance) {
-							monster->aiState = Monster::State::Aggressive;
-						}
-					}
+				AggroNearbyMonsters(data->gameRegion.placeables, *data->human);
+			}
+		}
+		if (selectedSpell.name == "spell_big_fireball") {
+			if (data->human->castTimeRemaining == 0 && data->human->mana >= bigFireballManaCost) {
+				float directionX = data->human->X - data->world_mouse_x;
+				float directionY = data->human->Y - data->world_mouse_y;
+				float flightDistance = std::sqrt(directionX*directionX + directionY*directionY);
+				if (flightDistance >= bigFireballMinFlightDistance) {
+					data->human->mana -= bigFireballManaCost;
+					data->human->castTimeRemaining = data->human->castTime;
+					data->human->animation = "spellcast";
+					std::shared_ptr<Projectile> projectile = std::make_shared<Projectile>();
+					projectile->X = data->human->X;
+					projectile->Y = data->human->Y;
+					projectile->Radius = bigFireballProjectileRadius;
+					projectile->directionX = directionX;
+					projectile->directionY = directionY;
+					SetLengthToOne(projectile->directionX, projectile->directionY);
+					projectile->velocity = bigFireballVelocity;
+					projectile->damage.fire = bigFireballDamage;
+					projectile->hasTarget = true;
+					projectile->targetX = static_cast<float>(data->world_mouse_x);
+					projectile->targetY = static_cast<float>(data->world_mouse_y);
+					projectile->explosionRadius = bigFireballBlastRadius;
+					projectile->fired_by = data->human;
+					data->gameRegion.placeables.push_back(projectile);
+					AggroNearbyMonsters(data->gameRegion.placeables, *data->human);
 				}
 			}
 		}
